@@ -15,7 +15,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="index"
+        name="(marketplace)"
         options={{
           title: 'Marketplace',
           tabBarIcon: ({ color, focused }) => (

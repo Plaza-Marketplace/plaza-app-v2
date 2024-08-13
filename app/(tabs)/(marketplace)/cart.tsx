@@ -1,7 +1,7 @@
 import PlazaText from '@/components/PlazaText';
 import { View } from 'react-native';
 
-const MingleScreen = () => {
+const CartScreen = () => {
   return (
     <View>
       <PlazaText>Placeholder</PlazaText>
@@ -9,4 +9,4 @@ const MingleScreen = () => {
   );
 };
 
-export default MingleScreen;
+export default CartScreen;

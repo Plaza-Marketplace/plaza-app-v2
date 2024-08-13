@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "plaza-app-v2",
+    "name": "Plaza",
     "slug": "plaza-app-v2",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -13,13 +13,15 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.plaza.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.plaza.app"
     },
     "web": {
       "bundler": "metro",
