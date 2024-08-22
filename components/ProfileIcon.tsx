@@ -6,22 +6,30 @@ const DEFAULT_PROFILE_ICON_URL =
 
 interface ProfileIconProps {
   url?: string;
+  variant?: 'user' | 'community';
 }
 
-const ProfileIcon: FC<ProfileIconProps> = ({ url }) => {
+const ProfileIcon: FC<ProfileIconProps> = ({ url, variant = 'user' }) => {
+  const style = variant === 'user' ? styles.user : styles.community;
+
   return url ? (
-    <Image source={{ uri: url }} style={styles.image} />
+    <Image source={{ uri: url }} style={style} />
   ) : (
-    <Image source={{ uri: DEFAULT_PROFILE_ICON_URL }} style={styles.image} />
+    <Image source={{ uri: DEFAULT_PROFILE_ICON_URL }} style={style} />
   );
 };
 
 export default ProfileIcon;
 
 const styles = StyleSheet.create({
-  image: {
+  user: {
     width: 32,
     height: 32,
     borderRadius: 16,
+  },
+  community: {
+    width: 32,
+    height: 32,
+    borderRadius: 8,
   },
 });
