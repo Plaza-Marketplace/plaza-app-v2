@@ -19,7 +19,7 @@ const CaptionText: FC<TextProps> = ({ children, ...props }) => {
   });
   return (
     <Text
-      style={{ fontSize: 16, fontWeight: 300, fontFamily: 'Inter_300Light' }}
+      style={{ fontSize: 12, fontWeight: 300, fontFamily: 'Inter_300Light' }}
       {...props}
     >
       {children}
@@ -34,7 +34,7 @@ const PlazaText: FC<TextProps> = ({ children, ...props }) => {
 
   return (
     <Text
-      style={{ fontSize: 18, fontWeight: 400, fontFamily: 'Inter_400Regular' }}
+      style={{ fontSize: 14, fontWeight: 400, fontFamily: 'Inter_400Regular' }}
       {...props}
     >
       {children}
@@ -48,7 +48,7 @@ const FocusedText: FC<TextProps> = ({ children, ...props }) => {
   });
   return (
     <Text
-      style={{ fontSize: 20, fontWeight: 500, fontFamily: 'Inter_500Medium' }}
+      style={{ fontSize: 16, fontWeight: 500, fontFamily: 'Inter_500Medium' }}
       {...props}
     >
       {children}
@@ -62,7 +62,7 @@ const HeaderText: FC<TextProps> = ({ children, ...props }) => {
   });
   return (
     <Text
-      style={{ fontSize: 22, fontWeight: 700, fontFamily: 'Inter_700Bold' }}
+      style={{ fontSize: 18, fontWeight: 700, fontFamily: 'Inter_700Bold' }}
       {...props}
     >
       {children}

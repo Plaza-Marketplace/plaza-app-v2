@@ -1,10 +1,17 @@
 import { View, Text } from 'react-native';
 import React from 'react';
+import CommunityHeader from '@/components/CommunityHeader';
 
 const community = () => {
   return (
     <View>
-      <Text>community</Text>
+      <CommunityHeader
+        name="Community"
+        memberCount={100}
+        description="Description"
+        icon="icon"
+        background="background"
+      />
     </View>
   );
 };
