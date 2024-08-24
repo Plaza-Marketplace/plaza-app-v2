@@ -1,10 +1,19 @@
+import {
+  CaptionText,
+  FocusedText,
+  HeaderText,
+  PlazaText,
+} from '@/components/PlazaText';
 import ProfileIcon from '@/components/ProfileIcon';
 import { StyleSheet, Text, View } from 'react-native';
 
 const ExploreTab = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
+      <CaptionText>Caption</CaptionText>
+      <PlazaText>Regular</PlazaText>
+      <FocusedText>Focused</FocusedText>
+      <HeaderText>Header</HeaderText>
       <ProfileIcon variant="community" />
     </View>
   );
