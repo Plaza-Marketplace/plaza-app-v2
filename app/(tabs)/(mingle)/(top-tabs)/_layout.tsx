@@ -8,6 +8,7 @@ import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
+import PlazaTabBar from '@/components/navigation/PlazaTabBar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -29,12 +30,12 @@ export default function TabLayout() {
               justifyContent: 'center',
             }}
           >
-            <MaterialTopTabBar {...props} />
+            <PlazaTabBar {...props} />
           </View>
         )}
         screenOptions={{
           tabBarStyle: {
-            width: '70%',
+            width: '100%',
             alignSelf: 'center',
             backgroundColor: 'transparent',
           },

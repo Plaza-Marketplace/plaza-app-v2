@@ -38,6 +38,45 @@ export default function TabLayout() {
           ),
         }}
       />
+
+      <Tabs.Screen
+        name="(upload)"
+        options={{
+          title: 'Upload',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="(inbox)"
+        options={{
+          title: 'Inbox',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="(profile)"
+        options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
