@@ -1,4 +1,4 @@
-import PlazaText from '@/components/PlazaText';
+import PlazaText from '@/components/Texts/PlazaText';
 import { View } from 'react-native';
 
 const CartScreen = () => {

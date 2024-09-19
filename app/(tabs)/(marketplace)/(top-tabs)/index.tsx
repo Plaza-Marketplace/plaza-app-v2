@@ -1,11 +1,9 @@
-import {
-  CaptionText,
-  FocusedText,
-  HeaderText,
-  PlazaText,
-} from '@/components/PlazaText';
 import ProfileIcon from '@/components/ProfileIcon';
-import { StyleSheet, Text, View } from 'react-native';
+import CaptionText from '@/components/Texts/CaptionText';
+import FocusedText from '@/components/Texts/FocusedText';
+import HeaderText from '@/components/Texts/HeaderText';
+import PlazaText from '@/components/Texts/PlazaText';
+import { Button, StyleSheet, Text, View } from 'react-native';
 
 const ExploreTab = () => {
   return (
