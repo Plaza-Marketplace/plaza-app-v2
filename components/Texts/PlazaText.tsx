@@ -5,11 +5,13 @@ interface PlazaTextProps extends TextProps {
   style?: TextStyle;
   fontSize?: TextStyle['fontSize'];
   fontWeight?: TextStyle['fontWeight'];
+  color?: TextStyle['color'];
 }
 
 const PlazaText: FC<PlazaTextProps> = ({
   fontSize,
   fontWeight,
+  color,
   style,
   children,
   ...props
@@ -64,7 +66,7 @@ const PlazaText: FC<PlazaTextProps> = ({
 
   return (
     <Text
-      style={{ fontSize, fontFamily: handleFontWeight(), ...style }}
+      style={{ fontSize, fontFamily: handleFontWeight(), color, ...style }}
       {...props}
     >
       {children}
