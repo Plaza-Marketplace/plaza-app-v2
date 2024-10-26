@@ -1,24 +1,21 @@
-import { View, Text } from 'react-native';
-import React from 'react';
+import { Image, View } from 'react-native';
+import React, { FC } from 'react';
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/constants/Color';
+import Color from '@/constants/Color';
 import HeaderText from '../Texts/HeaderText';
-import CaptionText from '../Texts/CaptionText';
-import PlazaText from '../Texts/PlazaText';
+import Community from '@/models/community';
+import StandardText from '../Texts/StandardText';
+import CommunityIcon from '../ProfileIcons/CommunityIcon';
 
 interface CommunityHeaderProps {
-  name: string;
-  memberCount: number;
-  description: string;
-  icon: string;
-  background: string;
+  community: Community;
 }
 
-const CommunityHeader = (props: CommunityHeaderProps) => {
-  const { name, memberCount, description, icon, background } = props;
+const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
+  const { name, memberCount, description, iconUrl, backgroundUrl } = community;
   return (
     <View style={styles.headerContainer}>
-      <View style={styles.banner}></View>
+      <Image style={styles.banner} source={{ uri: backgroundUrl }} />
       <View style={styles.content}>
         <View
           style={{
@@ -27,29 +24,24 @@ const CommunityHeader = (props: CommunityHeaderProps) => {
           }}
         >
           <View style={{ position: 'relative' }}>
-            <View
-              style={{
-                position: 'absolute',
-                backgroundColor: 'grey',
-                width: 75,
-                height: 75,
-                bottom: 0,
-                borderColor: 'white',
-                borderWidth: 5,
-                borderRadius: 10,
-              }}
-            />
+            <View style={styles.iconContainer}>
+              <CommunityIcon
+                size={64}
+                url={iconUrl}
+                borderStyle={styles.iconBorder}
+              />
+            </View>
           </View>
 
-          <View style={{ marginLeft: 75, padding: 10 }}>
+          <View style={{ marginLeft: 70, padding: 5 }}>
             <HeaderText>{name}</HeaderText>
-            <CaptionText>{memberCount}</CaptionText>
+            <StandardText color={Color.TEXT_SUB_PRIMARY}>
+              {memberCount} members
+            </StandardText>
           </View>
         </View>
 
-        <View style={{ height: '50%', paddingVertical: 10 }}>
-          <PlazaText>{description}</PlazaText>
-        </View>
+        <StandardText numberOfLines={2}>{description}</StandardText>
       </View>
     </View>
   );
@@ -68,7 +60,17 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingLeft: 20,
+    gap: 8,
+    paddingHorizontal: 16,
+  },
+  iconContainer: {
+    position: 'absolute',
+    bottom: -5,
+  },
+  iconBorder: {
+    borderWidth: 4,
+    borderRadius: 8,
+    borderColor: 'white',
   },
 });
 

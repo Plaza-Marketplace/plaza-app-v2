@@ -8,15 +8,18 @@ const DEFAULT_SIZE = 32;
 interface CommunityIconProps {
   url?: string;
   size?: number;
+  borderStyle?: any;
 }
 
 const CommunityIcon: FC<CommunityIconProps> = ({
   url,
   size = DEFAULT_SIZE,
+  borderStyle,
 }) => {
   const sizeStyles = {
     width: size,
     height: size,
+    ...borderStyle,
   };
 
   return url ? (

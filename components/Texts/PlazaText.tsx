@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Text, TextProps, TextStyle } from 'react-native';
 
-interface PlazaTextProps extends TextProps {
+export interface PlazaTextProps extends TextProps {
   style?: TextStyle;
   fontSize?: TextStyle['fontSize'];
   fontWeight?: TextStyle['fontWeight'];

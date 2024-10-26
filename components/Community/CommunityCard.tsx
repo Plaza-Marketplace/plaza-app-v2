@@ -5,6 +5,8 @@ import { FC } from 'react';
 import Community from '@/models/community';
 import PlazaText from '../Texts/PlazaText';
 import NotificationNumber from '../NotificationNumber';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { router } from 'expo-router';
 
 const COMMUNITY_ICON_SIZE = 64;
 
@@ -18,14 +20,19 @@ const CommunityCard: FC<CommunityCardProps> = ({
   notificationsCount,
 }) => {
   return (
-    <View style={styles.container}>
+    <PressableOpacity
+      style={styles.container}
+      onPress={() =>
+        router.push({ pathname: 'community', params: { id: community.id } })
+      }
+    >
       <CommunityIcon size={COMMUNITY_ICON_SIZE} url={community.iconUrl} />
       <View style={styles.communityInfo}>
         <SubheaderText>{community.name}</SubheaderText>
         <PlazaText>{community.memberCount} members</PlazaText>
       </View>
       <NotificationNumber notificationsCount={notificationsCount} />
-    </View>
+    </PressableOpacity>
   );
 };
 

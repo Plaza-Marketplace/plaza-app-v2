@@ -6,6 +6,8 @@ enum Color {
   GREY_500 = '#000000',
 
   SURFACE_SECONDARY = GREY_200,
+
+  TEXT_SUB_PRIMARY = GREY_400,
 }
 
 export default Color;
