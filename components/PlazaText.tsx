@@ -13,13 +13,16 @@ import {
   Inter_900Black,
 } from '@expo-google-fonts/inter';
 
-const CaptionText: FC<TextProps> = ({ children, ...props }) => {
+const CaptionText: FC<TextProps> = ({ children, style, ...props }) => {
   let [fontsLoaded] = useFonts({
     Inter_300Light,
   });
   return (
     <Text
-      style={{ fontSize: 12, fontWeight: 300, fontFamily: 'Inter_300Light' }}
+      style={[
+        { fontSize: 12, fontWeight: 300, fontFamily: 'Inter_300Light' },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -27,14 +30,17 @@ const CaptionText: FC<TextProps> = ({ children, ...props }) => {
   );
 };
 
-const PlazaText: FC<TextProps> = ({ children, ...props }) => {
+const PlazaText: FC<TextProps> = ({ children, style, ...props }) => {
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
   });
 
   return (
     <Text
-      style={{ fontSize: 14, fontWeight: 400, fontFamily: 'Inter_400Regular' }}
+      style={[
+        { fontSize: 14, fontWeight: 400, fontFamily: 'Inter_400Regular' },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -42,13 +48,16 @@ const PlazaText: FC<TextProps> = ({ children, ...props }) => {
   );
 };
 
-const FocusedText: FC<TextProps> = ({ children, ...props }) => {
+const FocusedText: FC<TextProps> = ({ children, style, ...props }) => {
   let [fontsLoaded] = useFonts({
     Inter_500Medium,
   });
   return (
     <Text
-      style={{ fontSize: 16, fontWeight: 500, fontFamily: 'Inter_500Medium' }}
+      style={[
+        { fontSize: 16, fontWeight: 500, fontFamily: 'Inter_500Medium' },
+        style,
+      ]}
       {...props}
     >
       {children}
@@ -56,13 +65,16 @@ const FocusedText: FC<TextProps> = ({ children, ...props }) => {
   );
 };
 
-const HeaderText: FC<TextProps> = ({ children, ...props }) => {
+const HeaderText: FC<TextProps> = ({ children, style, ...props }) => {
   let [fontsLoaded] = useFonts({
     Inter_700Bold,
   });
   return (
     <Text
-      style={{ fontSize: 18, fontWeight: 700, fontFamily: 'Inter_700Bold' }}
+      style={[
+        { fontSize: 18, fontWeight: 700, fontFamily: 'Inter_700Bold' },
+        style,
+      ]}
       {...props}
     >
       {children}

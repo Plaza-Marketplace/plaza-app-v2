@@ -1,7 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { Colors } from '@/constants/Colors';
 import { CaptionText, HeaderText, PlazaText } from './PlazaText';
 
 interface CommunityHeaderProps {

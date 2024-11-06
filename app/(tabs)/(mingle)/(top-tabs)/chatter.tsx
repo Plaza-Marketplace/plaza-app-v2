@@ -12,7 +12,7 @@ const chatter = () => {
         postName="productName"
         postDesc="productDesc"
         rating={4.5}
-        type={PostCardType.SHOWCASE}
+        type={PostCardType.REVIEW}
       />
     </View>
   );

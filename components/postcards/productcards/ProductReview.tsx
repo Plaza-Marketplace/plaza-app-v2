@@ -21,7 +21,9 @@ const ProductReview = () => {
             }}
           >
             <ProfileIconCircle url="lole" />
-            <CaptionText style={{ marginLeft: 5 }}>Product</CaptionText>
+            <View style={{ marginLeft: 5 }}>
+              <CaptionText>Product</CaptionText>
+            </View>
           </View>
         </View>
       </View>

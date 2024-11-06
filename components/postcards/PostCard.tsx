@@ -4,7 +4,7 @@ import { ProfileIconSquare, ProfileIconCircle } from './PostIcon';
 import ProductImage from './productcards/ProductImage';
 import ProductShowcase from './productcards/ProductShowcase';
 import ProductReview from './productcards/ProductReview';
-import { FocusedText } from '../PlazaText';
+import { CaptionText, FocusedText, PlazaText } from '../PlazaText';
 import { PostCardType } from '@/constants/Types';
 import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
 
@@ -15,6 +15,7 @@ interface PostCardProps {
   postDesc: string;
   rating: number;
   type: PostCardType;
+  isCommunityPost?: boolean;
 }
 
 const getPostComponent = (type: PostCardType) => {
@@ -39,14 +40,19 @@ const PostCard = ({
   postDesc,
   rating,
   type,
+  isCommunityPost,
 }: PostCardProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
-        <ProfileIconSquare url="lole" />
+        {isCommunityPost ? (
+          <ProfileIconSquare url="lole" />
+        ) : (
+          <ProfileIconCircle url="lole" />
+        )}
         <View style={{ marginLeft: 5 }}>
-          <Text>{username}</Text>
-          <Text>{date}</Text>
+          <CaptionText>{username}</CaptionText>
+          <CaptionText style={{ marginTop: 3 }}>{date}</CaptionText>
         </View>
       </View>
 
@@ -77,7 +83,7 @@ const PostCard = ({
       </View>
 
       <View style={styles.sectionMargin}>
-        <Text>{postDesc}</Text>
+        <PlazaText>{postDesc}</PlazaText>
       </View>
 
       <View style={styles.sectionMargin}>{getPostComponent(type)}</View>

@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import productCardStyles from './styles';
+import { PlazaText } from '@/components/PlazaText';
 
 const ProductShowcase = () => {
   return (
     <View style={productCardStyles.shadow}>
       <View style={[productCardStyles.background, styles.placement]}>
         <View style={styles.card}>
-          <Text>ProductShowcase</Text>
+          <PlazaText>ProductShowcase</PlazaText>
         </View>
       </View>
     </View>
