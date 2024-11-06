@@ -42,6 +42,7 @@ const PostCard = ({
   type,
   isCommunityPost,
 }: PostCardProps) => {
+  let ratingCopy = rating;
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
@@ -61,20 +62,34 @@ const PostCard = ({
       </View>
 
       <View style={(styles.sectionMargin, styles.ratingContainer)}>
-        {[...Array(5)].map(() => {
+        {[...Array(5)].map((_, index) => {
           for (let i = 0; i < 5; i++) {
             let element = null;
-            if (rating - 1 >= 0) {
-              rating -= 1;
-              element = <MaterialCommunityIcons name={'star'} size={20} />;
-            } else if (rating - 0.5 >= 0) {
-              rating -= 0.5;
+            if (ratingCopy - 1 >= 0) {
+              ratingCopy -= 1;
               element = (
-                <MaterialCommunityIcons name={'star-half-full'} size={20} />
+                <MaterialCommunityIcons
+                  name={'star'}
+                  size={20}
+                  key={`${date}-full-${index}`}
+                />
+              );
+            } else if (ratingCopy - 0.5 >= 0) {
+              ratingCopy -= 0.5;
+              element = (
+                <MaterialCommunityIcons
+                  name={'star-half-full'}
+                  size={20}
+                  key={`${date}-half-${index}`}
+                />
               );
             } else {
               element = (
-                <MaterialCommunityIcons name={'star-outline'} size={20} />
+                <MaterialCommunityIcons
+                  name={'star-outline'}
+                  size={20}
+                  key={`${date}-empty-${index}`}
+                />
               );
             }
             return element;
