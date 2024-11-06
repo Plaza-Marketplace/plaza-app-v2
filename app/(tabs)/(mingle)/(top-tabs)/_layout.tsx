@@ -43,8 +43,8 @@ export default function TabLayout() {
       >
         <MaterialTopTabs.Screen name="chatter" options={{ title: 'Chatter' }} />
         <MaterialTopTabs.Screen
-          name="community"
-          options={{ title: 'Community' }}
+          name="communities"
+          options={{ title: 'Communities' }}
         />
       </MaterialTopTabs>
     </SafeAreaView>
