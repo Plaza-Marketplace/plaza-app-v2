@@ -1,5 +1,5 @@
-import { Image, View } from 'react-native';
-import React, { FC } from 'react';
+import { Image, Pressable, View } from 'react-native';
+import React, { FC, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
 import HeaderText from '../Texts/HeaderText';
@@ -12,7 +12,9 @@ interface CommunityHeaderProps {
 }
 
 const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
+  const [expanded, setExpanded] = useState(false);
   const { name, memberCount, description, iconUrl, backgroundUrl } = community;
+
   return (
     <View style={styles.headerContainer}>
       <Image style={styles.banner} source={{ uri: backgroundUrl }} />
@@ -20,17 +22,14 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
         <View
           style={{
             flexDirection: 'row',
-            height: '50%',
           }}
         >
-          <View style={{ position: 'relative' }}>
-            <View style={styles.iconContainer}>
-              <CommunityIcon
-                size={64}
-                url={iconUrl}
-                borderStyle={styles.iconBorder}
-              />
-            </View>
+          <View style={styles.iconContainer}>
+            <CommunityIcon
+              size={64}
+              url={iconUrl}
+              borderStyle={styles.iconBorder}
+            />
           </View>
 
           <View style={{ marginLeft: 70, padding: 5 }}>
@@ -41,7 +40,11 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
           </View>
         </View>
 
-        <StandardText numberOfLines={2}>{description}</StandardText>
+        <Pressable onPress={() => setExpanded(!expanded)}>
+          <StandardText numberOfLines={expanded ? undefined : 2}>
+            {description}
+          </StandardText>
+        </Pressable>
       </View>
     </View>
   );
@@ -49,17 +52,14 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    width: '100%',
-    height: 175,
-    flexDirection: 'column',
-    backgroundColor: 'white',
+    backgroundColor: Color.SURFACE_PRIMARY,
   },
   banner: {
-    flex: 1,
-    backgroundColor: 'grey',
+    width: '100%',
+    height: 104,
+    backgroundColor: Color.SURFACE_SECONDARY,
   },
   content: {
-    flex: 1,
     gap: 8,
     paddingHorizontal: 16,
   },
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   iconBorder: {
     borderWidth: 4,
     borderRadius: 8,
-    borderColor: 'white',
+    borderColor: Color.BORDER_TERTIARY,
   },
 });
 
