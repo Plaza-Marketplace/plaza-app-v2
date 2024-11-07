@@ -13,7 +13,7 @@ const NotificationNumber: FC<NotificationNumberProps> = ({
   return (
     <View style={styles.container}>
       <CaptionText>
-        {notificationsCount > 99 ? '99+' : notificationsCount}
+        {notificationsCount > 99 ? 99 : notificationsCount}
       </CaptionText>
     </View>
   );

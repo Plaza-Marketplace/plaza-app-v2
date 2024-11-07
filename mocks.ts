@@ -1,4 +1,6 @@
 import Community from './models/community';
+import CommunityProduct from './models/communityProduct';
+import Product from './models/product';
 
 const MOCK_COMMUNITIES: Community[] = [
   {
@@ -35,4 +37,93 @@ const MOCK_COMMUNITIES: Community[] = [
   },
 ];
 
-export { MOCK_COMMUNITIES };
+const MOCK_PRODUCT: Product = {
+  id: 1,
+  name: 'Pot',
+  description: 'Cool item!',
+  price: 4.99,
+  rating: 4.67,
+  sellerId: 1,
+  images: [
+    'https://media.cnn.com/api/v1/images/stellar/prod/220724124922-marijuana-stock.jpg?c=original',
+    'https://media.cnn.com/api/v1/images/stellar/prod/220724124922-marijuana-stock.jpg?c=original',
+  ],
+};
+
+const MOCK_PRODUCT_2: Product = {
+  id: 2,
+  name: 'Cat',
+  description: 'Food!',
+  price: 4.99,
+  rating: 4.67,
+  sellerId: 1,
+  images: [
+    'https://i.natgeofe.com/n/548467d8-c5f1-4551-9f58-6817a8d2c45e/NationalGeographic_2572187_3x4.jpg',
+  ],
+};
+
+const MOCK_PRODUCT_3: Product = {
+  id: 3,
+  name: 'Cat',
+  description: 'Food!',
+  price: 4.99,
+  rating: 4.67,
+  sellerId: 1,
+  images: [
+    'https://cdn.psychologytoday.com/sites/default/files/styles/article-inline-half-caption/public/field_blog_entry_images/2021-12/img_1570.jpg?itok=4nWOikbM',
+  ],
+};
+
+const MOCK_COMMUNITY_PRODUCTS: CommunityProduct[] = [
+  {
+    id: 1,
+    communityId: 1,
+    product: MOCK_PRODUCT,
+    posterId: 1,
+    description: "I'm selling this pot",
+  },
+  {
+    id: 2,
+    communityId: 1,
+    product: MOCK_PRODUCT_2,
+    posterId: 1,
+    description: "I'm selling this cat",
+  },
+  {
+    id: 3,
+    communityId: 1,
+    product: MOCK_PRODUCT_3,
+    posterId: 1,
+    description: "I'm selling this cat",
+  },
+  {
+    id: 4,
+    communityId: 1,
+    product: MOCK_PRODUCT_3,
+    posterId: 1,
+    description: null,
+  },
+  {
+    id: 1,
+    communityId: 1,
+    product: MOCK_PRODUCT,
+    posterId: 1,
+    description: "I'm selling this pot",
+  },
+  {
+    id: 5,
+    communityId: 1,
+    product: MOCK_PRODUCT_2,
+    posterId: 1,
+    description: 'Yummy!',
+  },
+  {
+    id: 1,
+    communityId: 1,
+    product: MOCK_PRODUCT,
+    posterId: 1,
+    description: "I'm selling this pot",
+  },
+];
+
+export { MOCK_COMMUNITIES, MOCK_PRODUCT, MOCK_COMMUNITY_PRODUCTS };
