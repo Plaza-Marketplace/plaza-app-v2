@@ -23,7 +23,10 @@ const CommunityCard: FC<CommunityCardProps> = ({
     <PressableOpacity
       style={styles.container}
       onPress={() =>
-        router.push({ pathname: 'community', params: { id: community.id } })
+        router.push({
+          pathname: 'community',
+          params: { id: community.id },
+        })
       }
     >
       <CommunityIcon size={COMMUNITY_ICON_SIZE} url={community.iconUrl} />

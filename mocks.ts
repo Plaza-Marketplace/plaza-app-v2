@@ -126,4 +126,31 @@ const MOCK_COMMUNITY_PRODUCTS: CommunityProduct[] = [
   },
 ];
 
-export { MOCK_COMMUNITIES, MOCK_PRODUCT, MOCK_COMMUNITY_PRODUCTS };
+const MOCK_COMMUNITY_POSTS: CommunityPost[] = [
+  {
+    id: 1,
+    communityId: 1,
+    title: 'I love cats',
+    description: 'Cats are the best!',
+    posterId: 1,
+    timeCreated: '2022-02-02',
+  },
+  {
+    id: 2,
+    communityId: 1,
+    title: 'I love dogs',
+    description: 'Dogs are the best!',
+    posterId: 1,
+    timeCreated: '2022-02-02',
+  },
+  {
+    id: 3,
+    communityId: 1,
+    title: 'I love things',
+    description: 'Things are the best!',
+    posterId: 1,
+    timeCreated: '2022-02-02',
+  },
+]
+
+export { MOCK_COMMUNITIES, MOCK_PRODUCT, MOCK_COMMUNITY_PRODUCTS, MOCK_COMMUNITY_POSTS };
