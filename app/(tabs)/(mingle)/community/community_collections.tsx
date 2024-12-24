@@ -21,13 +21,19 @@ const community_collections = () => {
   return (
     <ScrollView contentContainerStyle={styles.columnContainer}>
       <View style={styles.column}>
-        {leftColumn.map((communityProduct) => (
-          <CommunityProductImage communityProduct={communityProduct} />
+        {leftColumn.map((communityProduct, i) => (
+          <CommunityProductImage
+            communityProduct={communityProduct}
+            key={`left${i}`}
+          />
         ))}
       </View>
       <View style={styles.column}>
-        {rightColumn.map((communityProduct) => (
-          <CommunityProductImage communityProduct={communityProduct} />
+        {rightColumn.map((communityProduct, i) => (
+          <CommunityProductImage
+            communityProduct={communityProduct}
+            key={`right${i}`}
+          />
         ))}
       </View>
     </ScrollView>

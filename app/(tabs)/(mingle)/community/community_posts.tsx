@@ -7,7 +7,7 @@ import { PostCardType } from '@/constants/Types';
 const community_posts = () => {
   return (
     <ScrollView>
-      {MOCK_COMMUNITY_POSTS.map((post) => (
+      {MOCK_COMMUNITY_POSTS.map((post, i) => (
         <PostCard
           username="username"
           date={post.timeCreated}
@@ -15,6 +15,7 @@ const community_posts = () => {
           postDesc={post.description}
           rating={4.5}
           type={PostCardType.REVIEW}
+          key={`post${i}`}
         />
       ))}
     </ScrollView>
