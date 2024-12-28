@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { ProfileIconSquare, ProfileIconCircle } from './PostIcon';
-import ProductImage from './productcards/ProductImage';
-import ProductShowcase from './productcards/ProductShowcase';
-import ProductReview from './productcards/ProductReview';
+import ProductImage from './ProductCards/ProductImage';
+import ProductShowcase from './ProductCards/ProductShowcase';
+import ProductReview from './ProductCards/ProductReview';
 import { CaptionText, FocusedText, PlazaText } from '../PlazaText';
 import { PostCardType } from '@/constants/Types';
-import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
+import { returnRatings } from '../PlazaIcons/RatingIcons';
 
 interface PostCardProps {
   username: string;
@@ -42,7 +42,6 @@ const PostCard = ({
   type,
   isCommunityPost,
 }: PostCardProps) => {
-  let ratingCopy = rating;
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
@@ -62,39 +61,7 @@ const PostCard = ({
       </View>
 
       <View style={(styles.sectionMargin, styles.ratingContainer)}>
-        {[...Array(5)].map((_, index) => {
-          for (let i = 0; i < 5; i++) {
-            let element = null;
-            if (ratingCopy - 1 >= 0) {
-              ratingCopy -= 1;
-              element = (
-                <MaterialCommunityIcons
-                  name={'star'}
-                  size={20}
-                  key={`${date}-full-${index}`}
-                />
-              );
-            } else if (ratingCopy - 0.5 >= 0) {
-              ratingCopy -= 0.5;
-              element = (
-                <MaterialCommunityIcons
-                  name={'star-half-full'}
-                  size={20}
-                  key={`${date}-half-${index}`}
-                />
-              );
-            } else {
-              element = (
-                <MaterialCommunityIcons
-                  name={'star-outline'}
-                  size={20}
-                  key={`${date}-empty-${index}`}
-                />
-              );
-            }
-            return element;
-          }
-        })}
+        {returnRatings(rating, 'small')}
       </View>
 
       <View style={styles.sectionMargin}>

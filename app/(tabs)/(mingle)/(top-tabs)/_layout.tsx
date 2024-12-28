@@ -7,7 +7,7 @@ import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
-import PlazaTabBar from '@/components/navigation/PlazaTabBar';
+import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 

@@ -1,5 +1,5 @@
 import CommunityHeader from '@/components/Community/CommunityHeader';
-import PlazaTabBar from '@/components/navigation/PlazaTabBar';
+import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
 import { MOCK_COMMUNITIES, MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
