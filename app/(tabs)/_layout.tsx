@@ -3,13 +3,6 @@ import React from 'react';
 import { TabBarIcon } from '@/components/Navigation/TabBarIcon';
 // import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import {
-  ExploreIcon,
-  InboxIcon,
-  MingleIcon,
-  UploadIcon,
-  ProfileIcon,
-} from '@/components/PlazaIcons/BottomNavBarIcons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -26,7 +19,10 @@ export default function TabLayout() {
         options={{
           title: 'Marketplace',
           tabBarIcon: ({ color, focused }) => (
-            <ExploreIcon color={color} focused={focused} />
+            <TabBarIcon
+              name={focused ? 'storefront' : 'storefront-outline'}
+              color={color}
+            />
           ),
         }}
       />
@@ -35,7 +31,10 @@ export default function TabLayout() {
         options={{
           title: 'Mingle',
           tabBarIcon: ({ color, focused }) => (
-            <MingleIcon color={color} focused={focused} />
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
           ),
         }}
       />
@@ -45,7 +44,10 @@ export default function TabLayout() {
         options={{
           title: 'Upload',
           tabBarIcon: ({ color, focused }) => (
-            <UploadIcon color={color} focused={focused} />
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
           ),
         }}
       />
@@ -55,7 +57,10 @@ export default function TabLayout() {
         options={{
           title: 'Inbox',
           tabBarIcon: ({ color, focused }) => (
-            <InboxIcon color={color} focused={focused} />
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
           ),
         }}
       />
@@ -65,7 +70,10 @@ export default function TabLayout() {
         options={{
           title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
-            <ProfileIcon color={color} focused={focused} />
+            <TabBarIcon
+              name={focused ? 'people' : 'people-outline'}
+              color={color}
+            />
           ),
         }}
       />
