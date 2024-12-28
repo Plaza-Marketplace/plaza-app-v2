@@ -6,6 +6,7 @@ const MingleLayout = () => {
     <Stack>
       <Stack.Screen name="(top-tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="community" options={{ headerShown: false }} />
+      <Stack.Screen name="modal" options={{ headerShown: false }} />
     </Stack>
   );
 };

@@ -1,6 +1,6 @@
 import { View, Text } from 'react-native';
 import React from 'react';
-import PostCard from '@/components/postcards/PostCard';
+import PostCard from '@/components/PostCards/PostCard';
 import { PostCardType } from '@/constants/Types';
 
 const chatter = () => {

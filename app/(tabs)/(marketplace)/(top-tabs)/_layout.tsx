@@ -8,7 +8,7 @@ import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
-import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { TabBarIcon } from '@/components/Navigation/TabBarIcon';
 import { router } from 'expo-router';
 
 const { Navigator } = createMaterialTopTabNavigator();
