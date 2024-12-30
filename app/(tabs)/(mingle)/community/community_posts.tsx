@@ -9,6 +9,7 @@ const community_posts = () => {
     <ScrollView>
       {MOCK_COMMUNITY_POSTS.map((post, i) => (
         <PostCard
+          id={i}
           username="username"
           date={post.timeCreated}
           postName={post.title}

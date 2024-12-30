@@ -6,9 +6,12 @@ import ProductShowcase from './ProductCards/ProductShowcase';
 import ProductReview from './ProductCards/ProductReview';
 import { CaptionText, FocusedText, PlazaText } from '../PlazaText';
 import { PostCardType } from '@/constants/Types';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { router } from 'expo-router';
 import { returnRatings } from '../PlazaIcons/RatingIcons';
 
 interface PostCardProps {
+  id: number;
   username: string;
   date: string;
   postName: string;
@@ -34,6 +37,7 @@ const getPostComponent = (type: PostCardType) => {
 };
 
 const PostCard = ({
+  id,
   username,
   date,
   postName,
@@ -43,7 +47,15 @@ const PostCard = ({
   isCommunityPost,
 }: PostCardProps) => {
   return (
-    <View style={styles.container}>
+    <PressableOpacity
+      style={styles.container}
+      onPress={() =>
+        router.push({
+          pathname: 'modal',
+          params: { postId: id, postName: postName },
+        })
+      }
+    >
       <View style={styles.userInfoContainer}>
         {isCommunityPost ? (
           <ProfileIconSquare url="lole" />
@@ -69,7 +81,7 @@ const PostCard = ({
       </View>
 
       <View style={styles.sectionMargin}>{getPostComponent(type)}</View>
-    </View>
+    </PressableOpacity>
   );
 };
 
