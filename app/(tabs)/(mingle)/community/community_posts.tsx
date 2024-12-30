@@ -1,7 +1,7 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { MOCK_COMMUNITY_POSTS } from '@/mocks';
-import PostCard from '@/components/postcards/PostCard';
+import PostCard from '@/components/PostCards/PostCard';
 import { PostCardType } from '@/constants/Types';
 
 const community_posts = () => {

@@ -1,4 +1,9 @@
-import ProfileIcon from '@/components/ProfileIcon';
+import {
+  CommentIcon,
+  HeartIcon,
+  RatingIcon,
+  ShareIcon,
+} from '@/components/PlazaIcons/VideoOverlayIcons';
 import CaptionText from '@/components/Texts/CaptionText';
 import FocusedText from '@/components/Texts/FocusedText';
 import HeaderText from '@/components/Texts/HeaderText';
@@ -12,7 +17,10 @@ const ExploreTab = () => {
       <PlazaText>Regular</PlazaText>
       <FocusedText>Focused</FocusedText>
       <HeaderText>Header</HeaderText>
-      <ProfileIcon variant="community" />
+      <HeartIcon color={'#008800'} />
+      <RatingIcon color={'#008800'} />
+      <CommentIcon color={'#008800'} />
+      <ShareIcon color={'#008800'} />
     </View>
   );
 };
