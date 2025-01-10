@@ -1,0 +1,25 @@
+enum Spacing {
+  SPACING_0 = 0,
+  SPACING_1 = 4,
+  SPACING_2 = 8,
+  SPACING_3 = 16,
+  SPACING_4 = 24,
+  SPACING_5 = 32,
+  SPACING_6 = 40,
+  SPACING_7 = 48,
+  SPACING_8 = 56,
+  SPACING_9 = 64,
+  SPACING_10 = 72,
+
+  SPACING_NONE = Spacing.SPACING_0,
+  SPACING_2XS = Spacing.SPACING_1,
+  SPACING_XS = Spacing.SPACING_2,
+  SPACING_SM = Spacing.SPACING_3,
+  SPACING_MD = Spacing.SPACING_4,
+  SPACING_LG = Spacing.SPACING_5,
+  SPACING_XL = Spacing.SPACING_6,
+  SPACING_2XL = Spacing.SPACING_7,
+  SPACING_3XL = Spacing.SPACING_9,
+}
+
+export default Spacing;

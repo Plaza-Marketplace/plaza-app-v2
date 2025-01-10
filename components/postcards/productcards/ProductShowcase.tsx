@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import productCardStyles from './styles';
-import { PlazaText } from '@/components/PlazaText';
+import PlazaText from '@/components/Texts/PlazaText';
 
 const ProductShowcase = () => {
   return (

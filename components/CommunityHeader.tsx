@@ -1,7 +1,9 @@
 import { View, Text } from 'react-native';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import { CaptionText, HeaderText, PlazaText } from './PlazaText';
+import CaptionText from './Texts/CaptionText';
+import HeaderText from './Texts/HeaderText';
+import PlazaText from './Texts/PlazaText';
 
 interface CommunityHeaderProps {
   name: string;
