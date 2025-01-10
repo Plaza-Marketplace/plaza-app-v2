@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import productCardStyles from './styles';
-import { CaptionText, PlazaText } from '@/components/PlazaText';
+import CaptionText from '@/components/Texts/CaptionText';
+import PlazaText from '@/components/Texts/PlazaText';
 import { ProfileIconCircle } from '../PostIcon';
 
 const ProductReview = () => {
