@@ -3,7 +3,7 @@ import React from 'react';
 import HeaderText from './Texts/HeaderText';
 import PressableOpacity from './Buttons/PressableOpacity';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { router, useNavigation } from 'expo-router';
+import { router } from 'expo-router';
 
 interface FocusHeaderProps {
   name: string;
