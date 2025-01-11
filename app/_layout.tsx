@@ -20,13 +20,21 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
+  BottomSheetModal,
+  BottomSheetModalProvider,
+  BottomSheetView,
+} from '@gorhom/bottom-sheet';
+import {
+  GestureHandlerRootView,
+  NativeViewGestureHandler,
+} from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Session } from '@supabase/supabase-js';
 import { supabase } from '@/utils/supabase';
 import AuthContext from '@/components/Contexts/AuthContext';
 import Auth from '@/components/Auth';
+import { Modal, Text } from 'react-native';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -69,7 +77,7 @@ export default function RootLayout() {
 
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <BottomSheetModalProvider>
           <ThemeProvider
             value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}

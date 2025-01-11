@@ -8,9 +8,9 @@ interface PlazaButtonProps extends PressableProps {
   title: string;
 }
 
-const PlazaButton: FC<PlazaButtonProps> = ({ title, ...rest }) => {
+const PlazaButton: FC<PlazaButtonProps> = ({ title, style, ...rest }) => {
   return (
-    <PressableOpacity style={styles.container} {...rest}>
+    <PressableOpacity style={[styles.container, style]} {...rest}>
       <PlazaText color={Color.TEXT_PRIMARY_FLIP}>{title}</PlazaText>
     </PressableOpacity>
   );
@@ -20,7 +20,7 @@ export default PlazaButton;
 
 const styles = StyleSheet.create({
   container: {
-    width: '100%',
+    // width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,

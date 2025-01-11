@@ -13,6 +13,8 @@ enum Color {
 
   BORDER_SECONDARY = GREY_200,
   BORDER_TERTIARY = GREY_100,
+
+  ICON_PRIMARY = GREY_500,
 }
 
 export default Color;

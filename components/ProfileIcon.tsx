@@ -1,35 +1,27 @@
 import { FC } from 'react';
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'react-native';
 
 const DEFAULT_PROFILE_ICON_URL =
   'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg';
 
 interface ProfileIconProps {
   url?: string;
-  variant?: 'user' | 'community';
+  variant: 'user' | 'community';
+  size?: number;
 }
 
-const ProfileIcon: FC<ProfileIconProps> = ({ url, variant = 'user' }) => {
-  const style = variant === 'user' ? styles.user : styles.community;
-
-  return url ? (
-    <Image source={{ uri: url }} style={style} />
+const ProfileIcon: FC<ProfileIconProps> = ({ url, variant, size = 32 }) => {
+  return variant === 'user' ? (
+    <Image
+      source={{ uri: url ?? DEFAULT_PROFILE_ICON_URL }}
+      style={{ width: size, height: size, borderRadius: size / 2 }}
+    />
   ) : (
-    <Image source={{ uri: DEFAULT_PROFILE_ICON_URL }} style={style} />
+    <Image
+      source={{ uri: url ?? DEFAULT_PROFILE_ICON_URL }}
+      style={{ width: size, height: size, borderRadius: size / 4 }}
+    />
   );
 };
 
 export default ProfileIcon;
-
-const styles = StyleSheet.create({
-  user: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  community: {
-    width: 32,
-    height: 32,
-    borderRadius: 8,
-  },
-});

@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { ReactNode } from 'react';
 import HeaderText from './Texts/HeaderText';
 import PressableOpacity from './Buttons/PressableOpacity';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
+import Color from '@/constants/Color';
 
 interface FocusHeaderProps {
   leftIcon: ReactNode;
@@ -23,7 +25,7 @@ const FocusHeader = ({
   return (
     <View style={styles.header}>
       <PressableOpacity onPress={leftOnClick}>{leftIcon}</PressableOpacity>
-      <HeaderText style={styles.textStyle}>{name}</HeaderText>
+      <HeaderText>{name}</HeaderText>
       <PressableOpacity
         onPress={rightOnClick}
         style={{ marginLeft: 'auto', marginRight: 16 }}
@@ -40,10 +42,10 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: 16,
-    paddingVertical: 5,
-  },
-  textStyle: {
-    marginLeft: 5,
+    borderBottomWidth: 1,
+    borderBottomColor: Color.BORDER_SECONDARY,
+    paddingHorizontal: Spacing.SPACING_3,
+    paddingVertical: Spacing.SPACING_1,
+    gap: Spacing.SPACING_3,
   },
 });
