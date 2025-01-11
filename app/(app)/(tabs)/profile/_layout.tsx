@@ -1,12 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import {
   CollapsibleRef,
   MaterialTabBar,
-  MaterialTabItem,
   Tabs,
 } from 'react-native-collapsible-tab-view';
-import ProfileHeader from '@/components/ProfileHeader';
+import GeneralHeader from '@/components/GeneralHeader';
 import Radius from '@/constants/Radius';
 import CaptionText from '@/components/Texts/CaptionText';
 import BoldCaptionText from '@/components/Texts/BoldCaptionText';
@@ -14,7 +13,6 @@ import BoldStandardText from '@/components/Texts/BoldStandardText';
 import { returnRatings } from '@/components/PlazaIcons/RatingIcons';
 import PlazaText from '@/components/Texts/PlazaText';
 import { Ionicons } from '@expo/vector-icons';
-import { TabBarItem } from 'react-native-tab-view';
 import ProfileVideos from './profile-videos';
 import ProfileProducts from './profile-products';
 import ProfileReviews from './profile-reviews';
@@ -24,7 +22,7 @@ const _layout = () => {
   const ref = React.useRef<CollapsibleRef>();
   return (
     <>
-      <ProfileHeader name="Profile" />
+      <GeneralHeader name="Profile" />
       <Tabs.Container
         renderHeader={MyHeader}
         containerStyle={{ zIndex: -1 }}

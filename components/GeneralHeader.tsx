@@ -4,11 +4,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HeaderText from './Texts/HeaderText';
 import Color from '@/constants/Color';
 
-interface ProfileHeaderProps {
+interface GeneralHeaderProps {
   name: string;
 }
 
-const ProfileHeader = ({ name }: ProfileHeaderProps) => {
+const GeneralHeader = ({ name }: GeneralHeaderProps) => {
   const inset = useSafeAreaInsets();
   return (
     <View
@@ -26,6 +26,6 @@ const ProfileHeader = ({ name }: ProfileHeaderProps) => {
   );
 };
 
-export default ProfileHeader;
+export default GeneralHeader;
 
 const styles = StyleSheet.create({});
