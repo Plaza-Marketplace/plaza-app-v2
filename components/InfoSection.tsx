@@ -1,11 +1,13 @@
 import { StyleSheet, View } from 'react-native';
 import StandardText from './Texts/StandardText';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import Color from '@/constants/Color';
 import PressableOpacity from './Buttons/PressableOpacity';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Spacing from '@/constants/Spacing';
-import AddContentModal from './AddContentModal';
+import PlazaTextInput from './PlazaTextInput';
+import InfoSectionModal from './InfoSectionModal';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 interface InfoSectionProps {
   title: string;
@@ -13,9 +15,17 @@ interface InfoSectionProps {
 }
 
 const InfoSection: FC<InfoSectionProps> = ({ title, description }) => {
+  const infoSectionRef = useRef<BottomSheetModal>(null);
+
   return (
     <>
-      <PressableOpacity style={styles.container}>
+      <PressableOpacity
+        style={styles.container}
+        onPress={() => {
+          infoSectionRef.current?.present();
+          infoSectionRef.current?.snapToIndex(1);
+        }}
+      >
         <StandardText>{title}</StandardText>
         {!description ? (
           <View style={styles.selectContainer}>
@@ -23,10 +33,15 @@ const InfoSection: FC<InfoSectionProps> = ({ title, description }) => {
             <Ionicons name="chevron-forward" size={24} color={Color.GREY_500} />
           </View>
         ) : (
-          <StandardText>{description}</StandardText>
+          <PlazaTextInput keyboardType="number-pad" />
+          // <StandardText>{description}</StandardText>
         )}
       </PressableOpacity>
-      <AddContentModal title={title} />
+      <InfoSectionModal
+        title={title}
+        items={['Brand New', 'Like New']}
+        bottomSheetRef={infoSectionRef}
+      />
     </>
   );
 };
