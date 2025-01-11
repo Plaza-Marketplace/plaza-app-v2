@@ -1,4 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
+import { View } from 'react-native';
 
 interface RatingIconsProps {
   size: 'small' | 'large';
@@ -33,7 +34,7 @@ const returnRatings = (
   size: 'small' | 'large',
   key = Date.now()
 ) => {
-  return [...Array(5)].map((_, index) => {
+  const results = [...Array(5)].map((_, index) => {
     for (let i = 0; i < 5; i++) {
       let element = null;
       if (rating - 1 >= 0) {
@@ -48,6 +49,7 @@ const returnRatings = (
       return element;
     }
   });
+  return <View style={{ flexDirection: 'row' }}>{results}</View>;
 };
 
 export { FullStarIcon, HalfStarIcon, returnRatings };
