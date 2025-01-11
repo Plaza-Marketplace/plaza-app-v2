@@ -1,5 +1,5 @@
-import ActivityNote from '@/components/ActivityNote';
-import BackHeader from '@/components/BackHeader';
+import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
+import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import CaptionText from '@/components/Texts/CaptionText';
 import Spacing from '@/constants/Spacing';
@@ -20,18 +20,12 @@ const FollowRequest = () => {
           data={mockData}
           keyExtractor={(item, index) => `${item + index}`}
           renderItem={({ item }) => (
-            <PressableOpacity
+            <View
               style={{
                 marginVertical: Spacing.SPACING_2,
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-              }}
-              onPress={() => {
-                router.push({
-                  pathname: 'message',
-                  params: { username: 'William Zhong' },
-                });
               }}
             >
               <ActivityNote name="William Zhong" note="asdlfkjhasdlft" />
@@ -43,7 +37,7 @@ const FollowRequest = () => {
                   <Ionicons name="close" size={24} color="black" />
                 </PressableOpacity>
               </View>
-            </PressableOpacity>
+            </View>
           )}
         />
       </View>

@@ -3,13 +3,13 @@ import React from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import GeneralHeader from '@/components/GeneralHeader';
-import ActivityHeader from '@/components/ActivityHeader';
+import ActivityHeader from '@/app/(app)/(tabs)/(inbox)/ActivityHeader';
 import Spacing from '@/constants/Spacing';
 import StandardText from '@/components/Texts/StandardText';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SubheaderText from '@/components/Texts/SubheaderText';
-import ActivityNote from '@/components/ActivityNote';
+import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
 
 const mockData = [
   {

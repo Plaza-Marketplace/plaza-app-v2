@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import ProfileIcon from './ProfileIcon';
-import { ProfileIconCircle } from './PostCards/PostIcon';
+import ProfileIcon from '../../../../components/ProfileIcon';
+import { ProfileIconCircle } from '../../../../components/PostCards/PostIcon';
 import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
-import BoldStandardText from './Texts/BoldStandardText';
-import CaptionText from './Texts/CaptionText';
+import BoldStandardText from '../../../../components/Texts/BoldStandardText';
+import CaptionText from '../../../../components/Texts/CaptionText';
 
 interface ActivityNoteProps {
   name: string;

@@ -3,8 +3,8 @@ import React from 'react';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
-import PlazaText from './Texts/PlazaText';
-import StandardText from './Texts/StandardText';
+import PlazaText from '../../../../components/Texts/PlazaText';
+import StandardText from '../../../../components/Texts/StandardText';
 
 interface MessageProps {
   message: {

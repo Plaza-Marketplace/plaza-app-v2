@@ -2,8 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Color from '@/constants/Color';
-import HeaderText from './Texts/HeaderText';
-import PressableOpacity from './Buttons/PressableOpacity';
+import HeaderText from '../../../../components/Texts/HeaderText';
+import PressableOpacity from '../../../../components/Buttons/PressableOpacity';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 

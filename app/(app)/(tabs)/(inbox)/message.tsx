@@ -2,14 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import BackHeader from '@/components/BackHeader';
+import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import Spacing from '@/constants/Spacing';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
 import Color from '@/constants/Color';
 import { FlatList } from 'react-native-gesture-handler';
-import Message from '@/components/Message';
+import Message from '@/app/(app)/(tabs)/(inbox)/MessageComponent';
 
 type InboxParams = {
   username?: string;
