@@ -47,7 +47,7 @@ export const getProduct = async (id: number): Promise<Product> => {
 };
 
 export const updateProduct = async (
-  product: Partial<UpdateProduct>,
+  product: UpdateProduct,
   id: Id
 ): Promise<Product> => {
   const { data, error } = await supabase

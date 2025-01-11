@@ -1,48 +1,85 @@
 import AddImage from '@/components/AddImage';
-import PlazaButton from '@/components/Buttons/PlazaButton';
 import FocusHeader from '@/components/FocusHeader';
+import Footer from '@/components/Footer';
 import InfoSection from '@/components/InfoSection';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
-import { SafeAreaView, StyleSheet, View } from 'react-native';
+import {
+  KeyboardAvoidingView,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  View,
+} from 'react-native';
+import { Formik } from 'formik';
+import { createProduct } from '@/services/product';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ListItem = () => {
+  const auth = useAuth();
+  const { data, error } = useGetUserByAuthId(auth?.user.id);
+
+  console.log(data);
+
   return (
     <SafeAreaView style={styles.container}>
       <FocusHeader name="List an Item" />
-      <View style={styles.container}>
-        <View style={{ gap: Spacing.SPACING_3, flexDirection: 'row' }}>
-          <AddImage />
-          <AddImage />
-          <AddImage />
-          <AddImage />
-        </View>
-        <View style={{ gap: Spacing.SPACING_3 }}>
-          <BoldStandardText>Description</BoldStandardText>
-          <PlazaTextInput
-            placeholder="example: handmade clay cat mug"
-            style={{ height: 100 }}
-          />
-        </View>
-        <View style={{ gap: Spacing.SPACING_3 }}>
-          <BoldStandardText>Information</BoldStandardText>
-          <InfoSection title="Category" />
-          <InfoSection title="Condition" />
-          <InfoSection title="Quantity" description="1" />
-          <InfoSection title="Price" description="$0.00" />
-        </View>
-        <View style={{ gap: Spacing.SPACING_3 }}>
-          <BoldStandardText>Shipping</BoldStandardText>
-          <InfoSection title="Shipping Price" description="$0.00" />
-          <InfoSection title="Location" />
-        </View>
-      </View>
-      <View style={styles.buttonsContainer}>
-        <PlazaButton title="Save to Drafts" style={{ flex: 1 }} />
-        <PlazaButton title="Post Video" style={{ flex: 1 }} />
-      </View>
+      <Formik
+        initialValues={{
+          category: '',
+          condition: '',
+          description: '',
+          quantity: 1,
+          price: 0,
+          shippingPrice: 0,
+          location: null,
+        }}
+        onSubmit={(values) => {}}
+      >
+        {({ handleChange, handleBlur, handleSubmit, values }) => (
+          <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
+            <ScrollView contentContainerStyle={styles.container}>
+              <View style={{ gap: Spacing.SPACING_3, flexDirection: 'row' }}>
+                <AddImage />
+                <AddImage />
+                <AddImage />
+                <AddImage />
+              </View>
+
+              <View style={{ gap: Spacing.SPACING_3 }}>
+                <BoldStandardText>Description</BoldStandardText>
+                <PlazaTextInput
+                  onChangeText={handleChange('description')}
+                  placeholder="example: handmade clay cat mug"
+                  style={{ height: 100 }}
+                />
+              </View>
+              <View style={{ gap: Spacing.SPACING_3 }}>
+                <BoldStandardText>Information</BoldStandardText>
+                <InfoSection title="Category" />
+                <InfoSection title="Condition" />
+                <InfoSection title="Quantity" description="1" />
+                <InfoSection title="Price" description="$0.00" />
+              </View>
+              <View style={{ gap: Spacing.SPACING_3 }}>
+                <BoldStandardText>Shipping</BoldStandardText>
+                <InfoSection title="Shipping Price" description="$0.00" />
+                <InfoSection title="Location" />
+              </View>
+            </ScrollView>
+
+            <Footer
+              leftTitle="Save to Drafts"
+              rightTitle="Post Listing"
+              leftOnPress={() => {}}
+              rightOnPress={handleSubmit}
+            />
+          </KeyboardAvoidingView>
+        )}
+      </Formik>
     </SafeAreaView>
   );
 };
