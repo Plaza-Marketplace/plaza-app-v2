@@ -3,7 +3,13 @@ type User = {
    * The user's unique identifier.
    * Policy: read only, no one can write to this field.
    */
-  id: number;
+  id: Id;
+
+  authId: UUID;
+
+  firstName: string;
+
+  lastName: string;
 
   /**
    * The user's username.
@@ -11,12 +17,13 @@ type User = {
    */
   username: string;
 
-  /**
-   * The user's unique identifier.
-   * Policy:
-   */
-  rating?: number;
-  time;
+  email: string;
+
+  description: string | null;
+
+  profileImageUrl: string | null;
+
+  createdAt: Timestamp;
 };
 
 export default User;

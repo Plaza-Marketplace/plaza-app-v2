@@ -3,9 +3,26 @@ type Product = {
   name: string;
   description: string;
   price: number;
-  rating: number;
   sellerId: number;
   images: string[];
+  createdAt: string;
+  quantity?: number;
 };
 
-export default Product;
+type UpdateProduct = {
+  name: string;
+  description: string;
+  price: number;
+  sellerId: number;
+  images: string[];
+  quantity?: number;
+};
+
+type CreateProduct = {
+  name: string;
+  description: string;
+  price: number;
+  sellerId: number;
+  images: string[];
+  quantity?: number;
+};
