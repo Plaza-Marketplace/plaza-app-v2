@@ -6,7 +6,10 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import { TabBarIcon } from '@/components/Navigation/TabBarIcon';
 import { router } from 'expo-router';
@@ -21,39 +24,40 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <MaterialTopTabs
-        tabBar={({ ...props }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+    <MaterialTopTabs
+      tabBar={({ ...props }) => (
+        <SafeAreaView
+          style={{
+            position: 'absolute',
+            width: '100%',
+            zIndex: 99,
+          }}
+        >
+          <View>
             <MaterialTopTabBar {...props} />
             <TabBarIcon
               name="cart"
               color="black"
-              style={{ position: 'absolute', right: 20 }}
-              onPress={() => router.push('cart')}
+              style={{ position: 'absolute', right: 20, top: 50 }}
+              onPress={() => router.push('/cart')}
             />
           </View>
-        )}
-        screenOptions={{
-          tabBarStyle: {
-            width: '70%',
-            alignSelf: 'center',
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MaterialTopTabs.Screen name="index" options={{ title: 'Explore' }} />
-        <MaterialTopTabs.Screen
-          name="following"
-          options={{ title: 'Following' }}
-        />
-      </MaterialTopTabs>
-    </SafeAreaView>
+        </SafeAreaView>
+      )}
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: 'transparent',
+        },
+      }}
+    >
+      <MaterialTopTabs.Screen name="index" options={{ title: 'Explore' }} />
+      <MaterialTopTabs.Screen
+        name="following"
+        options={{ title: 'Following' }}
+      />
+    </MaterialTopTabs>
   );
 }

@@ -1,6 +1,6 @@
 import Carousel from 'react-native-reanimated-carousel';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import ProductSelectedShowcase from '@/components/PostCards/ProductCards/ProductSelectedShowcase';
 import AddContentCard from '@/components/AddContentCard';
 import Color from '@/constants/Color';
@@ -29,7 +29,7 @@ const LandingPage = () => {
                   description="Upload an item to your profile so that others can buy it!Items can be added to videos you post and will be featured
                   alongside them."
                   buttonTitle="Start Listing"
-                  nextRoute={'list-item'}
+                  nextRoute="list-item"
                 >
                   <ProductSelectedShowcase />
                 </AddContentCard>
@@ -50,6 +50,7 @@ const LandingPage = () => {
 
 Videos will be shared to the marketplace for others to view."
                 buttonTitle="Create a Video"
+                nextRoute="video-upload"
               >
                 <VideoPreview />
               </AddContentCard>
