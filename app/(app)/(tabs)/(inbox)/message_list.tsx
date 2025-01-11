@@ -30,7 +30,7 @@ const MessageList = () => {
               }}
               onPress={() => {
                 router.push({
-                  pathname: 'message',
+                  pathname: '/message',
                   params: { username: 'William Zhong' },
                 });
               }}

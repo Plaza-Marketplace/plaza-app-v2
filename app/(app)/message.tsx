@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router, useLocalSearchParams, useNavigation } from 'expo-router';
@@ -59,10 +59,11 @@ const mockData = [
 const Messages = () => {
   const params = useLocalSearchParams<InboxParams>();
   const navigation = useNavigation();
+  const windowHeight = Dimensions.get('window').height;
   useEffect(() => {
     navigation.getParent()?.setOptions({
-      tabBarStyle: { display: 'none' },
       tabBarVisible: false,
+      tabBarStyle: { display: 'none' },
     });
     return () =>
       navigation
@@ -70,7 +71,7 @@ const Messages = () => {
         ?.setOptions({ tabBarStyle: undefined, tabBarVisible: undefined });
   }, [navigation]);
   return (
-    <>
+    <View style={{ height: windowHeight }}>
       <BackHeader name={params.username || 'Messages'} />
       <View style={{ flex: 1, position: 'relative', alignItems: 'center' }}>
         <FlatList
@@ -102,6 +103,7 @@ const Messages = () => {
             backgroundColor: 'white',
             borderTopWidth: 1,
             borderTopColor: Color.BORDER_SECONDARY,
+            zIndex: 99,
           }}
         >
           <PlazaTextInput
@@ -113,7 +115,7 @@ const Messages = () => {
           </PressableOpacity>
         </View>
       </View>
-    </>
+    </View>
   );
 };
 
