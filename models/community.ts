@@ -2,9 +2,21 @@ type Community = {
   id: number;
   name: string;
   description: string;
-  memberCount: number;
   iconUrl: string;
   backgroundUrl: string;
+  createdAt: string;
 };
 
-export default Community;
+type CreateCommunity = {
+  name: string;
+  description: string;
+  iconUrl: string;
+  backgroundUrl: string;
+}
+
+type UpdateCommunity = {
+  name: string;
+  description: string;
+  iconUrl: string;
+  backgroundUrl: string;
+}
