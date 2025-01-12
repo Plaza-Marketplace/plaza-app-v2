@@ -15,11 +15,13 @@ type Product = {
 
   price: number;
 
+  shippingPrice: number;
+
   images: string[];
 
   createdAt: string;
 
-  quantity?: number;
+  quantity: number | null;
 };
 
 type UpdateProduct = {
@@ -32,6 +34,8 @@ type UpdateProduct = {
   condition?: string;
 
   price?: number;
+
+  shippingPrice?: number;
 
   images?: string[];
 
@@ -50,6 +54,8 @@ type CreateProduct = {
   condition: string;
 
   price: number;
+
+  shippingPrice: number;
 
   images: string[];
 

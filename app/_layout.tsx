@@ -15,27 +15,16 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
-import { Redirect, Slot, Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import {
-  BottomSheetModal,
-  BottomSheetModalProvider,
-  BottomSheetView,
-} from '@gorhom/bottom-sheet';
-import {
-  GestureHandlerRootView,
-  NativeViewGestureHandler,
-} from 'react-native-gesture-handler';
+import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { Session } from '@supabase/supabase-js';
-import { supabase } from '@/utils/supabase';
-import AuthContext from '@/components/Contexts/AuthContext';
-import Auth from '@/components/Auth';
-import { Modal, Text } from 'react-native';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 const queryClient = new QueryClient();
 
@@ -56,23 +45,11 @@ export default function RootLayout() {
     Inter_900Black,
   });
 
-  const [session, setSession] = useState<Session | null>(null);
-
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
     }
   }, [loaded]);
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-    });
-
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-  }, []);
 
   if (!loaded) {
     return null;
@@ -86,9 +63,9 @@ export default function RootLayout() {
             <ThemeProvider
               value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
             >
-              <AuthContext.Provider value={session}>
+              <AuthProvider>
                 <Slot />
-              </AuthContext.Provider>
+              </AuthProvider>
             </ThemeProvider>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>

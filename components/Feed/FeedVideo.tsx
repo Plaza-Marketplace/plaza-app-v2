@@ -50,7 +50,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ videoUrl }) => {
             <Products />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
-                onPress={() => router.push('/(app)/list-item')}
+                onPress={() => router.push('/(app)/list-item/create-listing')}
                 style={styles.userInfoContainer}
               >
                 <ProfileIcon variant="user" />
