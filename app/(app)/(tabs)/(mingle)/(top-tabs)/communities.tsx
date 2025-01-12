@@ -31,9 +31,9 @@ const Communities = () => {
           notificationsCount={Math.round(Math.random() * 150)}
         />
       ))}
-      <PressableOpacity onPress={() => testCreateCommunities()}>
+      {/* <PressableOpacity onPress={() => testCreateCommunities()}>
         <Text>Press me to add some test communities</Text>
-      </PressableOpacity>
+      </PressableOpacity> */}
     </View>
   );
 };
