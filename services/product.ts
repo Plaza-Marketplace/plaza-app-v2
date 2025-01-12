@@ -10,6 +10,8 @@ const supabaseToProduct = (supabaseProduct: any): Product => {
     quantity: supabaseProduct.quantity,
     createdAt: supabaseProduct.created_at,
     images: [],
+    category: '',
+    condition: '',
   };
 };
 

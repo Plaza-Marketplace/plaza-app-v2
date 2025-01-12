@@ -2,6 +2,7 @@ import CommunityHeader from '@/components/Community/CommunityHeader';
 import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
+import useGetCommunityById from '@/hooks/queries/useGetCommunityById';
 import { MOCK_COMMUNITIES, MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
 import {
   createMaterialTopTabNavigator,
@@ -28,10 +29,14 @@ const Community = () => {
   if (!id) return <PlazaText>Something went wrong</PlazaText>;
 
   const communityId = parseInt(id);
-  const community = MOCK_COMMUNITIES.find((c) => c.id === communityId);
 
-  if (!community) return <PlazaText>Community not found</PlazaText>;
+  const { data, error, isPending } = useGetCommunityById(communityId);
 
+  if (isPending) return <PlazaText>Loading...</PlazaText>;
+
+  if (!data || error) return <PlazaText>Community not found</PlazaText>;
+
+  const community = data;
   const communityProducts = MOCK_COMMUNITY_PRODUCTS;
 
   const leftColumn = [];

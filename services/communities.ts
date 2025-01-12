@@ -8,16 +8,22 @@ const  supabaseToCommunity = (supabaseCommunity: any): Community => {
     iconUrl: supabaseCommunity.icon_url,
     backgroundUrl: supabaseCommunity.banner_url,
     createdAt: supabaseCommunity.created_at,
+    memberCount: 0
   };
 }
 
 export const createCommunity = async (community: CreateCommunity): Promise<Community> => {
   const { data, error } = await supabase
     .from('community')
-    .insert(community)
+    .insert({
+      name: community.name,
+      description: community.description,
+      icon_url: community.iconUrl,
+      banner_url: community.backgroundUrl
+    })
     .select()
-
   if (error) {
+    console.log("error", error)
     throw new Error(
       `The create community query for ${community.name} failed with exception ${error}`
     );

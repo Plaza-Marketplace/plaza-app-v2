@@ -2,21 +2,38 @@ import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import CommunityCard from '@/components/Community/CommunityCard';
 import { MOCK_COMMUNITIES } from '@/mocks';
-import useGetAssociatedCommunities from '@/hooks/useGetAssociatedCommunities';
+import useGetAssociatedCommunities from '@/hooks/queries/useGetAssociatedCommunities';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import useCreateCommunity from '@/hooks/queries/useCreateCommunities';
+import { HelloWave } from '@/components/HelloWave';
 
 const Communities = () => {
-  const { data, error } = useGetAssociatedCommunities(1);
+  const { data, error, isPending } = useGetAssociatedCommunities(1);
+  const { mutate } = useCreateCommunity();
+
+  const testCreateCommunities = () => {
+    for (const comm of MOCK_COMMUNITIES) {
+      console.log(comm);
+      mutate(comm);
+    }
+  };
+
+  if (!data || isPending) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <View style={styles.container}>
-      {/* {MOCK_COMMUNITIES.map((community) => (
+      {data.map((community) => (
         <CommunityCard
           key={community.id}
           community={community}
           notificationsCount={Math.round(Math.random() * 150)}
         />
-      ))} */}
-      <Text>{JSON.stringify(data)}</Text>
-      <Text>{JSON.stringify(error)}</Text>
+      ))}
+      <PressableOpacity onPress={() => testCreateCommunities()}>
+        <Text>Press me to add some test communities</Text>
+      </PressableOpacity>
     </View>
   );
 };

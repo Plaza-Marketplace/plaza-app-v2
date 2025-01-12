@@ -1,6 +1,7 @@
 type Community = {
   id: number;
   name: string;
+  memberCount: number;
   description: string;
   iconUrl: string;
   backgroundUrl: string;
