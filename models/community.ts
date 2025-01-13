@@ -5,7 +5,7 @@ type Community = {
   description: string;
   iconUrl: string;
   backgroundUrl: string;
-  createdAt: string;
+  createdAt: Timestamp;
 };
 
 type CreateCommunity = {

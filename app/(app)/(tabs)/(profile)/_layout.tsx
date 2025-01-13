@@ -17,6 +17,9 @@ import ProfileVideos from './profile-videos';
 import ProfileProducts from './profile-products';
 import ProfileReviews from './profile-reviews';
 import ProfileLikes from './profile-likes';
+import ExpandableDescription from '@/components/ExpandableDescription';
+
+const example = `As he ventured through the forest, John encountered three trials. First, he came across a river too wide to cross. Nearby, an old ferryman sat waiting. "I will take you across," the ferryman said, "but only if you share something of value." John thought for a moment and shared a story of his dreams, which brought a smile to the ferryman's face. "Your courage is payment enough," he said, and helped John cross.'`;
 
 const _layout = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -116,10 +119,7 @@ const MyHeader = () => {
         </View>
       </View>
       <View style={styles.commonMargin}>
-        <PlazaText>
-          User-generated description of the post and should be truncated to four
-          lines. Lorem ipsum dolor sit amet, consectetur adipiscing elit
-        </PlazaText>
+        <ExpandableDescription description={example} initialNumberOfLines={4} />
       </View>
     </View>
   );

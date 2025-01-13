@@ -1,9 +1,8 @@
 import CommunityHeader from '@/components/Community/CommunityHeader';
-import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
-import useGetCommunityById from '@/hooks/queries/useGetCommunityById';
-import { MOCK_COMMUNITIES, MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
+import { useGetCommunityById } from '@/hooks/queries/useCommunity';
+import { MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBar,
@@ -30,13 +29,16 @@ const Community = () => {
 
   const communityId = parseInt(id);
 
-  const { data, error, isPending } = useGetCommunityById(communityId);
+  const {
+    data: community,
+    error,
+    isPending,
+  } = useGetCommunityById(communityId);
 
   if (isPending) return <PlazaText>Loading...</PlazaText>;
 
-  if (!data || error) return <PlazaText>Community not found</PlazaText>;
+  if (!community || error) return <PlazaText>Community not found</PlazaText>;
 
-  const community = data;
   const communityProducts = MOCK_COMMUNITY_PRODUCTS;
 
   const leftColumn = [];
@@ -72,14 +74,17 @@ const Community = () => {
             backgroundColor: 'transparent',
           },
         }}
+        backBehavior="none"
       >
         <MaterialTopTabs.Screen
           name="community_collections"
           options={{ title: 'Collections' }}
+          initialParams={{ communityId: communityId }}
         />
         <MaterialTopTabs.Screen
           name="community_posts"
           options={{ title: 'Posts' }}
+          initialParams={{ communityId: communityId }}
         />
       </MaterialTopTabs>
     </View>

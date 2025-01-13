@@ -1,11 +1,16 @@
-import { Image, Pressable, View } from 'react-native';
+import { Image, Pressable, View, Text } from 'react-native';
 import React, { FC, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
 import HeaderText from '../Texts/HeaderText';
-import Community from '@/models/community';
 import StandardText from '../Texts/StandardText';
 import CommunityIcon from '../ProfileIcons/CommunityIcon';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { BackButton } from '../PlazaIcons/ActionIcons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Radius from '@/constants/Radius';
+import Spacing from '@/constants/Spacing';
+import { router } from 'expo-router';
 
 interface CommunityHeaderProps {
   community: Community;
@@ -14,9 +19,16 @@ interface CommunityHeaderProps {
 const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
   const [expanded, setExpanded] = useState(false);
   const { name, memberCount, description, iconUrl, backgroundUrl } = community;
-
+  const inset = useSafeAreaInsets();
   return (
     <View style={styles.headerContainer}>
+      <PressableOpacity
+        style={[styles.backButton, { top: inset.top }]}
+        onPress={() => router.back()}
+      >
+        <BackButton color="white" size={20} />
+        {/* <Text>Back</Text> */}
+      </PressableOpacity>
       <Image style={styles.banner} source={{ uri: backgroundUrl }} />
       <View style={styles.content}>
         <View
@@ -53,10 +65,11 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
 const styles = StyleSheet.create({
   headerContainer: {
     backgroundColor: Color.SURFACE_PRIMARY,
+    position: 'relative',
   },
   banner: {
     width: '100%',
-    height: 104,
+    height: 130,
     backgroundColor: Color.SURFACE_SECONDARY,
   },
   content: {
@@ -71,6 +84,14 @@ const styles = StyleSheet.create({
     borderWidth: 4,
     borderRadius: 8,
     borderColor: Color.BORDER_TERTIARY,
+  },
+  backButton: {
+    position: 'absolute',
+    padding: 10,
+    left: Spacing.SPACING_3,
+    backgroundColor: '#00000088',
+    borderRadius: 99,
+    zIndex: 99,
   },
 });
 

@@ -2,10 +2,10 @@ import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import CommunityCard from '@/components/Community/CommunityCard';
 import { MOCK_COMMUNITIES } from '@/mocks';
-import useGetAssociatedCommunities from '@/hooks/queries/useGetAssociatedCommunities';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import useCreateCommunity from '@/hooks/queries/useCreateCommunities';
-import { HelloWave } from '@/components/HelloWave';
+import {
+  useGetAssociatedCommunities,
+  useCreateCommunity,
+} from '@/hooks/queries/useCommunity';
 
 const Communities = () => {
   const { data, error, isPending } = useGetAssociatedCommunities(1);

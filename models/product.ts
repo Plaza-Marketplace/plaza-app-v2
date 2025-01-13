@@ -17,7 +17,7 @@ type Product = {
 
   images: string[];
 
-  createdAt: string;
+  createdAt: Timestamp;
 
   quantity?: number;
 };
