@@ -94,6 +94,117 @@ export type Database = {
           },
         ]
       }
+      follow: {
+        Row: {
+          created_at: string
+          dest_id: number
+          id: number
+          source_id: number
+        }
+        Insert: {
+          created_at?: string
+          dest_id: number
+          id?: number
+          source_id: number
+        }
+        Update: {
+          created_at?: string
+          dest_id?: number
+          id?: number
+          source_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_dest_id_fkey"
+            columns: ["dest_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      follow_request: {
+        Row: {
+          created_at: string
+          id: number
+          recipient_id: number
+          sender_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          recipient_id: number
+          sender_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          recipient_id?: number
+          sender_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "follow_request_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "follow_request_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      message: {
+        Row: {
+          content: string
+          created_at: string
+          id: number
+          recipient_id: number
+          sender_id: number
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: number
+          recipient_id: number
+          sender_id: number
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: number
+          recipient_id?: number
+          sender_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "message_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "message_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product: {
         Row: {
           category: string
@@ -286,6 +397,42 @@ export type Database = {
             columns: ["poster_id"]
             isOneToOne: false
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_like: {
+        Row: {
+          created_at: string
+          id: number
+          liker_id: number
+          video_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          liker_id: number
+          video_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          liker_id?: number
+          video_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_like_liker_id_fkey"
+            columns: ["liker_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_like_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
             referencedColumns: ["id"]
           },
         ]

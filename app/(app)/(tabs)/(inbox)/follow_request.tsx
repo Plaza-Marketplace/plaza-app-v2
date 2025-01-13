@@ -1,16 +1,28 @@
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
 import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import CaptionText from '@/components/Texts/CaptionText';
 import Spacing from '@/constants/Spacing';
+import { AuthContext } from '@/contexts/AuthContext';
+import {
+  useGetFollowRequestsByRecipient,
+  useGetFollowRequestsBySender,
+} from '@/hooks/queries/useFollowRequest';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
-import React from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import React, { useContext } from 'react';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const mockData = [1, 2, 3];
 
 const FollowRequest = () => {
+  const { session } = useContext(AuthContext);
+  if (!session) return null;
+  const { data: user, isLoading: isUserLoading } = useGetUserByAuthId(
+    session.user.id
+  );
+  if (isUserLoading || !user) return null;
+  const { data: requests, isLoading: isRequestsLoading } =
+    useGetFollowRequestsBySender(user.id);
   return (
     <>
       <BackHeader name="Follow Request" />
@@ -41,6 +53,7 @@ const FollowRequest = () => {
           )}
         />
       </View>
+      <Text>{JSON.stringify(requests)}</Text>
     </>
   );
 };
