@@ -1,8 +1,31 @@
 import User from '@/models/user';
 import { supabase } from '@/utils/supabase';
 
-export const getUser = async (id: Id) => {
+export const getUser = async (id: Id): Promise<User> => {
   return await supabase.from('user').select('*').eq('id', id);
+};
+
+export const getUserByAuthId = async (authId: UUID): Promise<User> => {
+  const { data, error } = await supabase
+    .from('user')
+    .select('*')
+    .eq('auth_id', authId)
+    .limit(1)
+    .single();
+  console.log('HELLO');
+  if (error) throw new Error(error.message);
+
+  return {
+    id: data.id,
+    authId: data.auth_id,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    username: data.username,
+    email: data.email,
+    description: data.description,
+    profileImageUrl: data.profile_image_url,
+    createdAt: data.created_at,
+  };
 };
 
 export const createUser = async (

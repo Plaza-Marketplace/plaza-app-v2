@@ -8,8 +8,8 @@ import { router } from 'expo-router';
 import Color from '@/constants/Color';
 
 interface FocusHeaderProps {
-  leftIcon: ReactNode;
-  leftOnClick: () => void;
+  leftIcon?: ReactNode;
+  leftOnClick?: () => void;
   name: string;
   rightIcon?: ReactNode;
   rightOnClick?: () => void;

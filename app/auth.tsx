@@ -1,17 +1,15 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React, { useContext, useEffect } from 'react';
+import { StyleSheet, View } from 'react-native';
+import React from 'react';
 import Auth from '@/components/Auth';
-import AuthContext from '@/components/Contexts/AuthContext';
-import { router } from 'expo-router';
+import { Redirect } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
 
 const _layout = () => {
-  const session = useContext(AuthContext);
+  const { isLoading, session } = useAuth();
 
-  useEffect(() => {
-    if (session && session.user) {
-      router.replace('/');
-    }
-  }, [session]);
+  if (!isLoading && session) {
+    return <Redirect href="/" />;
+  }
 
   return (
     <View>

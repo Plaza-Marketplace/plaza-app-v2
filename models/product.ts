@@ -1,28 +1,63 @@
 type Product = {
   id: number;
-  name: string;
-  description: string;
-  price: number;
+
   sellerId: number;
+
+  name: string;
+
+  description: string;
+
+  // Change to enum?
+  category: string;
+
+  // Change to enum?
+  condition: string;
+
+  price: number;
+
+  shippingPrice: number;
+
   images: string[];
+
   createdAt: string;
-  quantity?: number;
+
+  quantity: number | null;
 };
 
 type UpdateProduct = {
-  name: string;
-  description: string;
-  price: number;
-  sellerId: number;
-  images: string[];
+  name?: string;
+
+  description?: string;
+
+  category?: string;
+
+  condition?: string;
+
+  price?: number;
+
+  shippingPrice?: number;
+
+  images?: string[];
+
   quantity?: number;
 };
 
 type CreateProduct = {
-  name: string;
-  description: string;
-  price: number;
   sellerId: number;
+
+  name: string;
+
+  description: string;
+
+  category: string;
+
+  condition: string;
+
+  price: number;
+
+  shippingPrice: number;
+
   images: string[];
+
   quantity?: number;
 };
