@@ -12,35 +12,104 @@ import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import * as ImagePicker from 'expo-image-picker';
+import * as FileSystem from 'expo-file-system';
+import { createVideo } from '@/services/video';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import { Formik } from 'formik';
+
+type VideoUploadForm = {
+  videoUri: string | null;
+  description: string;
+};
 
 const LandingPage = () => {
+  const { session } = useAuth();
+  const { data: user, isLoading } = useGetUserByAuthId(session?.user.id);
+
+  if (isLoading || !user) return null;
+
+  const initialValues: VideoUploadForm = {
+    videoUri: null,
+    description: '',
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <FocusHeader name="Upload a Video" />
-      <View style={styles.container}>
-        <VideoPreview />
-        <View style={{ gap: Spacing.SPACING_3 }}>
-          <BoldStandardText>Description</BoldStandardText>
-          <PlazaTextInput
-            placeholder="write a caption for your post"
-            multiline
-            style={{ height: 100 }}
-          />
-        </View>
-        <View style={styles.linkItemsContainer}>
-          <BoldStandardText>Link Items</BoldStandardText>
-          <CaptionText>
-            Add at least 1 item from your store your post.
-          </CaptionText>
-          <PressableOpacity
-            style={styles.iconContainer}
-            onPress={() => router.push('/video-upload/link-items')}
-          >
-            <PlazaText>Icon</PlazaText>
-          </PressableOpacity>
-        </View>
-      </View>
-      <Footer leftTitle="Save to Drafts" rightTitle="Post Video" />
+      <Formik
+        initialValues={initialValues}
+        onSubmit={async (values) => {
+          if (!values.videoUri) return;
+
+          const base64Video = await FileSystem.readAsStringAsync(
+            values.videoUri,
+            {
+              encoding: 'base64',
+            }
+          );
+
+          await createVideo({
+            posterId: user.id,
+            description: values.description || null,
+            base64Video: base64Video,
+          });
+        }}
+      >
+        {({ handleChange, handleSubmit, values }) => {
+          const handleSelect = async () => {
+            const result = await ImagePicker.launchImageLibraryAsync({
+              mediaTypes: ['videos'],
+              allowsEditing: true,
+            });
+
+            if (result.canceled) {
+              return;
+            }
+
+            const video = result.assets[0];
+
+            handleChange('videoUri')(video.uri);
+          };
+
+          return (
+            <View style={{ flex: 1 }}>
+              <View style={styles.container}>
+                <PressableOpacity style={{ flex: 1 }} onPress={handleSelect}>
+                  <VideoPreview uri={values.videoUri} />
+                </PressableOpacity>
+                <View style={{ gap: Spacing.SPACING_3 }}>
+                  <BoldStandardText>Description</BoldStandardText>
+                  <PlazaTextInput
+                    onChangeText={handleChange('description')}
+                    placeholder="write a caption for your post"
+                    multiline
+                    style={{ height: 100 }}
+                  />
+                </View>
+                <View style={styles.linkItemsContainer}>
+                  <BoldStandardText>Link Items</BoldStandardText>
+                  <CaptionText>
+                    Add at least 1 item from your store to your post.
+                  </CaptionText>
+                  <PressableOpacity
+                    style={styles.iconContainer}
+                    onPress={() => router.push('/video-upload/link-items')}
+                  >
+                    <PlazaText>Icon</PlazaText>
+                  </PressableOpacity>
+                </View>
+              </View>
+              <Footer
+                leftTitle="Save to Drafts"
+                rightTitle="Post Video"
+                rightOnPress={handleSubmit}
+              />
+            </View>
+          );
+        }}
+      </Formik>
     </SafeAreaView>
   );
 };

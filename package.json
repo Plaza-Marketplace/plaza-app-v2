@@ -23,6 +23,7 @@
     "@rneui/themed": "^4.0.0-rc.8",
     "@supabase/supabase-js": "^2.47.10",
     "@tanstack/react-query": "^5.64.0",
+    "base64-arraybuffer": "^1.0.2",
     "expo": "^52.0.25",
     "expo-checkbox": "~4.0.1",
     "expo-constants": "~17.0.4",
@@ -49,7 +50,11 @@
     "react-native-svg": "15.8.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-url-polyfill": "^2.0.0",
-    "react-native-web": "~0.19.13"
+    "react-native-web": "~0.19.13",
+    "uuid": "^11.0.5",
+    "expo-image-picker": "~16.0.4",
+    "expo-file-system": "~18.0.7",
+    "react-native-get-random-values": "~1.11.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

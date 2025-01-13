@@ -12,20 +12,19 @@ import { router } from 'expo-router';
 import ReviewModal from './ReviewModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ExpandableDescription from '../ExpandableDescription';
-import ProductIcon from '../Product/ProductIcon';
 import Products from './Products';
 import CommentModal from './CommentModal';
 
 interface FeedVideoProps {
-  videoUrl: string;
+  video: Video;
 }
 
-const FeedVideo: FC<FeedVideoProps> = ({ videoUrl }) => {
+const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
   const [expanded, setExpanded] = useState(false);
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
 
-  const player = useVideoPlayer(videoUrl, (player) => {
+  const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
     player.play();
     player.volume = 0;
@@ -56,10 +55,9 @@ const FeedVideo: FC<FeedVideoProps> = ({ videoUrl }) => {
                 <ProfileIcon variant="user" />
                 <BoldSubheaderText>Display Name</BoldSubheaderText>
               </PressableOpacity>
-              <ExpandableDescription
-                description="User-generated description of the video that gets truncated to
-                one line."
-              />
+              {video.description && (
+                <ExpandableDescription description={video.description} />
+              )}
             </View>
           </View>
           <View style={styles.buttonsContainer}>
