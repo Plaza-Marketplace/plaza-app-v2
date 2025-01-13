@@ -23,7 +23,6 @@ export const createCommunity = async (community: CreateCommunity): Promise<Commu
     })
     .select()
   if (error) {
-    console.log("error", error)
     throw new Error(
       `The create community query for ${community.name} failed with exception ${error}`
     );

@@ -27,6 +27,7 @@ const PostCard = ({ communityPost }: PostCardProps) => {
     sellerReviewId,
     createdAt,
   } = communityPost;
+  const date = new Date(createdAt);
   return (
     <PressableOpacity
       style={styles.container}
@@ -41,7 +42,9 @@ const PostCard = ({ communityPost }: PostCardProps) => {
         <ProfileIconCircle url="lole" />
         <View style={{ marginLeft: 5 }}>
           <CaptionText>{posterId}</CaptionText>
-          <CaptionText style={{ marginTop: 3 }}>{createdAt}</CaptionText>
+          <CaptionText style={{ marginTop: 3 }}>
+            {`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}
+          </CaptionText>
         </View>
       </View>
 
