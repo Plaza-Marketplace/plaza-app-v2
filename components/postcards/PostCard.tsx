@@ -1,88 +1,66 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import { ProfileIconSquare, ProfileIconCircle } from './PostIcon';
-import ProductImage from './ProductCards/ProductImage';
-import ProductShowcase from './ProductCards/ProductShowcase';
-import ProductReview from './ProductCards/ProductReview';
+import { ProfileIconCircle } from './PostIcon';
 import CaptionText from '../Texts/CaptionText';
 import FocusedText from '../Texts/FocusedText';
 import PlazaText from '../Texts/PlazaText';
-import { PostCardType } from '@/constants/Types';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { returnRatings } from '../PlazaIcons/RatingIcons';
+import { CommunityPost } from '@/models/communityPost';
 
 interface PostCardProps {
-  id: number;
-  username: string;
-  date: string;
-  postName: string;
-  postDesc: string;
-  rating: number;
-  type: PostCardType;
-  isCommunityPost?: boolean;
+  communityPost: CommunityPost;
 }
 
-const getPostComponent = (type: PostCardType) => {
-  switch (type) {
-    case PostCardType.POST:
-      return null;
-    case PostCardType.IMAGE:
-      return <ProductImage />;
-    case PostCardType.SHOWCASE:
-      return <ProductShowcase />;
-    case PostCardType.REVIEW:
-      return <ProductReview />;
-    default:
-      return null;
-  }
-};
-
-const PostCard = ({
-  id,
-  username,
-  date,
-  postName,
-  postDesc,
-  rating,
-  type,
-  isCommunityPost,
-}: PostCardProps) => {
+const PostCard = ({ communityPost }: PostCardProps) => {
+  const {
+    id,
+    communityId,
+    posterId,
+    title,
+    description,
+    postType,
+    productId,
+    imageUrl,
+    productReviewId,
+    sellerReviewId,
+    createdAt,
+  } = communityPost;
+  const date = new Date(createdAt);
   return (
     <PressableOpacity
       style={styles.container}
       onPress={() =>
-        router.push({
-          pathname: 'modal',
-          params: { postId: id, postName: postName },
+        router.navigate({
+          pathname: '/post-modal',
+          params: { postId: id, postName: title },
         })
       }
     >
       <View style={styles.userInfoContainer}>
-        {isCommunityPost ? (
-          <ProfileIconSquare url="lole" />
-        ) : (
-          <ProfileIconCircle url="lole" />
-        )}
+        <ProfileIconCircle url="lole" />
         <View style={{ marginLeft: 5 }}>
-          <CaptionText>{username}</CaptionText>
-          <CaptionText style={{ marginTop: 3 }}>{date}</CaptionText>
+          <CaptionText>{posterId}</CaptionText>
+          <CaptionText style={{ marginTop: 3 }}>
+            {`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}
+          </CaptionText>
         </View>
       </View>
 
       <View style={styles.sectionMargin}>
-        <FocusedText>{postName}</FocusedText>
+        <FocusedText>{title}</FocusedText>
       </View>
 
       <View style={(styles.sectionMargin, styles.ratingContainer)}>
-        {returnRatings(rating, 'small')}
+        {returnRatings(0, 'small')}
       </View>
 
       <View style={styles.sectionMargin}>
-        <PlazaText>{postDesc}</PlazaText>
+        <PlazaText>{description}</PlazaText>
       </View>
 
-      <View style={styles.sectionMargin}>{getPostComponent(type)}</View>
+      <View style={styles.sectionMargin}></View>
     </PressableOpacity>
   );
 };

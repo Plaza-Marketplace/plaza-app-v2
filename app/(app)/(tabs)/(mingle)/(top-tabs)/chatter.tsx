@@ -6,14 +6,14 @@ import { PostCardType } from '@/constants/Types';
 const chatter = () => {
   return (
     <View>
-      <PostCard
+      {/* <PostCard
         username="username"
         date="date"
         postName="productName"
         postDesc="productDesc"
         rating={4.5}
         type={PostCardType.REVIEW}
-      />
+      /> */}
     </View>
   );
 };

@@ -1,5 +1,20 @@
 import { supabase } from '@/utils/supabase';
 
+const supabaseToProduct = (supabaseProduct: any): Product => {
+  return {
+    id: supabaseProduct.id,
+    sellerId: supabaseProduct.seller_id,
+    name: supabaseProduct.name,
+    description: supabaseProduct.description,
+    price: supabaseProduct.price,
+    quantity: supabaseProduct.quantity,
+    createdAt: supabaseProduct.created_at,
+    images: [],
+    category: '',
+    condition: '',
+  };
+};
+
 export const createProduct = async (
   product: CreateProduct
 ): Promise<Product> => {
@@ -15,10 +30,9 @@ export const createProduct = async (
       shipping_price: product.shippingPrice,
       quantity: product.quantity ?? null,
     })
-    .select();
+    .select()
 
-  console.log(data, error);
-  if (!data && error) {
+  if (error) {
     throw new Error(
       `The create product query for ${product.name} failed with exception ${error}`
     );
@@ -28,31 +42,16 @@ export const createProduct = async (
     );
   }
 
-  console.log(data);
-
-  return {
-    id: data[0].id,
-    sellerId: data[0].seller_id,
-    name: data[0].name,
-    description: data[0].description,
-    category: data[0].category,
-    condition: data[0].condition,
-    price: data[0].price,
-    shippingPrice: data[0].shipping_price,
-    createdAt: data[0].created_at,
-    quantity: data[0].quantity,
-    images: [],
-  };
+  return supabaseToProduct(data);
 };
 
-export const getProduct = async (id: number): Promise<Product> => {
+export const getProduct = async (id: Id): Promise<Product> => {
   const { data, error } = await supabase
     .from('product')
     .select('*')
     .eq('id', id)
-    .returns<Product>();
 
-  if (!data && error) {
+  if (error) {
     throw new Error(
       `The get product query for ${id} failed with exception ${error}`
     );
@@ -60,7 +59,7 @@ export const getProduct = async (id: number): Promise<Product> => {
     throw new Error(`The get product query ${id} failed for unknown reasons`);
   }
 
-  return data;
+  return supabaseToProduct(data[0]);
 };
 
 export const updateProduct = async (
@@ -71,9 +70,8 @@ export const updateProduct = async (
     .from('product')
     .update(product)
     .eq('id', id)
-    .returns<Product>();
 
-  if (!data && error) {
+  if (error) {
     throw new Error(
       `The update product query for ${id} failed with exception ${error}`
     );
@@ -83,7 +81,7 @@ export const updateProduct = async (
     );
   }
 
-  return data;
+  return supabaseToProduct(data[0]);
 };
 
 export const deleteProduct = async (id: Id) => {
@@ -91,4 +89,17 @@ export const deleteProduct = async (id: Id) => {
     .from('product')
     .delete({})
     .eq('id', id);
+
+  if (error) {
+    throw new Error(
+      `The delete product query for ${id} failed with exception ${error}`
+    );
+  }
+  else if(!data) {
+    throw new Error(
+      `The delete product query ${id} failed for unknown reasons`
+    );
+  }
+
+  return supabaseToProduct(data[0]);
 };

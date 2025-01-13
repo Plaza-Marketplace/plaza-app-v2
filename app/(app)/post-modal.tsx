@@ -11,7 +11,7 @@ const PostModal = () => {
   }>();
 
   if (!params.postId || !params.postName) {
-    router.navigate('+not-found');
+    router.navigate('/+not-found');
     return;
   }
 

@@ -4,8 +4,8 @@ const ExitButton = () => {
   return <Ionicons name="close-outline" size={32} />;
 };
 
-const BackButton = () => {
-  return <Ionicons name="arrow-back" size={32} />;
+const BackButton = ({ color, size = 32 }: { color: string; size?: number }) => {
+  return <Ionicons name="arrow-back" size={size} color={color} />;
 };
 
 export { ExitButton, BackButton };
