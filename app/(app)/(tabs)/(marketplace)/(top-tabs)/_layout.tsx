@@ -24,8 +24,6 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function TabLayout() {
-  const insets = useSafeAreaInsets();
-
   return (
     <MaterialTopTabs
       tabBar={({ ...props }) => (

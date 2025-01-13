@@ -1,14 +1,17 @@
 import { FlatList } from 'react-native';
 import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
+import { FC } from 'react';
 
-const Feed = () => {
+interface FeedProps {
+  videos: Video[];
+}
+
+const Feed: FC<FeedProps> = ({ videos }) => {
   return (
     <FlatList
-      data={[0, 1, 2]}
-      renderItem={() => (
-        <FeedVideo videoUrl="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" />
-      )}
+      data={videos}
+      renderItem={({ item }) => <FeedVideo video={item} />}
       pagingEnabled
       snapToInterval={MARKETPLACE_FEED_VIDEO_HEIGHT}
       decelerationRate="fast"

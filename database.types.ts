@@ -36,7 +36,7 @@ export type Database = {
         }
         Relationships: []
       }
-      community_posts: {
+      community_post: {
         Row: {
           community_id: number
           created_at: string
@@ -257,6 +257,38 @@ export type Database = {
           username?: string
         }
         Relationships: []
+      }
+      video: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          poster_id: number
+          video_key: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          poster_id: number
+          video_key: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          poster_id?: number
+          video_key?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_poster_id_fkey"
+            columns: ["poster_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
