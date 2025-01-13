@@ -24,8 +24,11 @@ export const createProduct = async (
       seller_id: product.sellerId,
       name: product.name,
       description: product.description,
+      category: product.category,
+      condition: product.condition,
       price: product.price,
-      quantity: product.quantity,
+      shipping_price: product.shippingPrice,
+      quantity: product.quantity ?? null,
     })
     .select()
 

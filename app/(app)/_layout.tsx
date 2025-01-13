@@ -1,13 +1,12 @@
 import { Redirect, Stack } from 'expo-router';
-import AuthContext from '@/components/Contexts/AuthContext';
-import { useContext } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function AppLayout() {
-  const session = useContext(AuthContext);
+  const { session, isLoading } = useAuth();
 
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
-  if (!session) {
+  if (!isLoading && !session) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
     return <Redirect href="/auth" />;

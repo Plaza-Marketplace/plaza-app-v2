@@ -17,9 +17,8 @@ import { Formik } from 'formik';
 import { createProduct } from '@/services/product';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
-import { router } from 'expo-router';
 
-const ListItem = () => {
+const CreateListingScreen = () => {
   const { session } = useAuth();
   const { data: user, isLoading, error } = useGetUserByAuthId(session?.user.id);
 
@@ -39,8 +38,9 @@ const ListItem = () => {
           shippingPrice: 0,
           location: null,
         }}
-        onSubmit={async (values) => {
-          await createProduct({
+        onSubmit={(values) => {
+          console.log(values.title);
+          createProduct({
             sellerId: user.id,
             name: values.title,
             description: values.description,
@@ -51,8 +51,6 @@ const ListItem = () => {
             shippingPrice: values.price,
             images: [],
           });
-
-          router.replace('/list-item/listing-complete');
         }}
       >
         {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -108,7 +106,7 @@ const ListItem = () => {
   );
 };
 
-export default ListItem;
+export default CreateListingScreen;
 
 const styles = StyleSheet.create({
   container: {
