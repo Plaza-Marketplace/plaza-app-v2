@@ -5,6 +5,31 @@ export const getUser = async (id: Id): Promise<User> => {
   return await supabase.from('user').select('*').eq('id', id);
 };
 
+export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {
+  const { data, error } = await supabase
+    .from('user')
+    .select(
+      `
+      id,
+      username
+    `
+    )
+    .eq('id', sellerId)
+    .single();
+
+  console.log(error);
+
+  if (error) throw new Error(error.message);
+
+  console.log(data);
+
+  return {
+    id: data.id,
+    username: data.username,
+    averageRating: 0,
+  };
+};
+
 export const getUserByAuthId = async (authId: UUID): Promise<User> => {
   const { data, error } = await supabase
     .from('user')
@@ -12,7 +37,7 @@ export const getUserByAuthId = async (authId: UUID): Promise<User> => {
     .eq('auth_id', authId)
     .limit(1)
     .single();
-  console.log('HELLO');
+
   if (error) throw new Error(error.message);
 
   return {
@@ -43,7 +68,6 @@ export const createUser = async (
     })
     .select();
 
-  console.log(data, error);
   return;
 };
 

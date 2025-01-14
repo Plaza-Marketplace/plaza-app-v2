@@ -37,3 +37,10 @@ export type UpdateUser = {
 
   profileImageUrl?: string | null;
 }
+export type Seller = {
+  id: Id;
+
+  username: string;
+
+  averageRating: number;
+};

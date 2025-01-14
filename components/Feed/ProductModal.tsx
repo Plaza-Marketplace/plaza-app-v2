@@ -10,13 +10,27 @@ import Spacing from '@/constants/Spacing';
 import UserInfo from '../UserInfo';
 import ExpandableDescription from '../ExpandableDescription';
 import { Image } from 'react-native';
+import useCreateCartItem from '@/hooks/queries/useCreateCartItem';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 
 interface ProductModalProps {
+  sellerId: Id;
   product: Product;
   bottomSheetRef: React.RefObject<BottomSheetModal>;
 }
 
-const ProductModal: FC<ProductModalProps> = ({ product, bottomSheetRef }) => {
+const ProductModal: FC<ProductModalProps> = ({
+  sellerId,
+  product,
+  bottomSheetRef,
+}) => {
+  const { session } = useAuth();
+  const { data: user } = useGetUserByAuthId(session?.user.id);
+  const { mutate: createCartItem } = useCreateCartItem(product, user?.id);
+  const { data: seller } = useGetSellerInfo(sellerId);
+
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
       <View style={styles.content}>
@@ -31,9 +45,9 @@ const ProductModal: FC<ProductModalProps> = ({ product, bottomSheetRef }) => {
         />
 
         <SubheaderText>{product.name}</SubheaderText>
-        <Rating rating={4.5} />
+        <Rating rating={seller?.averageRating ?? 0} />
         <SubheaderText>${product.price.toFixed(2)}</SubheaderText>
-        <UserInfo name="Seller Display Name" description="0" />
+        <UserInfo name={seller?.username ?? 'Loading'} description="0" />
         <ExpandableDescription
           description={product.description}
           initialNumberOfLines={3}
@@ -43,7 +57,7 @@ const ProductModal: FC<ProductModalProps> = ({ product, bottomSheetRef }) => {
         <Footer
           leftTitle="Add to Cart"
           rightTitle="Buy Now"
-          leftOnPress={() => {}}
+          leftOnPress={createCartItem}
           rightOnPress={() => {}}
         />
       </SafeAreaView>
