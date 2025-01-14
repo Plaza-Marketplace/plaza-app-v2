@@ -1,7 +1,8 @@
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
-import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC } from 'react';
+import { Image } from 'expo-image';
+import * as VideoThumbnails from 'expo-video-thumbnails';
+import { FC, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 interface VideoPreviewProps {
@@ -9,10 +10,16 @@ interface VideoPreviewProps {
 }
 
 const VideoPreview: FC<VideoPreviewProps> = ({ uri }) => {
-  const player = useVideoPlayer(uri);
+  const [thumbnail, setThumbnail] = useState<Url | null>(null);
+
+  useEffect(() => {
+    if (!uri) return;
+
+    VideoThumbnails.getThumbnailAsync(uri).then(({ uri }) => setThumbnail(uri));
+  }, []);
 
   return uri ? (
-    <VideoView player={player} style={styles.container} />
+    <Image source={{ uri: thumbnail }} style={styles.container} />
   ) : (
     <View style={styles.container}></View>
   );
