@@ -4,6 +4,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HeaderText from './Texts/HeaderText';
 import Color from '@/constants/Color';
 import { supabase } from '@/utils/supabase';
+import PressableOpacity from './Buttons/PressableOpacity';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
 interface GeneralHeaderProps {
   name: string;
@@ -18,14 +21,19 @@ const GeneralHeader = ({ name }: GeneralHeaderProps) => {
         borderBottomWidth: 2,
         borderColor: Color.BORDER_SECONDARY,
         backgroundColor: Color.BORDER_TERTIARY,
+        paddingTop: inset.top,
+        paddingHorizontal: 16,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
-      <View style={{ marginTop: inset.top, marginLeft: 16 }}>
+      <View>
         <HeaderText>{name}</HeaderText>
       </View>
-      <Pressable onPress={() => supabase.auth.signOut()}>
-        <Text>Logout</Text>
-      </Pressable>
+      <PressableOpacity onPress={() => router.push('/settings')}>
+        <Ionicons name="cog-outline" size={32} />
+      </PressableOpacity>
     </View>
   );
 };

@@ -1,17 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import VideoPreview from '@/components/VideoPreview';
+import { useGetVideosByUserId } from '@/hooks/queries/useVideo';
 
-const mocking = Array.from({ length: 10 });
+interface ProfileVideoProps {
+  userId: number;
+}
 
-const ProfileVideos = () => {
+const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
+  const { data: videos, isLoading } = useGetVideosByUserId(userId);
+
+  if (isLoading) return <Text>Loading...</Text>;
+
   return (
     <Tabs.FlatList
       style={{ flex: 1 }}
       numColumns={3}
-      data={mocking}
-      renderItem={() => (
+      data={videos}
+      renderItem={(item) => (
         <View
           style={{
             width: '33.333%',
@@ -20,7 +27,7 @@ const ProfileVideos = () => {
             paddingTop: 10,
           }}
         >
-          <VideoPreview />
+          <VideoPreview uri={item.item.videoUrl} />
         </View>
       )}
     />
