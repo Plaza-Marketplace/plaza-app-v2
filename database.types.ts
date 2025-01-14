@@ -94,6 +94,60 @@ export type Database = {
           },
         ]
       }
+      conversation: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      conversation_member: {
+        Row: {
+          conversation_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
+        Insert: {
+          conversation_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
+        Update: {
+          conversation_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_member_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       follow: {
         Row: {
           created_at: string
@@ -169,36 +223,36 @@ export type Database = {
       message: {
         Row: {
           content: string
+          conversation_id: number
           created_at: string
           id: number
-          recipient_id: number
-          sender_id: number
+          user_id: number
         }
         Insert: {
           content: string
+          conversation_id: number
           created_at?: string
           id?: number
-          recipient_id: number
-          sender_id: number
+          user_id: number
         }
         Update: {
           content?: string
+          conversation_id?: number
           created_at?: string
           id?: number
-          recipient_id?: number
-          sender_id?: number
+          user_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "message_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: "message_conversation_id_fkey"
+            columns: ["conversation_id"]
             isOneToOne: false
-            referencedRelation: "user"
+            referencedRelation: "community"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "message_sender_id_fkey"
-            columns: ["sender_id"]
+            foreignKeyName: "message_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]

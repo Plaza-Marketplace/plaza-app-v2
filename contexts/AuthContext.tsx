@@ -1,3 +1,5 @@
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import User from '@/models/user';
 import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
 import React, {
@@ -12,6 +14,7 @@ interface AuthContextValue {
   isLoading: boolean;
   session: Session | null;
   setSession: (session: Session | null) => void;
+  user: User | undefined;
 }
 
 export const AuthContext = React.createContext<AuthContextValue>(
@@ -27,6 +30,7 @@ export const useAuth = () => {
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [session, setSession] = useState<Session | null>(null);
+  const { data: user } = useGetUserByAuthId(session?.user.id);
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -40,7 +44,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isLoading, session, setSession }}>
+    <AuthContext.Provider value={{ isLoading, session, setSession, user }}>
       {children}
     </AuthContext.Provider>
   );
