@@ -94,6 +94,60 @@ export type Database = {
           },
         ]
       }
+      conversation: {
+        Row: {
+          created_at: string
+          id: number
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
+      conversation_member: {
+        Row: {
+          conversation_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
+        Insert: {
+          conversation_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
+        Update: {
+          conversation_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "conversation_member_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "conversation_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       follow: {
         Row: {
           created_at: string
@@ -169,36 +223,36 @@ export type Database = {
       message: {
         Row: {
           content: string
+          conversation_id: number
           created_at: string
           id: number
-          recipient_id: number
-          sender_id: number
+          user_id: number
         }
         Insert: {
           content: string
+          conversation_id: number
           created_at?: string
           id?: number
-          recipient_id: number
-          sender_id: number
+          user_id: number
         }
         Update: {
           content?: string
+          conversation_id?: number
           created_at?: string
           id?: number
-          recipient_id?: number
-          sender_id?: number
+          user_id?: number
         }
         Relationships: [
           {
-            foreignKeyName: "message_recipient_id_fkey"
-            columns: ["recipient_id"]
+            foreignKeyName: "message_conversation_id_fkey"
+            columns: ["conversation_id"]
             isOneToOne: false
-            referencedRelation: "user"
+            referencedRelation: "community"
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "message_sender_id_fkey"
-            columns: ["sender_id"]
+            foreignKeyName: "message_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
@@ -248,6 +302,35 @@ export type Database = {
             columns: ["seller_id"]
             isOneToOne: false
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      product_image: {
+        Row: {
+          created_at: string
+          id: number
+          image_key: string
+          product_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          image_key: string
+          product_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          image_key?: string
+          product_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_image_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
             referencedColumns: ["id"]
           },
         ]
@@ -401,6 +484,45 @@ export type Database = {
           },
         ]
       }
+      video_comment: {
+        Row: {
+          created_at: string
+          description: string
+          id: number
+          poster_id: number
+          video_id: number
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: number
+          poster_id: number
+          video_id: number
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: number
+          poster_id?: number
+          video_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_comment_poster_id_fkey"
+            columns: ["poster_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_comment_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_like: {
         Row: {
           created_at: string
@@ -430,6 +552,42 @@ export type Database = {
           },
           {
             foreignKeyName: "video_like_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      video_product: {
+        Row: {
+          created_at: string
+          id: number
+          product_id: number
+          video_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          product_id: number
+          video_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          product_id?: number
+          video_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "video_product_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "video_product_video_id_fkey"
             columns: ["video_id"]
             isOneToOne: false
             referencedRelation: "video"

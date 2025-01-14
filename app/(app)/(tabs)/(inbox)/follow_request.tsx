@@ -8,16 +8,10 @@ import {
   useCreateFollowRequest,
   useDeleteFollowRequest,
   useGetFollowRequestsByRecipient,
-  useGetFollowRequestsBySender,
 } from '@/hooks/queries/useFollowRequest';
-import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
-import { doesFollowExist } from '@/services/follow';
-import { doesFollowRequestExist } from '@/services/follow_request';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext } from 'react';
-import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
-
-const mockData = [1, 2, 3];
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 
 const FollowRequest = () => {
   const { user } = useContext(AuthContext);

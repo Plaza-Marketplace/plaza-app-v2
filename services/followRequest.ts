@@ -1,4 +1,4 @@
-import { CreateFollowRequest, FollowRequest } from "@/models/follow_request";
+import { CreateFollowRequest, FollowRequest } from "@/models/followRequest";
 import { supabase } from "@/utils/supabase";
 import { doesFollowExist } from "./follow";
 

@@ -9,6 +9,7 @@ export type Message = {
 }
 
 export type CreateMessage = {
+  userId: Id;
   conversationId: Id;
   content: string;
 }

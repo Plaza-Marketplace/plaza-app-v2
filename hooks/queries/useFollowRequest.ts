@@ -1,5 +1,5 @@
-import { CreateFollowRequest, FollowRequest } from "@/models/follow_request";
-import { createFollowRequest, getFollowRequestsByRecipient, getFollowRequestsBySender, deleteFollowRequest, doesFollowRequestExist } from "@/services/follow_request";
+import { CreateFollowRequest, FollowRequest } from "@/models/followRequest";
+import { createFollowRequest, getFollowRequestsByRecipient, getFollowRequestsBySender, deleteFollowRequest, doesFollowRequestExist } from "@/services/followRequest";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetFollowRequestsByRecipient = (userId: Id) => useQuery({

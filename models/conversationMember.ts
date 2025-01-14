@@ -2,7 +2,7 @@ import User from "./user";
 
 export type ConversationMember = {
   id: Id;
-  conversationId: Id;
+  conversationId: Conversation;
   user: Pick<User, "id" | "username" | "profileImageUrl">;
   createdAt: string;
 }
