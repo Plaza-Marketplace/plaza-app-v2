@@ -12,6 +12,7 @@ import {
   useGetFollowingCount,
 } from '@/hooks/queries/useFollow';
 import ProfileIcon from '@/components/ProfileIcon';
+import { useGetSalesCountBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 
 interface ProfileHeaderProps {
   user: User;
@@ -22,13 +23,13 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user }) => {
     useGetFollowerCount(user.id);
   const { data: following, isLoading: isFollowingLoading } =
     useGetFollowingCount(user.id);
+  const { data: sales, isLoading: isSalesLoading } = useGetSalesCountBySellerId(
+    user.id
+  );
 
-  if (isFollowersLoading || isFollowingLoading) {
+  if (isFollowersLoading || isFollowingLoading || isSalesLoading) {
     return <Text>Loading...</Text>;
   }
-
-  console.log('followers', followers);
-  console.log('following', following);
 
   return (
     <View style={styles.header}>
@@ -44,7 +45,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user }) => {
           <View style={styles.headerTopColumnLarge}>
             <View style={styles.infoContainer}>
               <View style={styles.centerText}>
-                <BoldStandardText>1234</BoldStandardText>
+                <BoldStandardText>{sales}</BoldStandardText>
                 <BoldStandardText>Sales</BoldStandardText>
               </View>
 

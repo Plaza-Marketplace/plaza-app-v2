@@ -18,6 +18,8 @@ import { UpdateUser } from '@/models/user';
 import { useContext, useEffect } from 'react';
 import { AuthContext } from '@/contexts/AuthContext';
 import { useUpdateUser } from '@/hooks/queries/useUser';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import { supabase } from '@/utils/supabase';
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -83,6 +85,15 @@ const Settings = () => {
                   value={values.description || ''}
                 />
               </View>
+
+              <PressableOpacity
+                onPress={() => {
+                  supabase.auth.signOut();
+                  router.navigate('/auth');
+                }}
+              >
+                <Text style={{ color: 'red' }}>Logout</Text>
+              </PressableOpacity>
             </ScrollView>
 
             <Footer

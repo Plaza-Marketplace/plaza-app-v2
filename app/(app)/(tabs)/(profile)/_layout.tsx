@@ -53,7 +53,7 @@ const _layout = () => {
             return <Ionicons name="storefront-outline" size={Radius.XL} />;
           }}
         >
-          <ProfileProducts />
+          <ProfileProducts userId={user.id} />
         </Tabs.Tab>
         <Tabs.Tab
           name="reviews"

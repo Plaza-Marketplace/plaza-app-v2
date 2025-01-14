@@ -33,7 +33,7 @@ export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {
 export const getUserByAuthId = async (authId: UUID): Promise<User> => {
   const { data, error } = await supabase
     .from('user')
-    .select('*')
+    .select(`*`)
     .eq('auth_id', authId)
     .limit(1)
     .single();

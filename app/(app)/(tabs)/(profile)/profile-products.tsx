@@ -1,27 +1,44 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import ProductPreview from '@/components/ProductPreview';
+import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
+import LinkItemsProduct from '@/components/LinkItemsProduct';
 
 const mocking = Array.from({ length: 10 });
 
-const ProfileProducts = () => {
+interface ProfileProductsProps {
+  userId: Id;
+}
+
+const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
   const width = Dimensions.get('window').width;
+  const { data: products, isLoading } = useGetProductsBySellerId(userId);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
+
+  console.log(products);
+
   return (
     <Tabs.FlatList
       style={{ flex: 1 }}
       numColumns={3}
-      data={mocking}
-      renderItem={() => (
+      data={products}
+      renderItem={({ item }) => (
         <View
           style={{
             width: width / 2,
             height: width / 2,
-            paddingHorizontal: 2,
-            paddingTop: 10,
           }}
         >
-          <ProductPreview />
+          <LinkItemsProduct
+            product={item}
+            isSelected={false}
+            onPress={() => {
+              console.log('meow');
+            }}
+          />
         </View>
       )}
     />
