@@ -293,7 +293,7 @@ export type Database = {
             foreignKeyName: "message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "user"
+            referencedRelation: "community"
             referencedColumns: ["id"]
           },
         ]
@@ -340,6 +340,7 @@ export type Database = {
           },
           {
             foreignKeyName: "order_history_item_user_id_fkey"
+            foreignKeyName: "message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
