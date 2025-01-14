@@ -1,5 +1,5 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { FC, useRef } from 'react';
+import React, { FC, useCallback, useRef } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import ProductPreview from '@/components/ProductPreview';
 import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
@@ -17,6 +17,9 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
   const width = Dimensions.get('window').width;
   const { data: products, isLoading } = useGetProductsBySellerId(userId);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const onProductPress = useCallback(() => {
+    bottomSheetRef.current?.present();
+  }, []);
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -37,10 +40,7 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
             <LinkItemsProduct
               product={item}
               isSelected={false}
-              onPress={() => {
-                bottomSheetRef.current?.present();
-                bottomSheetRef.current?.expand();
-              }}
+              onPress={onProductPress}
             />
           </View>
         )}
