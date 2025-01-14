@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import {
   CollapsibleRef,
   MaterialTabBar,
@@ -11,16 +11,34 @@ import ProfileVideos from './profile-videos';
 import ProfileProducts from './profile-products';
 import ProfileReviews from './profile-reviews';
 import ProfileHeader from './ProfileHeader';
-import { AuthContext } from '@/contexts/AuthContext';
+import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from './profile-likes';
+import { useLocalSearchParams } from 'expo-router';
+import { User } from '@/models/user';
+import { useGetUserById } from '@/hooks/queries/useUser';
+import { Text } from 'react-native';
 
 const _layout = () => {
   const ref = React.useRef<CollapsibleRef>();
-  const { user } = useContext(AuthContext);
+
+  let user: User | undefined = undefined;
+
+  const { id: userIdStr } = useLocalSearchParams<{ id: string }>();
+  const userId = parseInt(userIdStr);
+
+  if (userId) {
+    const { data: userFromQuery } = useGetUserById(userId);
+    user = userFromQuery;
+  } else {
+    const { user: userFromContext } = useAuth();
+    user = userFromContext;
+  }
 
   if (!user) {
-    return null;
+    return <Text>User not found...</Text>;
   }
+
+  console.log('user?', user);
 
   return (
     <>

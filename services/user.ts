@@ -2,7 +2,22 @@ import { UpdateUser, User } from '@/models/user';
 import { supabase } from '@/utils/supabase';
 
 export const getUser = async (id: Id): Promise<User> => {
-  return await supabase.from('user').select('*').eq('id', id);
+  const { data, error } = await supabase.from('user').select('*').eq('id', id).single();
+  
+  if (error) throw new Error(error.message);
+  if (!data) throw new Error('User not found');
+
+  return {
+    id: data.id,
+    authId: data.auth_id,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    username: data.username,
+    email: data.email,
+    description: data.description,
+    profileImageUrl: data.profile_image_url,
+    createdAt: data.created_at,
+  }
 };
 
 export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {
