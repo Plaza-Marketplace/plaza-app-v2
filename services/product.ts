@@ -1,6 +1,8 @@
 import { supabase } from '@/utils/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'base64-arraybuffer';
+import { getImagePublicUrls } from './storage';
+import { Tables } from '@/database.types';
 
 const supabaseToProduct = (supabaseProduct: any): Product => {
   return {
@@ -14,6 +16,27 @@ const supabaseToProduct = (supabaseProduct: any): Product => {
     images: [],
     category: '',
     condition: '',
+  };
+};
+
+export const formatProduct = (
+  product: Tables<'product'>,
+  imageKeys: { image_key: string }[]
+): Product => {
+  return {
+    id: product.id,
+    sellerId: product.seller_id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    quantity: product.quantity,
+    createdAt: product.created_at,
+    imageUrls: getImagePublicUrls(
+      imageKeys.map((imageKey) => imageKey.image_key)
+    ),
+    category: product.category,
+    condition: product.condition,
+    shippingPrice: product.shipping_price,
   };
 };
 
@@ -42,10 +65,8 @@ export const getProductsBySellerId = async (
     createdAt: product.created_at,
     category: product.category,
     condition: product.condition,
-    imageUrls: product.image_keys.map(
-      (key) =>
-        supabase.storage.from('images').getPublicUrl(`private/${key.image_key}`)
-          .data.publicUrl
+    imageUrls: getImagePublicUrls(
+      product.image_keys.map((key) => key.image_key)
     ),
   }));
 };
