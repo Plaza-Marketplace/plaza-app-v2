@@ -29,3 +29,24 @@ export const getOrderHistoryItemsByUserId = async (
     createdAt: item.created_at,
   }));
 };
+
+export const createOrderHistoryItems = async (
+  userId: Id,
+  productIds: Id[]
+): Promise<void> => {
+  console.log('HELLO?');
+  const { data, error } = await supabase
+    .from('order_history_item')
+    .insert(
+      productIds.map((productId) => ({
+        user_id: userId,
+        product_id: productId,
+      }))
+    )
+    .select();
+
+  console.log(error);
+  if (error) throw new Error(error.message);
+
+  return;
+};

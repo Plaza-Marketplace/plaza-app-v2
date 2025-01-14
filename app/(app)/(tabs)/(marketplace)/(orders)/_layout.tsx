@@ -1,5 +1,4 @@
 import { View } from 'react-native';
-import { MaterialTopTabBar } from '@react-navigation/material-top-tabs';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialTopTabs } from '../(top-tabs)/_layout';
 import PlazaTabBar from '@/components/Navigation/PlazaTabBar';

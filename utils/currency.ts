@@ -1,3 +1,3 @@
 export const formatPrice = (price: number) => {
-  return `${price.toFixed(2)}`;
+  return `$${price.toFixed(2)}`;
 };

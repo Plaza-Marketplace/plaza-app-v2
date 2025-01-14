@@ -13,3 +13,9 @@ type OrderHistoryItem = {
 
   createdAt: Timestamp;
 };
+
+type CreateOrderHistoryItem = {
+  userId: Id;
+
+  productId: Id;
+};

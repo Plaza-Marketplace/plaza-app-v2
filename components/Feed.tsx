@@ -11,7 +11,6 @@ interface FeedProps {
 const Feed: FC<FeedProps> = ({ videos }) => {
   const [currViewableIndex, setCurrViewableIndex] = useState(0);
   const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
-    console.log(viewableItems);
     if (viewableItems.length === 0) {
       return;
     }

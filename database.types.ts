@@ -293,7 +293,7 @@ export type Database = {
             foreignKeyName: "message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
-            referencedRelation: "community"
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
         ]
@@ -303,7 +303,6 @@ export type Database = {
           created_at: string
           id: number
           product_id: number
-          seller_id: number
           status: Database["public"]["Enums"]["order_status"]
           user_id: number
         }
@@ -311,15 +310,13 @@ export type Database = {
           created_at?: string
           id?: number
           product_id: number
-          seller_id: number
-          status: Database["public"]["Enums"]["order_status"]
+          status?: Database["public"]["Enums"]["order_status"]
           user_id: number
         }
         Update: {
           created_at?: string
           id?: number
           product_id?: number
-          seller_id?: number
           status?: Database["public"]["Enums"]["order_status"]
           user_id?: number
         }
@@ -332,15 +329,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "order_history_item_seller_id_fkey"
-            columns: ["seller_id"]
-            isOneToOne: false
-            referencedRelation: "user"
-            referencedColumns: ["id"]
-          },
-          {
             foreignKeyName: "order_history_item_user_id_fkey"
-            foreignKeyName: "message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"

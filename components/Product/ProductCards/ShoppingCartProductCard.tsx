@@ -13,12 +13,14 @@ interface ShoppingCartProductCardProps {
   product: Product;
   isChecked?: boolean;
   showCheckbox: boolean;
+  onPress?: () => void;
 }
 
 const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
   product,
   isChecked = false,
   showCheckbox,
+  onPress,
 }) => {
   return (
     <View style={styles.container}>
@@ -36,8 +38,8 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
         <CaptionText>{formatPrice(product.price)}</CaptionText>
       </View>
       {showCheckbox && (
-        <PressableOpacity>
-          <Checkbox value={isChecked} />
+        <PressableOpacity onPress={onPress}>
+          <Checkbox value={isChecked} style={{ pointerEvents: 'none' }} />
         </PressableOpacity>
       )}
     </View>
