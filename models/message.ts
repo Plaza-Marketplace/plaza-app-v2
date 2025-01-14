@@ -1,13 +1,14 @@
-type Message = {
+import User from "./user";
+
+export type Message = {
   id: Id;
-  senderId: Id;
-  recipientId: Id;
+  conversationId: Id;
+  sender: Pick<User, "id" | "username" | "profileImageUrl">;
   content: string;
   createdAt: string;
 }
 
-type CreateMessage = {
-  senderId: Id;
-  recipientId: Id;
+export type CreateMessage = {
+  conversationId: Id;
   content: string;
 }

@@ -3,34 +3,43 @@ import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Spacing from '@/constants/Spacing';
 import { AuthContext } from '@/contexts/AuthContext';
+import { useCreateFollow } from '@/hooks/queries/useFollow';
 import {
+  useCreateFollowRequest,
+  useDeleteFollowRequest,
   useGetFollowRequestsByRecipient,
   useGetFollowRequestsBySender,
 } from '@/hooks/queries/useFollowRequest';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import { doesFollowExist } from '@/services/follow';
+import { doesFollowRequestExist } from '@/services/follow_request';
 import { Ionicons } from '@expo/vector-icons';
 import React, { useContext } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, Text, View } from 'react-native';
 
 const mockData = [1, 2, 3];
 
 const FollowRequest = () => {
-  const { session } = useContext(AuthContext);
-  if (!session) return null;
-  const { data: user, isLoading: isUserLoading } = useGetUserByAuthId(
-    session.user.id
-  );
-  if (isUserLoading || !user) return null;
-  const { data: requests, isLoading: isRequestsLoading } =
-    useGetFollowRequestsBySender(user.id);
+  const { user } = useContext(AuthContext);
+  const { data: requests, isLoading: isRequestsLoading } = user
+    ? useGetFollowRequestsByRecipient(user.id)
+    : { data: null, isLoading: false };
+
+  const { mutate: acceptRequest } = useCreateFollow();
+  const { mutate: deleteRequest } = useDeleteFollowRequest();
+  const { mutate: createRequest } = useCreateFollowRequest();
+
+  if (!requests || isRequestsLoading) {
+    return <Text>Loading...</Text>;
+  }
   return (
     <>
       <BackHeader name="Follow Request" />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}
-          data={mockData}
-          keyExtractor={(item, index) => `${item + index}`}
+          data={requests}
+          keyExtractor={(item, index) => `${item.id}-${index}`}
           renderItem={({ item }) => (
             <View
               style={{
@@ -40,12 +49,28 @@ const FollowRequest = () => {
                 alignItems: 'center',
               }}
             >
-              <ActivityNote name="William Zhong" note="asdlfkjhasdlft" />
+              <ActivityNote
+                name={`${item.sender.firstName} ${item.sender.lastName}`}
+                note={item.sender.username}
+              />
               <View style={styles.options}>
-                <PressableOpacity>
+                <PressableOpacity
+                  onPress={() => {
+                    acceptRequest({
+                      sourceId: item.sender.id,
+                      destId: item.recipient.id,
+                    });
+                    deleteRequest(item.id);
+                  }}
+                >
                   <Ionicons name="checkmark" size={24} color="black" />
                 </PressableOpacity>
-                <PressableOpacity style={{ marginLeft: Spacing.SPACING_2 }}>
+                <PressableOpacity
+                  style={{ marginLeft: Spacing.SPACING_2 }}
+                  onPress={() => {
+                    deleteRequest(item.id);
+                  }}
+                >
                   <Ionicons name="close" size={24} color="black" />
                 </PressableOpacity>
               </View>
@@ -53,7 +78,13 @@ const FollowRequest = () => {
           )}
         />
       </View>
-      <Text>{JSON.stringify(requests)}</Text>
+      <PressableOpacity
+        onPress={async () => {
+          createRequest({ senderId: 11, recipientId: user ? user.id : 0 });
+        }}
+      >
+        <Text>Send Follow Request</Text>
+      </PressableOpacity>
     </>
   );
 };

@@ -10,6 +10,16 @@ const supabaseToFollow = (data: any): Follow => {
 }
 
 export const createFollow = async (follow: CreateFollow): Promise<Follow> => {
+
+  const followExist = await doesFollowExist(follow.sourceId, follow.destId);
+
+  if(followExist) {
+    console.log("here")
+    throw new Error(
+      `The follow already exists for ${follow.sourceId} and ${follow.destId}`
+    );
+  }
+
   const { data, error } = await supabase
     .from('follow')
     .insert({
@@ -17,6 +27,9 @@ export const createFollow = async (follow: CreateFollow): Promise<Follow> => {
       dest_id: follow.destId,
     })
     .single();
+
+  console.log(data)
+  console.log(error)
 
   if (error) {
     throw new Error(
@@ -96,4 +109,21 @@ export const deleteFollow = async (followId: Id): Promise<Follow> => {
   }
 
   return supabaseToFollow(data);
+}
+
+export const doesFollowExist = async (sourceId: Id, destId: Id): Promise<boolean> => {
+  const { count, error } = await supabase
+    .from('follow')
+    .select("*", { count: 'exact', head: true })
+    .eq('source_id', sourceId)
+    .eq('dest_id', destId)
+    .limit(1);
+
+  if (error || count == null) {
+    throw new Error(
+      `The does follow exist query for ${sourceId} and ${destId} failed with exception ${error}`
+    );
+  }
+
+  return count > 0;
 }

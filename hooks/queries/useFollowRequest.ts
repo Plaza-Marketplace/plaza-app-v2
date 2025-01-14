@@ -1,5 +1,6 @@
-import { createFollowRequest, getFollowRequestsByRecipient, getFollowRequestsBySender, deleeteFollowRequest } from "@/services/follow_request";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { CreateFollowRequest, FollowRequest } from "@/models/follow_request";
+import { createFollowRequest, getFollowRequestsByRecipient, getFollowRequestsBySender, deleteFollowRequest, doesFollowRequestExist } from "@/services/follow_request";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetFollowRequestsByRecipient = (userId: Id) => useQuery({
   queryKey: ["follow-request-recipient", userId],
@@ -13,14 +14,41 @@ export const useGetFollowRequestsBySender = (userId: Id) => useQuery({
   staleTime: Infinity
 });
 
-export const useCreateFollowRequest = () => useMutation({
-  mutationFn: async (followRequest: CreateFollowRequest) => {
-    return createFollowRequest(followRequest);
-  },
+export const useDoesFollowRequestExist = (senderId: Id, recipientId: Id) => useQuery({
+  queryKey: ["follow-request-exist", senderId, recipientId],
+  queryFn: async () => doesFollowRequestExist(senderId, recipientId),
+  staleTime: Infinity
 })
 
-export const useDeleteFollowRequest = () => useMutation({
-  mutationFn: async (requestId: Id) => {
-    return deleeteFollowRequest(requestId);
-  },
-})
+export const useCreateFollowRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (followRequest: CreateFollowRequest) => {
+      return createFollowRequest(followRequest);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["follow-request-recipient", data.recipient.id],
+        (oldData: FollowRequest[] | undefined) => {
+          return oldData ? [...oldData, data] : [data]
+        }
+      )
+    }
+  })
+}
+
+export const useDeleteFollowRequest = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (requestId: Id) => {
+      return deleteFollowRequest(requestId);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["follow-request-recipient", data.recipient.id],
+        (oldData: FollowRequest[] | undefined) => {
+          return oldData ? oldData.filter(request => request.id !== data.id) : []
+        }
+      )
+    }
+})}
