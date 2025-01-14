@@ -17,11 +17,7 @@ export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {
     .eq('id', sellerId)
     .single();
 
-  console.log(error);
-
   if (error) throw new Error(error.message);
-
-  console.log(data);
 
   return {
     id: data.id,

@@ -14,7 +14,6 @@ export const createFollow = async (follow: CreateFollow): Promise<Follow> => {
   const followExist = await doesFollowExist(follow.sourceId, follow.destId);
 
   if(followExist) {
-    console.log("here")
     throw new Error(
       `The follow already exists for ${follow.sourceId} and ${follow.destId}`
     );
@@ -27,9 +26,6 @@ export const createFollow = async (follow: CreateFollow): Promise<Follow> => {
       dest_id: follow.destId,
     })
     .single();
-
-  console.log(data)
-  console.log(error)
 
   if (error) {
     throw new Error(

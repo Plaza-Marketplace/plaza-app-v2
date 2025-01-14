@@ -6,17 +6,13 @@ import {
   useGetAssociatedCommunities,
   useCreateCommunity,
 } from '@/hooks/queries/useCommunity';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Communities = () => {
-  const { data, error, isPending } = useGetAssociatedCommunities(1);
-  const { mutate } = useCreateCommunity();
-
-  const testCreateCommunities = () => {
-    for (const comm of MOCK_COMMUNITIES) {
-      console.log(comm);
-      mutate(comm);
-    }
-  };
+  const { user } = useAuth();
+  const { data, error, isPending } = user
+    ? useGetAssociatedCommunities(user.id)
+    : { data: null, error: null, isPending: false };
 
   if (!data || isPending) {
     return <Text>Loading...</Text>;

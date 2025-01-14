@@ -2,10 +2,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import VideoPreview from '@/components/VideoPreview';
-import {
-  useGetIsVideoLikedByUser,
-  useGetVideosLikedByUserId,
-} from '@/hooks/queries/useGetVideoLikes';
+import { useGetVideosLikedByUserId } from '@/hooks/queries/useGetVideoLikes';
+import { router } from 'expo-router';
 
 const mocking = Array.from({ length: 10 });
 
@@ -34,7 +32,15 @@ const ProfileLikes: FC<ProfileLikesProps> = ({ userId }) => {
             paddingTop: 10,
           }}
         >
-          <VideoPreview uri={item.videoUrl} />
+          <VideoPreview
+            uri={item.videoUrl}
+            onPress={() =>
+              router.push({
+                pathname: '/video-display',
+                params: { videoId: item.id },
+              })
+            }
+          />
         </View>
       )}
     />
