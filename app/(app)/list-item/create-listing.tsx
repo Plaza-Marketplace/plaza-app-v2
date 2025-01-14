@@ -158,7 +158,8 @@ export default CreateListingScreen;
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    flex: 1,
+
+    flexGrow: 1,
     gap: Spacing.SPACING_4,
   },
   buttonsContainer: {

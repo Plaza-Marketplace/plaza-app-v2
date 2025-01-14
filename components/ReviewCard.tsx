@@ -1,40 +1,39 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import Spacing from '@/constants/Spacing';
 import Radius from '@/constants/Radius';
 import CaptionText from './Texts/CaptionText';
 import { returnRatings } from './PlazaIcons/RatingIcons';
 import StandardText from './Texts/StandardText';
+import { Review } from '@/models/review';
+import ProfileIcon from './ProfileIcon';
+import { formatDatetime } from '@/utils/datetime';
 
-const Review = () => {
+interface ReviewProps {
+  review: Review;
+}
+
+const ReviewCard: FC<ReviewProps> = ({ review }) => {
   return (
     <View style={styles.review}>
       <View style={styles.reviewUser}>
-        <View
-          style={{
-            backgroundColor: 'gray',
-            width: 2 * Radius.LG,
-            height: 2 * Radius.LG,
-            borderRadius: Radius.LG,
-          }}
-        />
+        <ProfileIcon variant="user" />
         <View style={styles.name}>
-          <CaptionText>@Username</CaptionText>
-          <CaptionText>Time</CaptionText>
+          <CaptionText>{`@${review.reviewer.username}`}</CaptionText>
+          <CaptionText>{formatDatetime(review.createdAt)}</CaptionText>
         </View>
       </View>
 
-      <View style={styles.spacing}>{returnRatings(4, 'small')}</View>
+      <View style={styles.spacing}>
+        {returnRatings(review.rating, 'small')}
+      </View>
 
-      <StandardText style={styles.spacing}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-        malesuada, odio et vehicula.
-      </StandardText>
+      <StandardText style={styles.spacing}>{review.description}</StandardText>
     </View>
   );
 };
 
-export default Review;
+export default ReviewCard;
 
 const styles = StyleSheet.create({
   review: {
