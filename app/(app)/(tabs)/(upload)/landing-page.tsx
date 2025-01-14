@@ -29,7 +29,7 @@ const LandingPage = () => {
                   description="Upload an item to your profile so that others can buy it!Items can be added to videos you post and will be featured
                   alongside them."
                   buttonTitle="Start Listing"
-                  nextRoute="list-item"
+                  nextRoute="list-item/create-listing"
                 >
                   <ProductSelectedShowcase />
                 </AddContentCard>

@@ -17,7 +17,7 @@ type Product = {
 
   shippingPrice: number;
 
-  images: string[];
+  imageUrls: Url[];
 
   createdAt: Timestamp;
 
@@ -57,7 +57,7 @@ type CreateProduct = {
 
   shippingPrice: number;
 
-  images: string[];
+  base64Images: Base64[];
 
   quantity?: number;
 };

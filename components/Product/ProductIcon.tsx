@@ -4,15 +4,16 @@ import PressableOpacity from '../Buttons/PressableOpacity';
 import { FC } from 'react';
 
 interface ProductIconProps {
+  imageUrl: Url;
   onPress: () => void;
 }
 
-const ProductIcon: FC<ProductIconProps> = ({ onPress }) => {
+const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
   return (
     <PressableOpacity onPress={onPress}>
       <Image
         source={{
-          uri: 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*',
+          uri: imageUrl,
         }}
         style={styles.image}
       />

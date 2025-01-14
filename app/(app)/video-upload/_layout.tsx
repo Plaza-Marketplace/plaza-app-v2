@@ -1,11 +1,14 @@
+import { SelectedProductsProvider } from '@/contexts/SelectedProductsContext';
 import { Stack } from 'expo-router';
 
 const VideoUpload = () => {
   return (
-    <Stack
-      initialRouteName="landing-page"
-      screenOptions={{ headerShown: false }}
-    />
+    <SelectedProductsProvider>
+      <Stack
+        initialRouteName="landing-page"
+        screenOptions={{ headerShown: false }}
+      />
+    </SelectedProductsProvider>
   );
 };
 

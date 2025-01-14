@@ -1,7 +1,7 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
@@ -14,13 +14,13 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ExpandableDescription from '../ExpandableDescription';
 import Products from './Products';
 import CommentModal from './CommentModal';
+import LikeButton from './LikeButton';
 
 interface FeedVideoProps {
   video: Video;
 }
 
 const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
-  const [expanded, setExpanded] = useState(false);
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
 
@@ -37,16 +37,9 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
         player={player}
         nativeControls={false}
       >
-        <View
-          style={[
-            styles.infoButtonsContainer,
-            {
-              backgroundColor: expanded ? 'rgba(0, 0, 0, 0.5)' : 'transparent',
-            },
-          ]}
-        >
+        <View style={styles.infoButtonsContainer}>
           <View style={styles.videoInfoContainer}>
-            <Products />
+            <Products products={video.products} />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
                 onPress={() => router.push('/(app)/list-item/create-listing')}
@@ -61,10 +54,10 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
             </View>
           </View>
           <View style={styles.buttonsContainer}>
-            <FeedVideoButton name="like" count={4} onPress={() => {}} />
+            <LikeButton videoId={video.id} likeCount={video.likeCount} />
             <FeedVideoButton
               name="review"
-              count={4}
+              count={video.reviewCount}
               onPress={() => {
                 reviewModalRef.current?.present();
                 reviewModalRef.current?.expand();
@@ -72,7 +65,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
             />
             <FeedVideoButton
               name="comment"
-              count={4}
+              count={video.commentCount}
               onPress={() => {
                 commentModalRef.current?.present();
                 commentModalRef.current?.expand();
