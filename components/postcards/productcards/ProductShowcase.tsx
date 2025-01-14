@@ -1,10 +1,11 @@
-import { Image, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React, { FC } from 'react';
 import productCardStyles from './styles';
 import StandardText from '@/components/Texts/StandardText';
 import MediumText from '@/components/Texts/MediumText';
 import { formatPrice } from '@/utils/currency';
 import Spacing from '@/constants/Spacing';
+import { Image } from 'expo-image';
 
 interface ProductShowcaseProps {
   product: Product;

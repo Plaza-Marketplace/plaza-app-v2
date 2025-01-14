@@ -1,4 +1,5 @@
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 import PlazaText from './Texts/PlazaText';
 import Color from '@/constants/Color';
 import PressableOpacity from './Buttons/PressableOpacity';

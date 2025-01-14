@@ -1,5 +1,6 @@
 import Radius from '@/constants/Radius';
-import { Image, StyleSheet } from 'react-native';
+import { Image } from 'expo-image';
+import { StyleSheet } from 'react-native';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { FC } from 'react';
 

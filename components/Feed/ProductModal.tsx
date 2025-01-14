@@ -9,7 +9,7 @@ import Rating from '../Rating';
 import Spacing from '@/constants/Spacing';
 import UserInfo from '../UserInfo';
 import ExpandableDescription from '../ExpandableDescription';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 import useCreateCartItem from '@/hooks/queries/useCreateCartItem';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
