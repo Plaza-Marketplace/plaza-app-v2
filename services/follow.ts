@@ -79,6 +79,21 @@ export const getFollowsBySource = async (sourceId: Id): Promise<Follow[]> => {
   return data.map(supabaseToFollow);
 }
 
+export const getFollowingCounts = async (sourceId: Id): Promise<number> => {
+  const { count, error } = await supabase
+    .from('follow')
+    .select('*', { count: 'exact', head: true })
+    .eq('source_id', sourceId);
+
+  if (count == null || error) {
+    throw new Error(
+      `The get follow count by source query for ${sourceId} failed with exception ${error}`
+    );
+  }
+
+  return count;
+}
+
 export const getFollowsByDest = async (destId: Id): Promise<Follow[]> => {
   const { data, error } = await supabase
     .from('follow')
@@ -92,6 +107,21 @@ export const getFollowsByDest = async (destId: Id): Promise<Follow[]> => {
   }
 
   return data.map(supabaseToFollow);
+}
+
+export const getFollowerCounts = async (destId: Id): Promise<number> => {
+  const { count, error } = await supabase
+    .from('follow')
+    .select('*', { count: 'exact', head: true })
+    .eq('dest_id', destId);
+
+  if (count == null || error) {
+    throw new Error(
+      `The get follow count by dest query for ${destId} failed with exception ${error}`
+    );
+  }
+
+  return count;
 }
 
 export const deleteFollow = async (followId: Id): Promise<Follow> => {

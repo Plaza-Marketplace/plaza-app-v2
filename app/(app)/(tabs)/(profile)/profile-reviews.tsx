@@ -1,12 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
-import Review from '@/components/Review';
+import ReviewCard from '@/components/ReviewCard';
+import { useGetSellerReviews } from '@/hooks/queries/useSellerReview';
 
 const mocking = Array.from({ length: 10 });
 
-const ProfileReviews = () => {
-  return <Tabs.FlatList data={mocking} renderItem={() => <Review />} />;
+interface ProfileReviewsProps {
+  sellerId: Id;
+}
+
+const ProfileReviews: FC<ProfileReviewsProps> = ({ sellerId }) => {
+  const { data: reviews, isLoading } = useGetSellerReviews(sellerId);
+  if (isLoading) return <Text>Loading...</Text>;
+  return (
+    <Tabs.FlatList
+      data={reviews}
+      renderItem={({ item }) => <ReviewCard review={item} />}
+    />
+  );
 };
 
 export default ProfileReviews;

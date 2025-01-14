@@ -8,6 +8,7 @@ import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { returnRatings } from '../PlazaIcons/RatingIcons';
 import { CommunityPost } from '@/models/communityPost';
+import { formatDatetime } from '@/utils/datetime';
 
 interface PostCardProps {
   communityPost: CommunityPost;
@@ -27,7 +28,6 @@ const PostCard = ({ communityPost }: PostCardProps) => {
     sellerReviewId,
     createdAt,
   } = communityPost;
-  const date = new Date(createdAt);
   return (
     <PressableOpacity
       style={styles.container}
@@ -43,7 +43,7 @@ const PostCard = ({ communityPost }: PostCardProps) => {
         <View style={{ marginLeft: 5 }}>
           <CaptionText>{posterId}</CaptionText>
           <CaptionText style={{ marginTop: 3 }}>
-            {`${date.toLocaleDateString()} ${date.toLocaleTimeString()}`}
+            {formatDatetime(createdAt)}
           </CaptionText>
         </View>
       </View>

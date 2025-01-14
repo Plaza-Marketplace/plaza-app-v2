@@ -1,17 +1,33 @@
-type ProductReview = {
+import User from "./user";
+
+export type ProductReview = {
   id: number;
-  productId: Id;
-  reviewerId: Id;
+  seller: Pick<User, 'id' | "username" | "profileImageUrl">;
+  reviewer: Pick<User, 'id' | "username" | "profileImageUrl">;
   rating: number;
   description: string;
   createdAt: Timestamp;
 };
 
-type SellerReview = {
+export type SellerReview = {
   id: number;
+  seller: Pick<User, 'id' | "username" | "profileImageUrl">;
+  reviewer: Pick<User, 'id' | "username" | "profileImageUrl">;
+  rating: number;
+  description: string;
+  createdAt: string;
+}
+
+export type CreateSellerReview = {
   sellerId: Id;
   reviewerId: Id;
   rating: number;
   description: string;
-  createdAt: Timestamp;
 }
+
+export type UpdateSellerReview = {
+  rating: number;
+  description: string;
+}
+
+export type Review = ProductReview | SellerReview;
