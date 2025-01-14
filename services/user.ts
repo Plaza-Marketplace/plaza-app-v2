@@ -1,4 +1,4 @@
-import User from '@/models/user';
+import { UpdateUser, User } from '@/models/user';
 import { supabase } from '@/utils/supabase';
 
 export const getUser = async (id: Id): Promise<User> => {
@@ -45,4 +45,34 @@ export const createUser = async (
 
   console.log(data, error);
   return;
+};
+
+export const updateUser = async (
+  updates: UpdateUser
+): Promise<User> => {
+  const { data, error } = await supabase
+    .from('user')
+    .update({
+      first_name: updates.firstName,
+      last_name: updates.lastName,
+      description: updates.description,
+    })
+    .eq('id', updates.id)
+    .select()
+    .single();
+
+  if (error) throw new Error(error.message);
+  if(!data) throw new Error('User not found');
+
+  return {
+    id: data.id,
+    authId: data.auth_id,
+    firstName: data.first_name,
+    lastName: data.last_name,
+    username: data.username,
+    email: data.email,
+    description: data.description,
+    profileImageUrl: data.profile_image_url,
+    createdAt: data.created_at,
+  };;
 };

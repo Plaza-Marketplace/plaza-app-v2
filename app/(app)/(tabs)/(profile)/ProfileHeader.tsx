@@ -6,7 +6,7 @@ import BoldCaptionText from '@/components/Texts/BoldCaptionText';
 import CaptionText from '@/components/Texts/CaptionText';
 import { returnRatings } from '@/components/PlazaIcons/RatingIcons';
 import ExpandableDescription from '@/components/ExpandableDescription';
-import User from '@/models/user';
+import { User } from '@/models/user';
 import {
   useGetFollowerCount,
   useGetFollowingCount,

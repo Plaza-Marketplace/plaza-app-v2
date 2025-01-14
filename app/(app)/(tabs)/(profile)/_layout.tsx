@@ -24,7 +24,7 @@ const _layout = () => {
 
   return (
     <>
-      <GeneralHeader name="Profile" />
+      <GeneralHeader name={`${user.firstName} ${user.lastName}`} />
       <Tabs.Container
         renderHeader={() => <ProfileHeader user={user} />}
         containerStyle={{ zIndex: -1 }}
