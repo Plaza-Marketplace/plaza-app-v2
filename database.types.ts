@@ -303,6 +303,7 @@ export type Database = {
           created_at: string
           id: number
           product_id: number
+          seller_id: number
           status: Database["public"]["Enums"]["order_status"]
           user_id: number
         }
@@ -310,6 +311,7 @@ export type Database = {
           created_at?: string
           id?: number
           product_id: number
+          seller_id: number
           status: Database["public"]["Enums"]["order_status"]
           user_id: number
         }
@@ -317,6 +319,7 @@ export type Database = {
           created_at?: string
           id?: number
           product_id?: number
+          seller_id?: number
           status?: Database["public"]["Enums"]["order_status"]
           user_id?: number
         }
@@ -326,6 +329,13 @@ export type Database = {
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_history_item_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
             referencedColumns: ["id"]
           },
           {
