@@ -58,3 +58,14 @@ export const getMessagesByConversationId = async (conversationId: Id): Promise<M
 
   return data.map(supabaseToMessage);
 }
+
+export const getSubscriptionByConversationId = (conversationId: Id) => {
+  return supabase
+    .channel("message")
+    .on("postgres_changes", {
+      event: 'UPDATE',
+      schema: 'public',
+      filter: `conversation_id=eq.${conversationId}`
+    }, () => {})
+    .subscribe();
+}

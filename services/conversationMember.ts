@@ -41,7 +41,11 @@ export const getConversationMembersByConversationId = async (conversationId: Id)
     .from('conversation_member')
     .select(`
       id,
-      conversation_id,
+      conversation:conversation_id(
+        id,
+        name,
+        created_at  
+      ),
       user:user_id(
         id,
         username,

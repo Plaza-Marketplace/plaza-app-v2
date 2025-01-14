@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Stack } from 'expo-router';
-
-type InboxParams = {
-  username?: string;
-};
+import { AuthContext } from '@/contexts/AuthContext';
+import { Text } from 'react-native';
 
 const InboxLayout = () => {
+  const { user } = useContext(AuthContext);
+  if (!user) return <Text>Loading...</Text>;
   return (
     <Stack>
       <Stack.Screen name="activity" options={{ headerShown: false }} />
