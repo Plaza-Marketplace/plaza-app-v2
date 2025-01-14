@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      cart_item: {
+        Row: {
+          created_at: string
+          id: number
+          product_id: number
+          quantity: number | null
+          user_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          product_id: number
+          quantity?: number | null
+          user_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          product_id?: number
+          quantity?: number | null
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "cart_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_item_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community: {
         Row: {
           banner_url: string | null
@@ -254,6 +293,56 @@ export type Database = {
             foreignKeyName: "message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_history_item: {
+        Row: {
+          created_at: string
+          id: number
+          product_id: number
+          seller_id: number
+          status: Database["public"]["Enums"]["order_status"]
+          user_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          product_id: number
+          seller_id: number
+          status: Database["public"]["Enums"]["order_status"]
+          user_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          product_id?: number
+          seller_id?: number
+          status?: Database["public"]["Enums"]["order_status"]
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "order_history_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_history_item_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "order_history_item_user_id_fkey"
+            foreignKeyName: "message_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
@@ -341,6 +430,7 @@ export type Database = {
           description: string
           id: number
           product_id: number
+          rating: number
           reviewer_id: number
         }
         Insert: {
@@ -348,6 +438,7 @@ export type Database = {
           description: string
           id?: number
           product_id: number
+          rating: number
           reviewer_id: number
         }
         Update: {
@@ -355,6 +446,7 @@ export type Database = {
           description?: string
           id?: number
           product_id?: number
+          rating?: number
           reviewer_id?: number
         }
         Relationships: [
@@ -379,6 +471,7 @@ export type Database = {
           created_at: string
           description: string
           id: number
+          rating: number
           reviewer_id: number
           seller_id: number
         }
@@ -386,6 +479,7 @@ export type Database = {
           created_at?: string
           description: string
           id?: number
+          rating: number
           reviewer_id: number
           seller_id: number
         }
@@ -393,6 +487,7 @@ export type Database = {
           created_at?: string
           description?: string
           id?: number
+          rating?: number
           reviewer_id?: number
           seller_id?: number
         }
@@ -604,6 +699,7 @@ export type Database = {
     }
     Enums: {
       community_post_type: "POST" | "SHOWCASE" | "REVIEW"
+      order_status: "PENDING"
     }
     CompositeTypes: {
       [_ in never]: never

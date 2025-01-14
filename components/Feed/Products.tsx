@@ -4,15 +4,15 @@ import FeedProduct from './FeedProduct';
 import { FC } from 'react';
 
 interface ProductsProps {
+  sellerId: Id;
   products: Product[];
 }
 
-const Products: FC<ProductsProps> = ({ products }) => {
-  console.log(products);
+const Products: FC<ProductsProps> = ({ sellerId, products }) => {
   return (
     <View style={styles.container}>
       {products.map((product) => (
-        <FeedProduct key={product.id} product={product} />
+        <FeedProduct key={product.id} sellerId={sellerId} product={product} />
       ))}
     </View>
   );

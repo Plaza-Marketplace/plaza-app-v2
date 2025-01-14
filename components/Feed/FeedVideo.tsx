@@ -1,14 +1,14 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useRef } from 'react';
+import { FC, useCallback, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
 import Spacing from '@/constants/Spacing';
 import FeedVideoButton from '../FeedVideoButton';
 import PressableOpacity from '../Buttons/PressableOpacity';
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import ReviewModal from './ReviewModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ExpandableDescription from '../ExpandableDescription';
@@ -18,17 +18,35 @@ import LikeButton from './LikeButton';
 
 interface FeedVideoProps {
   video: Video;
+  visible: boolean;
 }
 
-const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
+const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
     player.play();
-    player.volume = 0;
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      if (visible) {
+        player.replay();
+        player.play();
+      }
+
+      return () => player.pause();
+    }, [player, visible])
+  );
+
+  if (visible) {
+    player.replay();
+    player.play();
+  } else {
+    player.pause();
+  }
 
   return (
     <>
@@ -39,7 +57,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
       >
         <View style={styles.infoButtonsContainer}>
           <View style={styles.videoInfoContainer}>
-            <Products products={video.products} />
+            <Products sellerId={video.posterId} products={video.products} />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
                 onPress={() => router.push('/(app)/list-item/create-listing')}

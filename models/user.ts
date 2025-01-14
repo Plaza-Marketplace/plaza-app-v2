@@ -26,4 +26,10 @@ type User = {
   createdAt: Timestamp;
 };
 
-export default User;
+type Seller = {
+  id: Id;
+
+  username: string;
+
+  averageRating: number;
+};

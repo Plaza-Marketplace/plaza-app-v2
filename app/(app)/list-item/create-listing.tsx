@@ -87,8 +87,6 @@ const CreateListingScreen = () => {
             setFieldValue('imageUris', uris);
           };
 
-          console.log(values.imageUris);
-
           return (
             <View style={{ flex: 1 }}>
               <ScrollView contentContainerStyle={styles.container}>

@@ -11,7 +11,6 @@ interface ProductShowcaseProps {
 }
 
 const ProductShowcase: FC<ProductShowcaseProps> = ({ product }) => {
-  console.log(product);
   return (
     <View style={productCardStyles.shadow}>
       <View style={styles.card}>

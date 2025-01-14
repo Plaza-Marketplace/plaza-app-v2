@@ -4,12 +4,13 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from './ProductModal';
 
 interface ProductProps {
+  sellerId: Id;
   product: Product;
 }
 
-const FeedProduct: FC<ProductProps> = ({ product }) => {
+const FeedProduct: FC<ProductProps> = ({ sellerId, product }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  console.log(product.imageUrls);
+
   return (
     <>
       <ProductIcon
@@ -23,7 +24,11 @@ const FeedProduct: FC<ProductProps> = ({ product }) => {
           bottomSheetRef.current?.expand();
         }}
       />
-      <ProductModal bottomSheetRef={bottomSheetRef} product={product} />
+      <ProductModal
+        bottomSheetRef={bottomSheetRef}
+        sellerId={sellerId}
+        product={product}
+      />
     </>
   );
 };

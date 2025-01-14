@@ -1,16 +1,31 @@
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import ShoppingCartProductCard from '@/components/Product/ProductCards/ShoppingCartProductCard';
 import Spacing from '@/constants/Spacing';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetCartItemsByUserId from '@/hooks/queries/useGetCartItemsByUserId';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { router } from 'expo-router';
+import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 const CartScreen = () => {
+  const [selectedItems, setSelectedItems] = useState<CartItem[]>([]);
+
+  const { session } = useAuth();
+  const { data: user } = useGetUserByAuthId(session?.user.id);
+  const { data: cartItems } = useGetCartItemsByUserId(user?.id);
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <ShoppingCartProductCard isChecked showCheckbox />
-        <ShoppingCartProductCard isChecked showCheckbox />
-        <ShoppingCartProductCard isChecked={false} showCheckbox />
+        {cartItems?.map((cartItem) => (
+          <ShoppingCartProductCard
+            key={cartItem.id}
+            product={cartItem.product}
+            isChecked={selectedItems.includes(cartItem)}
+            showCheckbox
+          />
+        ))}
       </View>
       <PlazaButton title="Checkout" onPress={() => router.push('/confirm')} />
     </View>
