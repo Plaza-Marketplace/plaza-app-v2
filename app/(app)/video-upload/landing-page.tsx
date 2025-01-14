@@ -10,7 +10,7 @@ import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
@@ -18,6 +18,7 @@ import { createVideo } from '@/services/video';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Formik } from 'formik';
+import { useSelectedProducts } from '@/contexts/SelectedProductsContext';
 
 type VideoUploadForm = {
   videoUri: string | null;
@@ -27,6 +28,7 @@ type VideoUploadForm = {
 const LandingPage = () => {
   const { session } = useAuth();
   const { data: user, isLoading } = useGetUserByAuthId(session?.user.id);
+  const { selectedProducts } = useSelectedProducts();
 
   if (isLoading || !user) return null;
 
@@ -54,6 +56,7 @@ const LandingPage = () => {
             posterId: user.id,
             description: values.description || null,
             base64Video: base64Video,
+            products: selectedProducts,
           });
         }}
       >
@@ -93,12 +96,21 @@ const LandingPage = () => {
                   <CaptionText>
                     Add at least 1 item from your store to your post.
                   </CaptionText>
-                  <PressableOpacity
-                    style={styles.iconContainer}
-                    onPress={() => router.push('/video-upload/link-items')}
-                  >
-                    <PlazaText>Icon</PlazaText>
-                  </PressableOpacity>
+                  <View style={styles.iconsContainer}>
+                    {selectedProducts.map((product) => (
+                      <Image
+                        key={product.id}
+                        style={styles.iconContainer}
+                        source={{ uri: product.imageUrls[0] }}
+                      />
+                    ))}
+                    <PressableOpacity
+                      style={styles.iconContainer}
+                      onPress={() => router.push('/video-upload/link-items')}
+                    >
+                      <PlazaText>+</PlazaText>
+                    </PressableOpacity>
+                  </View>
                 </View>
               </View>
               <Footer
@@ -132,6 +144,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   linkItemsContainer: {
+    gap: Spacing.SPACING_2,
+  },
+  iconsContainer: {
+    flexDirection: 'row',
     gap: Spacing.SPACING_2,
   },
 });

@@ -1,14 +1,24 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
+import React, { FC } from 'react';
 import productCardStyles from './styles';
-import PlazaText from '@/components/Texts/PlazaText';
+import StandardText from '@/components/Texts/StandardText';
+import MediumText from '@/components/Texts/MediumText';
+import { formatPrice } from '@/utils/currency';
+import Spacing from '@/constants/Spacing';
 
-const ProductShowcase = () => {
+interface ProductShowcaseProps {
+  product: Product;
+}
+
+const ProductShowcase: FC<ProductShowcaseProps> = ({ product }) => {
+  console.log(product);
   return (
     <View style={productCardStyles.shadow}>
-      <View style={[productCardStyles.background, styles.placement]}>
-        <View style={styles.card}>
-          <PlazaText>ProductShowcase</PlazaText>
+      <View style={styles.card}>
+        <Image source={{ uri: product?.imageUrls[0] }} style={{ flex: 1 }} />
+        <View style={styles.text}>
+          <StandardText>{product?.name ?? 'hello'}</StandardText>
+          <MediumText>{formatPrice(product?.price)}</MediumText>
         </View>
       </View>
     </View>
@@ -20,14 +30,13 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'flex-end',
   },
-
   card: {
     width: '100%',
-    paddingVertical: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    height: 200,
     backgroundColor: 'white',
+  },
+  text: {
+    padding: Spacing.SPACING_2,
   },
 });
 

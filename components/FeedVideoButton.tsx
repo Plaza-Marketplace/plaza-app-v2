@@ -34,7 +34,7 @@ const FeedVideoButton: FC<FeedVideoButtonProps> = ({
   return (
     <PressableOpacity onPress={onPress} style={styles.container}>
       <Ionicons name={iconName} size={40} />
-      {count && <BoldCaptionText>{count}</BoldCaptionText>}
+      {count !== null && <BoldCaptionText>{count}</BoldCaptionText>}
     </PressableOpacity>
   );
 };

@@ -1,4 +1,6 @@
 import { supabase } from '@/utils/supabase';
+import { v4 as uuidv4 } from 'uuid';
+import { decode } from 'base64-arraybuffer';
 
 const supabaseToProduct = (supabaseProduct: any): Product => {
   return {
@@ -15,9 +17,55 @@ const supabaseToProduct = (supabaseProduct: any): Product => {
   };
 };
 
+export const getProductsBySellerId = async (
+  sellerId: Id
+): Promise<Product[]> => {
+  const { data, error } = await supabase
+    .from('product')
+    .select(
+      `*, 
+      image_keys: product_image(image_key)
+    `
+    )
+    .eq('seller_id', sellerId);
+
+  if (error) throw new Error('Failed');
+
+  return data.map((product) => ({
+    id: product.id,
+    sellerId: product.seller_id,
+    name: product.name,
+    description: product.description,
+    price: product.price,
+    shippingPrice: product.shipping_price,
+    quantity: product.quantity,
+    createdAt: product.created_at,
+    category: product.category,
+    condition: product.condition,
+    imageUrls: product.image_keys.map(
+      (key) =>
+        supabase.storage.from('images').getPublicUrl(`private/${key.image_key}`)
+          .data.publicUrl
+    ),
+  }));
+};
+
 export const createProduct = async (
   product: CreateProduct
 ): Promise<Product> => {
+  const keys = await Promise.all(
+    product.base64Images.map(async (base64Image) => {
+      const key = uuidv4();
+      const path = `private/${key}`;
+
+      await supabase.storage.from('images').upload(path, decode(base64Image), {
+        contentType: 'image/jpeg',
+      });
+
+      return key;
+    })
+  );
+
   const { data, error } = await supabase
     .from('product')
     .insert({
@@ -30,7 +78,19 @@ export const createProduct = async (
       shipping_price: product.shippingPrice,
       quantity: product.quantity ?? null,
     })
-    .select()
+    .select();
+
+  if (!data || error) throw new Error('failed');
+
+  const result = await Promise.all(
+    keys.map(
+      async (key) =>
+        await supabase.from('product_image').insert({
+          product_id: data[0].id,
+          image_key: key,
+        })
+    )
+  );
 
   if (error) {
     throw new Error(
@@ -42,14 +102,30 @@ export const createProduct = async (
     );
   }
 
-  return supabaseToProduct(data);
+  return {
+    id: data[0].id,
+    sellerId: data[0].seller_id,
+    name: data[0].name,
+    description: data[0].description,
+    category: data[0].category,
+    condition: data[0].condition,
+    price: data[0].price,
+    shippingPrice: data[0].shipping_price,
+    imageUrls: keys.map(
+      (key) =>
+        supabase.storage.from('images').getPublicUrl(`private/${key}`).data
+          .publicUrl
+    ),
+    quantity: data[0].quantity,
+    createdAt: data[0].created_at,
+  };
 };
 
 export const getProduct = async (id: Id): Promise<Product> => {
   const { data, error } = await supabase
     .from('product')
     .select('*')
-    .eq('id', id)
+    .eq('id', id);
 
   if (error) {
     throw new Error(
@@ -69,7 +145,7 @@ export const updateProduct = async (
   const { data, error } = await supabase
     .from('product')
     .update(product)
-    .eq('id', id)
+    .eq('id', id);
 
   if (error) {
     throw new Error(
@@ -94,8 +170,7 @@ export const deleteProduct = async (id: Id) => {
     throw new Error(
       `The delete product query for ${id} failed with exception ${error}`
     );
-  }
-  else if(!data) {
+  } else if (!data) {
     throw new Error(
       `The delete product query ${id} failed for unknown reasons`
     );
