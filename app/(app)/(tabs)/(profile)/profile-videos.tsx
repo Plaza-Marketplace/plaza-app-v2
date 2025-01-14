@@ -10,7 +10,6 @@ interface ProfileVideoProps {
 
 const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
   const { data: videos, isLoading } = useGetVideosByUserId(userId);
-  console.log(videos);
 
   if (isLoading) return <Text>Loading...</Text>;
 

@@ -7,10 +7,9 @@ export const useUpdateUser = () => {
   return useMutation({
     mutationFn: async (updates: UpdateUser) => updateUser(updates),
     onSuccess: (data) => {
-      console.log(data)
       queryClient.setQueryData(
         ['user', data.authId],
-        (oldData: User | undefined) => {
+        () => {
           return data
         }
       )
