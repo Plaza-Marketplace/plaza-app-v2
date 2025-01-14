@@ -1,14 +1,19 @@
 import { StyleSheet, View } from 'react-native';
 import Spacing from '@/constants/Spacing';
 import FeedProduct from './FeedProduct';
+import { FC } from 'react';
 
-const Products = () => {
+interface ProductsProps {
+  products: Product[];
+}
+
+const Products: FC<ProductsProps> = ({ products }) => {
+  console.log(products);
   return (
     <View style={styles.container}>
-      <FeedProduct />
-      <FeedProduct />
-      <FeedProduct />
-      <FeedProduct />
+      {products.map((product) => (
+        <FeedProduct key={product.id} product={product} />
+      ))}
     </View>
   );
 };

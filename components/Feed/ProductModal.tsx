@@ -12,24 +12,30 @@ import ExpandableDescription from '../ExpandableDescription';
 import { Image } from 'react-native';
 
 interface ProductModalProps {
+  product: Product;
   bottomSheetRef: React.RefObject<BottomSheetModal>;
 }
 
-const ProductModal: FC<ProductModalProps> = ({ bottomSheetRef }) => {
+const ProductModal: FC<ProductModalProps> = ({ product, bottomSheetRef }) => {
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
       <View style={styles.content}>
         <Image
-          source={{ uri: 'https://via.placeholder.com/150' }}
+          source={{
+            uri:
+              product.imageUrls.length > 0
+                ? product.imageUrls[0]
+                : 'https://via.placeholder.com/150',
+          }}
           style={{ width: 200, height: 200, alignSelf: 'center' }}
         />
 
-        <SubheaderText>Product Name</SubheaderText>
+        <SubheaderText>{product.name}</SubheaderText>
         <Rating rating={4.5} />
-        <SubheaderText>$0.00</SubheaderText>
+        <SubheaderText>${product.price.toFixed(2)}</SubheaderText>
         <UserInfo name="Seller Display Name" description="0" />
         <ExpandableDescription
-          description="This is a description. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris"
+          description={product.description}
           initialNumberOfLines={3}
         />
       </View>
