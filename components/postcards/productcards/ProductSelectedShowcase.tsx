@@ -7,9 +7,10 @@ import Color from '@/constants/Color';
 import ProductImage from './ProductImage';
 import Spacing from '@/constants/Spacing';
 import productCardStyles from './styles';
+import { ProductDetails } from '@/models/communityPost';
 
 interface ProductSelectedShowcase {
-  product: Product;
+  product: ProductDetails;
 }
 
 const ProductSelectedShowcase: FC<ProductSelectedShowcase> = ({ product }) => {
