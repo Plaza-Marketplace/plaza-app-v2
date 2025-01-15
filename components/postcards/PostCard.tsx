@@ -65,7 +65,7 @@ const PostCard = ({ communityPost }: PostCardProps) => {
       <View style={styles.userInfoContainer}>
         <ProfileIconCircle url="lole" />
         <View style={{ marginLeft: 5 }}>
-          <CaptionText>{poster.username}</CaptionText>
+          <CaptionText>@{poster.username}</CaptionText>
           <CaptionText style={{ marginTop: 3 }}>
             {formatDatetime(createdAt)}
           </CaptionText>
@@ -76,9 +76,11 @@ const PostCard = ({ communityPost }: PostCardProps) => {
         <FocusedText>{title}</FocusedText>
       </View>
 
-      <View style={(styles.sectionMargin, styles.ratingContainer)}>
-        {returnRatings(0, 'small')}
-      </View>
+      {postType === PostType.REVIEW && (
+        <View style={(styles.sectionMargin, styles.ratingContainer)}>
+          {returnRatings(0, 'small')}
+        </View>
+      )}
 
       <View style={styles.sectionMargin}>
         <PlazaText>{description}</PlazaText>
