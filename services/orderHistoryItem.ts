@@ -33,7 +33,7 @@ export const getOrderHistoryItemsByUserId = async (
 export const createOrderHistoryItems = async (
   userId: Id,
   productIds: Id[]
-): Promise<void> => {
+): Promise<OrderHistoryItem> => {
   console.log('HELLO?');
   const { data, error } = await supabase
     .from('order_history_item')
@@ -43,12 +43,26 @@ export const createOrderHistoryItems = async (
         product_id: productId,
       }))
     )
-    .select();
+    .select(`
+        *,
+        product(
+          *,
+          image_keys: product_image(
+            image_key
+          )
+        )
+      `).single();
 
   console.log(error);
-  if (error) throw new Error(error.message);
+  if (error || !data) throw new Error(error.message);
 
-  return;
+  return {
+    id: data.id,
+    userId: data.user_id,
+    status: data.status as OrderStatus,
+    product: formatProduct(data.product, data.product.image_keys),
+    createdAt: data.created_at,
+  }
 };
 
 export const getSalesCountBySellerId = async (sellerId: Id): Promise<number> => {

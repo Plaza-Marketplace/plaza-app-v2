@@ -124,6 +124,10 @@ export const getVideoById = async (videoId: Id): Promise<Video> => {
 export const createVideoLike = async (
   videoLike: CreateVideoLike
 ): Promise<VideoLike> => {
+  const isLiked = await getVideoIsLiked(videoLike.videoId, videoLike.likerId);
+
+  if(isLiked) throw new Error('Already liked, failed');
+
   const { data, error } = await supabase
     .from('video_like')
     .insert({
@@ -132,9 +136,11 @@ export const createVideoLike = async (
     })
     .select();
 
-  if (error) throw new Error('Failed');
+  console.log(data)
+  console.log(isLiked)
+  console.log(error)
 
-  if (!data) throw new Error('Failed');
+  if (error || !data) throw new Error('Failed');
 
   return {
     id: data[0].id,
@@ -146,16 +152,31 @@ export const createVideoLike = async (
 
 export const deleteVideoLike = async (
   videoLike: DeleteVideoLike
-): Promise<void> => {
-  const { error } = await supabase
+): Promise<VideoLike> => {
+  const isLiked = await getVideoIsLiked(videoLike.videoId, videoLike.likerId);
+
+  if(!isLiked) throw new Error('Already unliked, failed');
+
+  const { data, error } = await supabase
     .from('video_like')
     .delete()
     .eq('video_id', videoLike.videoId)
-    .eq('liker_id', videoLike.likerId);
+    .eq('liker_id', videoLike.likerId)
+    .select()
+    .single();
 
-  if (error) throw new Error('Failed');
+  console.log(data)
+  console.log(isLiked)
+  console.log(error)
 
-  return;
+  if (error || !data) throw new Error('Failed');
+
+  return {
+    id: data.id,
+    videoId: data.video_id,
+    likerId: data.liker_id,
+    createdAt: data.created_at,
+  };
 };
 
 export const getVideoIsLiked = async (

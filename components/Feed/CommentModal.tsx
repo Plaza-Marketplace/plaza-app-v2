@@ -1,7 +1,10 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import FeedBottomSheet from './FeedBottomSheet';
 import StandardText from '../Texts/StandardText';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import PlazaTextInput from '../PlazaTextInput';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FC, useState } from 'react';
@@ -20,6 +23,7 @@ interface CommentModalProps {
 }
 
 const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
+  const insets = useSafeAreaInsets();
   const [description, setDescription] = useState('');
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
@@ -42,17 +46,17 @@ const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
         renderItem={({ item }) => <Comment comment={item} />}
         contentContainerStyle={{
           gap: Spacing.SPACING_3,
-          padding: Spacing.SPACING_2,
+          padding: Spacing.SPACING_3,
         }}
       />
-      <SafeAreaView style={styles.inputContainer}>
+      <View style={[styles.inputContainer, { paddingBottom: insets.bottom }]}>
         <PlazaTextInput
           placeholder="Add a comment..."
           style={{ flex: 1 }}
           onChangeText={setDescription}
         />
         <PlazaButton title="Send" onPress={handleSubmit} />
-      </SafeAreaView>
+      </View>
     </FeedBottomSheet>
   );
 };

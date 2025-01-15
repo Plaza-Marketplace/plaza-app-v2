@@ -1,12 +1,49 @@
+import { Video } from '@/models/video';
 import { deleteVideoLike } from '@/services/video';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useDeleteVideoLike = (videoId: Id, likerId?: Id) =>
-  useMutation({
+const useDeleteVideoLike = (videoId: Id, likerId?: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationKey: ['videoLike', videoId, likerId],
     mutationFn: likerId
       ? () => deleteVideoLike({ videoId, likerId })
       : undefined,
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ['videoLikedByUserId', data.likerId],
+        (old: VideoLike[] | undefined) => {
+          if (old) {
+            return old.filter((like) => like.likerId !== data.likerId);
+          }
+          return [];
+        }
+      );
+
+      queryClient.setQueryData(
+        ['isVideoLikedByUser', data.likerId, data.videoId],
+        false
+      )
+
+      queryClient.setQueryData(
+        ['feedVideos'],
+        (old: Video[] | undefined) => {
+          if (old) {
+            return old.map((video) => {
+              if (video.id === data.videoId) {
+                return {
+                  ...video,
+                  likeCount: video.likeCount - 1,
+                };
+              }
+              return video;
+            });
+          }
+          return [];
+        }
+      )
+    }
   });
+}
 
 export default useDeleteVideoLike;

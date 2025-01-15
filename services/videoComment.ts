@@ -30,7 +30,7 @@ export const getCommentsByVideoId = async (
 
 export const createComment = async (
   videoComment: CreateVideoComment
-): Promise<void> => {
+): Promise<VideoComment> => {
   const { data, error } = await supabase
     .from('video_comment')
     .insert({
@@ -38,8 +38,10 @@ export const createComment = async (
       poster_id: videoComment.posterId,
       description: videoComment.description,
     })
-    .select()
+    .select(`*, poster: user(*)`)
     .single();
 
   if (error) throw new Error(error.message);
+
+  return formatComment(data, data.poster);
 };

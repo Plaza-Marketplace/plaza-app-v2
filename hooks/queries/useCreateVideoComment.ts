@@ -1,8 +1,9 @@
 import { createComment } from '@/services/videoComment';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useCreateVideoComment = (videoId: Id, posterId?: Id) =>
-  useMutation({
+const useCreateVideoComment = (videoId: Id, posterId?: Id) => {
+  const queryClient = useQueryClient()
+  return useMutation({
     mutationKey: ['createVideoComment', videoId],
     mutationFn: posterId
       ? (description: string) =>
@@ -12,6 +13,18 @@ const useCreateVideoComment = (videoId: Id, posterId?: Id) =>
             description: description,
           })
       : undefined,
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ['comments', videoId],
+        (old: VideoComment[] | undefined) => {
+          if (old) {
+            return [...old, data];
+          }
+          return [data];
+        }
+      );
+    }
   });
+}
 
 export default useCreateVideoComment;

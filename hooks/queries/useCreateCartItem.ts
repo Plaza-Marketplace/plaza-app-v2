@@ -1,8 +1,9 @@
 import { createCartItem } from '@/services/cartItem';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useCreateCartItem = (product: Product, userId?: Id) =>
-  useMutation({
+const useCreateCartItem = (product: Product, userId?: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
     mutationKey: ['createCartItem'],
     mutationFn: userId
       ? () =>
@@ -12,6 +13,18 @@ const useCreateCartItem = (product: Product, userId?: Id) =>
             quantity: null,
           })
       : undefined,
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ['cartItems', userId],
+        (old: CartItem[] | undefined) => {
+          if (old) {
+            return [...old, data];
+          }
+          return [data];
+        }
+      )
+    }
   });
+}
 
 export default useCreateCartItem;
