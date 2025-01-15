@@ -84,11 +84,33 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                 }
                 style={styles.userInfoContainer}
               >
-                <ProfileIcon variant="user" />
-                <BoldSubheaderText>{video.poster.username}</BoldSubheaderText>
+                <View
+                  style={{
+                    shadowColor: 'black',
+                    shadowRadius: 1,
+                    shadowOffset: { width: 0.5, height: 0.5 },
+                  }}
+                >
+                  <ProfileIcon variant="user" />
+                </View>
+                <BoldSubheaderText
+                  color={'white'}
+                  style={{
+                    color: 'white',
+                    textShadowColor: 'black',
+                    textShadowOffset: { width: 0.5, height: 0.5 },
+                    textShadowRadius: 2,
+                  }}
+                >
+                  {video.poster.username}
+                </BoldSubheaderText>
               </PressableOpacity>
               {video.description && (
-                <ExpandableDescription description={video.description} />
+                <ExpandableDescription
+                  description={video.description}
+                  textColor="white"
+                  shadow
+                />
               )}
             </View>
           </View>

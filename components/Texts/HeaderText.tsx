@@ -1,9 +1,12 @@
 import { FC, PropsWithChildren } from 'react';
-import PlazaText from './PlazaText';
+import PlazaText, { PlazaTextProps } from './PlazaText';
 
-const HeaderText: FC<PropsWithChildren> = ({ children }) => {
+const HeaderText: FC<PropsWithChildren<PlazaTextProps>> = ({
+  children,
+  style,
+}) => {
   return (
-    <PlazaText fontSize={18} fontWeight={700}>
+    <PlazaText fontSize={18} fontWeight={700} style={style}>
       {children}
     </PlazaText>
   );
