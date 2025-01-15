@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { Image as ExpoImage } from 'expo-image';
 import { Image, StyleSheet, View } from 'react-native';
 import CaptionText from '../Texts/CaptionText';
 import Color from '@/constants/Color';
@@ -24,7 +25,7 @@ const CommunityCollectionItemPost: FC<CommunityCollectionItemPostProps> = ({
 
   return (
     <PressableOpacity style={{ gap: 4 }}>
-      <Image
+      <ExpoImage
         source={{ uri: communityCollectionItem.product.imageUrls[0] }}
         style={[styles.image, { aspectRatio }]}
       />

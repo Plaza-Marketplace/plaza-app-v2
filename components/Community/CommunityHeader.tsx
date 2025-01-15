@@ -1,4 +1,5 @@
-import { Image, Pressable, View, Text } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Image } from 'expo-image';
 import React, { FC, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
@@ -8,7 +9,6 @@ import CommunityIcon from '../ProfileIcons/CommunityIcon';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { BackButton } from '../PlazaIcons/ActionIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 

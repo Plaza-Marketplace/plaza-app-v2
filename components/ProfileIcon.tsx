@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Image } from 'react-native';
+import { Image } from 'expo-image';
 
 const DEFAULT_PROFILE_ICON_URL =
   'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg';
