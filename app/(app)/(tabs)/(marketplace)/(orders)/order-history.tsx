@@ -1,7 +1,7 @@
 import ShoppingCartProductCard from '@/components/Product/ProductCards/ShoppingCartProductCard';
 import Spacing from '@/constants/Spacing';
 import { useAuth } from '@/contexts/AuthContext';
-import useGetOrderHistoryItemsByUserId from '@/hooks/queries/useGetOrderHistoryItemsByUserId';
+import useGetOrderHistoryItemsByUserId from '@/hooks/queries/useGetOrderHistoryItems';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';

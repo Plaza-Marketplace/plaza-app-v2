@@ -4,12 +4,14 @@ import { Image } from 'expo-image';
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import { FC, useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
+import PressableOpacity from './Buttons/PressableOpacity';
 
 interface VideoPreviewProps {
   uri: string | null;
+  onPress?: () => void;
 }
 
-const VideoPreview: FC<VideoPreviewProps> = ({ uri }) => {
+const VideoPreview: FC<VideoPreviewProps> = ({ uri, onPress }) => {
   const [thumbnail, setThumbnail] = useState<Url | null>(null);
 
   useEffect(() => {
@@ -19,9 +21,13 @@ const VideoPreview: FC<VideoPreviewProps> = ({ uri }) => {
   }, []);
 
   return uri ? (
-    <Image source={{ uri: thumbnail }} style={styles.container} />
+    <PressableOpacity onPress={onPress} style={styles.container}>
+      <Image source={{ uri: thumbnail }} style={styles.container} />
+    </PressableOpacity>
   ) : (
-    <View style={styles.container}></View>
+    <PressableOpacity onPress={onPress} style={styles.container}>
+      <View style={styles.container} />
+    </PressableOpacity>
   );
 };
 

@@ -19,7 +19,7 @@ const FeedBottomSheet: FC<FeedBottomSheetProps> = ({
     <BottomSheetModal
       ref={bottomSheetRef}
       snapPoints={snapPoints}
-      index={-1}
+      index={1}
       backdropComponent={BottomSheetBackdrop}
     >
       <BottomSheetView style={{ flex: 1 }}>{children}</BottomSheetView>

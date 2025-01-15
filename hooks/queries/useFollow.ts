@@ -44,13 +44,32 @@ export const useCreateFollow = () => {
           return oldData ? [data, ...oldData] : [data]
         }
       )
+      queryClient.setQueryData(
+        ["follow-exist", data.sourceId, data.destId],
+        true
+      )
     }
   })
 }
 
-export const useDeleteFollow = () => useMutation({
-  mutationFn: async (followId: Id) => {
-    return deleteFollow(followId);
-  },
-})
+export const useDeleteFollow = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (follow: CreateFollow) => {
+      return deleteFollow(follow);
+    },
+    onSuccess: (data) => {
+      queryClient.setQueryData(
+        ["follower", data.sourceId],
+        (oldData: Follow[] | undefined) => {
+          return oldData ? oldData.filter(follow => follow.destId !== data.destId) : []
+        }
+      )
+      queryClient.setQueryData(
+        ["follow-exist", data.sourceId, data.destId],
+        false
+      )
+    }
+  })
+}
 

@@ -1,6 +1,6 @@
 import { UpdateUser, User } from "@/models/user";
-import { updateUser } from "@/services/user";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getUser, updateUser } from "@/services/user";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useUpdateUser = () => {
   const queryClient = useQueryClient();
@@ -16,3 +16,8 @@ export const useUpdateUser = () => {
     }
   })
 }
+
+export const useGetUserById = (userId: number) => useQuery({
+  queryKey: ['user', userId],
+  queryFn: () => getUser(userId),
+})

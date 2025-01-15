@@ -8,27 +8,51 @@ import { returnRatings } from '@/components/PlazaIcons/RatingIcons';
 import ExpandableDescription from '@/components/ExpandableDescription';
 import { User } from '@/models/user';
 import {
+  useDeleteFollow,
+  useDoesFollowExist,
   useGetFollowerCount,
   useGetFollowingCount,
 } from '@/hooks/queries/useFollow';
 import ProfileIcon from '@/components/ProfileIcon';
+import { useGetSalesCountBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
+import {
+  useCreateFollowRequest,
+  useDeleteFollowRequestByRelation,
+  useDoesFollowRequestExist,
+} from '@/hooks/queries/useFollowRequest';
+import PlazaButton from '@/components/Buttons/PlazaButton';
+import { CreateFollowRequest } from '@/models/followRequest';
 
 interface ProfileHeaderProps {
   user: User;
+  currentUser: Id;
 }
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ user }) => {
+const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
   const { data: followers, isLoading: isFollowersLoading } =
     useGetFollowerCount(user.id);
   const { data: following, isLoading: isFollowingLoading } =
     useGetFollowingCount(user.id);
+  const { data: sales, isLoading: isSalesLoading } = useGetSalesCountBySellerId(
+    user.id
+  );
+  const { data: isFollowing, isLoading: followingStatusLoading } =
+    useDoesFollowExist(currentUser, user.id);
+  const { data: isRequested, isLoading: isRequestedLoading } =
+    useDoesFollowRequestExist(currentUser, user.id);
+  const { mutate: createRequest } = useCreateFollowRequest();
+  const { mutate: cancelRequest } = useDeleteFollowRequestByRelation();
+  const { mutate: deleteFollow } = useDeleteFollow();
 
-  if (isFollowersLoading || isFollowingLoading) {
+  if (
+    isFollowersLoading ||
+    isFollowingLoading ||
+    isSalesLoading ||
+    followingStatusLoading ||
+    isRequestedLoading
+  ) {
     return <Text>Loading...</Text>;
   }
-
-  console.log('followers', followers);
-  console.log('following', following);
 
   return (
     <View style={styles.header}>
@@ -44,7 +68,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user }) => {
           <View style={styles.headerTopColumnLarge}>
             <View style={styles.infoContainer}>
               <View style={styles.centerText}>
-                <BoldStandardText>1234</BoldStandardText>
+                <BoldStandardText>{sales}</BoldStandardText>
                 <BoldStandardText>Sales</BoldStandardText>
               </View>
 
@@ -80,6 +104,43 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user }) => {
           initialNumberOfLines={4}
         />
       </View>
+
+      {user.id !== currentUser && (
+        <View style={styles.choices}>
+          {isRequested ? (
+            <PlazaButton
+              title="Cancel Request"
+              style={{ marginLeft: 5 }}
+              onPress={() => {
+                const relation: CreateFollowRequest = {
+                  senderId: currentUser,
+                  recipientId: user.id,
+                };
+                cancelRequest(relation);
+              }}
+            />
+          ) : (
+            <PlazaButton
+              title={isFollowing ? 'Unfollow' : 'Follow'}
+              onPress={() => {
+                if (isFollowing) {
+                  const relation: CreateFollow = {
+                    sourceId: currentUser,
+                    destId: user.id,
+                  };
+                  deleteFollow(relation);
+                } else {
+                  const relation: CreateFollowRequest = {
+                    senderId: currentUser,
+                    recipientId: user.id,
+                  };
+                  createRequest(relation);
+                }
+              }}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 };
@@ -130,5 +191,9 @@ const styles = StyleSheet.create({
   commonMargin: {
     marginTop: 5,
     marginBottom: 5,
+  },
+  choices: {
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
   },
 });
