@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import { ProfileIconCircle } from './PostIcon';
 import CaptionText from '../Texts/CaptionText';
@@ -7,27 +7,51 @@ import PlazaText from '../Texts/PlazaText';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { returnRatings } from '../PlazaIcons/RatingIcons';
-import { CommunityPost } from '@/models/communityPost';
+import { ChatterCommunityPost, PostType } from '@/models/communityPost';
 import { formatDatetime } from '@/utils/datetime';
+import ProductReview from './ProductCards/ProductReview';
+import ProductShowcase from './ProductCards/ProductShowcase';
 
 interface PostCardProps {
-  communityPost: CommunityPost;
+  communityPost: ChatterCommunityPost;
 }
 
 const PostCard = ({ communityPost }: PostCardProps) => {
   const {
     id,
-    communityId,
-    posterId,
+    community,
+    poster,
     title,
     description,
     postType,
-    productId,
-    imageUrl,
-    productReviewId,
-    sellerReviewId,
+    product,
+    productReview,
+    sellerReview,
     createdAt,
   } = communityPost;
+
+  console.log('communityPost', communityPost);
+
+  let additionalComponent = null;
+
+  switch (postType) {
+    case PostType.REVIEW:
+      if (!product) {
+        return <Text>Something went wrong</Text>;
+      }
+      additionalComponent = <ProductReview product={product} />;
+      break;
+    case PostType.SHOWCASE:
+      if (!product) {
+        return <Text>Something went wrong</Text>;
+      }
+      additionalComponent = <ProductShowcase product={product} />;
+      break;
+    case PostType.POST:
+    default:
+      break;
+  }
+
   return (
     <PressableOpacity
       style={styles.container}
@@ -41,7 +65,7 @@ const PostCard = ({ communityPost }: PostCardProps) => {
       <View style={styles.userInfoContainer}>
         <ProfileIconCircle url="lole" />
         <View style={{ marginLeft: 5 }}>
-          <CaptionText>{posterId}</CaptionText>
+          <CaptionText>{poster.username}</CaptionText>
           <CaptionText style={{ marginTop: 3 }}>
             {formatDatetime(createdAt)}
           </CaptionText>
@@ -61,6 +85,8 @@ const PostCard = ({ communityPost }: PostCardProps) => {
       </View>
 
       <View style={styles.sectionMargin}></View>
+
+      {additionalComponent}
     </PressableOpacity>
   );
 };

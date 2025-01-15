@@ -5,20 +5,20 @@ import CaptionText from '@/components/Texts/CaptionText';
 import PlazaText from '@/components/Texts/PlazaText';
 import { ProfileIconCircle } from '../PostIcon';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
+import { ProductDetails } from '@/models/communityPost';
 
 interface ProductReviewProps {
-  product: Product;
+  product: ProductDetails;
 }
 
 const ProductReview: FC<ProductReviewProps> = ({ product }) => {
-  const { data: seller } = useGetSellerInfo(product.sellerId);
   return (
     <View style={productCardStyles.shadow}>
       <View style={[productCardStyles.reviewContainer]}>
         <View style={styles.imageContainer}></View>
 
         <View style={styles.contentContainer}>
-          <PlazaText>{product.name}</PlazaText>x
+          <PlazaText>{product.name}</PlazaText>
           <View
             style={{
               marginTop: 10,
@@ -28,7 +28,9 @@ const ProductReview: FC<ProductReviewProps> = ({ product }) => {
           >
             <ProfileIconCircle url="lole" />
             <View style={{ marginLeft: 5 }}>
-              <CaptionText>{seller ? seller.username : ''}</CaptionText>
+              <CaptionText>
+                {product.seller ? product.seller.username : ''}
+              </CaptionText>
             </View>
           </View>
         </View>

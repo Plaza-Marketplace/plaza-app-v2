@@ -9,6 +9,42 @@ import {
 import { supabase } from '@/utils/supabase';
 import { getImagePublicUrls } from './storage';
 
+const query = `
+    *, 
+    poster: user(
+      id,
+      username
+    ),
+    community(
+      id,
+      name
+    ),
+    product(
+      id,
+      name,
+      price,
+      image_keys: product_image(
+        image_key
+      ),
+      seller: user(
+        id,
+        username,
+        seller_review!seller_id(
+          id,
+          rating,
+          description,
+          created_at
+        )
+      ),
+      product_review(
+        id,
+        rating,
+        description,
+        created_at
+      )
+    )
+  `
+
 const supabaseToCommunityPost = (data: any): CommunityPost => {
   return {
     id: data.id,
@@ -29,7 +65,7 @@ const formatCommunityPost = (
   communityPost: Tables<'community_post'>,
   poster: Pick<Tables<'user'>, 'id' | 'username'>,
   community: Pick<Tables<'community'>, 'id' | 'name'>,
-  product?: Pick<Tables<'product'>, 'id' | 'name'>,
+  product?: Pick<Tables<'product'>, 'id' | 'name' | 'price'>,
   productImageKeys?: UUID[],
   seller?: Pick<Tables<'user'>, 'id' | 'username'>,
   productReview?: Pick<
@@ -61,6 +97,7 @@ const formatCommunityPost = (
           imageUrls: productImageKeys
             ? getImagePublicUrls(productImageKeys)
             : [],
+          price: product.price,
           seller: seller
             ? {
                 id: seller.id,
@@ -140,6 +177,7 @@ export const getCommunityPost = async (
     product(
       id,
       name,
+      price,
       image_keys: product_image(
         image_key
       ),
@@ -189,40 +227,7 @@ export const getCommunityPost = async (
 };
 
 export const getChatterPosts = async (): Promise<ChatterCommunityPost[]> => {
-  const { data, error } = await supabase.from('community_post').select(`
-    *, 
-    poster: user(
-      id,
-      username
-    ),
-    community(
-      id,
-      name
-    ),
-    product(
-      id,
-      name,
-      image_keys: product_image(
-        image_key
-      ),
-      seller: user(
-        id,
-        username,
-        seller_review!seller_id(
-          id,
-          rating,
-          description,
-          created_at
-        )
-      ),
-      product_review(
-        id,
-        rating,
-        description,
-        created_at
-      )
-    )
-  `);
+  const { data, error } = await supabase.from('community_post').select(query);
 
   if (error) throw new Error(error.message);
 
@@ -239,6 +244,28 @@ export const getChatterPosts = async (): Promise<ChatterCommunityPost[]> => {
     )
   );
 };
+
+export const getChatterPostsByCommunity = async (communityId: Id): Promise<ChatterCommunityPost[]> => {
+  const { data, error } = await supabase
+    .from('community_post')
+    .select(query)
+    .eq('community_id', communityId);
+
+  if (error) throw new Error(error.message);
+
+  return data.map((post) =>
+    formatCommunityPost(
+      post,
+      post.poster,
+      post.community,
+      post.product ?? undefined,
+      post.product?.image_keys.map((key) => key.image_key),
+      post.product?.seller,
+      post.product?.product_review[0],
+      post.product?.seller.seller_review[0]
+    )
+  );
+}
 
 export const getCommunityPostsByCommunity = async (
   communityId: Id

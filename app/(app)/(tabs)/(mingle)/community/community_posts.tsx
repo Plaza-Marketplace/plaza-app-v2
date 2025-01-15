@@ -1,7 +1,10 @@
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import React from 'react';
 import PostCard from '@/components/PostCards/PostCard';
-import { useGetCommunityPosts } from '@/hooks/queries/useCommunityPosts';
+import {
+  useGetChatterPostsByCommunity,
+  useGetCommunityPosts,
+} from '@/hooks/queries/useCommunityPosts';
 import { router, useLocalSearchParams } from 'expo-router';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -13,7 +16,7 @@ const community_posts = () => {
     data: communityPosts,
     error: postErrors,
     isLoading: postsLoading,
-  } = useGetCommunityPosts(parseInt(communityId));
+  } = useGetChatterPostsByCommunity(parseInt(communityId));
   if (postsLoading) return <Text>Loading...</Text>;
   if (!communityPosts || postErrors)
     return <Text>{`${JSON.stringify(communityPosts)}`}</Text>;

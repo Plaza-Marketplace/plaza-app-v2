@@ -6,9 +6,10 @@ import MediumText from '@/components/Texts/MediumText';
 import { formatPrice } from '@/utils/currency';
 import Spacing from '@/constants/Spacing';
 import { Image } from 'expo-image';
+import { ProductDetails } from '@/models/communityPost';
 
 interface ProductShowcaseProps {
-  product: Product;
+  product: ProductDetails;
 }
 
 const ProductShowcase: FC<ProductShowcaseProps> = ({ product }) => {

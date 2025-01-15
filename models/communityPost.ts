@@ -20,6 +20,17 @@ export type CommunityPost = {
   createdAt: Timestamp;
 };
 
+export type ProductDetails = {
+  id: Id;
+  name: string;
+  imageUrls: Url[];
+  price: number;
+  seller: {
+    id: Id;
+    username: string;
+  } | null;
+}
+
 export type ChatterCommunityPost = {
   id: Id;
   community: Pick<Community, 'id' | 'name'>;
@@ -34,6 +45,7 @@ export type ChatterCommunityPost = {
     id: Id;
     name: string;
     imageUrls: Url[];
+    price: number;
     seller: {
       id: Id;
       username: string;
