@@ -21,12 +21,18 @@ const Footer: FC<FooterProps> = ({
     <View style={styles.buttonsContainer}>
       <PlazaButton
         title={leftTitle}
-        style={{ flex: 1 }}
+        style={{
+          flex: 1,
+          borderWidth: 1,
+          borderColor: Color.BORDER_SECONDARY,
+          backgroundColor: Color.SURFACE_PRIMARY,
+        }}
+        fontColor={Color.TEXT_SECONDARY}
         onPress={leftOnPress}
       />
       <PlazaButton
         title={rightTitle}
-        style={{ flex: 1 }}
+        style={{ flex: 1, backgroundColor: Color.SURFACE_SECONDARY }}
         onPress={rightOnPress}
       />
     </View>

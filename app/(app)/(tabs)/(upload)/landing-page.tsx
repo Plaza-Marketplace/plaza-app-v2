@@ -41,7 +41,7 @@ const LandingPage = () => {
                   description="Upload an item to your profile so that others can buy it!Items can be added to videos you post and will be featured
                   alongside them."
                   buttonTitle="Start Listing"
-                  nextRoute="list-item/create-listing"
+                  nextRoute="/list-item/create-listing"
                 >
                   <ProductSelectedShowcase product={test} />
                 </AddContentCard>
@@ -62,7 +62,7 @@ const LandingPage = () => {
 
 Videos will be shared to the marketplace for others to view."
                 buttonTitle="Create a Video"
-                nextRoute="video-upload"
+                nextRoute="/video-upload/landing-page"
               >
                 <VideoPreview />
               </AddContentCard>

@@ -16,7 +16,7 @@ const UserInfo: FC<UserInfoProps> = ({ imageUrl, name, description }) => {
       <ProfileIcon variant="user" url={imageUrl} />
       <View>
         <CaptionText>{name}</CaptionText>
-        <CaptionText>{description}</CaptionText>
+        {/* <CaptionText>{description}</CaptionText> */}
       </View>
     </View>
   );

@@ -7,9 +7,11 @@ import { Video } from '@/models/video';
 
 interface FeedProps {
   videos: Video[];
+  refreshing: boolean;
+  onRefresh: () => void;
 }
 
-const Feed: FC<FeedProps> = ({ videos }) => {
+const Feed: FC<FeedProps> = ({ videos, refreshing, onRefresh }) => {
   const [currViewableIndex, setCurrViewableIndex] = useState(0);
   const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length === 0) {
@@ -27,6 +29,8 @@ const Feed: FC<FeedProps> = ({ videos }) => {
 
   return (
     <FlatList
+      refreshing={refreshing}
+      onRefresh={onRefresh}
       data={videos}
       renderItem={renderItem}
       pagingEnabled
@@ -45,6 +49,8 @@ const Feed: FC<FeedProps> = ({ videos }) => {
       maxToRenderPerBatch={10}
       keyExtractor={(item) => item.id.toString()}
       removeClippedSubviews
+      onEndReachedThreshold={2}
+      // onEndReached={}
     />
   );
 };

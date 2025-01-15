@@ -1,5 +1,6 @@
 import { Image, ImageProps } from 'expo-image';
 import { FC, useState } from 'react';
+import { View } from 'react-native';
 
 interface PlazaImageProps extends ImageProps {}
 
@@ -9,7 +10,7 @@ const PlazaImage: FC<PlazaImageProps> = (props) => {
   return error ? (
     <Image source={props.source} {...props} onError={() => setError(true)} />
   ) : (
-    <Image {...props} />
+    <View style={{}} />
   );
 };
 

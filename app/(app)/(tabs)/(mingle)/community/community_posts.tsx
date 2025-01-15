@@ -1,10 +1,7 @@
-import { ScrollView, StyleSheet, Text } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import PostCard from '@/components/PostCards/PostCard';
-import {
-  useGetChatterPostsByCommunity,
-  useGetCommunityPosts,
-} from '@/hooks/queries/useCommunityPosts';
+import { useGetChatterPostsByCommunity } from '@/hooks/queries/useCommunityPosts';
 import { router, useLocalSearchParams } from 'expo-router';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { FontAwesome6 } from '@expo/vector-icons';
@@ -21,7 +18,7 @@ const community_posts = () => {
   if (!communityPosts || postErrors)
     return <Text>{`${JSON.stringify(communityPosts)}`}</Text>;
   return (
-    <>
+    <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
       <ScrollView>
         {communityPosts.map((post, i) => (
           <PostCard communityPost={post} key={`post${i}`} />
@@ -38,7 +35,7 @@ const community_posts = () => {
       >
         <FontAwesome6 name="pen-to-square" size={24} color="white" />
       </PressableOpacity>
-    </>
+    </View>
   );
 };
 

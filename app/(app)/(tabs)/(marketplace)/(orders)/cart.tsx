@@ -1,5 +1,7 @@
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import productCardStyles from '@/components/PostCards/ProductCards/styles';
 import ShoppingCartProductCard from '@/components/Product/ProductCards/ShoppingCartProductCard';
+import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import { useAuth } from '@/contexts/AuthContext';
 import { useSelectedCartItems } from '@/contexts/CartSelectedProductsContext';
@@ -53,9 +55,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: Spacing.SPACING_3,
+    backgroundColor: Color.SURFACE_PRIMARY,
   },
   content: {
     flex: 1,
     gap: Spacing.SPACING_3,
+    backgroundColor: Color.SURFACE_PRIMARY,
   },
 });

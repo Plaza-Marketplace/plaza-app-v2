@@ -1,17 +1,26 @@
 import { FC } from 'react';
 import PressableOpacity from './PressableOpacity';
-import PlazaText from '../Texts/PlazaText';
+
 import { PressableProps, StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
+import StandardText from '../Texts/StandardText';
 
 interface PlazaButtonProps extends PressableProps {
   title: string;
+  fontColor?: Color;
 }
 
-const PlazaButton: FC<PlazaButtonProps> = ({ title, style, ...rest }) => {
+const PlazaButton: FC<PlazaButtonProps> = ({
+  title,
+  style,
+  fontColor = Color.TEXT_PRIMARY_FLIP,
+  ...rest
+}) => {
   return (
     <PressableOpacity style={[styles.container, style]} {...rest}>
-      <PlazaText color={Color.TEXT_PRIMARY_FLIP}>{title}</PlazaText>
+      <StandardText color={fontColor} fontWeight={600}>
+        {title}
+      </StandardText>
     </PressableOpacity>
   );
 };
@@ -20,12 +29,11 @@ export default PlazaButton;
 
 const styles = StyleSheet.create({
   container: {
-    // width: '100%',
+    backgroundColor: Color.SURFACE_SECONDARY,
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 10,
-    backgroundColor: Color.SURFACE_SECONDARY,
+    paddingVertical: 16,
     borderRadius: 100,
   },
 });

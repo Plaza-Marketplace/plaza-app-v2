@@ -2,10 +2,11 @@ import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { MaterialTopTabs } from '../(top-tabs)/_layout';
 import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
+import Color from '@/constants/Color';
 
 const OrdersLayout = () => {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
       <MaterialTopTabs
         tabBar={({ ...props }) => (
           <View

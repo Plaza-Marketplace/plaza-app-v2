@@ -16,8 +16,6 @@ const community_collections = () => {
 
   if (!communityCollectionItems) return <Text>Loading...</Text>;
 
-  // const communityCollectionItems = MOCK_COMMUNITY_PRODUCTS;
-
   const leftColumn = [];
   const rightColumn = [];
 
@@ -30,24 +28,26 @@ const community_collections = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.columnContainer}>
-      <View style={styles.column}>
-        {leftColumn.map((communityCollectionItem, i) => (
-          <CommunityCollectionItemPost
-            communityCollectionItem={communityCollectionItem}
-            key={`left${i}`}
-          />
-        ))}
-      </View>
-      <View style={styles.column}>
-        {rightColumn.map((communityCollectionItem, i) => (
-          <CommunityCollectionItemPost
-            communityCollectionItem={communityCollectionItem}
-            key={`right${i}`}
-          />
-        ))}
-      </View>
-    </ScrollView>
+    <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
+      <ScrollView contentContainerStyle={styles.columnContainer}>
+        <View style={styles.column}>
+          {leftColumn.map((communityCollectionItem, i) => (
+            <CommunityCollectionItemPost
+              communityCollectionItem={communityCollectionItem}
+              key={`left${i}`}
+            />
+          ))}
+        </View>
+        <View style={styles.column}>
+          {rightColumn.map((communityCollectionItem, i) => (
+            <CommunityCollectionItemPost
+              communityCollectionItem={communityCollectionItem}
+              key={`right${i}`}
+            />
+          ))}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 

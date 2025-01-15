@@ -11,8 +11,6 @@ interface ProductIconProps {
 }
 
 const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
-  // const;
-
   return (
     <PressableOpacity onPress={onPress}>
       {imageUrl ? (

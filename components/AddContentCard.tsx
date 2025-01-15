@@ -5,14 +5,13 @@ import PlazaButton from './Buttons/PlazaButton';
 import StandardText from './Texts/StandardText';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
-import Radius from '@/constants/Radius';
 import { router } from 'expo-router';
 
 interface AddContentCardProps extends PropsWithChildren {
   title: string;
   description: string;
   buttonTitle: string;
-  nextRoute: string;
+  nextRoute: '/list-item/create-listing' | '/video-upload/landing-page';
 }
 
 const AddContentCard: FC<AddContentCardProps> = ({

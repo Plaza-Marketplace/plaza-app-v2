@@ -11,7 +11,7 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { useLocalSearchParams, withLayoutContext } from 'expo-router';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 const { Navigator } = createMaterialTopTabNavigator();
 

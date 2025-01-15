@@ -8,6 +8,7 @@ import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
+import Color from '@/constants/Color';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -20,7 +21,7 @@ export const MaterialTopTabs = withLayoutContext<
 
 export default function TabLayout() {
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
       <MaterialTopTabs
         tabBar={({ ...props }) => (
           <View

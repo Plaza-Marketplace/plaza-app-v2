@@ -14,6 +14,7 @@ import useCreateCartItem from '@/hooks/queries/useCreateCartItem';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
+import StandardText from '../Texts/StandardText';
 
 interface ProductModalProps {
   sellerId: Id;
@@ -46,13 +47,10 @@ const ProductModal: FC<ProductModalProps> = ({
         />
 
         <SubheaderText>{product.name}</SubheaderText>
-        <Rating rating={seller?.averageRating ?? 0} />
+        {/* <Rating rating={seller?.averageRating ?? 0} /> */}
         <SubheaderText>${product.price.toFixed(2)}</SubheaderText>
         <UserInfo name={seller?.username ?? 'Loading'} description="0" />
-        <ExpandableDescription
-          description={product.description}
-          initialNumberOfLines={3}
-        />
+        <StandardText>{product.description}</StandardText>
       </ScrollView>
       <View style={{ paddingBottom: insets.bottom }}>
         <Footer
