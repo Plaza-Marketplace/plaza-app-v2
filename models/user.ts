@@ -1,4 +1,4 @@
-export type User = {
+type User = {
   /**
    * The user's unique identifier.
    * Policy: read only, no one can write to this field.
@@ -26,9 +26,9 @@ export type User = {
   createdAt: Timestamp;
 };
 
-export type UpdateUser = {
+type UpdateUser = {
   id: Id;
-  
+
   firstName?: string;
 
   lastName?: string;
@@ -36,8 +36,9 @@ export type UpdateUser = {
   description?: string | null;
 
   profileImageUrl?: string | null;
-}
-export type Seller = {
+};
+
+type Seller = {
   id: Id;
 
   username: string;

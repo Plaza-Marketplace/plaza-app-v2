@@ -1,37 +1,48 @@
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import CommunityProductImage from '@/components/Community/CommunityProductImage';
-import { MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
+import CommunityCollectionItemPost from '@/components/Community/CommunityCollectionItemPost';
 import Color from '@/constants/Color';
+import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
+import { useLocalSearchParams } from 'expo-router';
 
 const community_collections = () => {
-  const communityProducts = MOCK_COMMUNITY_PRODUCTS;
+  const { communityId: id } = useLocalSearchParams<{ communityId: string }>();
+  const communityId = parseInt(id);
+
+  const { data: communityCollectionItems, error } =
+    useGetCommunityCollectionItems(communityId);
+
+  if (error) return <Text>{error.message}</Text>;
+
+  if (!communityCollectionItems) return <Text>Loading...</Text>;
+
+  // const communityCollectionItems = MOCK_COMMUNITY_PRODUCTS;
 
   const leftColumn = [];
   const rightColumn = [];
 
-  for (let i = 0; i < communityProducts.length; i++) {
+  for (let i = 0; i < communityCollectionItems.length; i++) {
     if (i % 2 === 0) {
-      leftColumn.push(communityProducts[i]);
+      leftColumn.push(communityCollectionItems[i]);
     } else {
-      rightColumn.push(communityProducts[i]);
+      rightColumn.push(communityCollectionItems[i]);
     }
   }
 
   return (
     <ScrollView contentContainerStyle={styles.columnContainer}>
       <View style={styles.column}>
-        {leftColumn.map((communityProduct, i) => (
-          <CommunityProductImage
-            communityProduct={communityProduct}
+        {leftColumn.map((communityCollectionItem, i) => (
+          <CommunityCollectionItemPost
+            communityCollectionItem={communityCollectionItem}
             key={`left${i}`}
           />
         ))}
       </View>
       <View style={styles.column}>
-        {rightColumn.map((communityProduct, i) => (
-          <CommunityProductImage
-            communityProduct={communityProduct}
+        {rightColumn.map((communityCollectionItem, i) => (
+          <CommunityCollectionItemPost
+            communityCollectionItem={communityCollectionItem}
             key={`right${i}`}
           />
         ))}

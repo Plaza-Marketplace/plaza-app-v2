@@ -3,9 +3,24 @@ import { CommunityPost, CreateCommunityPost } from '@/models/communityPost';
 import {
   createCommunityPost,
   deleteCommunityPost,
+  getChatterPosts,
+  getCommunityPost,
   getCommunityPostsByCommunity,
 } from '@/services/communityPosts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+export const useGetChatterPosts = () =>
+  useQuery({
+    queryKey: ['chatter'],
+    queryFn: getChatterPosts,
+  });
+
+export const useGetCommunityPost = (postId: Id) =>
+  useQuery({
+    queryKey: ['community-post', postId],
+    queryFn: () => getCommunityPost(postId),
+    staleTime: Infinity,
+  });
 
 export const useGetCommunityPosts = (communityId: Id) =>
   useQuery({
@@ -22,14 +37,13 @@ export const useCreateCommunityPost = () => {
     onSuccess: (data) => {
       queryClient.setQueryData(
         ['community-posts', data.communityId],
-        (oldData: CommunityPost[] | undefined) =>
-        {
-          return oldData ? [data, ...oldData] : [data]
+        (oldData: CommunityPost[] | undefined) => {
+          return oldData ? [data, ...oldData] : [data];
         }
       );
     },
   });
-}
+};
 
 export const useDeleteCommunityPost = () =>
   useMutation({

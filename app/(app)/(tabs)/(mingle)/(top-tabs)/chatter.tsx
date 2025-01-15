@@ -1,21 +1,22 @@
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import React from 'react';
-import PostCard from '@/components/PostCards/PostCard';
-import { PostCardType } from '@/constants/Types';
+import ChatterPostCard from '@/components/PostCards/ChatterPostCard';
+import { useGetChatterPosts } from '@/hooks/queries/useCommunityPosts';
 
-const chatter = () => {
+const Chatter = () => {
+  const { data, error } = useGetChatterPosts();
+
+  if (error) return null;
+
+  const posts = data ?? [];
+
   return (
     <View>
-      {/* <PostCard
-        username="username"
-        date="date"
-        postName="productName"
-        postDesc="productDesc"
-        rating={4.5}
-        type={PostCardType.REVIEW}
-      /> */}
+      {posts.map((post) => (
+        <ChatterPostCard key={post.id} communityPost={post} />
+      ))}
     </View>
   );
 };
 
-export default chatter;
+export default Chatter;

@@ -4,31 +4,54 @@ import StandardText from '../Texts/StandardText';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlazaTextInput from '../PlazaTextInput';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import Comment from './Comment';
+import useGetCommentsByVideoId from '@/hooks/queries/useGetCommentsByVideoId';
+import PlazaButton from '../Buttons/PlazaButton';
+import useCreateVideoComment from '@/hooks/queries/useCreateVideoComment';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 
 interface CommentModalProps {
+  videoId: Id;
   bottomSheetRef: React.RefObject<BottomSheetModal>;
 }
 
-const CommentModal: FC<CommentModalProps> = ({ bottomSheetRef }) => {
+const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
+  const [description, setDescription] = useState('');
+  const { session } = useAuth();
+  const { data: user } = useGetUserByAuthId(session?.user.id);
+  const { data } = useGetCommentsByVideoId(videoId);
+  const { mutate: createComment } = useCreateVideoComment(videoId, user?.id);
+
+  const handleSubmit = () => {
+    if (!description) return;
+
+    createComment(description);
+  };
+
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
       <View style={styles.titleContainer}>
         <StandardText>Comments</StandardText>
       </View>
       <FlatList
-        data={[0, 1, 2]}
-        renderItem={() => <Comment />}
+        data={data}
+        renderItem={({ item }) => <Comment comment={item} />}
         contentContainerStyle={{
           gap: Spacing.SPACING_3,
           padding: Spacing.SPACING_2,
         }}
       />
       <SafeAreaView style={styles.inputContainer}>
-        <PlazaTextInput placeholder="Add a comment..." />
+        <PlazaTextInput
+          placeholder="Add a comment..."
+          style={{ flex: 1 }}
+          onChangeText={setDescription}
+        />
+        <PlazaButton title="Send" onPress={handleSubmit} />
       </SafeAreaView>
     </FeedBottomSheet>
   );
@@ -44,6 +67,8 @@ const styles = StyleSheet.create({
     paddingVertical: Spacing.SPACING_1,
   },
   inputContainer: {
+    flexDirection: 'row',
+    gap: Spacing.SPACING_2,
     paddingHorizontal: Spacing.SPACING_2,
   },
 });

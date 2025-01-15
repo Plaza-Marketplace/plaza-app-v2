@@ -1,5 +1,19 @@
-import { UpdateUser, User } from '@/models/user';
+import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
+
+export const formatUser = (user: Tables<'user'>): User => {
+  return {
+    id: user.id,
+    authId: user.auth_id,
+    firstName: user.first_name,
+    lastName: user.last_name,
+    username: user.username,
+    email: user.email,
+    description: user.description,
+    profileImageUrl: user.profile_image_url,
+    createdAt: user.created_at,
+  };
+};
 
 export const getUser = async (id: Id): Promise<User> => {
   return await supabase.from('user').select('*').eq('id', id);
@@ -71,9 +85,7 @@ export const createUser = async (
   return;
 };
 
-export const updateUser = async (
-  updates: UpdateUser
-): Promise<User> => {
+export const updateUser = async (updates: UpdateUser): Promise<User> => {
   const { data, error } = await supabase
     .from('user')
     .update({
@@ -86,7 +98,7 @@ export const updateUser = async (
     .single();
 
   if (error) throw new Error(error.message);
-  if(!data) throw new Error('User not found');
+  if (!data) throw new Error('User not found');
 
   return {
     id: data.id,
@@ -98,5 +110,5 @@ export const updateUser = async (
     description: data.description,
     profileImageUrl: data.profile_image_url,
     createdAt: data.created_at,
-  };;
+  };
 };

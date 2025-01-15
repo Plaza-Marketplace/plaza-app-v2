@@ -48,6 +48,8 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
     player.pause();
   }
 
+  player.pause();
+
   return (
     <>
       <VideoView
@@ -94,7 +96,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         </View>
       </VideoView>
       <ReviewModal bottomSheetRef={reviewModalRef} />
-      <CommentModal bottomSheetRef={commentModalRef} />
+      <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
     </>
   );
 };
