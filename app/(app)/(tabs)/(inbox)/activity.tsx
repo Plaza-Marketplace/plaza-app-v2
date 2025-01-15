@@ -10,6 +10,8 @@ import { Ionicons } from '@expo/vector-icons';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SubheaderText from '@/components/Texts/SubheaderText';
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
+import BoldStandardText from '@/components/Texts/BoldStandardText';
+import HeaderText from '@/components/Texts/HeaderText';
 
 const mockData = [
   {
@@ -42,8 +44,10 @@ const Activity = () => {
           <StandardText>Follow Request</StandardText>
           <Ionicons name="chevron-forward" size={24} color="black" />
         </PressableOpacity>
-        <View style={{ flex: 1 }}>
-          <SectionList
+        <View
+          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+        >
+          {/* <SectionList
             style={styles.list}
             sections={mockData}
             stickySectionHeadersEnabled={false}
@@ -58,7 +62,20 @@ const Activity = () => {
                 <SubheaderText>{title}</SubheaderText>
               </View>
             )}
-          />
+          /> */}
+          <View
+            style={{
+              flexDirection: 'column',
+              alignItems: 'center',
+              width: '80%',
+            }}
+          >
+            <HeaderText>Under Construction!</HeaderText>
+            <StandardText style={{ textAlign: 'center', marginTop: 5 }}>
+              Recent activities are under construction, but you can still look
+              at your pending follow requests.
+            </StandardText>
+          </View>
         </View>
       </View>
     </>
