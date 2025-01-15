@@ -32,13 +32,13 @@ const ActivityHeader = ({ name }: ActivityHeaderProps) => {
         <View style={{ marginLeft: 16 }}>
           <HeaderText>{name}</HeaderText>
         </View>
-
+        {/* 
         <PressableOpacity
           onPress={() => router.push('message_list')}
           style={{ marginLeft: 'auto', marginRight: 16 }}
         >
           <Ionicons name="chatbox-ellipses-outline" size={24} color="black" />
-        </PressableOpacity>
+        </PressableOpacity> */}
       </View>
     </View>
   );
