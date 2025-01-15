@@ -106,7 +106,11 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                 </BoldSubheaderText>
               </PressableOpacity>
               {video.description && (
-                <ExpandableDescription description={video.description} />
+                <ExpandableDescription
+                  description={video.description}
+                  textColor="white"
+                  shadow
+                />
               )}
             </View>
           </View>
