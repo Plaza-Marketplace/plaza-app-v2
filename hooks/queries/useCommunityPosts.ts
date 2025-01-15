@@ -4,6 +4,7 @@ import {
   createCommunityPost,
   deleteCommunityPost,
   getChatterPosts,
+  getChatterPostsByCommunity,
   getCommunityPost,
   getCommunityPostsByCommunity,
 } from '@/services/communityPosts';
@@ -14,6 +15,13 @@ export const useGetChatterPosts = () =>
     queryKey: ['chatter'],
     queryFn: getChatterPosts,
   });
+
+export const useGetChatterPostsByCommunity = (communityId: Id) =>
+  useQuery({
+    queryKey: ['chatter', communityId],
+    queryFn: () => getChatterPostsByCommunity(communityId),
+    staleTime: Infinity,
+  })
 
 export const useGetCommunityPost = (postId: Id) =>
   useQuery({

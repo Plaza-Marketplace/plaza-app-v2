@@ -1,7 +1,8 @@
 import { View } from 'react-native';
 import React from 'react';
-import ChatterPostCard from '@/components/PostCards/ChatterPostCard';
+import ChatterPostCard from '@/components/PostCards/PostCard';
 import { useGetChatterPosts } from '@/hooks/queries/useCommunityPosts';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Chatter = () => {
   const { data, error } = useGetChatterPosts();
@@ -11,11 +12,11 @@ const Chatter = () => {
   const posts = data ?? [];
 
   return (
-    <View>
+    <ScrollView>
       {posts.map((post) => (
         <ChatterPostCard key={post.id} communityPost={post} />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 
