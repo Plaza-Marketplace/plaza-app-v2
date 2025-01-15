@@ -1,7 +1,7 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useCallback, useRef } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
@@ -17,6 +17,7 @@ import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
 import { Video } from '@/models/video';
 import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
+import { useEvent } from 'expo';
 
 interface FeedVideoProps {
   video: Video;
@@ -30,7 +31,11 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
-    player.play();
+    player.pause();
+  });
+
+  const { status } = useEvent(player, 'statusChange', {
+    status: player.status,
   });
 
   useFocusEffect(
@@ -40,16 +45,24 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         player.play();
       }
 
-      return () => player.pause();
-    }, [player, visible])
+      return () => {
+        if (status === 'readyToPlay') {
+          player.pause();
+        }
+      };
+    }, [])
   );
 
-  if (visible) {
-    player.replay();
-    player.play();
-  } else {
-    player.pause();
-  }
+  useEffect(() => {
+    if (visible) {
+      if (status === 'readyToPlay') {
+        player.replay();
+        player.play();
+      }
+    } else if (status === 'readyToPlay') {
+      player.pause();
+    }
+  }, [visible]);
 
   return (
     <>

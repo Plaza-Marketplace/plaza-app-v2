@@ -2,8 +2,8 @@ import { FC } from 'react';
 import Footer from '../Footer';
 import FeedBottomSheet from './FeedBottomSheet';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SubheaderText from '../Texts/SubheaderText';
 import Rating from '../Rating';
 import Spacing from '@/constants/Spacing';
@@ -26,6 +26,7 @@ const ProductModal: FC<ProductModalProps> = ({
   product,
   bottomSheetRef,
 }) => {
+  const insets = useSafeAreaInsets();
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
   const { mutate: createCartItem } = useCreateCartItem(product, user?.id);
@@ -33,7 +34,7 @@ const ProductModal: FC<ProductModalProps> = ({
 
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
-      <View style={styles.content}>
+      <ScrollView contentContainerStyle={styles.content}>
         <Image
           source={{
             uri:
@@ -52,15 +53,15 @@ const ProductModal: FC<ProductModalProps> = ({
           description={product.description}
           initialNumberOfLines={3}
         />
-      </View>
-      <SafeAreaView>
+      </ScrollView>
+      <View style={{ paddingBottom: insets.bottom }}>
         <Footer
           leftTitle="Add to Cart"
           rightTitle="Buy Now"
           leftOnPress={createCartItem}
           rightOnPress={() => {}}
         />
-      </SafeAreaView>
+      </View>
     </FeedBottomSheet>
   );
 };
@@ -77,8 +78,6 @@ const styles = StyleSheet.create({
     marginTop: 0,
   },
   content: {
-    flex: 1,
-    justifyContent: 'flex-start',
     padding: Spacing.SPACING_4,
     gap: Spacing.SPACING_2,
   },

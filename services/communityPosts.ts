@@ -20,9 +20,7 @@ const query = `
       name
     ),
     product(
-      id,
-      name,
-      price,
+      *,
       image_keys: product_image(
         image_key
       ),
@@ -43,7 +41,7 @@ const query = `
         created_at
       )
     )
-  `
+  `;
 
 const supabaseToCommunityPost = (data: any): CommunityPost => {
   return {
@@ -65,7 +63,7 @@ const formatCommunityPost = (
   communityPost: Tables<'community_post'>,
   poster: Pick<Tables<'user'>, 'id' | 'username'>,
   community: Pick<Tables<'community'>, 'id' | 'name'>,
-  product?: Pick<Tables<'product'>, 'id' | 'name' | 'price'>,
+  product?: Tables<'product'>,
   productImageKeys?: UUID[],
   seller?: Pick<Tables<'user'>, 'id' | 'username'>,
   productReview?: Pick<
@@ -104,6 +102,12 @@ const formatCommunityPost = (
                 username: seller.username,
               }
             : null,
+          description: product.description,
+          category: product.category,
+          condition: product.condition,
+          shippingPrice: product.shipping_price,
+          quantity: product.quantity,
+          createdAt: product.created_at,
         }
       : null,
     createdAt: communityPost.created_at,
@@ -175,9 +179,7 @@ export const getCommunityPost = async (
       name
     ),
     product(
-      id,
-      name,
-      price,
+      *,
       image_keys: product_image(
         image_key
       ),
@@ -245,7 +247,9 @@ export const getChatterPosts = async (): Promise<ChatterCommunityPost[]> => {
   );
 };
 
-export const getChatterPostsByCommunity = async (communityId: Id): Promise<ChatterCommunityPost[]> => {
+export const getChatterPostsByCommunity = async (
+  communityId: Id
+): Promise<ChatterCommunityPost[]> => {
   const { data, error } = await supabase
     .from('community_post')
     .select(query)
@@ -265,7 +269,7 @@ export const getChatterPostsByCommunity = async (communityId: Id): Promise<Chatt
       post.product?.seller.seller_review[0]
     )
   );
-}
+};
 
 export const getCommunityPostsByCommunity = async (
   communityId: Id
