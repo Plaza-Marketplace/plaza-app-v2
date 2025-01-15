@@ -110,7 +110,6 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
           {isRequested ? (
             <PlazaButton
               title="Cancel Request"
-              style={{ marginLeft: 5 }}
               onPress={() => {
                 const relation: CreateFollowRequest = {
                   senderId: currentUser,

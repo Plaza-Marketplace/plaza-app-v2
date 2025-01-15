@@ -45,7 +45,11 @@ const _layout = () => {
 
   return (
     <>
-      <GeneralHeader name={`${user.firstName} ${user.lastName}`} />
+      <GeneralHeader
+        name={`${user.firstName} ${user.lastName}`}
+        id={user.id}
+        currentUser={currentUser}
+      />
       <Tabs.Container
         renderHeader={() => (
           <ProfileHeader user={user} currentUser={currentUser} />
