@@ -7,7 +7,7 @@ import Color from '@/constants/Color';
 
 interface ProductIconProps {
   imageUrl?: Url;
-  onPress: () => void;
+  onPress?: () => void;
 }
 
 const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {

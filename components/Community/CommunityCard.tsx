@@ -34,7 +34,7 @@ const CommunityCard: FC<CommunityCardProps> = ({
         <SubheaderText>{community.name}</SubheaderText>
         <PlazaText>{community.memberCount} members</PlazaText>
       </View>
-      <NotificationNumber notificationsCount={notificationsCount} />
+      {/* <NotificationNumber notificationsCount={notificationsCount} /> */}
     </PressableOpacity>
   );
 };

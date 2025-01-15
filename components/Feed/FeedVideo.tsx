@@ -51,8 +51,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
     player.pause();
   }
 
-  player.pause();
-
   return (
     <>
       <VideoView
@@ -106,7 +104,11 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
           </View>
         </View>
       </VideoView>
-      <ReviewModal bottomSheetRef={reviewModalRef} />
+      <ReviewModal
+        seller={video.poster}
+        product={video.products[0]}
+        bottomSheetRef={reviewModalRef}
+      />
       <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
       <AddToCommunityCollectionModal
         products={video.products}

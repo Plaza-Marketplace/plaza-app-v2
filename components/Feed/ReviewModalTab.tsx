@@ -1,4 +1,4 @@
-import { Review as ReviewType } from '@/models/review';
+import { FeedReview, Review as ReviewType } from '@/models/review';
 import { FC } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Review from './Review';
@@ -8,37 +8,38 @@ import StandardText from '../Texts/StandardText';
 import Spacing from '@/constants/Spacing';
 import BoldStandardText from '../Texts/BoldStandardText';
 import Color from '@/constants/Color';
+import ProductIcon from '../Product/ProductIcon';
 
 interface ReviewModalTabProps {
   isSeller: boolean;
-  reviews: ReviewType[];
+  imageUrl?: Url;
+  name: string;
+  reviews: FeedReview[];
 }
 
-const ReviewModalTab: FC<ReviewModalTabProps> = ({ isSeller, reviews }) => {
+const ReviewModalTab: FC<ReviewModalTabProps> = ({
+  name,
+  imageUrl,
+  isSeller,
+  reviews,
+}) => {
   return (
     <View style={styles.container}>
       <View style={styles.mainInfoContainer}>
         <View style={styles.infoContainer}>
-          <ProfileIcon variant={isSeller ? 'user' : 'community'} size={64} />
+          {!isSeller ? (
+            <ProductIcon imageUrl={imageUrl} />
+          ) : (
+            <ProfileIcon variant="user" url={imageUrl} size={64} />
+          )}
           <View>
-            <SubheaderText>Display Name</SubheaderText>
-            {isSeller && <StandardText>@username</StandardText>}
+            <SubheaderText>{name}</SubheaderText>
           </View>
-        </View>
-        <View style={styles.ratingContainer}>
-          <BoldStandardText>2 out of 5</BoldStandardText>
-          <StandardText>0 reviews</StandardText>
         </View>
       </View>
       <FlatList
         data={reviews}
-        renderItem={({ item }) => (
-          <Review
-            key={item.id}
-            rating={item.rating}
-            description={item.description}
-          />
-        )}
+        renderItem={({ item }) => <Review key={item.id} review={item} />}
         contentContainerStyle={{
           gap: Spacing.SPACING_4,
           padding: Spacing.SPACING_2,

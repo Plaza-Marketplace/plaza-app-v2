@@ -1,14 +1,22 @@
+import useGetProductReviewsByProductId from '@/hooks/queries/useGetProductReviewsByProductId';
 import ReviewModalTab from './ReviewModalTab';
+import { FC } from 'react';
 
-const ProductTab = () => {
+interface ProductTabProps {
+  product: Product;
+}
+
+const ProductTab: FC<ProductTabProps> = ({ product }) => {
+  const { data } = useGetProductReviewsByProductId(product.id);
+
+  const reviews = data ?? [];
+
   return (
     <ReviewModalTab
       isSeller={false}
-      reviews={[
-        { id: 1, description: 'HELOWLDAOWD', rating: 3 },
-        { id: 2, description: 'HELOWLDAOWD', rating: 3 },
-        { id: 3, description: 'HELOWLDAOWD', rating: 3 },
-      ]}
+      reviews={reviews}
+      name={product.name}
+      imageUrl={product.imageUrls[0]}
     />
   );
 };

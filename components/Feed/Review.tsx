@@ -5,26 +5,32 @@ import Spacing from '@/constants/Spacing';
 import { FC } from 'react';
 import StandardText from '../Texts/StandardText';
 import ExpandableDescription from '../ExpandableDescription';
+import { FeedReview } from '@/models/review';
 
 interface ReviewProps {
-  rating: number;
-  description: string;
+  review: FeedReview;
 }
 
-const Review: FC<ReviewProps> = ({ rating, description }) => {
+const Review: FC<ReviewProps> = ({ review }) => {
   return (
     <View style={styles.container}>
       <View style={styles.userInfoContainer}>
-        <ProfileIcon variant="user" size={32} />
+        <ProfileIcon
+          variant="user"
+          size={32}
+          url={review.reviewer.profileImageUrl}
+        />
         <View>
-          <CaptionText>@username</CaptionText>
-          <CaptionText>{new Date().toLocaleDateString()}</CaptionText>
+          <CaptionText>@{review.reviewer.username}</CaptionText>
+          <CaptionText>
+            {new Date(review.createdAt).toLocaleDateString()}
+          </CaptionText>
         </View>
       </View>
-      <StandardText>{rating}</StandardText>
+      <StandardText>{review.rating}</StandardText>
       <ExpandableDescription
         initialNumberOfLines={4}
-        description={description}
+        description={review.description}
       />
     </View>
   );

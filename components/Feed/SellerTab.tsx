@@ -1,14 +1,22 @@
+import { useGetSellerReviews } from '@/hooks/queries/useSellerReview';
 import ReviewModalTab from './ReviewModalTab';
+import { FC } from 'react';
 
-const SellerTab = () => {
+interface SellerTabProps {
+  seller: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
+}
+
+const SellerTab: FC<SellerTabProps> = ({ seller }) => {
+  const { data } = useGetSellerReviews(seller.id);
+
+  const reviews = data ?? [];
+
   return (
     <ReviewModalTab
       isSeller
-      reviews={[
-        { id: 1, description: 'HELOWLDAOWD', rating: 3 },
-        { id: 2, description: 'HELOWLDAOWD', rating: 3 },
-        { id: 3, description: 'HELOWLDAOWD', rating: 3 },
-      ]}
+      name={seller.username}
+      imageUrl={seller.profileImageUrl ?? undefined}
+      reviews={reviews}
     />
   );
 };

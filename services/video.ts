@@ -3,30 +3,41 @@ import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'base64-arraybuffer';
 import { CreateVideo, Video } from '@/models/video';
 
-const query = `*,
-poster: user!poster_id(
-  id,
-  username,
-  profile_image_url
-),
-products: video_product(
-  product(
-    *,
-    images: product_image(
-      image_key
+const query = `
+  *,
+  poster: user!poster_id(
+    id,
+    username,
+    profile_image_url
+  ),
+  products: video_product(
+    product(
+      *,
+      images: product_image(
+        image_key
+      ),
+      product_review_count: product_review(
+        count
+      )
+    )
+  ),
+  like_count: video_like(count),
+  comment_count: video_comment(count),
+  seller_review_count: user(
+    seller_review!seller_id(
+      count
     )
   )
-),
-like_count: video_like(count),
-comment_count: video_comment(count),
-seller_review_count: user(
-  seller_review!seller_id(
-    count
-  )
-)
-`
+`;
 
 const supabaseToVideo = (video: any): Video => {
+  let productsReviewCount = 0;
+
+  video.products.forEach(
+    (product) =>
+      (productsReviewCount += product.product.product_review_count[0].count)
+  );
+
   return {
     id: video.id,
     poster: {
@@ -64,8 +75,10 @@ const supabaseToVideo = (video: any): Video => {
     createdAt: video.created_at,
     likeCount: video.like_count[0].count,
     commentCount: video.comment_count[0].count,
-    reviewCount: video.seller_review_count.seller_review[0].count,
-  }}
+    reviewCount:
+      video.seller_review_count.seller_review[0].count + productsReviewCount,
+  };
+};
 
 export const getVideos = async (): Promise<Video[]> => {
   const { data, error } = await supabase.from('video').select(query);
@@ -78,8 +91,10 @@ export const getVideos = async (): Promise<Video[]> => {
 };
 
 export const getVideosByUserId = async (userId: Id): Promise<Video[]> => {
-  const { data, error } = await supabase.from('video').select(query)
-  .eq('poster_id', userId);
+  const { data, error } = await supabase
+    .from('video')
+    .select(query)
+    .eq('poster_id', userId);
 
   if (error) throw new Error('Failed');
 
@@ -89,16 +104,18 @@ export const getVideosByUserId = async (userId: Id): Promise<Video[]> => {
 };
 
 export const getVideoById = async (videoId: Id): Promise<Video> => {
-  const { data, error } = await supabase.from('video').select(query)
-  .eq('id', videoId)
-  .single();
+  const { data, error } = await supabase
+    .from('video')
+    .select(query)
+    .eq('id', videoId)
+    .single();
 
   if (error) throw new Error('Failed');
 
   if (!data) throw new Error('Failed');
 
   return supabaseToVideo(data);
-}
+};
 
 export const createVideoLike = async (
   videoLike: CreateVideoLike

@@ -10,10 +10,16 @@ import SellerTab from './SellerTab';
 import ProductTab from './ProductTab';
 
 interface ReviewModalProps {
+  seller: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
+  product: Product;
   bottomSheetRef: React.RefObject<BottomSheetModal>;
 }
 
-const ReviewModal: FC<ReviewModalProps> = ({ bottomSheetRef }) => {
+const ReviewModal: FC<ReviewModalProps> = ({
+  seller,
+  product,
+  bottomSheetRef,
+}) => {
   const [sellerTabSelected, setSellerTabSelected] = useState(true);
 
   return (
@@ -32,7 +38,11 @@ const ReviewModal: FC<ReviewModalProps> = ({ bottomSheetRef }) => {
           <StandardText>Product</StandardText>
         </PressableOpacity>
       </View>
-      {sellerTabSelected ? <SellerTab /> : <ProductTab />}
+      {sellerTabSelected ? (
+        <SellerTab seller={seller} />
+      ) : (
+        <ProductTab product={product} />
+      )}
     </FeedBottomSheet>
   );
 };

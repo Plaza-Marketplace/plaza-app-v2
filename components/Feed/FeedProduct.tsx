@@ -15,9 +15,7 @@ const FeedProduct: FC<ProductProps> = ({ sellerId, product }) => {
     <>
       <ProductIcon
         imageUrl={
-          product.imageUrls.length > 0
-            ? product.imageUrls[0]
-            : 'https://hips.hearstapps.com/hmg-prod/images/dog-puppy-on-garden-royalty-free-image-1586966191.jpg?crop=0.752xw:1.00xh;0.175xw,0&resize=1200:*'
+          product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
         }
         onPress={() => {
           bottomSheetRef.current?.present();
