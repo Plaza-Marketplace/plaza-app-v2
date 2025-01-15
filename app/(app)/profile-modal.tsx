@@ -24,6 +24,7 @@ const ProfileModal = () => {
   const ref = React.useRef<CollapsibleRef>();
 
   const { id } = useLocalSearchParams<{ id: string }>();
+  const { user: currentUser } = useAuth();
   const user_id = parseInt(id);
   const { data: user, isLoading } = useGetUserById(user_id);
   if (isLoading) {
@@ -32,12 +33,17 @@ const ProfileModal = () => {
   if (!user) {
     return <Text>User not found...</Text>;
   }
+  if (!currentUser) {
+    return <Text>You got in without logging in...?</Text>;
+  }
 
   return (
     <View style={{ flex: 1 }}>
       <BackHeader name={`${user.firstName} ${user.lastName}`} />
       <Tabs.Container
-        renderHeader={() => <ProfileHeader user={user} currentUser={user.id} />}
+        renderHeader={() => (
+          <ProfileHeader user={user} currentUser={currentUser.id} />
+        )}
         containerStyle={{ zIndex: -1 }}
         ref={ref}
         renderTabBar={(props) => {

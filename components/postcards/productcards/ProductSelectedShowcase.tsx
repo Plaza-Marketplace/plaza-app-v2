@@ -1,4 +1,3 @@
-import Product from '@/models/product';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Radius from '@/constants/Radius';
@@ -8,18 +7,19 @@ import Color from '@/constants/Color';
 import ProductImage from './ProductImage';
 import Spacing from '@/constants/Spacing';
 import productCardStyles from './styles';
+import { ProductDetails } from '@/models/communityPost';
 
 interface ProductSelectedShowcase {
-  product?: Product;
+  product: ProductDetails;
 }
 
 const ProductSelectedShowcase: FC<ProductSelectedShowcase> = ({ product }) => {
   return (
     <View style={[styles.card, productCardStyles.shadow]}>
-      <ProductImage />
+      <ProductImage uri={product.imageUrls[0]} />
       <View style={styles.textContainer}>
-        <StandardText>ProductShowcase</StandardText>
-        <MediumText>$00</MediumText>
+        <StandardText>{product.name}</StandardText>
+        <MediumText>{`$${product.price}`}</MediumText>
       </View>
     </View>
   );

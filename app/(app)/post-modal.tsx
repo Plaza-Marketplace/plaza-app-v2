@@ -4,8 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import FocusHeader from '@/components/FocusHeader';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useGetCommunityPost } from '@/hooks/queries/useCommunityPosts';
-import ProfileIcon from '@/components/ProfileIcon';
-import ChatterPostCard from '@/components/PostCards/ChatterPostCard';
+import PostCard from '@/components/PostCards/PostCard';
 
 const PostModal = () => {
   const params = useLocalSearchParams<{
@@ -28,7 +27,7 @@ const PostModal = () => {
   return (
     <SafeAreaView>
       <FocusHeader name={post.community.name} />
-      <ChatterPostCard communityPost={post} />
+      <PostCard communityPost={post} />
     </SafeAreaView>
   );
 };

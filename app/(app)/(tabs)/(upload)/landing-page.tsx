@@ -5,8 +5,20 @@ import ProductSelectedShowcase from '@/components/PostCards/ProductCards/Product
 import AddContentCard from '@/components/AddContentCard';
 import Color from '@/constants/Color';
 import VideoPreview from '@/components/VideoPreview';
+import { ProductDetails } from '@/models/communityPost';
 
 const LandingPage = () => {
+  const test: ProductDetails = {
+    id: 1,
+    name: 'test',
+    imageUrls: ['test'],
+    price: 1,
+    seller: {
+      id: 1,
+      username: 'joe',
+    },
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Carousel
@@ -31,7 +43,7 @@ const LandingPage = () => {
                   buttonTitle="Start Listing"
                   nextRoute="list-item/create-listing"
                 >
-                  <ProductSelectedShowcase />
+                  <ProductSelectedShowcase product={test} />
                 </AddContentCard>
               </View>
             );
