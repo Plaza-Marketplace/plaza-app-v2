@@ -3,17 +3,27 @@ import ProfileIcon from '../ProfileIcon';
 import CaptionText from '../Texts/CaptionText';
 import StandardText from '../Texts/StandardText';
 import Spacing from '@/constants/Spacing';
+import { FC } from 'react';
 
-const Comment = () => {
+interface CommentProps {
+  comment: VideoComment;
+}
+
+const Comment: FC<CommentProps> = ({ comment }) => {
   return (
     <View style={styles.container}>
-      <ProfileIcon variant="user" />
+      <ProfileIcon
+        variant="user"
+        url={comment.poster.profileImageUrl ?? undefined}
+      />
       <View style={styles.contentContainer}>
         <View style={styles.infoContainer}>
-          <CaptionText>Display Name</CaptionText>
-          <CaptionText>{new Date().toLocaleDateString()}</CaptionText>
+          <CaptionText>{comment.poster.username}</CaptionText>
+          <CaptionText>
+            {new Date(comment.createdAt).toLocaleString()}
+          </CaptionText>
         </View>
-        <StandardText>This is a comment from a user</StandardText>
+        <StandardText>{comment.description}</StandardText>
       </View>
     </View>
   );

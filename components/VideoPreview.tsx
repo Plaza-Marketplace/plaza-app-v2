@@ -17,7 +17,9 @@ const VideoPreview: FC<VideoPreviewProps> = ({ uri, onPress }) => {
   useEffect(() => {
     if (!uri) return;
 
-    VideoThumbnails.getThumbnailAsync(uri).then(({ uri }) => setThumbnail(uri));
+    VideoThumbnails.getThumbnailAsync(uri, { quality: 0 }).then(({ uri }) =>
+      setThumbnail(uri)
+    );
   }, []);
 
   return uri ? (

@@ -1,5 +1,13 @@
-import { CommunityPost, CreateCommunityPost, UpdateCommunityPost } from "@/models/communityPost";
-import { supabase } from "@/utils/supabase";
+import { Tables } from '@/database.types';
+import {
+  ChatterCommunityPost,
+  CommunityPost,
+  CreateCommunityPost,
+  PostType,
+  UpdateCommunityPost,
+} from '@/models/communityPost';
+import { supabase } from '@/utils/supabase';
+import { getImagePublicUrls } from './storage';
 
 const supabaseToCommunityPost = (data: any): CommunityPost => {
   return {
@@ -15,9 +23,75 @@ const supabaseToCommunityPost = (data: any): CommunityPost => {
     sellerReviewId: data.seller_review_id,
     createdAt: data.created_at,
   };
-}
+};
 
-export const createCommunityPost = async (post: CreateCommunityPost): Promise<CommunityPost> => {
+const formatCommunityPost = (
+  communityPost: Tables<'community_post'>,
+  poster: Pick<Tables<'user'>, 'id' | 'username'>,
+  community: Pick<Tables<'community'>, 'id' | 'name'>,
+  product?: Pick<Tables<'product'>, 'id' | 'name'>,
+  productImageKeys?: UUID[],
+  seller?: Pick<Tables<'user'>, 'id' | 'username'>,
+  productReview?: Pick<
+    Tables<'product_review'>,
+    'id' | 'rating' | 'description' | 'created_at'
+  >,
+  sellerReview?: Pick<
+    Tables<'seller_review'>,
+    'id' | 'rating' | 'description' | 'created_at'
+  >
+): ChatterCommunityPost => {
+  return {
+    id: communityPost.id,
+    community: {
+      id: community.id,
+      name: community.name,
+    },
+    poster: {
+      id: poster.id,
+      username: poster.username,
+    },
+    title: communityPost.title,
+    description: communityPost.description,
+    postType: communityPost.post_type as PostType,
+    product: product
+      ? {
+          id: product.id,
+          name: product.name,
+          imageUrls: productImageKeys
+            ? getImagePublicUrls(productImageKeys)
+            : [],
+          seller: seller
+            ? {
+                id: seller.id,
+                username: seller.username,
+              }
+            : null,
+        }
+      : null,
+    createdAt: communityPost.created_at,
+    productReview: productReview
+      ? {
+          id: productReview.id,
+          rating: productReview.rating,
+          description: productReview.description,
+          createdAt: productReview.created_at,
+        }
+      : null,
+    sellerReview: sellerReview
+      ? {
+          id: sellerReview.id,
+          rating: sellerReview.rating,
+          description: sellerReview.description,
+          createdAt: sellerReview.created_at,
+        }
+      : null,
+  };
+};
+
+export const createCommunityPost = async (
+  post: CreateCommunityPost
+): Promise<CommunityPost> => {
   const { data, error } = await supabase
     .from('community_post')
     .insert({
@@ -32,7 +106,7 @@ export const createCommunityPost = async (post: CreateCommunityPost): Promise<Co
       seller_review_id: post.sellerReviewId,
     })
     .select()
-    .single()
+    .single();
 
   if (error) {
     throw new Error(
@@ -44,16 +118,53 @@ export const createCommunityPost = async (post: CreateCommunityPost): Promise<Co
     );
   }
 
-
   return supabaseToCommunityPost(data);
-}
+};
 
-export const getCommunityPost = async (postId: Id): Promise<CommunityPost> => {
+export const getCommunityPost = async (
+  postId: Id
+): Promise<ChatterCommunityPost> => {
   const { data, error } = await supabase
     .from('community_post')
-    .select()
+    .select(
+      `
+    *, 
+    poster: user(
+      id,
+      username
+    ),
+    community(
+      id,
+      name
+    ),
+    product(
+      id,
+      name,
+      image_keys: product_image(
+        image_key
+      ),
+      seller: user(
+        id,
+        username,
+        seller_review!seller_id(
+          id,
+          rating,
+          description,
+          created_at
+        )
+      ),
+      product_review(
+        id,
+        rating,
+        description,
+        created_at
+      )
+    )
+  `
+    )
     .eq('id', postId)
-    .single()
+    .limit(1)
+    .single();
 
   if (error) {
     throw new Error(
@@ -65,15 +176,78 @@ export const getCommunityPost = async (postId: Id): Promise<CommunityPost> => {
     );
   }
 
-  return supabaseToCommunityPost(data);
-}
+  return formatCommunityPost(
+    data,
+    data.poster,
+    data.community,
+    data.product ?? undefined,
+    data.product?.image_keys.map((key) => key.image_key),
+    data.product?.seller,
+    data.product?.product_review[0],
+    data.product?.seller.seller_review[0]
+  );
+};
 
-export const getCommunityPostsByCommunity = async (communityId: Id): Promise<CommunityPost[]> => {
+export const getChatterPosts = async (): Promise<ChatterCommunityPost[]> => {
+  const { data, error } = await supabase.from('community_post').select(`
+    *, 
+    poster: user(
+      id,
+      username
+    ),
+    community(
+      id,
+      name
+    ),
+    product(
+      id,
+      name,
+      image_keys: product_image(
+        image_key
+      ),
+      seller: user(
+        id,
+        username,
+        seller_review!seller_id(
+          id,
+          rating,
+          description,
+          created_at
+        )
+      ),
+      product_review(
+        id,
+        rating,
+        description,
+        created_at
+      )
+    )
+  `);
+
+  if (error) throw new Error(error.message);
+
+  return data.map((post) =>
+    formatCommunityPost(
+      post,
+      post.poster,
+      post.community,
+      post.product ?? undefined,
+      post.product?.image_keys.map((key) => key.image_key),
+      post.product?.seller,
+      post.product?.product_review[0],
+      post.product?.seller.seller_review[0]
+    )
+  );
+};
+
+export const getCommunityPostsByCommunity = async (
+  communityId: Id
+): Promise<CommunityPost[]> => {
   const { data, error } = await supabase
     .from('community_post')
     .select()
     .eq('community_id', communityId)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false });
 
   if (error) {
     throw new Error(
@@ -86,9 +260,12 @@ export const getCommunityPostsByCommunity = async (communityId: Id): Promise<Com
   }
 
   return data.map(supabaseToCommunityPost);
-}
+};
 
-export const updateCommunityPost = async (postId: Id, post: UpdateCommunityPost): Promise<CommunityPost> => {
+export const updateCommunityPost = async (
+  postId: Id,
+  post: UpdateCommunityPost
+): Promise<CommunityPost> => {
   const { data, error } = await supabase
     .from('community_post')
     .update({
@@ -101,7 +278,7 @@ export const updateCommunityPost = async (postId: Id, post: UpdateCommunityPost)
     })
     .eq('id', postId)
     .select()
-    .single()
+    .single();
 
   if (error) {
     throw new Error(
@@ -114,14 +291,16 @@ export const updateCommunityPost = async (postId: Id, post: UpdateCommunityPost)
   }
 
   return supabaseToCommunityPost(data);
-}
+};
 
-export const deleteCommunityPost = async (postId: Id): Promise<CommunityPost> => {
+export const deleteCommunityPost = async (
+  postId: Id
+): Promise<CommunityPost> => {
   const { data, error } = await supabase
     .from('community_post')
     .delete()
     .eq('id', postId)
-    .single()
+    .single();
 
   if (error) {
     throw new Error(
@@ -130,4 +309,4 @@ export const deleteCommunityPost = async (postId: Id): Promise<CommunityPost> =>
   }
 
   return supabaseToCommunityPost(data);
-}
+};

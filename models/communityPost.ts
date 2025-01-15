@@ -1,7 +1,9 @@
+import { ProductReview, SellerReview } from './review';
+
 export enum PostType {
-  POST = "POST",
-  SHOWCASE = "SHOWCASE",
-  REVIEW = "REVIEW",
+  POST = 'POST',
+  SHOWCASE = 'SHOWCASE',
+  REVIEW = 'REVIEW',
 }
 
 export type CommunityPost = {
@@ -10,13 +12,47 @@ export type CommunityPost = {
   posterId: number;
   title: string;
   description: string;
-  postType: PostType
+  postType: PostType;
   productId: Id | null;
   imageUrl: string | null;
   productReviewId: Id | null;
   sellerReviewId: Id | null;
   createdAt: Timestamp;
-}
+};
+
+export type ChatterCommunityPost = {
+  id: Id;
+  community: Pick<Community, 'id' | 'name'>;
+  poster: {
+    id: Id;
+    username: string;
+  };
+  title: string;
+  description: string;
+  postType: PostType;
+  product: {
+    id: Id;
+    name: string;
+    imageUrls: Url[];
+    seller: {
+      id: Id;
+      username: string;
+    } | null;
+  } | null;
+  productReview: {
+    id: Id;
+    rating: number;
+    description: string;
+    createdAt: Timestamp;
+  } | null;
+  sellerReview: {
+    id: Id;
+    rating: number;
+    description: string;
+    createdAt: Timestamp;
+  } | null;
+  createdAt: Timestamp;
+};
 
 export type CreateCommunityPost = {
   communityId: number;
@@ -28,7 +64,7 @@ export type CreateCommunityPost = {
   imageUrl?: string;
   productReviewId?: Id;
   sellerReviewId?: Id;
-}
+};
 
 export type UpdateCommunityPost = {
   title?: string;
@@ -37,4 +73,4 @@ export type UpdateCommunityPost = {
   imageUrl?: string;
   productReviewId?: Id;
   sellerReviewId?: Id;
-}
+};

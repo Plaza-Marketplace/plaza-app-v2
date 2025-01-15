@@ -41,6 +41,7 @@ const Feed: FC<FeedProps> = ({ videos }) => {
         offset: MARKETPLACE_FEED_VIDEO_HEIGHT * index,
         index,
       })}
+      initialNumToRender={3}
     />
   );
 };
