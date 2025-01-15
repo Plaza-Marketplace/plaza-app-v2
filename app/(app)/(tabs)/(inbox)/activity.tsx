@@ -72,8 +72,8 @@ const Activity = () => {
           >
             <HeaderText>Under Construction!</HeaderText>
             <StandardText style={{ textAlign: 'center', marginTop: 5 }}>
-              Recent activities are under construction, but you can still look
-              at your pending follow requests.
+              This page is under construction, but you can still look at your
+              pending follow requests.
             </StandardText>
           </View>
         </View>
