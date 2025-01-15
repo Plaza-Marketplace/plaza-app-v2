@@ -1,10 +1,8 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { FC, useCallback, useRef } from 'react';
+import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 import LinkItemsProduct from '@/components/LinkItemsProduct';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import ProductModal from '@/components/Feed/ProductModal';
 import Spacing from '@/constants/Spacing';
 
 interface ProfileProductsProps {
@@ -14,10 +12,7 @@ interface ProfileProductsProps {
 const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
   const width = Dimensions.get('window').width;
   const { data: products, isLoading } = useGetProductsBySellerId(userId);
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const onProductPress = useCallback(() => {
-    bottomSheetRef.current?.present();
-  }, []);
+
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
@@ -39,21 +34,10 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
               height: width / 2,
             }}
           >
-            <LinkItemsProduct
-              product={item}
-              isSelected={false}
-              onPress={onProductPress}
-            />
+            <LinkItemsProduct product={item} sellerId={userId} />
           </View>
         )}
       />
-      {products?.map((product) => (
-        <ProductModal
-          bottomSheetRef={bottomSheetRef}
-          sellerId={userId}
-          product={product}
-        />
-      ))}
     </>
   );
 };

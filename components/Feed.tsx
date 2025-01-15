@@ -41,7 +41,10 @@ const Feed: FC<FeedProps> = ({ videos }) => {
         offset: MARKETPLACE_FEED_VIDEO_HEIGHT * index,
         index,
       })}
-      initialNumToRender={3}
+      initialNumToRender={10}
+      maxToRenderPerBatch={10}
+      keyExtractor={(item) => item.id.toString()}
+      removeClippedSubviews
     />
   );
 };

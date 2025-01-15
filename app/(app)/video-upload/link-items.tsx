@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import { router } from 'expo-router';
 import { FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import useGetProductsBySellerId from '@/hooks/queries/useGetProductsBySellerId';
+import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useSelectedProducts } from '@/contexts/SelectedProductsContext';

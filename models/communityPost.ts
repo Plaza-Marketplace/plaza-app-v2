@@ -29,7 +29,7 @@ export type ProductDetails = {
     id: Id;
     username: string;
   } | null;
-}
+};
 
 export type ChatterCommunityPost = {
   id: Id;
@@ -46,10 +46,16 @@ export type ChatterCommunityPost = {
     name: string;
     imageUrls: Url[];
     price: number;
+    description: string;
+    category: string;
+    condition: string;
+    shippingPrice: number;
+    quantity: number | null;
     seller: {
       id: Id;
       username: string;
     } | null;
+    createdAt: Timestamp;
   } | null;
   productReview: {
     id: Id;

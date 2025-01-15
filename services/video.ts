@@ -81,7 +81,11 @@ const supabaseToVideo = (video: any): Video => {
 };
 
 export const getVideos = async (): Promise<Video[]> => {
-  const { data, error } = await supabase.from('video').select(query);
+  const { data, error } = await supabase
+    .from('video')
+    .select(query)
+    .limit(30)
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error('Failed');
 

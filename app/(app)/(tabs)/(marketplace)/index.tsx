@@ -3,7 +3,6 @@ import Feed from '@/components/Feed';
 import useGetFeedVideos from '@/hooks/queries/useGetFeedVideos';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
-import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ExploreTab = () => {
