@@ -10,9 +10,11 @@ import { router } from 'expo-router';
 
 interface GeneralHeaderProps {
   name: string;
+  id: Id;
+  currentUser: number;
 }
 
-const GeneralHeader = ({ name }: GeneralHeaderProps) => {
+const GeneralHeader = ({ name, id, currentUser }: GeneralHeaderProps) => {
   const inset = useSafeAreaInsets();
   return (
     <View
@@ -31,9 +33,11 @@ const GeneralHeader = ({ name }: GeneralHeaderProps) => {
       <View>
         <HeaderText>{name}</HeaderText>
       </View>
-      <PressableOpacity onPress={() => router.push('/settings')}>
-        <Ionicons name="cog-outline" size={32} />
-      </PressableOpacity>
+      {id === currentUser && (
+        <PressableOpacity onPress={() => router.push('/settings')}>
+          <Ionicons name="cog-outline" size={32} />
+        </PressableOpacity>
+      )}
     </View>
   );
 };

@@ -28,7 +28,7 @@ const FollowRequest = () => {
   }
   return (
     <>
-      <BackHeader name="Follow Request" />
+      <BackHeader name="Follow Requests" />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}
@@ -72,13 +72,6 @@ const FollowRequest = () => {
           )}
         />
       </View>
-      <PressableOpacity
-        onPress={async () => {
-          createRequest({ senderId: 11, recipientId: user ? user.id : 0 });
-        }}
-      >
-        <Text>Send Follow Request</Text>
-      </PressableOpacity>
     </>
   );
 };

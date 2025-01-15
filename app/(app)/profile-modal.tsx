@@ -1,3 +1,4 @@
+import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import {
   CollapsibleRef,
@@ -7,29 +8,34 @@ import {
 import GeneralHeader from '@/components/GeneralHeader';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
-import ProfileVideos from './profile-videos';
-import ProfileProducts from './profile-products';
-import ProfileReviews from './profile-reviews';
-import ProfileHeader from './ProfileHeader';
+import ProfileVideos from '@/app/(app)/(tabs)/(profile)/profile-videos';
+import ProfileProducts from '@/app/(app)/(tabs)/(profile)/profile-products';
+import ProfileReviews from '@/app/(app)/(tabs)/(profile)/profile-reviews';
+import ProfileHeader from '@/app/(app)/(tabs)/(profile)/ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
-import ProfileLikes from './profile-likes';
-import { Text } from 'react-native';
+import ProfileLikes from '@/app/(app)/(tabs)/(profile)/profile-likes';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams } from 'expo-router';
+import { useGetUserById } from '@/hooks/queries/useUser';
+import FocusHeader from '@/components/FocusHeader';
+import BackHeader from './(tabs)/(inbox)/BackHeader';
 
-const Profile = () => {
+const ProfileModal = () => {
   const ref = React.useRef<CollapsibleRef>();
 
-  const { user } = useAuth();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const user_id = parseInt(id);
+  const { data: user, isLoading } = useGetUserById(user_id);
+  if (isLoading) {
+    return <Text>Loading...</Text>;
+  }
   if (!user) {
     return <Text>User not found...</Text>;
   }
 
   return (
-    <>
-      <GeneralHeader
-        name={`${user.firstName} ${user.lastName}`}
-        id={user.id}
-        currentUser={user.id}
-      />
+    <View style={{ flex: 1 }}>
+      <BackHeader name={`${user.firstName} ${user.lastName}`} />
       <Tabs.Container
         renderHeader={() => <ProfileHeader user={user} currentUser={user.id} />}
         containerStyle={{ zIndex: -1 }}
@@ -77,8 +83,10 @@ const Profile = () => {
           <ProfileLikes userId={user.id} />
         </Tabs.Tab>
       </Tabs.Container>
-    </>
+    </View>
   );
 };
 
-export default Profile;
+export default ProfileModal;
+
+const styles = StyleSheet.create({});

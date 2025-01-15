@@ -1,36 +1,39 @@
 import { supabase } from '@/utils/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'base64-arraybuffer';
+import { CreateVideo, Video } from '@/models/video';
 
-export const getVideos = async (): Promise<Video[]> => {
-  const { data, error } = await supabase.from('video').select(
-    `
-        *,
-        products: video_product(
-          product(
-            *,
-            images: product_image(
-              image_key
-            )
-          )
-        ),
-        like_count: video_like(count),
-        comment_count: video_comment(count),
-        seller_review_count: user(
-          seller_review!seller_id(
-            count
-          )
-        )
-      `
-  );
+const query = `*,
+poster: user!poster_id(
+  id,
+  username,
+  profile_image_url
+),
+products: video_product(
+  product(
+    *,
+    images: product_image(
+      image_key
+    )
+  )
+),
+like_count: video_like(count),
+comment_count: video_comment(count),
+seller_review_count: user(
+  seller_review!seller_id(
+    count
+  )
+)
+`
 
-  if (error) throw new Error('Failed');
-
-  if (!data) return [];
-
-  return data.map((video) => ({
+const supabaseToVideo = (video: any): Video => {
+  return {
     id: video.id,
-    posterId: video.poster_id,
+    poster: {
+      id: video.poster.id,
+      username: video.poster.username,
+      profileImageUrl: video.poster.profile_image_url,
+    },
     videoUrl: supabase.storage
       .from('videos')
       .getPublicUrl(`private/${video.video_key}`).data.publicUrl,
@@ -45,7 +48,7 @@ export const getVideos = async (): Promise<Video[]> => {
 
       return {
         id: product.id,
-        sellerId: video.poster_id,
+        sellerId: video.poster.id,
         name: product.name,
         description: product.description,
         category: product.category,
@@ -62,72 +65,40 @@ export const getVideos = async (): Promise<Video[]> => {
     likeCount: video.like_count[0].count,
     commentCount: video.comment_count[0].count,
     reviewCount: video.seller_review_count.seller_review[0].count,
-  }));
+  }}
+
+export const getVideos = async (): Promise<Video[]> => {
+  const { data, error } = await supabase.from('video').select(query);
+
+  if (error) throw new Error('Failed');
+
+  if (!data) return [];
+
+  return data.map((video) => supabaseToVideo(video));
 };
 
 export const getVideosByUserId = async (userId: Id): Promise<Video[]> => {
-  const { data, error } = await supabase.from('video').select(
-    `
-        *,
-        products: video_product(
-          product(
-            *,
-            images: product_image(
-              image_key
-            )
-          )
-        ),
-        like_count: video_like(count),
-        comment_count: video_comment(count),
-        seller_review_count: user(
-          seller_review!seller_id(
-            count
-          )
-        )
-      `
-  )
+  const { data, error } = await supabase.from('video').select(query)
   .eq('poster_id', userId);
 
   if (error) throw new Error('Failed');
 
   if (!data) return [];
 
-  return data.map((video) => ({
-    id: video.id,
-    posterId: video.poster_id,
-    videoUrl: supabase.storage
-      .from('videos')
-      .getPublicUrl(`private/${video.video_key}`).data.publicUrl,
-    products: video.products.map((productObj): Product => {
-      const product = productObj.product;
-      const imageUrls = product.images.map(
-        (image) =>
-          supabase.storage
-            .from('images')
-            .getPublicUrl(`private/${image.image_key}`).data.publicUrl
-      );
-
-      return {
-        id: product.id,
-        sellerId: video.poster_id,
-        name: product.name,
-        description: product.description,
-        category: product.category,
-        condition: product.condition,
-        price: product.price,
-        shippingPrice: product.shipping_price,
-        imageUrls: imageUrls,
-        quantity: product.quantity,
-        createdAt: product.created_at,
-      };
-    }),
-    description: video.description,
-    createdAt: video.created_at,
-    likeCount: video.like_count[0].count,
-    commentCount: video.comment_count[0].count,
-    reviewCount: video.seller_review_count.seller_review[0].count,
-  }));
+  return data.map((video) => supabaseToVideo(video));
 };
+
+export const getVideoById = async (videoId: Id): Promise<Video> => {
+  const { data, error } = await supabase.from('video').select(query)
+  .eq('id', videoId)
+  .single();
+
+  if (error) throw new Error('Failed');
+
+  if (!data) throw new Error('Failed');
+
+  return supabaseToVideo(data);
+}
 
 export const createVideoLike = async (
   videoLike: CreateVideoLike
@@ -203,7 +174,7 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       description: video.description,
       video_key: key,
     })
-    .select();
+    .select(query);
 
   if (uploadedVideoError) throw new Error('Failed');
 
@@ -220,7 +191,11 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
   console.log('WORKED');
   return {
     id: uploadedVideo[0].id,
-    posterId: uploadedVideo[0].poster_id,
+    poster: {
+      id: uploadedVideo[0].poster.id,
+      username: uploadedVideo[0].poster.username,
+      profileImageUrl: uploadedVideo[0].poster.profile_image_url,
+    },
     videoUrl: supabase.storage.from('videos').getPublicUrl(key).data.publicUrl,
     description: uploadedVideo[0].description,
     products: video.products,

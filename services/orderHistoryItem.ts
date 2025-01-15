@@ -50,3 +50,20 @@ export const createOrderHistoryItems = async (
 
   return;
 };
+
+export const getSalesCountBySellerId = async (sellerId: Id): Promise<number> => {
+  const { count, error } = await supabase
+    .from('order_history_item')
+    .select(`
+        *,
+        soldProduct:product!product_id(
+          *
+        )
+      `, { 'count': 'exact', head: true })
+    .eq('soldProduct.seller_id', sellerId);
+
+  if (error) throw new Error(error.message);
+  else if (count == null) throw new Error('Count is null');
+
+  return count;
+}
