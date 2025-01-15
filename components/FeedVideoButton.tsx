@@ -8,12 +8,14 @@ interface FeedVideoButtonProps {
   name: 'like' | 'review' | 'comment' | 'share';
   count?: number;
   onPress: () => void;
+  color?: string;
 }
 
 const FeedVideoButton: FC<FeedVideoButtonProps> = ({
   name,
   count,
   onPress,
+  color = 'white',
 }) => {
   let iconName: 'heart' | 'star' | 'chatbubble' | 'share' = 'heart';
   switch (name) {
@@ -36,7 +38,7 @@ const FeedVideoButton: FC<FeedVideoButtonProps> = ({
       <Ionicons
         name={iconName}
         size={40}
-        color={'white'}
+        color={color}
         style={styles.iconShadow}
       />
       {count !== null && (

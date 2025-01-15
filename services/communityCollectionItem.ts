@@ -50,12 +50,25 @@ export const getCommunityCollectionItemsByCommunityId = async (
 
 export const createCommunityCollectionItem = async (
   communityCollectionItem: CreateCommunityCollectionItem
-) => {
-  const { error } = await supabase.from('community_collection_item').insert({
+): Promise<CommunityCollectionItem> => {
+  const { data, error } = await supabase.from('community_collection_item').insert({
     community_id: communityCollectionItem.communityId,
     product_id: communityCollectionItem.productId,
     description: communityCollectionItem.description,
-  });
+  }).select(`
+      *, 
+      product(
+        id,
+        name,
+        imageKeys: product_image(image_key)
+      )
+    `);
 
-  if (error) throw new Error(error.message);
+  if (error || !data) throw new Error(error.message);
+
+  return formatCommunityCollectionItem(
+    data[0],
+    data[0].product,
+    data[0].product.imageKeys.map((key) => key.image_key)
+  );
 };
