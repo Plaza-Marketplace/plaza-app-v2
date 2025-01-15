@@ -75,6 +75,45 @@ export type Database = {
         }
         Relationships: []
       }
+      community_collection_item: {
+        Row: {
+          community_id: number
+          created_at: string
+          description: string | null
+          id: number
+          product_id: number
+        }
+        Insert: {
+          community_id: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          product_id: number
+        }
+        Update: {
+          community_id?: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          product_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "community_collection_item_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "community_collection_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_post: {
         Row: {
           community_id: number

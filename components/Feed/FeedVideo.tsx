@@ -15,6 +15,7 @@ import ExpandableDescription from '../ExpandableDescription';
 import Products from './Products';
 import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
+import { Video } from '@/models/video';
 
 interface FeedVideoProps {
   video: Video;
@@ -57,14 +58,19 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
       >
         <View style={styles.infoButtonsContainer}>
           <View style={styles.videoInfoContainer}>
-            <Products sellerId={video.posterId} products={video.products} />
+            <Products sellerId={video.poster.id} products={video.products} />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
-                onPress={() => router.push('/(app)/list-item/create-listing')}
+                onPress={() =>
+                  router.push({
+                    pathname: '/profile-modal',
+                    params: { id: video.poster.id },
+                  })
+                }
                 style={styles.userInfoContainer}
               >
                 <ProfileIcon variant="user" />
-                <BoldSubheaderText>Display Name</BoldSubheaderText>
+                <BoldSubheaderText>{video.poster.username}</BoldSubheaderText>
               </PressableOpacity>
               {video.description && (
                 <ExpandableDescription description={video.description} />

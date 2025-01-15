@@ -1,9 +1,14 @@
+import { Video } from "@/models/video";
 import { supabase } from "@/utils/supabase"
 
 const supabaseToVideo = (video: any): Video => {
   return {
     id: video.id,
-    posterId: video.poster_id,
+    poster: {
+      id: video.poster.id,
+      username: video.poster.username,
+      profileImageUrl: video.poster.profile_image_url,
+    },
     videoUrl: supabase.storage
       .from('videos')
       .getPublicUrl(`private/${video.video_key}`).data.publicUrl,
@@ -58,6 +63,11 @@ export const getVideosLikedByUserId = async (userId: Id): Promise<Video[]> => {
     .select(`
       video:video_id(
       *,
+      poster: user!poster_id(
+        id,
+        username,
+        profile_image_url
+      ),
       products: video_product(
           product(
             *,

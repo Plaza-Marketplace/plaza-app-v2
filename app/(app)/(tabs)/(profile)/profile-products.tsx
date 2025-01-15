@@ -6,6 +6,7 @@ import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySeller
 import LinkItemsProduct from '@/components/LinkItemsProduct';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '@/components/Feed/ProductModal';
+import Spacing from '@/constants/Spacing';
 
 const mocking = Array.from({ length: 10 });
 
@@ -30,6 +31,9 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
         style={{ flex: 1 }}
         numColumns={3}
         data={products}
+        contentContainerStyle={{
+          gap: Spacing.SPACING_3,
+        }}
         renderItem={({ item }) => (
           <View
             style={{

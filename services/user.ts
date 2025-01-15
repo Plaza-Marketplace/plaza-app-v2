@@ -3,6 +3,8 @@ import { supabase } from '@/utils/supabase';
 
 export const getUser = async (id: Id): Promise<User> => {
   const { data, error } = await supabase.from('user').select('*').eq('id', id).single();
+  console.log(data)
+  console.log(error)
   
   if (error) throw new Error(error.message);
   if (!data) throw new Error('User not found');
