@@ -1,7 +1,10 @@
-import { FC } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import PlazaText, { PlazaTextProps } from './PlazaText';
 
-const MediumText: FC<PlazaTextProps> = ({ children, ...rest }) => {
+const MediumText: FC<PropsWithChildren<PlazaTextProps>> = ({
+  children,
+  ...rest
+}) => {
   return (
     <PlazaText fontSize={14} fontWeight="medium" {...rest}>
       {children}
