@@ -1,13 +1,9 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { useRef } from 'react';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import React, { useCallback, useRef } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import FocusHeader from '@/components/FocusHeader';
-import { router, useLocalSearchParams } from 'expo-router';
+import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useGetVideoById } from '@/hooks/queries/useVideo';
-import FeedVideo from '@/components/Feed/FeedVideo';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -23,7 +19,6 @@ import ReviewModal from '@/components/Feed/ReviewModal';
 import CommentModal from '@/components/Feed/CommentModal';
 
 const VideoDisplay = () => {
-  const inset = useSafeAreaInsets();
   const { videoId } = useLocalSearchParams<{ videoId: string }>();
   const { data: video, isLoading } = videoId
     ? useGetVideoById(parseInt(videoId))
@@ -45,9 +40,9 @@ const VideoDisplay = () => {
   }
 
   return (
-    <View style={{ flex: 1, paddingTop: inset.top }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
       <FocusHeader name="Video" />
-      <View style={{ flex: 1, backgroundColor: 'red' }}>
+      <View style={{ flex: 1 }}>
         <VideoView
           style={styles.videoContainer}
           player={player}
@@ -55,14 +50,22 @@ const VideoDisplay = () => {
         >
           <View style={styles.infoButtonsContainer}>
             <View style={styles.videoInfoContainer}>
-              <Products sellerId={video.posterId} products={video.products} />
+              <Products sellerId={video.poster.id} products={video.products} />
               <View style={styles.infoTextContainer}>
                 <PressableOpacity
-                  onPress={() => router.push('/(app)/list-item/create-listing')}
+                  onPress={() =>
+                    router.replace({
+                      pathname: '/profile-modal',
+                      params: { id: video.poster.id },
+                    })
+                  }
                   style={styles.userInfoContainer}
                 >
-                  <ProfileIcon variant="user" />
-                  <BoldSubheaderText>Display Name</BoldSubheaderText>
+                  <ProfileIcon
+                    variant="user"
+                    url={video.poster.profileImageUrl || undefined}
+                  />
+                  <BoldSubheaderText>{video.poster.username}</BoldSubheaderText>
                 </PressableOpacity>
                 {video.description && (
                   <ExpandableDescription description={video.description} />
@@ -94,7 +97,7 @@ const VideoDisplay = () => {
         <ReviewModal bottomSheetRef={reviewModalRef} />
         <CommentModal bottomSheetRef={commentModalRef} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

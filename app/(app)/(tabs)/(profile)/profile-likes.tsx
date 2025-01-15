@@ -13,10 +13,12 @@ interface ProfileLikesProps {
 
 const ProfileLikes: FC<ProfileLikesProps> = ({ userId }) => {
   const { data: videos, isLoading } = useGetVideosLikedByUserId(userId);
-
+  console.log('i am here!');
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
+
+  console.log(videos);
 
   return (
     <Tabs.FlatList

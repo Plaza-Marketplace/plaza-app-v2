@@ -3,6 +3,7 @@ import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { FC, useCallback, useState } from 'react';
 import { Dimensions } from 'react-native';
+import { Video } from '@/models/video';
 
 interface FeedProps {
   videos: Video[];
