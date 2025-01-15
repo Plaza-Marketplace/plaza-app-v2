@@ -27,8 +27,7 @@ const _layout = () => {
   const currentUser = userFromContext?.id;
 
   const { id: userIdStr } = useLocalSearchParams<{ id: string }>();
-  // const userId = parseInt(userIdStr);
-  const userId = 11;
+  const userId = parseInt(userIdStr);
 
   if (userId) {
     const { data: userFromQuery } = useGetUserById(userId);
