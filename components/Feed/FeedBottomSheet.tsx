@@ -13,14 +13,16 @@ const FeedBottomSheet: FC<FeedBottomSheetProps> = ({
   bottomSheetRef,
   children,
 }) => {
-  const snapPoints = useMemo(() => ['50%'], []);
+  const snapPoints = useMemo(() => ['60%'], []);
 
   return (
     <BottomSheetModal
       ref={bottomSheetRef}
       snapPoints={snapPoints}
-      index={1}
-      backdropComponent={BottomSheetBackdrop}
+      backdropComponent={(props) => (
+        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />
+      )}
+      enableDynamicSizing={false}
     >
       <BottomSheetView style={{ flex: 1 }}>{children}</BottomSheetView>
     </BottomSheetModal>

@@ -1,14 +1,11 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { FC, useCallback, useRef } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
-import ProductPreview from '@/components/ProductPreview';
 import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 import LinkItemsProduct from '@/components/LinkItemsProduct';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '@/components/Feed/ProductModal';
 import Spacing from '@/constants/Spacing';
-
-const mocking = Array.from({ length: 10 });
 
 interface ProfileProductsProps {
   userId: Id;
@@ -29,13 +26,14 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
     <>
       <Tabs.FlatList
         style={{ flex: 1 }}
-        numColumns={3}
+        numColumns={2}
         data={products}
         contentContainerStyle={{
           gap: Spacing.SPACING_3,
         }}
         renderItem={({ item }) => (
           <View
+            key={item.id}
             style={{
               width: width / 2,
               height: width / 2,

@@ -21,7 +21,6 @@ const FeedProduct: FC<ProductProps> = ({ sellerId, product }) => {
         }
         onPress={() => {
           bottomSheetRef.current?.present();
-          bottomSheetRef.current?.expand();
         }}
       />
       <ProductModal

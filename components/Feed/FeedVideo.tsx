@@ -16,6 +16,7 @@ import Products from './Products';
 import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
 import { Video } from '@/models/video';
+import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
 
 interface FeedVideoProps {
   video: Video;
@@ -25,6 +26,7 @@ interface FeedVideoProps {
 const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
+  const addToCommunityCollectionModalRef = useRef<BottomSheetModal>(null);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
@@ -86,7 +88,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               count={video.reviewCount}
               onPress={() => {
                 reviewModalRef.current?.present();
-                reviewModalRef.current?.expand();
               }}
             />
             <FeedVideoButton
@@ -94,15 +95,23 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               count={video.commentCount}
               onPress={() => {
                 commentModalRef.current?.present();
-                commentModalRef.current?.expand();
               }}
             />
-            <FeedVideoButton name="share" onPress={() => {}} />
+            <FeedVideoButton
+              name="share"
+              onPress={() =>
+                addToCommunityCollectionModalRef.current?.present()
+              }
+            />
           </View>
         </View>
       </VideoView>
       <ReviewModal bottomSheetRef={reviewModalRef} />
       <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
+      <AddToCommunityCollectionModal
+        products={video.products}
+        bottomSheetRef={addToCommunityCollectionModalRef}
+      />
     </>
   );
 };
