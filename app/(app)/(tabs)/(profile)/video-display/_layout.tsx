@@ -1,6 +1,9 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useRef } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import FocusHeader from '@/components/FocusHeader';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useGetVideoById } from '@/hooks/queries/useVideo';
@@ -20,6 +23,7 @@ import ReviewModal from '@/components/Feed/ReviewModal';
 import CommentModal from '@/components/Feed/CommentModal';
 
 const VideoDisplay = () => {
+  const inset = useSafeAreaInsets();
   const { videoId } = useLocalSearchParams<{ videoId: string }>();
   const { data: video, isLoading } = videoId
     ? useGetVideoById(parseInt(videoId))
@@ -41,7 +45,7 @@ const VideoDisplay = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <View style={{ flex: 1, paddingTop: inset.top }}>
       <FocusHeader name="Video" />
       <View style={{ flex: 1, backgroundColor: 'red' }}>
         <VideoView
@@ -90,7 +94,7 @@ const VideoDisplay = () => {
         <ReviewModal bottomSheetRef={reviewModalRef} />
         <CommentModal bottomSheetRef={commentModalRef} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

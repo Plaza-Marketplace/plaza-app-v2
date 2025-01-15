@@ -120,17 +120,18 @@ export const getFollowerCounts = async (destId: Id): Promise<number> => {
   return count;
 }
 
-export const deleteFollow = async (followId: Id): Promise<Follow> => {
+export const deleteFollow = async (follow: CreateFollow): Promise<Follow> => {
   const { data, error } = await supabase
     .from('follow')
     .delete()
-    .eq('id', followId)
+    .eq('source_id', follow.sourceId)
+    .eq('dest_id', follow.destId)
     .select()
     .single();
 
   if (error) {
     throw new Error(
-      `The delete follow query for ${followId} failed with exception ${error}`
+      `The delete follow query for ${follow.destId} failed with exception ${error}`
     );
   }
 

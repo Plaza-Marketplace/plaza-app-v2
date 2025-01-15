@@ -30,12 +30,13 @@ const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
         >
           <VideoPreview
             uri={item.videoUrl}
-            onPress={() =>
+            onPress={() => {
+              console.log('here');
               router.push({
-                pathname: '/video-display',
+                pathname: 'video-display',
                 params: { videoId: item.id },
-              })
-            }
+              });
+            }}
           />
         </View>
       )}

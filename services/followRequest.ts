@@ -211,6 +211,41 @@ export const deleteFollowRequest = async (requestId: Id): Promise<FollowRequest>
   return supabaseToFollowRequest(data);
 }
 
+export const deleteFollowRequestBySenderAndRecipient = async ({senderId, recipientId}: CreateFollowRequest): Promise<FollowRequest> => {
+  const { data, error } = await supabase
+    .from('follow_request')
+    .delete()
+    .eq('sender_id', senderId)
+    .eq('recipient_id', recipientId)
+    .select(`
+      id,
+      created_at,
+      sender:user!sender_id(
+        id,
+        username,
+        first_name,
+        last_name,
+        profile_image_url
+      ),
+      recipient:user!recipient_id(
+        id,
+        username,
+        first_name,
+        last_name,
+        profile_image_url
+      )
+      `)
+    .single();
+
+  if (error) {
+    throw new Error(
+      `The delete follow request query for ${senderId} and ${recipientId} failed with exception ${error}`
+    );
+  }
+
+  return supabaseToFollowRequest(data);
+}
+
 export const doesFollowRequestExist = async (senderId: Id, recipientId: Id): Promise<boolean> => {
   const { count, error } = await supabase
     .from('follow_request')
