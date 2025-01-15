@@ -1,8 +1,15 @@
 import { FC, PropsWithChildren } from 'react';
-import PlazaText from './PlazaText';
+import PlazaText, { PlazaTextProps } from './PlazaText';
 
-const CaptionText: FC<PropsWithChildren> = ({ children }) => {
-  return <PlazaText fontSize={12}>{children}</PlazaText>;
+const CaptionText: FC<PropsWithChildren<PlazaTextProps>> = ({
+  children,
+  style,
+}) => {
+  return (
+    <PlazaText fontSize={12} style={style}>
+      {children}
+    </PlazaText>
+  );
 };
 
 export default CaptionText;
