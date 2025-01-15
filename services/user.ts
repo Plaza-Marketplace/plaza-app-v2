@@ -1,5 +1,4 @@
 import { Tables } from '@/database.types';
-import { Seller, UpdateUser, User } from '@/models/user';
 import { supabase } from '@/utils/supabase';
 
 export const formatUser = (user: Tables<'user'>): User => {
