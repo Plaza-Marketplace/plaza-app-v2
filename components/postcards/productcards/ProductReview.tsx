@@ -1,19 +1,24 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
+import React, { FC } from 'react';
 import productCardStyles from './styles';
 import CaptionText from '@/components/Texts/CaptionText';
 import PlazaText from '@/components/Texts/PlazaText';
 import { ProfileIconCircle } from '../PostIcon';
+import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 
-const ProductReview = () => {
+interface ProductReviewProps {
+  product: Product;
+}
+
+const ProductReview: FC<ProductReviewProps> = ({ product }) => {
+  const { data: seller } = useGetSellerInfo(product.sellerId);
   return (
     <View style={productCardStyles.shadow}>
       <View style={[productCardStyles.reviewContainer]}>
         <View style={styles.imageContainer}></View>
 
         <View style={styles.contentContainer}>
-          <PlazaText>ProductReview</PlazaText>
-
+          <PlazaText>{product.name}</PlazaText>x
           <View
             style={{
               marginTop: 10,
@@ -23,7 +28,7 @@ const ProductReview = () => {
           >
             <ProfileIconCircle url="lole" />
             <View style={{ marginLeft: 5 }}>
-              <CaptionText>Product</CaptionText>
+              <CaptionText>{seller ? seller.username : ''}</CaptionText>
             </View>
           </View>
         </View>

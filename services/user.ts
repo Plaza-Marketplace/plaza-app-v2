@@ -1,4 +1,4 @@
-import { UpdateUser, User } from '@/models/user';
+import { Seller, UpdateUser, User } from '@/models/user';
 import { supabase } from '@/utils/supabase';
 
 export const getUser = async (id: Id): Promise<User> => {
