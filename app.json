@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Plaza",
-    "slug": "plaza-app-v2",
+    "slug": "plaza",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -36,6 +36,12 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "28a11564-602c-48fa-887b-f35be96b95c6"
+      }
+    },
+    "owner": "plazamarketplace"
   }
 }
