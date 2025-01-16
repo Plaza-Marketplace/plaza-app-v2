@@ -74,7 +74,7 @@ export const getSalesCountBySellerId = async (
     .select(
       `
         *,
-        soldProduct:product!product_id(
+        soldProduct:product!inner(
           *
         )
       `,
