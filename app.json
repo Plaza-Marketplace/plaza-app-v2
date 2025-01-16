@@ -42,12 +42,6 @@
         "projectId": "28a11564-602c-48fa-887b-f35be96b95c6"
       }
     },
-    "owner": "plazamarketplace",
-    "runtimeVersion": {
-      "policy": "appVersion"
-    },
-    "updates": {
-      "url": "https://u.expo.dev/28a11564-602c-48fa-887b-f35be96b95c6"
-    }
+    "owner": "plazamarketplace"
   }
 }
