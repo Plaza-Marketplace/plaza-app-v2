@@ -1,4 +1,4 @@
 import { Dimensions } from 'react-native';
 
 export const MARKETPLACE_FEED_VIDEO_HEIGHT =
-  Dimensions.get('window').height - 80;
+  Dimensions.get('window').height - 85;

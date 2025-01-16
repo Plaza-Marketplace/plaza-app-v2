@@ -1,7 +1,7 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
@@ -31,6 +31,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
+    player.volume = 0.5;
     player.pause();
   });
 
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
   videoContainer: {
     width: Dimensions.get('window').width,
     height: MARKETPLACE_FEED_VIDEO_HEIGHT,
-    backgroundColor: Color.SURFACE_PRIMARY,
+    backgroundColor: Color.GREY_500,
     justifyContent: 'flex-end',
   },
   infoButtonsContainer: {

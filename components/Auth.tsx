@@ -42,8 +42,6 @@ export default function Auth() {
     setLoading(false);
   }
 
-  console.log('HELLO');
-
   return (
     <View style={styles.container}>
       <View style={[styles.verticallySpaced, styles.mt20]}>

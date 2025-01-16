@@ -19,7 +19,6 @@ const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
             uri: imageUrl,
           }}
           style={styles.image}
-          onError={() => console.log('error')}
         />
       ) : (
         <View

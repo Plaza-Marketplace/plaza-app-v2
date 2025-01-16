@@ -1,10 +1,12 @@
 import { getVideos } from '@/services/video';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
 const useGetFeedVideos = () =>
-  useQuery({
+  useInfiniteQuery({
     queryKey: ['feedVideos'],
-    queryFn: getVideos,
+    queryFn: ({ pageParam }) => getVideos(pageParam === -1 ? null : pageParam),
+    initialPageParam: -1,
+    getNextPageParam: (lastPage) => lastPage[lastPage.length - 1].id,
     staleTime: 1000 * 60 * 5,
   });
 

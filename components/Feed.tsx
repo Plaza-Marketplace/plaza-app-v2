@@ -1,17 +1,22 @@
 import { FlatList } from 'react-native';
 import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
-import { FC, useCallback, useState } from 'react';
-import { Dimensions } from 'react-native';
+import React, { FC, useCallback, useState } from 'react';
 import { Video } from '@/models/video';
 
 interface FeedProps {
   videos: Video[];
   refreshing: boolean;
   onRefresh: () => void;
+  fetchNextPage: () => void;
 }
 
-const Feed: FC<FeedProps> = ({ videos, refreshing, onRefresh }) => {
+const Feed: FC<FeedProps> = ({
+  videos,
+  refreshing,
+  onRefresh,
+  fetchNextPage,
+}) => {
   const [currViewableIndex, setCurrViewableIndex] = useState(0);
   const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length === 0) {
@@ -41,7 +46,7 @@ const Feed: FC<FeedProps> = ({ videos, refreshing, onRefresh }) => {
       viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
       onViewableItemsChanged={handleViewableItemsChanged}
       getItemLayout={(data, index) => ({
-        length: Dimensions.get('window').width,
+        length: MARKETPLACE_FEED_VIDEO_HEIGHT,
         offset: MARKETPLACE_FEED_VIDEO_HEIGHT * index,
         index,
       })}
@@ -50,7 +55,7 @@ const Feed: FC<FeedProps> = ({ videos, refreshing, onRefresh }) => {
       keyExtractor={(item) => item.id.toString()}
       removeClippedSubviews
       onEndReachedThreshold={2}
-      onEndReached={() => console.log('HELLO')}
+      onEndReached={fetchNextPage}
     />
   );
 };

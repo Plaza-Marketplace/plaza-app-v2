@@ -9,7 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ExploreTab = () => {
   const insets = useSafeAreaInsets();
-  const { data, error, refetch } = useGetFeedVideos();
+  const { data, error, refetch, fetchNextPage } = useGetFeedVideos();
   const [refreshing, setRefreshing] = useState(false);
 
   if (!data || error) return null;
@@ -18,8 +18,6 @@ const ExploreTab = () => {
     setRefreshing(true);
 
     const { data } = await refetch();
-
-    console.log(data);
 
     setRefreshing(false);
   };
@@ -33,7 +31,12 @@ const ExploreTab = () => {
         <Ionicons name="cart" size={36} color={Color.ICON_TERTIARY} />
       </PressableOpacity>
 
-      <Feed videos={data} refreshing={refreshing} onRefresh={onRefresh} />
+      <Feed
+        videos={data.pages.flat()}
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        fetchNextPage={fetchNextPage}
+      />
     </>
   );
 };

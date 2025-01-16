@@ -16,10 +16,12 @@ export const formatUser = (user: Tables<'user'>): User => {
 };
 
 export const getUser = async (id: Id): Promise<User> => {
-  const { data, error } = await supabase.from('user').select('*').eq('id', id).single();
-  console.log(data)
-  console.log(error)
-  
+  const { data, error } = await supabase
+    .from('user')
+    .select('*')
+    .eq('id', id)
+    .single();
+
   if (error) throw new Error(error.message);
   if (!data) throw new Error('User not found');
 
@@ -33,7 +35,7 @@ export const getUser = async (id: Id): Promise<User> => {
     description: data.description,
     profileImageUrl: data.profile_image_url,
     createdAt: data.created_at,
-  }
+  };
 };
 
 export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {

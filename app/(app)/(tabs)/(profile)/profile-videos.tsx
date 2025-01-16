@@ -31,7 +31,6 @@ const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
           <VideoPreview
             uri={item.videoUrl}
             onPress={() => {
-              console.log('here');
               router.push({
                 pathname: 'video-display',
                 params: { videoId: item.id },

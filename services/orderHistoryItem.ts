@@ -34,7 +34,6 @@ export const createOrderHistoryItems = async (
   userId: Id,
   productIds: Id[]
 ): Promise<OrderHistoryItem> => {
-  console.log('HELLO?');
   const { data, error } = await supabase
     .from('order_history_item')
     .insert(
@@ -43,7 +42,8 @@ export const createOrderHistoryItems = async (
         product_id: productId,
       }))
     )
-    .select(`
+    .select(
+      `
         *,
         product(
           *,
@@ -51,9 +51,10 @@ export const createOrderHistoryItems = async (
             image_key
           )
         )
-      `).single();
+      `
+    )
+    .single();
 
-  console.log(error);
   if (error || !data) throw new Error(error.message);
 
   return {
@@ -62,22 +63,27 @@ export const createOrderHistoryItems = async (
     status: data.status as OrderStatus,
     product: formatProduct(data.product, data.product.image_keys),
     createdAt: data.created_at,
-  }
+  };
 };
 
-export const getSalesCountBySellerId = async (sellerId: Id): Promise<number> => {
+export const getSalesCountBySellerId = async (
+  sellerId: Id
+): Promise<number> => {
   const { count, error } = await supabase
     .from('order_history_item')
-    .select(`
+    .select(
+      `
         *,
         soldProduct:product!product_id(
           *
         )
-      `, { 'count': 'exact', head: true })
+      `,
+      { count: 'exact', head: true }
+    )
     .eq('soldProduct.seller_id', sellerId);
 
   if (error) throw new Error(error.message);
   else if (count == null) throw new Error('Count is null');
 
   return count;
-}
+};

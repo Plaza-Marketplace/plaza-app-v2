@@ -76,12 +76,19 @@ const supabaseToVideo = (video: any): Video => {
   };
 };
 
-export const getVideos = async (): Promise<Video[]> => {
-  const { data, error } = await supabase
-    .from('video')
-    .select(query)
-    .limit(5)
-    .order('created_at', { ascending: false });
+export const getVideos = async (lastVideoId: Id | null): Promise<Video[]> => {
+  const { data, error } = lastVideoId
+    ? await supabase
+        .from('video')
+        .select(query)
+        .lt('id', lastVideoId)
+        .limit(5)
+        .order('created_at', { ascending: false })
+    : await supabase
+        .from('video')
+        .select(query)
+        .limit(5)
+        .order('created_at', { ascending: false });
 
   if (error) throw new Error('Failed');
 
@@ -132,10 +139,6 @@ export const createVideoLike = async (
     })
     .select();
 
-  console.log(data);
-  console.log(isLiked);
-  console.log(error);
-
   if (error || !data) throw new Error('Failed');
 
   return {
@@ -160,10 +163,6 @@ export const deleteVideoLike = async (
     .eq('liker_id', videoLike.likerId)
     .select()
     .single();
-
-  console.log(data);
-  console.log(isLiked);
-  console.log(error);
 
   if (error || !data) throw new Error('Failed');
 
@@ -196,13 +195,13 @@ export const getVideoIsLiked = async (
 export const createVideo = async (video: CreateVideo): Promise<Video> => {
   const key = uuidv4();
   const path = `private/${key}`;
-  console.log('Creating');
+
   const { data, error } = await supabase.storage
     .from('videos')
     .upload(path, decode(video.base64Video), {
       contentType: 'video/quicktime',
     });
-  console.log(error);
+
   if (error) throw new Error('Failed');
 
   const { data: uploadedVideo, error: uploadedVideoError } = await supabase
@@ -224,9 +223,9 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
         product_id: product.id,
       }))
     );
-  console.log('NO ERROR');
+
   if (createVideoProductError) throw new Error('Failed');
-  console.log('WORKED');
+
   return {
     id: uploadedVideo[0].id,
     poster: {

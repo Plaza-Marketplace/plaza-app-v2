@@ -36,8 +36,6 @@ const PostCard = ({ onPress, communityPost }: PostCardProps) => {
 
   let additionalComponent = null;
 
-  console.log(product?.seller?.id === undefined ? title : product.seller.id);
-
   switch (postType) {
     case PostType.REVIEW:
       if (!product) {
