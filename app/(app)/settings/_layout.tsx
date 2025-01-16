@@ -20,10 +20,12 @@ import { AuthContext } from '@/contexts/AuthContext';
 import { useUpdateUser } from '@/hooks/queries/useUser';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { supabase } from '@/utils/supabase';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
   const { mutate, isSuccess } = useUpdateUser();
+  const queryClient = useQueryClient();
 
   useEffect(() => {
     if (isSuccess) {
@@ -89,7 +91,8 @@ const Settings = () => {
               <PressableOpacity
                 onPress={() => {
                   supabase.auth.signOut();
-                  router.navigate('/auth');
+                  // queryClient.clear();
+                  router.navigate('/login');
                 }}
               >
                 <Text style={{ color: 'red' }}>Logout</Text>

@@ -31,7 +31,7 @@ const AddPostModal = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FocusHeader name="List an Item" />
+      <FocusHeader name="Create a Post" />
       <Formik
         initialValues={{
           title: '',

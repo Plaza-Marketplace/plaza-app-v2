@@ -19,6 +19,7 @@ const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
 
   const { user } = useAuth();
+  console.log(user);
   if (!user) {
     return <Text>User not found...</Text>;
   }
