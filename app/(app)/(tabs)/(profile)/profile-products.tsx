@@ -2,8 +2,8 @@ import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
-import LinkItemsProduct from '@/components/LinkItemsProduct';
 import Spacing from '@/constants/Spacing';
+import ProfileProduct from '@/components/ProfileProduct';
 
 interface ProfileProductsProps {
   userId: Id;
@@ -34,7 +34,7 @@ const ProfileProducts: FC<ProfileProductsProps> = ({ userId }) => {
               height: width / 2,
             }}
           >
-            <LinkItemsProduct product={item} sellerId={userId} />
+            <ProfileProduct product={item} />
           </View>
         )}
       />
