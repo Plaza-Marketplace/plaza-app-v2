@@ -1,9 +1,4 @@
 import {
-  DarkTheme,
-  DefaultTheme,
-  ThemeProvider,
-} from '@react-navigation/native';
-import {
   useFonts,
   Inter_100Thin,
   Inter_200ExtraLight,
@@ -61,13 +56,9 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
           <BottomSheetModalProvider>
-            <ThemeProvider
-              value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
-            >
-              <AuthProvider>
-                <Slot />
-              </AuthProvider>
-            </ThemeProvider>
+            <AuthProvider>
+              <Slot />
+            </AuthProvider>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
