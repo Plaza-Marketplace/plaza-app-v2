@@ -10,12 +10,12 @@ import { ProductDetails } from '@/models/communityPost';
 const LandingPage = () => {
   const test: ProductDetails = {
     id: 1,
-    name: 'test',
+    name: 'Product',
     imageUrls: ['test'],
     price: 1,
     seller: {
       id: 1,
-      username: 'joe',
+      username: 'Joe',
     },
   };
 

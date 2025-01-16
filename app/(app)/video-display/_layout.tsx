@@ -47,6 +47,7 @@ const VideoDisplay = () => {
           style={styles.videoContainer}
           player={player}
           nativeControls={false}
+          contentFit="cover"
         >
           <View style={styles.infoButtonsContainer}>
             <View style={styles.videoInfoContainer}>
@@ -61,14 +62,36 @@ const VideoDisplay = () => {
                   }
                   style={styles.userInfoContainer}
                 >
-                  <ProfileIcon
-                    variant="user"
-                    url={video.poster.profileImageUrl || undefined}
-                  />
-                  <BoldSubheaderText>{video.poster.username}</BoldSubheaderText>
+                  <View
+                    style={{
+                      shadowColor: 'black',
+                      shadowRadius: 1,
+                      shadowOffset: { width: 0.5, height: 0.5 },
+                    }}
+                  >
+                    <ProfileIcon
+                      variant="user"
+                      url={video.poster.profileImageUrl || undefined}
+                    />
+                  </View>
+                  <BoldSubheaderText
+                    color={'white'}
+                    style={{
+                      color: 'white',
+                      textShadowColor: 'black',
+                      textShadowOffset: { width: 0.5, height: 0.5 },
+                      textShadowRadius: 2,
+                    }}
+                  >
+                    {video.poster.username}
+                  </BoldSubheaderText>
                 </PressableOpacity>
                 {video.description && (
-                  <ExpandableDescription description={video.description} />
+                  <ExpandableDescription
+                    textColor="white"
+                    shadow
+                    description={video.description}
+                  />
                 )}
               </View>
             </View>
