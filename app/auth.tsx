@@ -12,7 +12,7 @@ const _layout = () => {
   }
 
   return (
-    <View>
+    <View style={{ backgroundColor: 'white', height: '100%' }}>
       <Auth />
     </View>
   );

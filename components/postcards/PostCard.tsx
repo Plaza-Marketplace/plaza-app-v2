@@ -20,18 +20,8 @@ interface PostCardProps {
 }
 
 const PostCard = ({ onPress, communityPost }: PostCardProps) => {
-  const {
-    id,
-    community,
-    poster,
-    title,
-    description,
-    postType,
-    product,
-    productReview,
-    sellerReview,
-    createdAt,
-  } = communityPost;
+  const { id, poster, title, description, postType, product, createdAt } =
+    communityPost;
   const productModalRef = useRef<BottomSheetModal>(null);
 
   let additionalComponent = null;
@@ -60,16 +50,16 @@ const PostCard = ({ onPress, communityPost }: PostCardProps) => {
       break;
   }
 
-  return onPress ? (
+  return !onPress ? (
     <>
       <PressableOpacity
         style={styles.container}
-        onPress={() =>
+        onPress={() => {
           router.navigate({
             pathname: '/post-modal',
             params: { postId: id, postName: title },
-          })
-        }
+          });
+        }}
       >
         <View style={styles.userInfoContainer}>
           <ProfileIconCircle url="lole" />
