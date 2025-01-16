@@ -3,7 +3,7 @@ type CommunityCollectionItem = {
 
   communityId: Id;
 
-  product: Pick<Product, 'id' | 'name' | 'imageUrls'>;
+  product: Product;
 
   description: string | null;
 

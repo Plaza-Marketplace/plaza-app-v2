@@ -5,16 +5,15 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import SubheaderText from '../Texts/SubheaderText';
-import Rating from '../Rating';
 import Spacing from '@/constants/Spacing';
 import UserInfo from '../UserInfo';
-import ExpandableDescription from '../ExpandableDescription';
 import { Image } from 'expo-image';
 import useCreateCartItem from '@/hooks/queries/useCreateCartItem';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 import StandardText from '../Texts/StandardText';
+import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
 
 interface ProductModalProps {
   sellerId: Id;
@@ -31,6 +30,10 @@ const ProductModal: FC<ProductModalProps> = ({
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
   const { mutate: createCartItem } = useCreateCartItem(product, user?.id);
+  const { mutate: createOrderHistoryItem } = useCreateOrderHistoryItems(
+    [product.id],
+    user?.id
+  );
   const { data: seller } = useGetSellerInfo(sellerId);
 
   return (
@@ -57,7 +60,7 @@ const ProductModal: FC<ProductModalProps> = ({
           leftTitle="Add to Cart"
           rightTitle="Buy Now"
           leftOnPress={createCartItem}
-          rightOnPress={() => {}}
+          rightOnPress={createOrderHistoryItem}
         />
       </View>
     </FeedBottomSheet>

@@ -2,7 +2,6 @@ import CommunityHeader from '@/components/Community/CommunityHeader';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
 import { useGetCommunityById } from '@/hooks/queries/useCommunity';
-import { MOCK_COMMUNITY_PRODUCTS } from '@/mocks';
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBar,
@@ -38,19 +37,6 @@ const Community = () => {
   if (isPending) return <PlazaText>Loading...</PlazaText>;
 
   if (!community || error) return <PlazaText>Community not found</PlazaText>;
-
-  const communityProducts = MOCK_COMMUNITY_PRODUCTS;
-
-  const leftColumn = [];
-  const rightColumn = [];
-
-  for (let i = 0; i < communityProducts.length; i++) {
-    if (i % 2 === 0) {
-      leftColumn.push(communityProducts[i]);
-    } else {
-      rightColumn.push(communityProducts[i]);
-    }
-  }
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>

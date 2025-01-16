@@ -45,12 +45,12 @@ const Feed: FC<FeedProps> = ({ videos, refreshing, onRefresh }) => {
         offset: MARKETPLACE_FEED_VIDEO_HEIGHT * index,
         index,
       })}
-      initialNumToRender={10}
-      maxToRenderPerBatch={10}
+      initialNumToRender={5}
+      maxToRenderPerBatch={5}
       keyExtractor={(item) => item.id.toString()}
       removeClippedSubviews
       onEndReachedThreshold={2}
-      // onEndReached={}
+      onEndReached={() => console.log('HELLO')}
     />
   );
 };

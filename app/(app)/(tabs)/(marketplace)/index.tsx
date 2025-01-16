@@ -1,5 +1,6 @@
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Feed from '@/components/Feed';
+import Color from '@/constants/Color';
 import useGetFeedVideos from '@/hooks/queries/useGetFeedVideos';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
@@ -29,7 +30,7 @@ const ExploreTab = () => {
         onPress={() => router.push('/cart')}
         style={{ top: insets.top, right: 16, position: 'absolute', zIndex: 99 }}
       >
-        <Ionicons name="cart" size={36} />
+        <Ionicons name="cart" size={36} color={Color.ICON_TERTIARY} />
       </PressableOpacity>
 
       <Feed videos={data} refreshing={refreshing} onRefresh={onRefresh} />

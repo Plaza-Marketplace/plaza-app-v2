@@ -2,6 +2,7 @@ import { supabase } from '@/utils/supabase';
 import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'base64-arraybuffer';
 import { CreateVideo, Video } from '@/models/video';
+import { getImagePublicUrls, getVideoPublicUrl } from './storage';
 
 const query = `
   *,
@@ -45,16 +46,11 @@ const supabaseToVideo = (video: any): Video => {
       username: video.poster.username,
       profileImageUrl: video.poster.profile_image_url,
     },
-    videoUrl: supabase.storage
-      .from('videos')
-      .getPublicUrl(`private/${video.video_key}`).data.publicUrl,
+    videoUrl: getVideoPublicUrl(video.video_key),
     products: video.products.map((productObj): Product => {
       const product = productObj.product;
-      const imageUrls = product.images.map(
-        (image) =>
-          supabase.storage
-            .from('images')
-            .getPublicUrl(`private/${image.image_key}`).data.publicUrl
+      const imageUrls = getImagePublicUrls(
+        product.images.map((image) => image.image_key)
       );
 
       return {
@@ -84,7 +80,7 @@ export const getVideos = async (): Promise<Video[]> => {
   const { data, error } = await supabase
     .from('video')
     .select(query)
-    .limit(30)
+    .limit(5)
     .order('created_at', { ascending: false });
 
   if (error) throw new Error('Failed');
@@ -126,7 +122,7 @@ export const createVideoLike = async (
 ): Promise<VideoLike> => {
   const isLiked = await getVideoIsLiked(videoLike.videoId, videoLike.likerId);
 
-  if(isLiked) throw new Error('Already liked, failed');
+  if (isLiked) throw new Error('Already liked, failed');
 
   const { data, error } = await supabase
     .from('video_like')
@@ -136,9 +132,9 @@ export const createVideoLike = async (
     })
     .select();
 
-  console.log(data)
-  console.log(isLiked)
-  console.log(error)
+  console.log(data);
+  console.log(isLiked);
+  console.log(error);
 
   if (error || !data) throw new Error('Failed');
 
@@ -155,7 +151,7 @@ export const deleteVideoLike = async (
 ): Promise<VideoLike> => {
   const isLiked = await getVideoIsLiked(videoLike.videoId, videoLike.likerId);
 
-  if(!isLiked) throw new Error('Already unliked, failed');
+  if (!isLiked) throw new Error('Already unliked, failed');
 
   const { data, error } = await supabase
     .from('video_like')
@@ -165,9 +161,9 @@ export const deleteVideoLike = async (
     .select()
     .single();
 
-  console.log(data)
-  console.log(isLiked)
-  console.log(error)
+  console.log(data);
+  console.log(isLiked);
+  console.log(error);
 
   if (error || !data) throw new Error('Failed');
 
@@ -238,7 +234,7 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       username: uploadedVideo[0].poster.username,
       profileImageUrl: uploadedVideo[0].poster.profile_image_url,
     },
-    videoUrl: supabase.storage.from('videos').getPublicUrl(key).data.publicUrl,
+    videoUrl: getVideoPublicUrl(key),
     description: uploadedVideo[0].description,
     products: video.products,
     createdAt: uploadedVideo[0].created_at,

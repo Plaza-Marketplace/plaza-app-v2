@@ -132,11 +132,7 @@ export const createProduct = async (
     condition: data[0].condition,
     price: data[0].price,
     shippingPrice: data[0].shipping_price,
-    imageUrls: keys.map(
-      (key) =>
-        supabase.storage.from('images').getPublicUrl(`private/${key}`).data
-          .publicUrl
-    ),
+    imageUrls: getImagePublicUrls(keys),
     quantity: data[0].quantity,
     createdAt: data[0].created_at,
   };

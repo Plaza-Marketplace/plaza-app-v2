@@ -1,5 +1,6 @@
-import { Video } from "@/models/video";
-import { supabase } from "@/utils/supabase"
+import { Video } from '@/models/video';
+import { supabase } from '@/utils/supabase';
+import { getImagePublicUrls, getVideoPublicUrl } from './storage';
 
 const supabaseToVideo = (video: any): Video => {
   return {
@@ -9,16 +10,11 @@ const supabaseToVideo = (video: any): Video => {
       username: video.poster.username,
       profileImageUrl: video.poster.profile_image_url,
     },
-    videoUrl: supabase.storage
-      .from('videos')
-      .getPublicUrl(`private/${video.video_key}`).data.publicUrl,
+    videoUrl: getVideoPublicUrl(video.video_key),
     products: video.products.map((productObj): Product => {
       const product = productObj.product;
-      const imageUrls = product.images.map(
-        (image) =>
-          supabase.storage
-            .from('images')
-            .getPublicUrl(`private/${image.image_key}`).data.publicUrl
+      const imageUrls = getImagePublicUrls(
+        product.images.map((image) => image.image_key)
       );
 
       return {
@@ -40,27 +36,33 @@ const supabaseToVideo = (video: any): Video => {
     likeCount: video.like_count[0].count,
     commentCount: video.comment_count[0].count,
     reviewCount: video.seller_review_count.seller_review[0].count,
-  }}
+  };
+};
 
-export const getIsVideoLikedByUser = async (videoId: Id, userId: Id): Promise<boolean> => {
-  const { count, error } = await supabase.from('video_like')
+export const getIsVideoLikedByUser = async (
+  videoId: Id,
+  userId: Id
+): Promise<boolean> => {
+  const { count, error } = await supabase
+    .from('video_like')
     .select('*', { count: 'exact', head: true })
     .eq('video_id', videoId)
-    .eq('liker_id', userId)
+    .eq('liker_id', userId);
 
-  if(error) {
-    throw new Error(error.message)
-  }
-  else if(count === null) {
-    return false
+  if (error) {
+    throw new Error(error.message);
+  } else if (count === null) {
+    return false;
   }
 
-  return count > 0
-}
+  return count > 0;
+};
 
 export const getVideosLikedByUserId = async (userId: Id): Promise<Video[]> => {
-  const { data, error } = await supabase.from('video_like')
-    .select(`
+  const { data, error } = await supabase
+    .from('video_like')
+    .select(
+      `
       video:video_id(
       *,
       poster: user!poster_id(
@@ -82,12 +84,13 @@ export const getVideosLikedByUserId = async (userId: Id): Promise<Video[]> => {
           seller_review!seller_id(
             count
           )
-        ))`)
-    .eq('liker_id', userId)
+        ))`
+    )
+    .eq('liker_id', userId);
 
-  if(error) {
-    throw new Error(error.message)
+  if (error) {
+    throw new Error(error.message);
   }
 
-  return data.map((video) => supabaseToVideo(video.video))
-}
+  return data.map((video) => supabaseToVideo(video.video));
+};

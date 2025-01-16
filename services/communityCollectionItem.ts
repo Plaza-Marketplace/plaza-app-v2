@@ -4,7 +4,7 @@ import { getImagePublicUrls } from './storage';
 
 export const formatCommunityCollectionItem = (
   communityCollectionItem: Tables<'community_collection_item'>,
-  product: Pick<Tables<'product'>, 'id' | 'name'>,
+  product: Tables<'product'>,
   productImageKeys: UUID[]
 ): CommunityCollectionItem => {
   return {
@@ -13,6 +13,14 @@ export const formatCommunityCollectionItem = (
     product: {
       id: product.id,
       name: product.name,
+      description: product.description,
+      category: product.category,
+      condition: product.condition,
+      price: product.price,
+      shippingPrice: product.shipping_price,
+      quantity: product.quantity,
+      createdAt: product.created_at,
+      sellerId: product.seller_id,
       imageUrls: getImagePublicUrls(productImageKeys),
     },
     description: communityCollectionItem.description,
@@ -29,8 +37,7 @@ export const getCommunityCollectionItemsByCommunityId = async (
       `
       *, 
       product(
-        id,
-        name,
+        *,
         imageKeys: product_image(image_key)
       )
     `
@@ -51,15 +58,16 @@ export const getCommunityCollectionItemsByCommunityId = async (
 export const createCommunityCollectionItem = async (
   communityCollectionItem: CreateCommunityCollectionItem
 ): Promise<CommunityCollectionItem> => {
-  const { data, error } = await supabase.from('community_collection_item').insert({
-    community_id: communityCollectionItem.communityId,
-    product_id: communityCollectionItem.productId,
-    description: communityCollectionItem.description,
-  }).select(`
+  const { data, error } = await supabase
+    .from('community_collection_item')
+    .insert({
+      community_id: communityCollectionItem.communityId,
+      product_id: communityCollectionItem.productId,
+      description: communityCollectionItem.description,
+    }).select(`
       *, 
       product(
-        id,
-        name,
+        *,
         imageKeys: product_image(image_key)
       )
     `);
