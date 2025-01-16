@@ -94,8 +94,12 @@ const VideoDisplay = () => {
             </View>
           </View>
         </VideoView>
-        <ReviewModal bottomSheetRef={reviewModalRef} />
-        <CommentModal bottomSheetRef={commentModalRef} />
+        <ReviewModal
+          bottomSheetRef={reviewModalRef}
+          seller={video.poster}
+          product={video.products[0]}
+        />
+        <CommentModal bottomSheetRef={commentModalRef} videoId={video.id} />
       </View>
     </SafeAreaView>
   );

@@ -15,19 +15,29 @@ import {
   Inter_800ExtraBold,
   Inter_900Black,
 } from '@expo-google-fonts/inter';
-import { Slot } from 'expo-router';
+import { ErrorBoundaryProps, Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/AuthContext';
 import 'react-native-get-random-values';
+import { View, Text } from 'react-native';
 
 const queryClient = new QueryClient();
+
+export function ErrorBoundary({ error, retry }: ErrorBoundaryProps) {
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'red' }}>
+      <Text>{error.message}</Text>
+      <Text onPress={retry}>Try Again?</Text>
+    </SafeAreaView>
+  );
+}
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();

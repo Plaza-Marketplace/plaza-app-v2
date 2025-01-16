@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     flex: 1,
     gap: Spacing.SPACING_4,
+    backgroundColor: 'white',
   },
   buttonsContainer: {
     flexDirection: 'row',

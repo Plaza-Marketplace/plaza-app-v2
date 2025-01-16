@@ -48,7 +48,7 @@ export const getIsVideoLikedByUser = async (
     .select('*', { count: 'exact', head: true })
     .eq('video_id', videoId)
     .eq('liker_id', userId);
-
+    
   if (error) {
     throw new Error(error.message);
   } else if (count === null) {

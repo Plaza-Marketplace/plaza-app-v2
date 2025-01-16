@@ -1,42 +1,19 @@
-import { SectionList, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
-import GeneralHeader from '@/components/GeneralHeader';
 import ActivityHeader from '@/app/(app)/(tabs)/(inbox)/ActivityHeader';
 import Spacing from '@/constants/Spacing';
 import StandardText from '@/components/Texts/StandardText';
 import { Ionicons } from '@expo/vector-icons';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import SubheaderText from '@/components/Texts/SubheaderText';
-import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
-import BoldStandardText from '@/components/Texts/BoldStandardText';
 import HeaderText from '@/components/Texts/HeaderText';
-
-const mockData = [
-  {
-    title: 'Today',
-    data: [1, 2, 3],
-  },
-  {
-    title: 'This Week',
-    data: [1, 2, 3],
-  },
-  {
-    title: 'This Month',
-    data: [1, 2, 3],
-  },
-  {
-    title: 'This Year',
-    data: [1, 2, 3],
-  },
-];
 
 const Activity = () => {
   return (
     <>
       <ActivityHeader name="Activity" />
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, backgroundColor: 'white' }}>
         <PressableOpacity
           style={styles.followRequest}
           onPress={() => router.push('follow_request')}
@@ -45,7 +22,11 @@ const Activity = () => {
           <Ionicons name="chevron-forward" size={24} color="black" />
         </PressableOpacity>
         <View
-          style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          style={{
+            flex: 1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           {/* <SectionList
             style={styles.list}

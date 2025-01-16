@@ -32,7 +32,7 @@ const Profile = () => {
       />
       <Tabs.Container
         renderHeader={() => <ProfileHeader user={user} currentUser={user.id} />}
-        containerStyle={{ zIndex: -1 }}
+        containerStyle={{ zIndex: -1, backgroundColor: 'white' }}
         ref={ref}
         renderTabBar={(props) => {
           return (

@@ -11,6 +11,8 @@ npm-debug.*
 web-build/
 
 plaza-447909-95b8e2246221.json
+eas.json
+
 
 # macOS
 .DS_Store

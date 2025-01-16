@@ -5,12 +5,17 @@ export const useGetVideosLikedByUserId = (userId: Id) => {
   return useQuery({
     queryKey: ['videosLikedByUserId', userId],
     queryFn: () => getVideosLikedByUserId(userId),
+    staleTime: Infinity
   });
 }
 
 export const useGetIsVideoLikedByUser = (userId: Id, videoId: Id) => {
   return useQuery({
     queryKey: ['isVideoLikedByUser', userId, videoId],
-    queryFn: () => getIsVideoLikedByUser(videoId, userId),
+    queryFn: () => {
+      console.log("huh")
+      return getIsVideoLikedByUser(videoId, userId)
+    },
+    staleTime: Infinity
   });
 }

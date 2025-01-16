@@ -12,11 +12,15 @@ interface LikeButtonProps {
 }
 
 const LikeButton: FC<LikeButtonProps> = ({ videoId, likeCount }) => {
-  const { session } = useAuth();
-  const { data: user } = useGetUserByAuthId(session?.user.id);
-  const { data: isLiked } = user
-    ? useGetIsVideoLikedByUser(user?.id, videoId)
-    : { data: false };
+  const { user } = useAuth();
+  // const { data: isLiked, isLoading } = user
+  //   ? useGetIsVideoLikedByUser(user.id, videoId)
+  //   : { data: false, isLoading: false };
+  // const isLiked = false;
+  const { data: isLiked } = useGetIsVideoLikedByUser(
+    user ? user.id : 1,
+    videoId
+  );
 
   const { mutate: createLike } = useCreateVideoLike(videoId, user?.id);
   const { mutate: deleteLike } = useDeleteVideoLike(videoId, user?.id);
