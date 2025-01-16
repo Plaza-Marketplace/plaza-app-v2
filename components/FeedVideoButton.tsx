@@ -2,7 +2,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import PressableOpacity from './Buttons/PressableOpacity';
 import { FC } from 'react';
 import BoldCaptionText from './Texts/BoldCaptionText';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 interface FeedVideoButtonProps {
   name: 'like' | 'review' | 'comment' | 'share';

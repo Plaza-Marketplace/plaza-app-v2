@@ -6,6 +6,7 @@ import Color from '@/constants/Color';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import ProductModal from '../Feed/ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import { Event, track } from '@/analytics/utils';
 
 interface CommunityCollectionItemPostProps {
   communityCollectionItem: CommunityCollectionItem;
@@ -28,12 +29,16 @@ const CommunityCollectionItemPost: FC<CommunityCollectionItemPostProps> = ({
 
   if (!aspectRatio) return null;
 
+  const handleOnPress = () => {
+    productModalRef.current?.present();
+    track(Event.CLICKED_COLLECTION_ITEM, {
+      communityCollectionItemId: communityCollectionItem.id,
+    });
+  };
+
   return (
     <>
-      <PressableOpacity
-        style={{ gap: 4 }}
-        onPress={() => productModalRef.current?.present()}
-      >
+      <PressableOpacity style={{ gap: 4 }} onPress={handleOnPress}>
         <ExpoImage
           source={{ uri: communityCollectionItem.product.imageUrls[0] }}
           style={[styles.image, { aspectRatio }]}

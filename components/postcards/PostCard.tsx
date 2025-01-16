@@ -13,6 +13,7 @@ import ProductReview from './ProductCards/ProductReview';
 import ProductShowcase from './ProductCards/ProductShowcase';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '../Feed/ProductModal';
+import { Event, track } from '@/analytics/utils';
 
 interface PostCardProps {
   communityPost: ChatterCommunityPost;
@@ -58,17 +59,17 @@ const PostCard = ({ onPress, communityPost }: PostCardProps) => {
       break;
   }
 
+  const handleOnPress = () => {
+    router.navigate({
+      pathname: '/post-modal',
+      params: { postId: id, postName: title },
+    });
+    track(Event.CLICKED_POST, { postId: id });
+  };
+
   return onPress ? (
     <>
-      <PressableOpacity
-        style={styles.container}
-        onPress={() =>
-          router.navigate({
-            pathname: '/post-modal',
-            params: { postId: id, postName: title },
-          })
-        }
-      >
+      <PressableOpacity style={styles.container} onPress={handleOnPress}>
         <View style={styles.userInfoContainer}>
           <ProfileIconCircle url="lole" />
           <View style={{ marginLeft: 5 }}>

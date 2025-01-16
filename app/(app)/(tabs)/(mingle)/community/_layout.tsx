@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import CommunityHeader from '@/components/Community/CommunityHeader';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
@@ -10,6 +11,7 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
 import { useLocalSearchParams, withLayoutContext } from 'expo-router';
+import { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 const { Navigator } = createMaterialTopTabNavigator();
@@ -33,6 +35,10 @@ const Community = () => {
     error,
     isPending,
   } = useGetCommunityById(communityId);
+
+  useEffect(() => {
+    track(Event.ENTERED_COMMUNITY, { communityId });
+  }, []);
 
   if (isPending) return <PlazaText>Loading...</PlazaText>;
 

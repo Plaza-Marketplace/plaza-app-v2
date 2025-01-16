@@ -22,27 +22,26 @@ const useCreateVideoLike = (videoId: Id, likerId?: Id) => {
       queryClient.setQueryData(
         ['isVideoLikedByUser', data.likerId, data.videoId],
         true
-      )
+      );
 
-      queryClient.setQueryData(
-        ['feedVideos'],
-        (old: Video[] | undefined) => {
-          if (old) {
-            return old.map((video) => {
-              if (video.id === data.videoId) {
-                return {
-                  ...video,
-                  likeCount: video.likeCount + 1,
-                };
-              }
-              return video;
-            });
-          }
-          return [];
+      queryClient.setQueryData(['feedVideos'], (old: Video[][] | undefined) => {
+        const videos = old?.flat();
+        console.log(old);
+        if (videos) {
+          return videos.map((video) => {
+            if (video.id === data.videoId) {
+              return {
+                ...video,
+                likeCount: video.likeCount + 1,
+              };
+            }
+            return video;
+          });
         }
-      )
-    }
+        return [];
+      });
+    },
   });
-}
+};
 
 export default useCreateVideoLike;

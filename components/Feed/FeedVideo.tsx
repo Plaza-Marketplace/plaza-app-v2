@@ -1,14 +1,14 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useCallback, useEffect, useRef } from 'react';
+import { FC, useEffect, useRef } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
 import Spacing from '@/constants/Spacing';
 import FeedVideoButton from '../FeedVideoButton';
 import PressableOpacity from '../Buttons/PressableOpacity';
-import { router, useFocusEffect } from 'expo-router';
+import { router } from 'expo-router';
 import ReviewModal from './ReviewModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ExpandableDescription from '../ExpandableDescription';
@@ -18,6 +18,7 @@ import LikeButton from './LikeButton';
 import { Video } from '@/models/video';
 import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
 import { useEvent } from 'expo';
+import { Event, track } from '@/analytics/utils';
 
 interface FeedVideoProps {
   video: Video;
@@ -39,21 +40,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
     status: player.status,
   });
 
-  useFocusEffect(
-    useCallback(() => {
-      if (visible) {
-        player.replay();
-        player.play();
-      }
-
-      return () => {
-        if (status === 'readyToPlay') {
-          player.pause();
-        }
-      };
-    }, [])
-  );
-
   useEffect(() => {
     if (visible) {
       if (status === 'readyToPlay') {
@@ -63,7 +49,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
     } else if (status === 'readyToPlay') {
       player.pause();
     }
-  }, [visible]);
+  }, [visible, status]);
 
   return (
     <>
@@ -71,10 +57,15 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         style={styles.videoContainer}
         player={player}
         nativeControls={false}
+        contentFit="cover"
       >
         <View style={styles.infoButtonsContainer}>
           <View style={styles.videoInfoContainer}>
-            <Products sellerId={video.poster.id} products={video.products} />
+            <Products
+              sellerId={video.poster.id}
+              products={video.products}
+              videoId={video.id}
+            />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
                 onPress={() =>
@@ -121,6 +112,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               name="review"
               count={video.reviewCount}
               onPress={() => {
+                track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
                 reviewModalRef.current?.present();
               }}
             />
@@ -128,6 +120,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               name="comment"
               count={video.commentCount}
               onPress={() => {
+                track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
                 commentModalRef.current?.present();
               }}
             />

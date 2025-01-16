@@ -18,6 +18,7 @@ import PressableOpacity from '../Buttons/PressableOpacity';
 import Radius from '@/constants/Radius';
 import useCreateCommunityCollectionItem from '@/hooks/queries/useCreateCommunityCollectionItem';
 import ProductIcon from '../Product/ProductIcon';
+import { Event, track } from '@/analytics/utils';
 
 interface AddToCommunityCollectionModalProps {
   products: Product[];
@@ -45,6 +46,11 @@ const AddToCommunityCollectionModal: FC<AddToCommunityCollectionModalProps> = ({
       productId: selectedProduct.id,
       communityId: selectedCommunity,
       description: caption,
+    });
+
+    track(Event.SHARED_PRODUCT_TO_COMMUNITY, {
+      productId: selectedProduct.id,
+      communityId: selectedCommunity,
     });
   };
 

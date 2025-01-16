@@ -229,7 +229,10 @@ export const getCommunityPost = async (
 };
 
 export const getChatterPosts = async (): Promise<ChatterCommunityPost[]> => {
-  const { data, error } = await supabase.from('community_post').select(query);
+  const { data, error } = await supabase
+    .from('community_post')
+    .select(query)
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 

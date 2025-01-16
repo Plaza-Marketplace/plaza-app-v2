@@ -3,6 +3,7 @@ import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import React, { FC, useCallback, useState } from 'react';
 import { Video } from '@/models/video';
+import { useFocusEffect } from 'expo-router';
 
 interface FeedProps {
   videos: Video[];
@@ -17,6 +18,7 @@ const Feed: FC<FeedProps> = ({
   onRefresh,
   fetchNextPage,
 }) => {
+  const [visible, setVisible] = useState(false);
   const [currViewableIndex, setCurrViewableIndex] = useState(0);
   const handleViewableItemsChanged = useCallback(({ viewableItems }) => {
     if (viewableItems.length === 0) {
@@ -27,10 +29,27 @@ const Feed: FC<FeedProps> = ({
 
   const renderItem = useCallback(
     ({ item, index }) => {
-      return <FeedVideo video={item} visible={currViewableIndex === index} />;
+      return (
+        <FeedVideo
+          video={item}
+          visible={currViewableIndex === index && visible}
+        />
+      );
     },
-    [currViewableIndex]
+    [currViewableIndex, visible]
   );
+
+  useFocusEffect(
+    useCallback(() => {
+      setVisible(true);
+
+      return () => {
+        setVisible(false);
+      };
+    }, [])
+  );
+
+  console.log(visible);
 
   return (
     <FlatList

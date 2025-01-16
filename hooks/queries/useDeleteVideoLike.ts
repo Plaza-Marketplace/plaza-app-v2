@@ -23,27 +23,25 @@ const useDeleteVideoLike = (videoId: Id, likerId?: Id) => {
       queryClient.setQueryData(
         ['isVideoLikedByUser', data.likerId, data.videoId],
         false
-      )
+      );
 
-      queryClient.setQueryData(
-        ['feedVideos'],
-        (old: Video[] | undefined) => {
-          if (old) {
-            return old.map((video) => {
-              if (video.id === data.videoId) {
-                return {
-                  ...video,
-                  likeCount: video.likeCount - 1,
-                };
-              }
-              return video;
-            });
-          }
-          return [];
+      queryClient.setQueryData(['feedVideos'], (old: Video[][] | undefined) => {
+        const videos = old?.flat();
+        if (videos) {
+          return videos.map((video) => {
+            if (video.id === data.videoId) {
+              return {
+                ...video,
+                likeCount: video.likeCount - 1,
+              };
+            }
+            return video;
+          });
         }
-      )
-    }
+        return [];
+      });
+    },
   });
-}
+};
 
 export default useDeleteVideoLike;

@@ -5,8 +5,6 @@ import VideoPreview from '@/components/VideoPreview';
 import { useGetVideosLikedByUserId } from '@/hooks/queries/useGetVideoLikes';
 import { router } from 'expo-router';
 
-const mocking = Array.from({ length: 10 });
-
 interface ProfileLikesProps {
   userId: Id;
 }

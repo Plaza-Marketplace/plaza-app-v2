@@ -14,6 +14,7 @@ import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 import StandardText from '../Texts/StandardText';
 import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
+import { Event, track } from '@/analytics/utils';
 
 interface ProductModalProps {
   sellerId: Id;
@@ -35,6 +36,16 @@ const ProductModal: FC<ProductModalProps> = ({
     user?.id
   );
   const { data: seller } = useGetSellerInfo(sellerId);
+
+  const handleAddToCart = () => {
+    createCartItem();
+    track(Event.CLICKED_ADD_TO_CART, { productId: product.id });
+  };
+
+  const handleBuyNow = () => {
+    createOrderHistoryItem();
+    track(Event.CLICKED_BUY_NOW, { productId: product.id });
+  };
 
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
@@ -59,8 +70,8 @@ const ProductModal: FC<ProductModalProps> = ({
         <Footer
           leftTitle="Add to Cart"
           rightTitle="Buy Now"
-          leftOnPress={createCartItem}
-          rightOnPress={createOrderHistoryItem}
+          leftOnPress={handleAddToCart}
+          rightOnPress={handleBuyNow}
         />
       </View>
     </FeedBottomSheet>

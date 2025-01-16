@@ -3,13 +3,15 @@ import { FC, useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from './ProductModal';
 import { StyleSheet, View } from 'react-native';
+import { Event, track } from '@/analytics/utils';
 
 interface ProductProps {
+  videoId: Id;
   sellerId: Id;
   product: Product;
 }
 
-const FeedProduct: FC<ProductProps> = ({ sellerId, product }) => {
+const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   return (
@@ -20,6 +22,10 @@ const FeedProduct: FC<ProductProps> = ({ sellerId, product }) => {
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
           }
           onPress={() => {
+            track(Event.CLICKED_PRODUCT_ICON, {
+              productId: product.id,
+              videoId: videoId,
+            });
             bottomSheetRef.current?.present();
           }}
         />
