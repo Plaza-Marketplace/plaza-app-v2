@@ -6,7 +6,8 @@ const useGetFeedVideos = () =>
     queryKey: ['feedVideos'],
     queryFn: ({ pageParam }) => getVideos(pageParam === -1 ? null : pageParam),
     initialPageParam: -1,
-    getNextPageParam: (lastPage) => lastPage[lastPage.length - 1].id,
+    getNextPageParam: (lastPage) =>
+      lastPage.length > 0 ? lastPage[lastPage.length - 1].id : null,
     staleTime: 1000 * 60 * 5,
   });
 
