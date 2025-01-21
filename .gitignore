@@ -23,6 +23,7 @@ expo-env.d.ts
 
 .env.*
 .env
+*.ipa
 
 ios/
 
