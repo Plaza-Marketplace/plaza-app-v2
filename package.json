@@ -10,7 +10,8 @@
     "web": "expo start --web",
     "test": "jest --watchAll",
     "lint": "expo lint",
-    "typegen": "supabase gen types typescript --project-id uzjrluxkcsipsbtntipl > database.types.ts"
+    "typegen": "supabase gen types typescript --project-id uzjrluxkcsipsbtntipl > database.types.ts",
+    "svgr:icons": "npx @svgr/cli --typescript --native --ignore-existing --out-dir components/Icons -- assets/icons"
   },
   "jest": {
     "preset": "jest-expo"
@@ -34,7 +35,7 @@
     "expo-image-picker": "~16.0.4",
     "expo-linking": "~7.0.4",
     "expo-router": "~4.0.16",
-    "expo-splash-screen": "~0.29.20",
+    "expo-splash-screen": "~0.29.21",
     "expo-status-bar": "~2.0.1",
     "expo-system-ui": "~4.0.7",
     "expo-video": "~2.0.5",
@@ -62,6 +63,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@svgr/cli": "^8.1.0",
     "@types/jest": "^29.5.12",
     "@types/react": "~18.3.12",
     "@types/react-test-renderer": "^18.0.7",
