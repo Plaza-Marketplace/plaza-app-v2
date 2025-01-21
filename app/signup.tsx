@@ -57,6 +57,7 @@ const _layout = () => {
                   last_name: values.lastname,
                   username: values.username,
                 },
+                emailRedirectTo: 'https://www.plaza-app.com/confirmed.html',
               },
             });
 
