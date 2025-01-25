@@ -1,5 +1,5 @@
 import { supabase } from '@/utils/supabase';
-import { getImagePublicUrls } from '../storage';
+import { getImagePublicUrls } from './storage';
 
 export const getCartItemsByUserId = async (userId: Id): Promise<CartItem[]> => {
   const { data, error } = await supabase

@@ -14,6 +14,7 @@ import ProfileHeader from './ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from './profile-likes';
 import { Text } from 'react-native';
+import { useGetProfileData } from '@/hooks/routes/profile';
 
 const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -24,6 +25,14 @@ const Profile = () => {
     return <Text>User not found...</Text>;
   }
 
+  const { data: profileData, isLoading } = useGetProfileData(user.id, user.id);
+
+  console.log(profileData);
+
+  if (isLoading || !profileData) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <>
       <GeneralHeader
@@ -32,7 +41,17 @@ const Profile = () => {
         currentUser={user.id}
       />
       <Tabs.Container
-        renderHeader={() => <ProfileHeader user={user} currentUser={user.id} />}
+        renderHeader={() => (
+          <ProfileHeader
+            user={user}
+            currentUser={user.id}
+            followers={profileData.followerCount}
+            following={profileData.followingCount}
+            sales={profileData.salesCount}
+            isFollowing={profileData.isFollow}
+            isRequested={profileData.isTryingToFollow}
+          />
+        )}
         containerStyle={{ zIndex: -1 }}
         ref={ref}
         renderTabBar={(props) => {

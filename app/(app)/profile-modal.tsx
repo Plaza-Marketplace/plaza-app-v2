@@ -5,7 +5,6 @@ import {
   MaterialTabBar,
   Tabs,
 } from 'react-native-collapsible-tab-view';
-import GeneralHeader from '@/components/GeneralHeader';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileVideos from '@/app/(app)/(tabs)/(profile)/profile-videos';
@@ -14,11 +13,9 @@ import ProfileReviews from '@/app/(app)/(tabs)/(profile)/profile-reviews';
 import ProfileHeader from '@/app/(app)/(tabs)/(profile)/ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from '@/app/(app)/(tabs)/(profile)/profile-likes';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams } from 'expo-router';
-import { useGetUserById } from '@/hooks/queries/useUser';
-import FocusHeader from '@/components/FocusHeader';
 import BackHeader from './(tabs)/(inbox)/BackHeader';
+import { useGetProfileData } from '@/hooks/routes/profile';
 
 const ProfileModal = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -26,23 +23,37 @@ const ProfileModal = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { user: currentUser } = useAuth();
   const user_id = parseInt(id);
-  const { data: user, isLoading } = useGetUserById(user_id);
+  const { data: profileData, isLoading } = useGetProfileData(
+    user_id,
+    currentUser.id
+  );
+
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
-  if (!user) {
+  if (!profileData) {
     return <Text>User not found...</Text>;
   }
   if (!currentUser) {
     return <Text>You got in without logging in...?</Text>;
   }
 
+  const { user } = profileData;
+
   return (
     <View style={{ flex: 1 }}>
       <BackHeader name={`${user.firstName} ${user.lastName}`} />
       <Tabs.Container
         renderHeader={() => (
-          <ProfileHeader user={user} currentUser={currentUser.id} />
+          <ProfileHeader
+            user={user}
+            currentUser={currentUser.id}
+            followers={profileData.followerCount}
+            following={profileData.followingCount}
+            sales={profileData.salesCount}
+            isFollowing={profileData.isFollow}
+            isRequested={profileData.isTryingToFollow}
+          />
         )}
         containerStyle={{ zIndex: -1 }}
         ref={ref}
