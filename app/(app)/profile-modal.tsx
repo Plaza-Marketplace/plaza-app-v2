@@ -14,8 +14,8 @@ import ProfileHeader from '@/app/(app)/(tabs)/(profile)/ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from '@/app/(app)/(tabs)/(profile)/profile-likes';
 import { useLocalSearchParams } from 'expo-router';
-import BackHeader from './(tabs)/(inbox)/BackHeader';
 import { useGetProfileData } from '@/hooks/routes/profile';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const ProfileModal = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -42,7 +42,10 @@ const ProfileModal = () => {
 
   return (
     <View style={{ flex: 1 }}>
-      <BackHeader name={`${user.firstName} ${user.lastName}`} />
+      <PlazaHeader
+        name={`${user.firstName} ${user.lastName}`}
+        leftIcon={<Ionicons name="arrow-back" size={32} color="black" />}
+      />
       <Tabs.Container
         renderHeader={() => (
           <ProfileHeader

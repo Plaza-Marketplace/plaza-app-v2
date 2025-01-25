@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useCallback, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FocusHeader from '@/components/FocusHeader';
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { useGetVideoById } from '@/hooks/queries/useVideo';
 import Spacing from '@/constants/Spacing';
@@ -17,6 +16,7 @@ import LikeButton from '@/components/Feed/LikeButton';
 import FeedVideoButton from '@/components/FeedVideoButton';
 import ReviewModal from '@/components/Feed/ReviewModal';
 import CommentModal from '@/components/Feed/CommentModal';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const VideoDisplay = () => {
   const { videoId } = useLocalSearchParams<{ videoId: string }>();
@@ -40,8 +40,8 @@ const VideoDisplay = () => {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
-      <FocusHeader name="Video" />
+    <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <PlazaHeader name="Video" />
       <View style={{ flex: 1 }}>
         <VideoView
           style={styles.videoContainer}
@@ -120,7 +120,7 @@ const VideoDisplay = () => {
         <ReviewModal bottomSheetRef={reviewModalRef} />
         <CommentModal bottomSheetRef={commentModalRef} />
       </View>
-    </SafeAreaView>
+    </View>
   );
 };
 

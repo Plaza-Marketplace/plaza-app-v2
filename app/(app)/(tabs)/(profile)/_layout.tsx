@@ -4,7 +4,6 @@ import {
   MaterialTabBar,
   Tabs,
 } from 'react-native-collapsible-tab-view';
-import GeneralHeader from '@/components/GeneralHeader';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileVideos from './profile-videos';
@@ -15,6 +14,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from './profile-likes';
 import { Text } from 'react-native';
 import { useGetProfileData } from '@/hooks/routes/profile';
+import PlazaHeader from '@/components/PlazaHeader';
+import { router } from 'expo-router';
 
 const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -35,10 +36,21 @@ const Profile = () => {
 
   return (
     <>
-      <GeneralHeader
+      {/* <GeneralHeader
         name={`${user.firstName} ${user.lastName}`}
         id={user.id}
         currentUser={user.id}
+      /> */}
+      <PlazaHeader
+        name={`${user.firstName} ${user.lastName}`}
+        leftIcon={null}
+        rightIcon={
+          <Ionicons
+            name="cog-outline"
+            size={32}
+            rightOnClick={() => router.push('/settings')}
+          />
+        }
       />
       <Tabs.Container
         renderHeader={() => (

@@ -1,5 +1,4 @@
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import FocusHeader from '@/components/FocusHeader';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import CaptionText from '@/components/Texts/CaptionText';
@@ -20,6 +19,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Formik } from 'formik';
 import { useSelectedProducts } from '@/contexts/SelectedProductsContext';
+import PlazaHeader from '@/components/PlazaHeader';
 
 type VideoUploadForm = {
   videoUri: string | null;
@@ -39,8 +39,8 @@ const LandingPage = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FocusHeader name="Upload a Video" />
+    <View style={{ flex: 1 }}>
+      <PlazaHeader name="Upload a Video" />
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
@@ -123,7 +123,7 @@ const LandingPage = () => {
           );
         }}
       </Formik>
-    </SafeAreaView>
+    </View>
   );
 };
 

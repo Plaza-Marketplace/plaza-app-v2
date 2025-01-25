@@ -1,15 +1,15 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
-import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
+import { useLocalSearchParams, useNavigation } from 'expo-router';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import Spacing from '@/constants/Spacing';
-import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
 import Color from '@/constants/Color';
 import { FlatList } from 'react-native-gesture-handler';
 import Message from '@/app/(app)/(tabs)/(inbox)/MessageComponent';
+import PlazaHeader from '@/components/PlazaHeader';
+import { BackButton } from '@/components/PlazaIcons/ActionIcons';
 
 type InboxParams = {
   username?: string;
@@ -72,7 +72,10 @@ const Messages = () => {
   }, [navigation]);
   return (
     <View style={{ height: windowHeight }}>
-      <BackHeader name={params.username || 'Messages'} />
+      <PlazaHeader
+        name={params.username || 'Messages'}
+        leftIcon={<BackButton color="black" />}
+      />
       <View style={{ flex: 1, position: 'relative', alignItems: 'center' }}>
         <FlatList
           style={{

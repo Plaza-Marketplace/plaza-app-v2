@@ -1,6 +1,7 @@
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
-import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import PlazaHeader from '@/components/PlazaHeader';
+import { BackButton } from '@/components/PlazaIcons/ActionIcons';
 import Spacing from '@/constants/Spacing';
 import { AuthContext } from '@/contexts/AuthContext';
 import { useCreateFollow } from '@/hooks/queries/useFollow';
@@ -28,7 +29,10 @@ const FollowRequest = () => {
   }
   return (
     <>
-      <BackHeader name="Follow Requests" />
+      <PlazaHeader
+        name="Follow Requests"
+        leftIcon={<BackButton color="black" />}
+      />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}

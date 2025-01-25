@@ -4,8 +4,7 @@ import Spacing from '@/constants/Spacing';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetOrderHistoryItemsByUserId from '@/hooks/queries/useGetOrderHistoryItems';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
-import { StyleSheet } from 'react-native';
-import { View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 const OrderHistoryScreen = () => {
   const { session } = useAuth();
@@ -13,7 +12,7 @@ const OrderHistoryScreen = () => {
   const { data: orders } = useGetOrderHistoryItemsByUserId(user?.id);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       {orders?.map((order) => (
         <ShoppingCartProductCard
           key={order.id}
@@ -22,7 +21,7 @@ const OrderHistoryScreen = () => {
           orderStatus={order.status}
         />
       ))}
-    </View>
+    </ScrollView>
   );
 };
 

@@ -1,21 +1,21 @@
-import { SectionList, StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
-import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import Spacing from '@/constants/Spacing';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
-import SubheaderText from '@/components/Texts/SubheaderText';
 import { FlatList } from 'react-native-gesture-handler';
 import CaptionText from '@/components/Texts/CaptionText';
+import PlazaHeader from '@/components/PlazaHeader';
+import { BackButton } from '@/components/PlazaIcons/ActionIcons';
 
 const mockData = [1, 2, 3];
 
 const MessageList = () => {
   return (
     <>
-      <BackHeader name="Messages" />
+      <PlazaHeader name="Messages" leftIcon={<BackButton color="black" />} />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}
