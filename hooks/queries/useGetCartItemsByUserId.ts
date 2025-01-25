@@ -1,4 +1,4 @@
-import { getCartItemsByUserId } from '@/services/cartItem';
+import { getCartItemsByUserId } from '@/services/crud/cartItem';
 import { skipToken, useQuery } from '@tanstack/react-query';
 
 const useGetCartItemsByUserId = (id?: Id) =>

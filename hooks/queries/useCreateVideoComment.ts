@@ -1,4 +1,4 @@
-import { createComment } from '@/services/videoComment';
+import { createComment } from '@/services/crud/videoComment';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateVideoComment = (videoId: Id, posterId?: Id) => {

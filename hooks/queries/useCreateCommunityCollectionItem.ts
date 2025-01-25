@@ -1,4 +1,4 @@
-import { createCommunityCollectionItem } from '@/services/communityCollectionItem';
+import { createCommunityCollectionItem } from '@/services/crud/communityCollectionItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateCommunityCollectionItem = () => {

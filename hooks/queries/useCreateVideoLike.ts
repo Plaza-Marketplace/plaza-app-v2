@@ -1,5 +1,5 @@
 import { Video } from '@/models/video';
-import { createVideoLike } from '@/services/video';
+import { createVideoLike } from '@/services/crud/video';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateVideoLike = (videoId: Id, likerId?: Id) => {

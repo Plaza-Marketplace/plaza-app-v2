@@ -1,4 +1,4 @@
-import { getUserByAuthId } from '@/services/user';
+import { getUserByAuthId } from '@/services/crud/user';
 import { skipToken, useQuery } from '@tanstack/react-query';
 
 const useGetUserByAuthId = (authId?: UUID) =>

@@ -15,7 +15,7 @@ import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import { createVideo } from '@/services/video';
+import { createVideo } from '@/services/crud/video';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Formik } from 'formik';

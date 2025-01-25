@@ -8,7 +8,7 @@ import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
 import { Formik } from 'formik';
-import { createProduct } from '@/services/product';
+import { createProduct } from '@/services/crud/product';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
 import * as ImagePicker from 'expo-image-picker';

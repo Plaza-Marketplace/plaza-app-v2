@@ -1,4 +1,4 @@
-import { createFollow, deleteFollow, doesFollowExist, getFollowerCounts, getFollowingCounts, getFollowsByDest, getFollowsBySource } from "@/services/follow";
+import { createFollow, deleteFollow, doesFollowExist, getFollowerCounts, getFollowingCounts, getFollowsByDest, getFollowsBySource } from "@/services/crud/follow";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useGetFollowing = (userId: Id) => useQuery({
