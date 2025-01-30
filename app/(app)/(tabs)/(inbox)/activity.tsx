@@ -12,6 +12,7 @@ import SubheaderText from '@/components/Texts/SubheaderText';
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import HeaderText from '@/components/Texts/HeaderText';
+import Color from '@/constants/Color';
 
 const mockData = [
   {
@@ -42,7 +43,7 @@ const Activity = () => {
           onPress={() => router.push('follow_request')}
         >
           <StandardText>Follow Request</StandardText>
-          <Ionicons name="chevron-forward" size={24} color="black" />
+          <Ionicons name="chevron-forward" size={24} color={Color.GREY_500} />
         </PressableOpacity>
         <View
           style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}

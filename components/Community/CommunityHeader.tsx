@@ -26,7 +26,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
         style={[styles.backButton, { top: inset.top }]}
         onPress={() => router.back()}
       >
-        <BackButton color="white" size={20} />
+        <BackButton color={Color.GREY_100} size={20} />
         {/* <Text>Back</Text> */}
       </PressableOpacity>
       <Image style={styles.banner} source={{ uri: backgroundUrl }} />

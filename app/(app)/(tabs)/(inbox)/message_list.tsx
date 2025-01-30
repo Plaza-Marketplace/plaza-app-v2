@@ -9,13 +9,17 @@ import { FlatList } from 'react-native-gesture-handler';
 import CaptionText from '@/components/Texts/CaptionText';
 import PlazaHeader from '@/components/PlazaHeader';
 import { BackButton } from '@/components/PlazaIcons/ActionIcons';
+import Color from '@/constants/Color';
 
 const mockData = [1, 2, 3];
 
 const MessageList = () => {
   return (
     <>
-      <PlazaHeader name="Messages" leftIcon={<BackButton color="black" />} />
+      <PlazaHeader
+        name="Messages"
+        leftIcon={<BackButton color={Color.GREY_500} />}
+      />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}

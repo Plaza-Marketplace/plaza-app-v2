@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet, Text, View } from 'react-native';
-import React, { useCallback, useRef } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import React, { useRef } from 'react';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useGetVideoById } from '@/hooks/queries/useVideo';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
@@ -88,7 +87,7 @@ const VideoDisplay = () => {
                 </PressableOpacity>
                 {video.description && (
                   <ExpandableDescription
-                    textColor="white"
+                    textColor={Color.GREY_100}
                     shadow
                     description={video.description}
                   />

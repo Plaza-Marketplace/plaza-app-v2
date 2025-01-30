@@ -16,6 +16,7 @@ import ProfileLikes from '@/app/(app)/(tabs)/(profile)/profile-likes';
 import { useLocalSearchParams } from 'expo-router';
 import { useGetProfileData } from '@/hooks/routes/profile';
 import PlazaHeader from '@/components/PlazaHeader';
+import Color from '@/constants/Color';
 
 const ProfileModal = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -44,7 +45,9 @@ const ProfileModal = () => {
     <View style={{ flex: 1 }}>
       <PlazaHeader
         name={`${user.firstName} ${user.lastName}`}
-        leftIcon={<Ionicons name="arrow-back" size={32} color="black" />}
+        leftIcon={
+          <Ionicons name="arrow-back" size={32} color={Color.GREY_500} />
+        }
       />
       <Tabs.Container
         renderHeader={() => (

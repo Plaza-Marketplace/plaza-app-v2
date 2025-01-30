@@ -33,7 +33,7 @@ const community_posts = () => {
           })
         }
       >
-        <FontAwesome6 name="pen-to-square" size={24} color="white" />
+        <FontAwesome6 name="pen-to-square" size={24} color={Color.GREY_100} />
       </PressableOpacity>
     </View>
   );

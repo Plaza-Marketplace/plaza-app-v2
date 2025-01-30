@@ -74,7 +74,7 @@ const Messages = () => {
     <View style={{ height: windowHeight }}>
       <PlazaHeader
         name={params.username || 'Messages'}
-        leftIcon={<BackButton color="black" />}
+        leftIcon={<BackButton color={Color.GREY_500} />}
       />
       <View style={{ flex: 1, position: 'relative', alignItems: 'center' }}>
         <FlatList
@@ -114,7 +114,7 @@ const Messages = () => {
             style={{ flex: 1, minHeight: 40, maxHeight: 100 }}
           />
           <PressableOpacity style={{ marginLeft: Spacing.SPACING_2 }}>
-            <Ionicons name="send-outline" size={24} color="black" />
+            <Ionicons name="send-outline" size={24} color={Color.GREY_500} />
           </PressableOpacity>
         </View>
       </View>
