@@ -14,6 +14,7 @@ import ProductShowcase from './ProductCards/ProductShowcase';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '../Feed/ProductModal';
 import { Event, track } from '@/analytics/utils';
+import Spacing from '@/constants/Spacing';
 
 interface PostCardProps {
   communityPost: ChatterCommunityPost;
@@ -72,9 +73,9 @@ const PostCard = ({ onPress, communityPost }: PostCardProps) => {
       <PressableOpacity style={styles.container} onPress={handleOnPress}>
         <View style={styles.userInfoContainer}>
           <ProfileIconCircle url="lole" />
-          <View style={{ marginLeft: 5 }}>
+          <View style={{ marginLeft: Spacing.SPACING_1 }}>
             <CaptionText>@{poster.username}</CaptionText>
-            <CaptionText style={{ marginTop: 3 }}>
+            <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
               {formatDatetime(createdAt)}
             </CaptionText>
           </View>
@@ -113,9 +114,9 @@ const PostCard = ({ onPress, communityPost }: PostCardProps) => {
       <View style={styles.container}>
         <View style={styles.userInfoContainer}>
           <ProfileIconCircle url="lole" />
-          <View style={{ marginLeft: 5 }}>
+          <View style={{ marginLeft: Spacing.SPACING_1 }}>
             <CaptionText>@{poster.username}</CaptionText>
-            <CaptionText style={{ marginTop: 3 }}>
+            <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
               {formatDatetime(createdAt)}
             </CaptionText>
           </View>
@@ -161,7 +162,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   sectionMargin: {
-    marginTop: 5,
+    marginTop: Spacing.SPACING_1,
   },
   userInfoContainer: {
     flexDirection: 'row',

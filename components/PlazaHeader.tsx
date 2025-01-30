@@ -14,6 +14,7 @@ interface PlazaHeaderProps {
   name: string;
   rightIcon?: ReactNode;
   rightOnClick?: () => void;
+  accountForSafeArea?: boolean;
 }
 
 const PlazaHeader: FC<PlazaHeaderProps> = ({
@@ -22,10 +23,16 @@ const PlazaHeader: FC<PlazaHeaderProps> = ({
   name,
   rightIcon = null,
   rightOnClick,
+  accountForSafeArea = true,
 }) => {
   const inset = useSafeAreaInsets();
   return (
-    <View style={[styles.header, { paddingTop: inset.top }]}>
+    <View
+      style={[
+        styles.header,
+        { paddingTop: accountForSafeArea ? inset.top : 0 },
+      ]}
+    >
       <PressableOpacity onPress={leftOnClick}>{leftIcon}</PressableOpacity>
       <HeaderText>{name}</HeaderText>
       <PressableOpacity

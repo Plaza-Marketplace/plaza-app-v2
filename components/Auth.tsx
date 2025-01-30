@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { supabase } from '@/utils/supabase';
 import { Button, Input } from '@rneui/themed';
+import Spacing from '@/constants/Spacing';
 
 export default function Auth() {
   const [email, setEmail] = useState('');
@@ -85,15 +86,15 @@ export default function Auth() {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 40,
-    padding: 12,
+    marginTop: Spacing.SPACING_6,
+    padding: Spacing.SPACING_3,
   },
   verticallySpaced: {
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingTop: Spacing.SPACING_1,
+    paddingBottom: Spacing.SPACING_1,
     alignSelf: 'stretch',
   },
   mt20: {
-    marginTop: 20,
+    marginTop: Spacing.SPACING_4,
   },
 });

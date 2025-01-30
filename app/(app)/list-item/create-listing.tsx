@@ -45,8 +45,8 @@ const CreateListingScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <PlazaHeader name="List an Item" />
+    <SafeAreaView style={styles.container}>
+      <PlazaHeader name="List an Item" accountForSafeArea={false} />
 
       <Formik
         initialValues={initialValues}
@@ -149,7 +149,7 @@ const CreateListingScreen = () => {
           );
         }}
       </Formik>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -159,6 +159,8 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     gap: Spacing.SPACING_4,
+    paddingHorizontal: Spacing.SPACING_3,
+    backgroundColor: Color.GREY_100,
   },
   buttonsContainer: {
     flexDirection: 'row',

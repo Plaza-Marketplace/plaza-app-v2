@@ -72,7 +72,9 @@ const Activity = () => {
             }}
           >
             <HeaderText>Under Construction!</HeaderText>
-            <StandardText style={{ textAlign: 'center', marginTop: 5 }}>
+            <StandardText
+              style={{ textAlign: 'center', marginTop: Spacing.SPACING_1 }}
+            >
               This page is under construction, but you can still look at your
               pending follow requests.
             </StandardText>

@@ -44,13 +44,11 @@ const Profile = () => {
       <PlazaHeader
         name={`${user.firstName} ${user.lastName}`}
         leftIcon={null}
-        rightIcon={
-          <Ionicons
-            name="cog-outline"
-            size={32}
-            rightOnClick={() => router.push('/settings')}
-          />
-        }
+        rightIcon={<Ionicons name="cog-outline" size={32} />}
+        rightOnClick={() => {
+          console.log('here');
+          router.push('/settings');
+        }}
       />
       <Tabs.Container
         renderHeader={() => (

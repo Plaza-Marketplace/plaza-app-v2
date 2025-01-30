@@ -6,6 +6,7 @@ import PlazaText from '@/components/Texts/PlazaText';
 import { ProfileIconCircle } from '../PostIcon';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 import { ProductDetails } from '@/models/communityPost';
+import Spacing from '@/constants/Spacing';
 
 interface ProductReviewProps {
   product: ProductDetails;
@@ -21,13 +22,13 @@ const ProductReview: FC<ProductReviewProps> = ({ product }) => {
           <PlazaText>{product.name}</PlazaText>
           <View
             style={{
-              marginTop: 10,
+              marginTop: Spacing.SPACING_2,
               flexDirection: 'row',
               alignItems: 'center',
             }}
           >
             <ProfileIconCircle url="lole" />
-            <View style={{ marginLeft: 5 }}>
+            <View style={{ marginLeft: Spacing.SPACING_1 }}>
               <CaptionText>
                 {product.seller ? product.seller.username : ''}
               </CaptionText>

@@ -16,6 +16,7 @@ import FeedVideoButton from '@/components/FeedVideoButton';
 import ReviewModal from '@/components/Feed/ReviewModal';
 import CommentModal from '@/components/Feed/CommentModal';
 import PlazaHeader from '@/components/PlazaHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const VideoDisplay = () => {
   const { videoId } = useLocalSearchParams<{ videoId: string }>();
@@ -39,8 +40,8 @@ const VideoDisplay = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white' }}>
-      <PlazaHeader name="Video" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <PlazaHeader name="Video" accountForSafeArea={false} />
       <View style={{ flex: 1 }}>
         <VideoView
           style={styles.videoContainer}
@@ -119,7 +120,7 @@ const VideoDisplay = () => {
         <ReviewModal bottomSheetRef={reviewModalRef} />
         <CommentModal bottomSheetRef={commentModalRef} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

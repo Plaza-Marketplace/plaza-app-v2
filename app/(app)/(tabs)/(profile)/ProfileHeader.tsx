@@ -15,6 +15,7 @@ import {
 } from '@/hooks/queries/useFollowRequest';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { CreateFollowRequest } from '@/models/followRequest';
+import Spacing from '@/constants/Spacing';
 
 interface ProfileHeaderProps {
   user: User;
@@ -174,8 +175,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   commonMargin: {
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: Spacing.SPACING_1,
+    marginBottom: Spacing.SPACING_1,
   },
   choices: {
     flexDirection: 'row',
