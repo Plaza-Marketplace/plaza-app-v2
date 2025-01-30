@@ -7,52 +7,38 @@ import CaptionText from '@/components/Texts/CaptionText';
 import { returnRatings } from '@/components/PlazaIcons/RatingIcons';
 import ExpandableDescription from '@/components/ExpandableDescription';
 import { User } from '@/models/user';
-import {
-  useDeleteFollow,
-  useDoesFollowExist,
-  useGetFollowerCount,
-  useGetFollowingCount,
-} from '@/hooks/queries/useFollow';
+import { useDeleteFollow } from '@/hooks/queries/useFollow';
 import ProfileIcon from '@/components/ProfileIcon';
-import { useGetSalesCountBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 import {
   useCreateFollowRequest,
   useDeleteFollowRequestByRelation,
-  useDoesFollowRequestExist,
 } from '@/hooks/queries/useFollowRequest';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { CreateFollowRequest } from '@/models/followRequest';
+import Spacing from '@/constants/Spacing';
 
 interface ProfileHeaderProps {
   user: User;
   currentUser: Id;
+  followers: number;
+  following: number;
+  sales: number;
+  isFollowing: boolean;
+  isRequested: boolean;
 }
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
-  const { data: followers, isLoading: isFollowersLoading } =
-    useGetFollowerCount(user.id);
-  const { data: following, isLoading: isFollowingLoading } =
-    useGetFollowingCount(user.id);
-  const { data: sales, isLoading: isSalesLoading } = useGetSalesCountBySellerId(
-    user.id
-  );
-  const { data: isFollowing, isLoading: followingStatusLoading } =
-    useDoesFollowExist(currentUser, user.id);
-  const { data: isRequested, isLoading: isRequestedLoading } =
-    useDoesFollowRequestExist(currentUser, user.id);
+const ProfileHeader: FC<ProfileHeaderProps> = ({
+  user,
+  currentUser,
+  followers,
+  following,
+  sales,
+  isFollowing,
+  isRequested,
+}) => {
   const { mutate: createRequest } = useCreateFollowRequest();
   const { mutate: cancelRequest } = useDeleteFollowRequestByRelation();
   const { mutate: deleteFollow } = useDeleteFollow();
-
-  if (
-    isFollowersLoading ||
-    isFollowingLoading ||
-    isSalesLoading ||
-    followingStatusLoading ||
-    isRequestedLoading
-  ) {
-    return <Text>Loading...</Text>;
-  }
 
   return (
     <View style={styles.header}>
@@ -65,6 +51,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
               size={2 * Radius.XL}
             />
           </View>
+
           <View style={styles.headerTopColumnLarge}>
             <View style={styles.infoContainer}>
               <View style={styles.centerText}>
@@ -92,7 +79,12 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ user, currentUser }) => {
             <CaptionText>City, State</CaptionText>
           </View>
           <View style={styles.headerTopColumnLarge}>
-            <View style={{ paddingHorizontal: 5, flexDirection: 'row' }}>
+            <View
+              style={{
+                paddingHorizontal: Spacing.SPACING_1,
+                flexDirection: 'row',
+              }}
+            >
               {returnRatings(4.5, 'small')}
             </View>
           </View>
@@ -155,7 +147,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'column',
-    padding: 16,
+    padding: Spacing.SPACING_3,
   },
   headerTopGrid: {
     flexDirection: 'column',
@@ -180,7 +172,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 5,
+    paddingHorizontal: Spacing.SPACING_1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },
@@ -188,8 +180,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   commonMargin: {
-    marginTop: 5,
-    marginBottom: 5,
+    marginTop: Spacing.SPACING_1,
+    marginBottom: Spacing.SPACING_1,
   },
   choices: {
     flexDirection: 'row',

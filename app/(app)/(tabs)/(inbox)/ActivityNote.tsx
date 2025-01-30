@@ -1,7 +1,5 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
-import ProfileIcon from '../../../../components/ProfileIcon';
-import { ProfileIconCircle } from '../../../../components/PostCards/PostIcon';
 import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
 import BoldStandardText from '../../../../components/Texts/BoldStandardText';

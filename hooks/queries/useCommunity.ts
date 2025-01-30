@@ -2,7 +2,7 @@ import {
   createCommunity,
   getAssociatedCommunities,
   getCommunity,
-} from '@/services/communities';
+} from '@/services/crud/communities';
 import { skipToken, useMutation, useQuery } from '@tanstack/react-query';
 
 export const useGetAssociatedCommunities = (userId?: Id) =>

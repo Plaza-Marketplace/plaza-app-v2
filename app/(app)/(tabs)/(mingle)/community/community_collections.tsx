@@ -4,6 +4,7 @@ import CommunityCollectionItemPost from '@/components/Community/CommunityCollect
 import Color from '@/constants/Color';
 import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
 import { useLocalSearchParams } from 'expo-router';
+import Spacing from '@/constants/Spacing';
 
 const community_collections = () => {
   const { communityId: id } = useLocalSearchParams<{ communityId: string }>();
@@ -57,8 +58,8 @@ const styles = StyleSheet.create({
   columnContainer: {
     flexGrow: 1,
     flexDirection: 'row',
-    padding: 8,
-    gap: 8,
+    padding: Spacing.SPACING_2,
+    gap: Spacing.SPACING_2,
     backgroundColor: Color.SURFACE_PRIMARY,
   },
   column: {
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 8,
+    paddingTop: Spacing.SPACING_2,
   },
   info: {
     backgroundColor: Color.SURFACE_PRIMARY,

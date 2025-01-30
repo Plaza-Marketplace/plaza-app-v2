@@ -1,7 +1,7 @@
 import {
   getIsVideoLikedByUser,
   getVideosLikedByUserId,
-} from '@/services/videoLike';
+} from '@/services/crud/videoLike';
 import { skipToken, useQuery } from '@tanstack/react-query';
 
 export const useGetVideosLikedByUserId = (userId: Id) => {

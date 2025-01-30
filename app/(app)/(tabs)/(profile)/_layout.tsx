@@ -4,7 +4,6 @@ import {
   MaterialTabBar,
   Tabs,
 } from 'react-native-collapsible-tab-view';
-import GeneralHeader from '@/components/GeneralHeader';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
 import ProfileVideos from './profile-videos';
@@ -14,6 +13,9 @@ import ProfileHeader from './ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
 import ProfileLikes from './profile-likes';
 import { Text } from 'react-native';
+import { useGetProfileData } from '@/hooks/routes/profile';
+import PlazaHeader from '@/components/PlazaHeader';
+import { router } from 'expo-router';
 
 const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
@@ -24,15 +26,42 @@ const Profile = () => {
     return <Text>User not found...</Text>;
   }
 
+  const { data: profileData, isLoading } = useGetProfileData(user.id, user.id);
+
+  console.log(profileData);
+
+  if (isLoading || !profileData) {
+    return <Text>Loading...</Text>;
+  }
+
   return (
     <>
-      <GeneralHeader
+      {/* <GeneralHeader
         name={`${user.firstName} ${user.lastName}`}
         id={user.id}
         currentUser={user.id}
+      /> */}
+      <PlazaHeader
+        name={`${user.firstName} ${user.lastName}`}
+        leftIcon={null}
+        rightIcon={<Ionicons name="cog-outline" size={32} />}
+        rightOnClick={() => {
+          console.log('here');
+          router.push('/settings');
+        }}
       />
       <Tabs.Container
-        renderHeader={() => <ProfileHeader user={user} currentUser={user.id} />}
+        renderHeader={() => (
+          <ProfileHeader
+            user={user}
+            currentUser={user.id}
+            followers={profileData.followerCount}
+            following={profileData.followingCount}
+            sales={profileData.salesCount}
+            isFollowing={profileData.isFollow}
+            isRequested={profileData.isTryingToFollow}
+          />
+        )}
         containerStyle={{ zIndex: -1 }}
         ref={ref}
         renderTabBar={(props) => {

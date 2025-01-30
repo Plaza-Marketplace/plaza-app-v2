@@ -9,6 +9,7 @@ import useGetCartItemsByUserId from '@/hooks/queries/useGetCartItemsByUserId';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { router } from 'expo-router';
 import { StyleSheet, View } from 'react-native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const CartScreen = () => {
   const { selectedCartItems, setSelectedCartItems } = useSelectedCartItems();
@@ -33,7 +34,7 @@ const CartScreen = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.content}>
+      <ScrollView style={styles.content}>
         {cartItems?.map((cartItem) => (
           <ShoppingCartProductCard
             key={cartItem.id}
@@ -43,7 +44,7 @@ const CartScreen = () => {
             showCheckbox
           />
         ))}
-      </View>
+      </ScrollView>
       <PlazaButton title="Checkout" onPress={handleSubmit} />
     </View>
   );

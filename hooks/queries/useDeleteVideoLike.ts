@@ -1,5 +1,5 @@
 import { Video } from '@/models/video';
-import { deleteVideoLike } from '@/services/video';
+import { deleteVideoLike } from '@/services/crud/video';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useDeleteVideoLike = (videoId: Id, likerId?: Id) => {

@@ -1,4 +1,3 @@
-import FocusHeader from '@/components/FocusHeader';
 import Footer from '@/components/Footer';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
@@ -21,6 +20,7 @@ import { useUpdateUser } from '@/hooks/queries/useUser';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -41,8 +41,8 @@ const Settings = () => {
     );
   }
   return (
-    <SafeAreaView style={styles.container}>
-      <FocusHeader name="Settings" />
+    <View style={styles.container}>
+      <PlazaHeader name="Settings" />
       <Formik
         initialValues={{
           firstName: user.firstName,
@@ -110,7 +110,7 @@ const Settings = () => {
           </KeyboardAvoidingView>
         )}
       </Formik>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -118,7 +118,7 @@ export default Settings;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.SPACING_3,
     flex: 1,
     gap: Spacing.SPACING_4,
   },

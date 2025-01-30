@@ -1,4 +1,4 @@
-import { createOrderHistoryItems } from '@/services/orderHistoryItem';
+import { createOrderHistoryItems } from '@/services/crud/orderHistoryItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateOrderHistoryItems = (productIds: Id[], userId?: Id) => {

@@ -1,14 +1,14 @@
-import FocusHeader from '@/components/FocusHeader';
 import LinkItemsProduct from '@/components/LinkItemsProduct';
 import Footer from '@/components/Footer';
 import { router } from 'expo-router';
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetProductsBySellerId } from '@/hooks/queries/useGetProductsBySellerId';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useSelectedProducts } from '@/contexts/SelectedProductsContext';
 import { useEffect, useState } from 'react';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const LinkItems = () => {
   const [tempSelectedProducts, setTempSelectedProducts] = useState<Product[]>(
@@ -39,8 +39,8 @@ const LinkItems = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FocusHeader name="Link Items" />
+    <View style={{ flex: 1 }}>
+      <PlazaHeader name="Link Items" />
       <FlatList
         numColumns={2}
         data={products}
@@ -58,7 +58,7 @@ const LinkItems = () => {
         leftOnPress={router.back}
         rightOnPress={handleSubmit}
       />
-    </SafeAreaView>
+    </View>
   );
 };
 

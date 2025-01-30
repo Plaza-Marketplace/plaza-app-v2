@@ -1,4 +1,4 @@
-import { getVideos } from '@/services/video';
+import { getVideos } from '@/services/crud/video';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 const useGetFeedVideos = () =>

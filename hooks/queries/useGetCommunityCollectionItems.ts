@@ -1,4 +1,4 @@
-import { getCommunityCollectionItemsByCommunityId } from '@/services/communityCollectionItem';
+import { getCommunityCollectionItemsByCommunityId } from '@/services/crud/communityCollectionItem';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetCommuntyCollectionItems = (communityId: Id) =>

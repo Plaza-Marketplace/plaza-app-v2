@@ -1,4 +1,4 @@
-import { createCartItem } from '@/services/cartItem';
+import { createCartItem } from '@/services/crud/cartItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const useCreateCartItem = (product: Product, userId?: Id) => {

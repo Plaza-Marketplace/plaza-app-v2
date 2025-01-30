@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   },
   card: {
     width: '100%',
-    padding: 16,
+    padding: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
     borderColor: Color.BORDER_SECONDARY,
     borderRadius: Radius.ROUNDED,

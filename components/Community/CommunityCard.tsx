@@ -7,6 +7,7 @@ import PlazaText from '../Texts/PlazaText';
 import NotificationNumber from '../NotificationNumber';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
+import Spacing from '@/constants/Spacing';
 
 const COMMUNITY_ICON_SIZE = 64;
 
@@ -46,8 +47,8 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 16,
-    paddingLeft: 16,
-    paddingRight: 32,
+    paddingLeft: Spacing.SPACING_3,
+    paddingRight: Spacing.SPACING_5,
   },
   communityInfo: {
     flex: 1,

@@ -17,6 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCreateCommunityPost } from '@/hooks/queries/useCommunityPosts';
 import { CreateCommunityPost, PostType } from '@/models/communityPost';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const AddPostModal = () => {
   const auth = useAuth();
@@ -30,8 +31,8 @@ const AddPostModal = () => {
   } = useCreateCommunityPost();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FocusHeader name="Create a Post" />
+    <View style={styles.container}>
+      <PlazaHeader name="Create a Post" />
       <Formik
         initialValues={{
           title: '',
@@ -80,7 +81,7 @@ const AddPostModal = () => {
           </KeyboardAvoidingView>
         )}
       </Formik>
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -88,7 +89,7 @@ export default AddPostModal;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.SPACING_3,
     flex: 1,
     gap: Spacing.SPACING_4,
   },

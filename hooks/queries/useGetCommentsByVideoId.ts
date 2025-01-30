@@ -1,4 +1,4 @@
-import { getCommentsByVideoId } from '@/services/videoComment';
+import { getCommentsByVideoId } from '@/services/crud/videoComment';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetCommentsByVideoId = (videoId: Id) =>

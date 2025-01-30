@@ -4,6 +4,7 @@ import PressableOpacity from './PressableOpacity';
 import { PressableProps, StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
 import StandardText from '../Texts/StandardText';
+import Spacing from '@/constants/Spacing';
 
 interface PlazaButtonProps extends PressableProps {
   title: string;
@@ -32,8 +33,8 @@ const styles = StyleSheet.create({
     backgroundColor: Color.SURFACE_SECONDARY,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: Spacing.SPACING_4,
+    paddingVertical: Spacing.SPACING_3,
     borderRadius: 100,
   },
 });

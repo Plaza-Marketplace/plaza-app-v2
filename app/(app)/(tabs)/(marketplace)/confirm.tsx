@@ -1,5 +1,5 @@
 import PlazaButton from '@/components/Buttons/PlazaButton';
-import FocusHeader from '@/components/FocusHeader';
+import PlazaHeader from '@/components/PlazaHeader';
 import ShoppingCartProductCard from '@/components/Product/ProductCards/ShoppingCartProductCard';
 import Spacing from '@/constants/Spacing';
 import { useAuth } from '@/contexts/AuthContext';
@@ -24,8 +24,8 @@ const ConfirmScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
-      <FocusHeader name="Shopping Cart" />
+    <View style={styles.container}>
+      <PlazaHeader name="Shopping Cart" />
       <View style={styles.content}>
         {selectedCartItems.map((cartItem) => (
           <ShoppingCartProductCard
@@ -36,7 +36,7 @@ const ConfirmScreen = () => {
         ))}
       </View>
       <PlazaButton title="Confirm Items" onPress={handleSubmit} />
-    </SafeAreaView>
+    </View>
   );
 };
 

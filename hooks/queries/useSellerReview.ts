@@ -1,4 +1,4 @@
-import { getSellerReviewsBySellerId } from "@/services/sellerReviews";
+import { getSellerReviewsBySellerId } from "@/services/crud/sellerReviews";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetSellerReviews = (sellerId: Id) => useQuery({

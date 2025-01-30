@@ -1,10 +1,10 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import FocusHeader from '@/components/FocusHeader';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useGetCommunityPost } from '@/hooks/queries/useCommunityPosts';
 import PostCard from '@/components/PostCards/PostCard';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const PostModal = () => {
   const params = useLocalSearchParams<{
@@ -25,10 +25,10 @@ const PostModal = () => {
   }
 
   return (
-    <SafeAreaView>
-      <FocusHeader name={post.community.name} />
+    <View>
+      <PlazaHeader name={post.community.name} />
       <PostCard communityPost={post} />
-    </SafeAreaView>
+    </View>
   );
 };
 

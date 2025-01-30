@@ -26,7 +26,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
         style={[styles.backButton, { top: inset.top }]}
         onPress={() => router.back()}
       >
-        <BackButton color="white" size={20} />
+        <BackButton color={Color.GREY_100} size={20} />
         {/* <Text>Back</Text> */}
       </PressableOpacity>
       <Image style={styles.banner} source={{ uri: backgroundUrl }} />
@@ -44,7 +44,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
             />
           </View>
 
-          <View style={{ marginLeft: 70, padding: 5 }}>
+          <View style={{ marginLeft: 70, padding: Spacing.SPACING_1 }}>
             <HeaderText>{name}</HeaderText>
             <StandardText color={Color.TEXT_SUB_PRIMARY}>
               {memberCount} members
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: 8,
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.SPACING_3,
   },
   iconContainer: {
     position: 'absolute',
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    padding: 10,
+    padding: Spacing.SPACING_2,
     left: Spacing.SPACING_3,
     backgroundColor: '#00000088',
     borderRadius: 99,

@@ -1,5 +1,5 @@
-import { getSalesCountBySellerId } from '@/services/orderHistoryItem';
-import { getProductsBySellerId } from '@/services/product';
+import { getSalesCountBySellerId } from '@/services/crud/orderHistoryItem';
+import { getProductsBySellerId } from '@/services/crud/product';
 import { skipToken, useQuery } from '@tanstack/react-query';
 
 export const useGetProductsBySellerId = (id?: Id) =>

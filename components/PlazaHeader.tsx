@@ -1,34 +1,43 @@
 import { StyleSheet, View } from 'react-native';
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import HeaderText from './Texts/HeaderText';
 import PressableOpacity from './Buttons/PressableOpacity';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import Color from '@/constants/Color';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-interface FocusHeaderProps {
+interface PlazaHeaderProps {
   leftIcon?: ReactNode;
   leftOnClick?: () => void;
   name: string;
   rightIcon?: ReactNode;
   rightOnClick?: () => void;
+  accountForSafeArea?: boolean;
 }
 
-const FocusHeader = ({
+const PlazaHeader: FC<PlazaHeaderProps> = ({
   leftIcon = <Ionicons name="close-outline" size={32} />,
   leftOnClick = () => router.back(),
   name,
-  rightIcon,
+  rightIcon = null,
   rightOnClick,
-}: FocusHeaderProps) => {
+  accountForSafeArea = true,
+}) => {
+  const inset = useSafeAreaInsets();
   return (
-    <View style={styles.header}>
+    <View
+      style={[
+        styles.header,
+        { paddingTop: accountForSafeArea ? inset.top : 0 },
+      ]}
+    >
       <PressableOpacity onPress={leftOnClick}>{leftIcon}</PressableOpacity>
       <HeaderText>{name}</HeaderText>
       <PressableOpacity
         onPress={rightOnClick}
-        style={{ marginLeft: 'auto', marginRight: 16 }}
+        style={{ marginLeft: 'auto', marginRight: 0 }}
       >
         {rightIcon}
       </PressableOpacity>
@@ -36,16 +45,16 @@ const FocusHeader = ({
   );
 };
 
-export default FocusHeader;
+export default PlazaHeader;
 
 const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottomWidth: 1,
+    backgroundColor: Color.GREY_100,
+    borderBottomWidth: 2,
     borderBottomColor: Color.BORDER_SECONDARY,
     paddingHorizontal: Spacing.SPACING_3,
     paddingVertical: Spacing.SPACING_1,
-    gap: Spacing.SPACING_3,
   },
 });
