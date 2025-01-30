@@ -79,7 +79,12 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
             <CaptionText>City, State</CaptionText>
           </View>
           <View style={styles.headerTopColumnLarge}>
-            <View style={{ paddingHorizontal: 5, flexDirection: 'row' }}>
+            <View
+              style={{
+                paddingHorizontal: Spacing.SPACING_1,
+                flexDirection: 'row',
+              }}
+            >
               {returnRatings(4.5, 'small')}
             </View>
           </View>
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
   },
   header: {
     flexDirection: 'column',
-    padding: 16,
+    padding: Spacing.SPACING_3,
   },
   headerTopGrid: {
     flexDirection: 'column',
@@ -167,7 +172,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     flexDirection: 'row',
-    paddingHorizontal: 5,
+    paddingHorizontal: Spacing.SPACING_1,
     justifyContent: 'space-between',
     alignItems: 'center',
   },

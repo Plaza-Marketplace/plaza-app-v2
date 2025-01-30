@@ -82,8 +82,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: Spacing.SPACING_4,
+    paddingVertical: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
   },
 });

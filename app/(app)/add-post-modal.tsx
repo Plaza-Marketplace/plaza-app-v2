@@ -89,7 +89,7 @@ export default AddPostModal;
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.SPACING_3,
     flex: 1,
     gap: Spacing.SPACING_4,
   },

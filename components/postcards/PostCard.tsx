@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   container: {
     borderBottomWidth: 1,
     borderBottomColor: 'gray',
-    padding: 10,
+    padding: Spacing.SPACING_2,
   },
   sectionMargin: {
     marginTop: Spacing.SPACING_1,

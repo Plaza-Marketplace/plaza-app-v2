@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexDirection: 'column',
     justifyContent: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: Spacing.SPACING_2,
   },
 });

@@ -4,6 +4,7 @@ import { Tabs } from 'react-native-collapsible-tab-view';
 import VideoPreview from '@/components/VideoPreview';
 import { useGetVideosByUserId } from '@/hooks/queries/useVideo';
 import { router } from 'expo-router';
+import Spacing from '@/constants/Spacing';
 
 interface ProfileVideoProps {
   userId: number;
@@ -24,8 +25,8 @@ const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
           style={{
             width: '33.333%',
             height: 200,
-            paddingHorizontal: 2,
-            paddingTop: 10,
+            paddingHorizontal: Spacing.SPACING_1,
+            paddingTop: Spacing.SPACING_2,
           }}
         >
           <VideoPreview

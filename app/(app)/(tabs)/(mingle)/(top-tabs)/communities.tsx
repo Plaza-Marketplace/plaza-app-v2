@@ -36,7 +36,7 @@ export default Communities;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 16,
+    paddingTop: Spacing.SPACING_3,
     gap: 16,
     backgroundColor: Color.SURFACE_PRIMARY,
   },

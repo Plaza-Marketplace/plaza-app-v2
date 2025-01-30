@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingLeft: 20,
+    paddingLeft: Spacing.SPACING_4,
   },
 });
 
