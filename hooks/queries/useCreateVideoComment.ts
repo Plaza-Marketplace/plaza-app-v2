@@ -1,30 +1,63 @@
+import { useAuth } from '@/contexts/AuthContext';
 import { createComment } from '@/services/crud/videoComment';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useCreateVideoComment = (videoId: Id, posterId?: Id) => {
-  const queryClient = useQueryClient()
+const useCreateVideoComment = (videoId: Id) => {
+  const { user } = useAuth();
+
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['createVideoComment', videoId],
-    mutationFn: posterId
+    mutationFn: user?.id
       ? (description: string) =>
           createComment({
             videoId: videoId,
-            posterId: posterId,
+            posterId: user.id,
             description: description,
           })
       : undefined,
-    onSuccess: (data) => {
+    onMutate: (description) => {
+      if (!user) return;
+
+      const newComment: VideoComment = {
+        id: Math.random(),
+        videoId: videoId,
+        poster: user,
+        description: description,
+        createdAt: new Date().toISOString(),
+      };
+
+      queryClient.setQueryData(
+        ['exploreTab'],
+        (old: ExploreTab | undefined) => {
+          if (old) {
+            return {
+              ...old,
+              videos: old.videos.map((video) => {
+                if (video.id === videoId) {
+                  return {
+                    ...video,
+                    commentCount: video.commentCount + 1,
+                  };
+                }
+                return video;
+              })
+            }
+          }
+        }
+      )
+
       queryClient.setQueryData(
         ['comments', videoId],
         (old: VideoComment[] | undefined) => {
           if (old) {
-            return [...old, data];
+            return [...old, newComment];
           }
-          return [data];
+          return [newComment];
         }
       );
-    }
+    },
   });
-}
+};
 
 export default useCreateVideoComment;

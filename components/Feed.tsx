@@ -2,7 +2,6 @@ import { FlatList } from 'react-native';
 import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import React, { FC, useCallback, useState } from 'react';
-import { Video } from '@/models/video';
 import { useFocusEffect } from 'expo-router';
 
 interface FeedProps {
@@ -48,8 +47,6 @@ const Feed: FC<FeedProps> = ({
       };
     }, [])
   );
-
-  console.log(visible);
 
   return (
     <FlatList

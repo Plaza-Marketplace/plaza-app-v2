@@ -1,10 +1,7 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import FeedBottomSheet from './FeedBottomSheet';
 import StandardText from '../Texts/StandardText';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PlazaTextInput from '../PlazaTextInput';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { FC, useState } from 'react';
@@ -14,8 +11,6 @@ import Comment from './Comment';
 import useGetCommentsByVideoId from '@/hooks/queries/useGetCommentsByVideoId';
 import PlazaButton from '../Buttons/PlazaButton';
 import useCreateVideoComment from '@/hooks/queries/useCreateVideoComment';
-import { useAuth } from '@/contexts/AuthContext';
-import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 
 interface CommentModalProps {
   videoId: Id;
@@ -25,10 +20,8 @@ interface CommentModalProps {
 const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
   const insets = useSafeAreaInsets();
   const [description, setDescription] = useState('');
-  const { session } = useAuth();
-  const { data: user } = useGetUserByAuthId(session?.user.id);
   const { data } = useGetCommentsByVideoId(videoId);
-  const { mutate: createComment } = useCreateVideoComment(videoId, user?.id);
+  const { mutate: createComment } = useCreateVideoComment(videoId);
 
   const handleSubmit = () => {
     if (!description) return;

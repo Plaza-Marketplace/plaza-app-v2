@@ -1,45 +1,39 @@
-import { Video } from '@/models/video';
+import { useAuth } from '@/contexts/AuthContext';
 import { deleteVideoLike } from '@/services/crud/video';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useDeleteVideoLike = (videoId: Id, likerId?: Id) => {
+const useDeleteVideoLike = (videoId: Id) => {
+  const { user } = useAuth();
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationKey: ['videoLike', videoId, likerId],
-    mutationFn: likerId
-      ? () => deleteVideoLike({ videoId, likerId })
+    mutationKey: ['videoLike', videoId, user?.id],
+    mutationFn: user?.id
+      ? () => deleteVideoLike({ videoId, likerId: user.id })
       : undefined,
-    onSuccess: (data) => {
+    onMutate: () => {
       queryClient.setQueryData(
-        ['videoLikedByUserId', data.likerId],
-        (old: VideoLike[] | undefined) => {
-          if (old) {
-            return old.filter((like) => like.likerId !== data.likerId);
-          }
-          return [];
-        }
-      );
+        ['exploreTab'],
+        (old: ExploreTab | undefined) => {
+          if (!old) return;
 
-      queryClient.setQueryData(
-        ['isVideoLikedByUser', data.likerId, data.videoId],
-        false
-      );
-
-      queryClient.setQueryData(['feedVideos'], (old: Video[][] | undefined) => {
-        const videos = old?.flat();
-        if (videos) {
-          return videos.map((video) => {
-            if (video.id === data.videoId) {
+          const newVideos = old.videos.map((video) => {
+            if (video.id === videoId) {
               return {
                 ...video,
+                isLiked: false,
                 likeCount: video.likeCount - 1,
               };
             }
             return video;
           });
+
+          return {
+            ...old,
+            videos: newVideos,
+          };
         }
-        return [];
-      });
+      );
     },
   });
 };
