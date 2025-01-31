@@ -4,6 +4,7 @@ import { StyleSheet } from 'react-native';
 import CaptionText from './Texts/CaptionText';
 import HeaderText from './Texts/HeaderText';
 import PlazaText from './Texts/PlazaText';
+import Spacing from '@/constants/Spacing';
 
 interface CommunityHeaderProps {
   name: string;
@@ -40,13 +41,18 @@ const CommunityHeader = (props: CommunityHeaderProps) => {
             />
           </View>
 
-          <View style={{ marginLeft: 75, padding: 10 }}>
+          <View
+            style={{
+              marginLeft: Spacing.SPACING_10,
+              padding: Spacing.SPACING_2,
+            }}
+          >
             <HeaderText>{name}</HeaderText>
             <CaptionText>{memberCount}</CaptionText>
           </View>
         </View>
 
-        <View style={{ height: '50%', paddingVertical: 10 }}>
+        <View style={{ height: '50%', paddingVertical: Spacing.SPACING_2 }}>
           <PlazaText>{description}</PlazaText>
         </View>
       </View>
@@ -67,7 +73,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    paddingLeft: 20,
+    paddingLeft: Spacing.SPACING_4,
   },
 });
 

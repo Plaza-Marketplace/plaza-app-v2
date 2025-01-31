@@ -1,5 +1,4 @@
 import AddImage from '@/components/AddImage';
-import FocusHeader from '@/components/FocusHeader';
 import Footer from '@/components/Footer';
 import InfoSection from '@/components/InfoSection';
 import PlazaTextInput from '@/components/PlazaTextInput';
@@ -13,6 +12,7 @@ import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
+import PlazaHeader from '@/components/PlazaHeader';
 
 type CreateListingForm = {
   title: string;
@@ -46,7 +46,7 @@ const CreateListingScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FocusHeader name="List an Item" />
+      <PlazaHeader name="List an Item" accountForSafeArea={false} />
 
       <Formik
         initialValues={initialValues}
@@ -157,10 +157,10 @@ export default CreateListingScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
-
     flexGrow: 1,
     gap: Spacing.SPACING_4,
+    paddingHorizontal: Spacing.SPACING_3,
+    backgroundColor: Color.GREY_100,
   },
   buttonsContainer: {
     flexDirection: 'row',

@@ -99,7 +99,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               {video.description && (
                 <ExpandableDescription
                   description={video.description}
-                  textColor="white"
+                  textColor={Color.GREY_100}
                   shadow
                 />
               )}

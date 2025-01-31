@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingBottom: 4,
+    paddingBottom: Spacing.SPACING_1,
     width: '100%',
     borderBottomWidth: 1,
     borderBottomColor: Color.BORDER_SECONDARY,

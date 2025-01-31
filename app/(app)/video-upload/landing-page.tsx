@@ -1,5 +1,4 @@
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import FocusHeader from '@/components/FocusHeader';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import CaptionText from '@/components/Texts/CaptionText';
@@ -12,7 +11,6 @@ import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { createVideo } from '@/services/crud/video';
@@ -20,6 +18,8 @@ import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Formik } from 'formik';
 import { useSelectedProducts } from '@/contexts/SelectedProductsContext';
+import PlazaHeader from '@/components/PlazaHeader';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type VideoUploadForm = {
   videoUri: string | null;
@@ -39,8 +39,8 @@ const LandingPage = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <FocusHeader name="Upload a Video" />
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.GREY_100 }}>
+      <PlazaHeader name="Upload a Video" accountForSafeArea={false} />
       <Formik
         initialValues={initialValues}
         onSubmit={async (values) => {
@@ -80,8 +80,8 @@ const LandingPage = () => {
           return (
             <View style={{ flex: 1 }}>
               <View style={styles.container}>
-                <PressableOpacity style={{ flex: 1 }} onPress={handleSelect}>
-                  <VideoPreview uri={values.videoUri} />
+                <PressableOpacity style={{ flex: 1 }}>
+                  <VideoPreview uri={values.videoUri} onPress={handleSelect} />
                 </PressableOpacity>
                 <View style={{ gap: Spacing.SPACING_3 }}>
                   <BoldStandardText>Description</BoldStandardText>

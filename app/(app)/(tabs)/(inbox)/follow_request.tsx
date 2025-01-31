@@ -1,6 +1,8 @@
 import ActivityNote from '@/app/(app)/(tabs)/(inbox)/ActivityNote';
-import BackHeader from '@/app/(app)/(tabs)/(inbox)/BackHeader';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import PlazaHeader from '@/components/PlazaHeader';
+import { BackButton } from '@/components/PlazaIcons/ActionIcons';
+import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import { AuthContext } from '@/contexts/AuthContext';
 import { useCreateFollow } from '@/hooks/queries/useFollow';
@@ -28,7 +30,10 @@ const FollowRequest = () => {
   }
   return (
     <>
-      <BackHeader name="Follow Requests" />
+      <PlazaHeader
+        name="Follow Requests"
+        leftIcon={<BackButton color={Color.GREY_500} />}
+      />
       <View style={{ flex: 1, marginTop: Spacing.SPACING_2 }}>
         <FlatList
           style={styles.list}
@@ -57,7 +62,7 @@ const FollowRequest = () => {
                     deleteRequest(item.id);
                   }}
                 >
-                  <Ionicons name="checkmark" size={24} color="black" />
+                  <Ionicons name="checkmark" size={24} color={Color.GREY_500} />
                 </PressableOpacity>
                 <PressableOpacity
                   style={{ marginLeft: Spacing.SPACING_2 }}
@@ -65,7 +70,7 @@ const FollowRequest = () => {
                     deleteRequest(item.id);
                   }}
                 >
-                  <Ionicons name="close" size={24} color="black" />
+                  <Ionicons name="close" size={24} color={Color.GREY_500} />
                 </PressableOpacity>
               </View>
             </View>
