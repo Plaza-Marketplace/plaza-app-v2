@@ -6,6 +6,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Color from '@/constants/Color';
+import Spacing from '@/constants/Spacing';
 
 const community_posts = () => {
   const { communityId } = useLocalSearchParams<{ communityId: string }>();
@@ -33,7 +34,7 @@ const community_posts = () => {
           })
         }
       >
-        <FontAwesome6 name="pen-to-square" size={24} color="white" />
+        <FontAwesome6 name="pen-to-square" size={24} color={Color.GREY_100} />
       </PressableOpacity>
     </View>
   );
@@ -44,10 +45,10 @@ export default community_posts;
 const styles = StyleSheet.create({
   addButton: {
     position: 'absolute',
-    bottom: 20,
-    right: 20,
+    bottom: Spacing.SPACING_4,
+    right: Spacing.SPACING_4,
     backgroundColor: Color.ICON_PRIMARY,
-    padding: 15,
-    borderRadius: 50,
+    padding: Spacing.SPACING_2,
+    borderRadius: Spacing.SPACING_2XL,
   },
 });

@@ -1,5 +1,5 @@
 import { UpdateUser, User } from "@/models/user";
-import { getUser, updateUser } from "@/services/user";
+import { getUser, updateUser } from "@/services/crud/user";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export const useUpdateUser = () => {

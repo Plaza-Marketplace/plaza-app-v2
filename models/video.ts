@@ -1,13 +1,13 @@
-import { User } from "./user";
-
-export type Video = {
+type Video = {
   id: Id;
 
-  poster: Pick<User, "id" | "username" | "profileImageUrl">;
+  poster: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
 
   videoUrl: Url;
 
   products: Product[];
+
+  isLiked: boolean;
 
   likeCount: number;
 
@@ -20,7 +20,7 @@ export type Video = {
   createdAt: Timestamp;
 };
 
-export type CreateVideo = {
+type CreateVideo = {
   posterId: Id;
 
   description: string | null;

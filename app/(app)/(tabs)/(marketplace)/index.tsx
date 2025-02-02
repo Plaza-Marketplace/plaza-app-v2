@@ -1,7 +1,11 @@
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Feed from '@/components/Feed';
+import Loading from '@/components/Loading';
 import Color from '@/constants/Color';
-import useGetFeedVideos from '@/hooks/queries/useGetFeedVideos';
+import {
+  useGetExploreTab,
+  useGetNextExploreTabVideos,
+} from '@/hooks/routes/explore';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { useState } from 'react';
@@ -9,15 +13,18 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ExploreTab = () => {
   const insets = useSafeAreaInsets();
-  const { data, error, refetch, fetchNextPage } = useGetFeedVideos();
+  const { data, error, refetch, isLoading } = useGetExploreTab();
+  const getNextExploreTabVideos = useGetNextExploreTabVideos(data?.videos);
   const [refreshing, setRefreshing] = useState(false);
+
+  if (isLoading) return <Loading />;
 
   if (!data || error) return null;
 
   const onRefresh = async () => {
     setRefreshing(true);
 
-    const { data } = await refetch();
+    await refetch();
 
     setRefreshing(false);
   };
@@ -46,10 +53,10 @@ const ExploreTab = () => {
       </PressableOpacity>
 
       <Feed
-        videos={data.pages.flat()}
+        videos={data.videos}
         refreshing={refreshing}
         onRefresh={onRefresh}
-        fetchNextPage={fetchNextPage}
+        fetchNextPage={getNextExploreTabVideos}
       />
     </>
   );

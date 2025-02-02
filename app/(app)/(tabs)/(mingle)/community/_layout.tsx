@@ -2,6 +2,7 @@ import { Event, track } from '@/analytics/utils';
 import CommunityHeader from '@/components/Community/CommunityHeader';
 import PlazaText from '@/components/Texts/PlazaText';
 import Color from '@/constants/Color';
+import Spacing from '@/constants/Spacing';
 import { useGetCommunityById } from '@/hooks/queries/useCommunity';
 import {
   createMaterialTopTabNavigator,
@@ -89,8 +90,8 @@ const styles = StyleSheet.create({
   columnContainer: {
     flexGrow: 1,
     flexDirection: 'row',
-    padding: 8,
-    gap: 8,
+    padding: Spacing.SPACING_2,
+    gap: Spacing.SPACING_2,
     backgroundColor: Color.SURFACE_PRIMARY,
   },
   column: {
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    paddingTop: 8,
+    paddingTop: Spacing.SPACING_2,
   },
   info: {
     backgroundColor: Color.SURFACE_PRIMARY,

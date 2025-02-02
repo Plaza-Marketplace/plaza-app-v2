@@ -1,4 +1,4 @@
-import { getSellerInfo } from '@/services/user';
+import { getSellerInfo } from '@/services/crud/user';
 import { useQuery } from '@tanstack/react-query';
 
 const useGetSellerInfo = (sellerId: Id) =>

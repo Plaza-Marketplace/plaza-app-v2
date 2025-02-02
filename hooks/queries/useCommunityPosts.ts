@@ -7,7 +7,7 @@ import {
   getChatterPostsByCommunity,
   getCommunityPost,
   getCommunityPostsByCommunity,
-} from '@/services/communityPosts';
+} from '@/services/crud/communityPosts';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useGetChatterPosts = () =>

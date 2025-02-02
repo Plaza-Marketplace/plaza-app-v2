@@ -1,4 +1,4 @@
-import { getVideoById, getVideosByUserId } from "@/services/video";
+import { getVideoById, getVideosByUserId } from "@/services/crud/video";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetVideosByUserId = (userId: Id) => useQuery({

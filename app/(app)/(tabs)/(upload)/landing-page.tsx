@@ -6,6 +6,7 @@ import AddContentCard from '@/components/AddContentCard';
 import Color from '@/constants/Color';
 import VideoPreview from '@/components/VideoPreview';
 import { ProductDetails } from '@/models/communityPost';
+import Spacing from '@/constants/Spacing';
 
 const LandingPage = () => {
   const test: ProductDetails = {
@@ -33,7 +34,7 @@ const LandingPage = () => {
                 style={{
                   flex: 1,
                   justifyContent: 'center',
-                  marginHorizontal: 24,
+                  marginHorizontal: Spacing.SPACING_4,
                 }}
               >
                 <AddContentCard
@@ -53,7 +54,7 @@ const LandingPage = () => {
               style={{
                 flex: 1,
                 justifyContent: 'center',
-                marginHorizontal: 24,
+                marginHorizontal: Spacing.SPACING_4,
               }}
             >
               <AddContentCard
@@ -81,8 +82,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 16,
+    paddingHorizontal: Spacing.SPACING_4,
+    paddingVertical: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
   },
 });

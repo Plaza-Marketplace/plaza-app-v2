@@ -1,5 +1,4 @@
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
-import { User } from '@/models/user';
 import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
 import React, {

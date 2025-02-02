@@ -20,7 +20,7 @@ const Comment = () => {
       <View style={styles.commentContent}>
         <View style={styles.name}>
           <BoldCaptionText>@Username</BoldCaptionText>
-          <View style={{ marginLeft: 4 }}>
+          <View style={{ marginLeft: Spacing.SPACING_1 }}>
             <CaptionText>Time</CaptionText>
           </View>
         </View>

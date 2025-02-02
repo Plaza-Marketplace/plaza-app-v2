@@ -15,7 +15,6 @@ import ExpandableDescription from '../ExpandableDescription';
 import Products from './Products';
 import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
-import { Video } from '@/models/video';
 import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
 import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
@@ -100,14 +99,18 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               {video.description && (
                 <ExpandableDescription
                   description={video.description}
-                  textColor="white"
+                  textColor={Color.GREY_100}
                   shadow
                 />
               )}
             </View>
           </View>
           <View style={styles.buttonsContainer}>
-            <LikeButton videoId={video.id} likeCount={video.likeCount} />
+            <LikeButton
+              videoId={video.id}
+              isLiked={video.isLiked}
+              likeCount={video.likeCount}
+            />
             <FeedVideoButton
               name="review"
               count={video.reviewCount}
