@@ -7,6 +7,7 @@ import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import Color from '@/constants/Color';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Dropdown from './Dropdown/Dropdown';
 
 interface PlazaHeaderProps {
   leftIcon?: ReactNode;
@@ -15,6 +16,8 @@ interface PlazaHeaderProps {
   rightIcon?: ReactNode;
   rightOnClick?: () => void;
   accountForSafeArea?: boolean;
+  headerDropdown?: boolean;
+  headerOptions?: { name: string; onPress: () => void }[];
 }
 
 const PlazaHeader: FC<PlazaHeaderProps> = ({
@@ -24,6 +27,8 @@ const PlazaHeader: FC<PlazaHeaderProps> = ({
   rightIcon = null,
   rightOnClick,
   accountForSafeArea = true,
+  headerDropdown = false,
+  headerOptions = [],
 }) => {
   const inset = useSafeAreaInsets();
   return (
@@ -34,7 +39,13 @@ const PlazaHeader: FC<PlazaHeaderProps> = ({
       ]}
     >
       <PressableOpacity onPress={leftOnClick}>{leftIcon}</PressableOpacity>
-      <HeaderText>{name}</HeaderText>
+      {headerDropdown ? (
+        <Dropdown headerOptions={headerOptions}>
+          <HeaderText>{name}</HeaderText>
+        </Dropdown>
+      ) : (
+        <HeaderText>{name}</HeaderText>
+      )}
       <PressableOpacity
         onPress={rightOnClick}
         style={{ marginLeft: 'auto', marginRight: 0 }}
