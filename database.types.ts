@@ -325,7 +325,7 @@ export type Database = {
             foreignKeyName: "message_conversation_id_fkey"
             columns: ["conversation_id"]
             isOneToOne: false
-            referencedRelation: "community"
+            referencedRelation: "conversation"
             referencedColumns: ["id"]
           },
           {
@@ -337,27 +337,74 @@ export type Database = {
           },
         ]
       }
-      order_history_item: {
+      notifications: {
         Row: {
           created_at: string
+          description: string
           id: number
-          product_id: number
-          status: Database["public"]["Enums"]["order_status"]
+          is_read: boolean
+          type: Database["public"]["Enums"]["notification_type"]
           user_id: number
         }
         Insert: {
           created_at?: string
+          description: string
           id?: number
-          product_id: number
-          status?: Database["public"]["Enums"]["order_status"]
+          is_read: boolean
+          type: Database["public"]["Enums"]["notification_type"]
           user_id: number
         }
         Update: {
           created_at?: string
+          description?: string
+          id?: number
+          is_read?: boolean
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      order_history_item: {
+        Row: {
+          buyer_id: number
+          created_at: string
+          delivered_date: string | null
+          final_price: number
+          id: number
+          product_id: number
+          seller_id: number
+          shipping_date: string | null
+          status: Database["public"]["Enums"]["order_status"]
+        }
+        Insert: {
+          buyer_id: number
+          created_at?: string
+          delivered_date?: string | null
+          final_price: number
+          id?: number
+          product_id: number
+          seller_id: number
+          shipping_date?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+        }
+        Update: {
+          buyer_id?: number
+          created_at?: string
+          delivered_date?: string | null
+          final_price?: number
           id?: number
           product_id?: number
+          seller_id?: number
+          shipping_date?: string | null
           status?: Database["public"]["Enums"]["order_status"]
-          user_id?: number
         }
         Relationships: [
           {
@@ -368,8 +415,15 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "order_history_item_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "order_history_item_user_id_fkey"
-            columns: ["user_id"]
+            columns: ["buyer_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
@@ -727,7 +781,13 @@ export type Database = {
     }
     Enums: {
       community_post_type: "POST" | "SHOWCASE" | "REVIEW"
-      order_status: "PENDING"
+      notification_type: "PURCHASE_CONFIRMED"
+      order_status:
+        | "PENDING"
+        | "CONFIRMED"
+        | "SHIPPED"
+        | "DELIVERED"
+        | "CANCELED"
     }
     CompositeTypes: {
       [_ in never]: never

@@ -1,25 +1,27 @@
+import {
+  CreateOrderHistoryItem,
+  OrderHistoryItem,
+} from '@/models/orderHistoryItem';
 import { createOrderHistoryItems } from '@/services/crud/orderHistoryItem';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const useCreateOrderHistoryItems = (productIds: Id[], userId?: Id) => {
+const useCreateOrderHistoryItems = (items?: CreateOrderHistoryItem[]) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['createorderHistory'],
-    mutationFn: userId
-      ? () => createOrderHistoryItems(userId, productIds)
-      : undefined,
+    mutationFn: items ? () => createOrderHistoryItems(items) : undefined,
     onSuccess: (data) => {
       queryClient.setQueryData(
-        ['orderHistory'],
+        ['purchases'],
         (old: OrderHistoryItem[] | undefined) => {
           if (old) {
             return [...old, data];
           }
           return [data];
         }
-      )
-    }
+      );
+    },
   });
-}
+};
 
 export default useCreateOrderHistoryItems;

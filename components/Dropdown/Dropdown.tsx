@@ -36,12 +36,13 @@ const Dropdown: FC<DropdownProps> = ({ children, headerOptions }) => {
           {headerOptions.map((option, index) => (
             <>
               <DropdownButton
-                key={index}
+                useKey={`${option.name}-${index}`}
                 name={option.name}
                 onPress={() => option.onPress({ index })}
               />
               {index !== headerOptions.length - 1 && (
                 <View
+                  key={`border-${index}`}
                   style={{
                     height: 2,
                     backgroundColor: 'lightgray',

@@ -14,8 +14,14 @@ const ConfirmScreen = () => {
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
   const { mutate: createOrderHistoryItems } = useCreateOrderHistoryItems(
-    selectedCartItems.map((cartItem) => cartItem.product.id),
-    user?.id
+    user
+      ? selectedCartItems.map((cartItem) => ({
+          userId: user.id,
+          sellerId: cartItem.product.sellerId,
+          finalPrice: cartItem.product.price,
+          productId: cartItem.product.id,
+        }))
+      : []
   );
 
   const handleSubmit = () => {

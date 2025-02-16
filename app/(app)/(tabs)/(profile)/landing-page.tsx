@@ -11,7 +11,7 @@ import ProfileProducts from './profile-products';
 import ProfileReviews from './profile-reviews';
 import ProfileHeader from './ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
-import ProfileLikes from './profile-likes';
+import ProfileLikes from './likes-history/profile-likes';
 import { Text } from 'react-native';
 import { useGetProfileData } from '@/hooks/routes/profile';
 import PlazaHeader from '@/components/PlazaHeader';
@@ -112,14 +112,6 @@ const Profile = () => {
           }}
         >
           <ProfileReviews sellerId={user.id} />
-        </Tabs.Tab>
-        <Tabs.Tab
-          name="likes"
-          label={(props) => {
-            return <Ionicons name="heart-outline" size={Radius.XL} />;
-          }}
-        >
-          <ProfileLikes userId={user.id} />
         </Tabs.Tab>
       </Tabs.Container>
     </>
