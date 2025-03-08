@@ -12,6 +12,7 @@ import { StatusToString } from '@/utils/conversions';
 import Color from '@/constants/Color';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '@/components/Feed/ProductModal';
+import PaymentModal from '../components/PaymentModal';
 
 interface OrderDetailsContent {
   headerTitle: string;
@@ -23,7 +24,8 @@ interface OrderDetailsContent {
 }
 
 const OrderDetails = () => {
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const productSheetRef = useRef<BottomSheetModal>(null);
+  const paymentSheetRef = useRef<BottomSheetModal>(null);
   const params = useLocalSearchParams<{
     orderId: string;
     side: 'purchases' | 'sales';
@@ -84,21 +86,21 @@ const OrderDetails = () => {
                 <Ionicons name="pricetags-outline" size={Spacing.SPACING_LG} />
               }
               name={order.product.name}
-              onPress={() => bottomSheetRef.current?.present()}
+              onPress={() => productSheetRef.current?.present()}
               style={[styles.choiceButton, styles.border]}
             />
             <ArrowButton
               icon={<Ionicons name="cube-outline" size={Spacing.SPACING_LG} />}
               name={'Delivery Status'}
               label={'View tracking information'}
-              onPress={() => {}}
+              onPress={() => router.push({ pathname: '/order-status' })}
               style={[styles.choiceButton, styles.border]}
             />
             <ArrowButton
               icon={<Ionicons name="cash-outline" size={Spacing.SPACING_LG} />}
               name={content.paymentTitle}
               label={content.paymentLabel}
-              onPress={() => {}}
+              onPress={() => paymentSheetRef.current?.present()}
               style={[styles.choiceButton, styles.border]}
             />
             <ArrowButton
@@ -114,10 +116,11 @@ const OrderDetails = () => {
         </View>
       </View>
       <ProductModal
-        bottomSheetRef={bottomSheetRef}
+        bottomSheetRef={productSheetRef}
         sellerId={order.seller.id}
         product={order.product}
       />
+      <PaymentModal bottomSheetRef={paymentSheetRef} item={order} />
     </>
   );
 };

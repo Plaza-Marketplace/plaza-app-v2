@@ -43,6 +43,9 @@ const formatOrderHistoryData = (
     createdAt: orderHistoryItem.created_at,
     shippingDate: orderHistoryItem.shipping_date,
     deliveredDate: orderHistoryItem.delivered_date,
+    trackingNumber: orderHistoryItem.tracking_number,
+    shippingProvider: orderHistoryItem.shipping_provider,
+    shippingAddress: orderHistoryItem.shipping_address,
   };
 };
 

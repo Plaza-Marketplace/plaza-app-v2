@@ -13,6 +13,7 @@ const ConfirmScreen = () => {
   const { selectedCartItems } = useSelectedCartItems();
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
+  const shippingAddress = 'lol';
   const { mutate: createOrderHistoryItems } = useCreateOrderHistoryItems(
     user
       ? selectedCartItems.map((cartItem) => ({
@@ -20,6 +21,7 @@ const ConfirmScreen = () => {
           sellerId: cartItem.product.sellerId,
           finalPrice: cartItem.product.price,
           productId: cartItem.product.id,
+          shippingAddress: shippingAddress,
         }))
       : []
   );

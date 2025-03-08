@@ -24,6 +24,12 @@ export type OrderHistoryItem = {
   shippingDate: Timestamp | null;
 
   deliveredDate: Timestamp | null;
+
+  trackingNumber: string | null;
+
+  shippingProvider: string | null;
+
+  shippingAddress: string;
 };
 
 export type CreateOrderHistoryItem = {
@@ -34,4 +40,18 @@ export type CreateOrderHistoryItem = {
   finalPrice: number;
 
   productId: Id;
+
+  shippingAddress: string;
+};
+
+export type UpdateOrderHistoryItem = {
+  status: OrderStatus;
+
+  shippingDate: Timestamp | null;
+
+  deliveredDate: Timestamp | null;
+
+  trackingNumber: string | null;
+
+  shippingProvider: string | null;
 };

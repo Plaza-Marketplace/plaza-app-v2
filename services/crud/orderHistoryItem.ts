@@ -4,6 +4,7 @@ import {
   CreateOrderHistoryItem,
   OrderHistoryItem,
   OrderStatus,
+  UpdateOrderHistoryItem,
 } from '@/models/orderHistoryItem';
 import { Tables } from '@/database.types';
 
@@ -33,6 +34,9 @@ const formatOrderHistoryData = (
     createdAt: orderHistoryItem.created_at,
     shippingDate: orderHistoryItem.shipping_date,
     deliveredDate: orderHistoryItem.delivered_date,
+    trackingNumber: orderHistoryItem.tracking_number,
+    shippingProvider: orderHistoryItem.shipping_provider,
+    shippingAddress: orderHistoryItem.shipping_address,
   };
 };
 
@@ -85,6 +89,7 @@ export const createOrderHistoryItem = async (
       seller_id: item.sellerId,
       final_price: item.finalPrice,
       product_id: item.productId,
+      shipping_address: item.shippingAddress,
     })
     .select(queryString)
     .single();
@@ -117,6 +122,7 @@ export const createOrderHistoryItems = async (
         seller_id: item.sellerId,
         final_price: item.finalPrice,
         product_id: item.productId,
+        shipping_address: item.shippingAddress,
       }))
     )
     .select(queryString);
@@ -162,3 +168,8 @@ export const getSalesCountBySellerId = async (
 
   return count;
 };
+
+export const updateOrderHistoryItem = async (
+  id: Id,
+  item: UpdateOrderHistoryItem
+) => {};

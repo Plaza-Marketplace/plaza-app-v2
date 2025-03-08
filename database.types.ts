@@ -337,7 +337,7 @@ export type Database = {
           },
         ]
       }
-      notifications: {
+      notification: {
         Row: {
           created_at: string
           description: string
@@ -372,6 +372,41 @@ export type Database = {
           },
         ]
       }
+      notification_image: {
+        Row: {
+          created_at: string
+          id: number
+          image_key: string
+          is_left: boolean
+          is_user: boolean
+          notification_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          image_key: string
+          is_left?: boolean
+          is_user: boolean
+          notification_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          image_key?: string
+          is_left?: boolean
+          is_user?: boolean
+          notification_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notification_image_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notification"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_history_item: {
         Row: {
           buyer_id: number
@@ -381,8 +416,11 @@ export type Database = {
           id: number
           product_id: number
           seller_id: number
+          shipping_address: string
           shipping_date: string | null
+          shipping_provider: string | null
           status: Database["public"]["Enums"]["order_status"]
+          tracking_number: string | null
         }
         Insert: {
           buyer_id: number
@@ -392,8 +430,11 @@ export type Database = {
           id?: number
           product_id: number
           seller_id: number
+          shipping_address: string
           shipping_date?: string | null
+          shipping_provider?: string | null
           status?: Database["public"]["Enums"]["order_status"]
+          tracking_number?: string | null
         }
         Update: {
           buyer_id?: number
@@ -403,8 +444,11 @@ export type Database = {
           id?: number
           product_id?: number
           seller_id?: number
+          shipping_address?: string
           shipping_date?: string | null
+          shipping_provider?: string | null
           status?: Database["public"]["Enums"]["order_status"]
+          tracking_number?: string | null
         }
         Relationships: [
           {
@@ -777,11 +821,28 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      is_current_user: {
+        Args: {
+          entity_id: number
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       community_post_type: "POST" | "SHOWCASE" | "REVIEW"
-      notification_type: "PURCHASE_CONFIRMED"
+      notification_type:
+        | "PURCHASE_CONFIRMED"
+        | "ORDER_ON_THE_WAY"
+        | "ORDER_DELIVERED"
+        | "SOLD_ITEM"
+        | "SOLD_ITEM_DELIVERED"
+        | "LIKED_YOUR_VIDEO"
+        | "COMMENTED_ON_YOUR_VIDEO"
+        | "LIKED_YOUR_COMMENT"
+        | "ITEM_ADDED_TO_COMMUNITY_COLLECTION"
+        | "POST_UPLOADED_TO_COMMUNITY"
+        | "LIKED_YOUR_COMMUNITY_POST"
+        | "COMMENTED_ON_YOUR_COMMUNITY_POST"
       order_status:
         | "PENDING"
         | "CONFIRMED"

@@ -18,39 +18,14 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
+import CartScreen from './cart';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const OrdersLayout = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
-      <MaterialTopTabs
-        tabBar={({ ...props }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <PlazaTabBar {...props} />
-            {/* <MaterialTopTabBar {...props} /> */}
-          </View>
-        )}
-        screenOptions={{
-          tabBarStyle: {
-            width: '100%',
-            alignSelf: 'center',
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MaterialTopTabs.Screen
-          name="cart"
-          options={{ title: 'Shopping Cart' }}
-        />
-        <MaterialTopTabs.Screen
-          name="order-history"
-          options={{ title: 'Order History' }}
-        />
-      </MaterialTopTabs>
+      <PlazaHeader name="Shopping Cart" accountForSafeArea={false} />
+      <CartScreen />
     </SafeAreaView>
   );
 };
