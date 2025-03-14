@@ -1,12 +1,13 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Animated, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import CommunityCollectionItemPost from '@/components/Community/CommunityCollectionItemPost';
 import Color from '@/constants/Color';
 import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
 import { useLocalSearchParams } from 'expo-router';
 import Spacing from '@/constants/Spacing';
+import ProductCard from '@/components/Product/ProductCard';
+import { Tabs } from 'react-native-collapsible-tab-view';
 
-const community_collections = () => {
+const CommunityCollection = () => {
   const { communityId: id } = useLocalSearchParams<{ communityId: string }>();
   const communityId = parseInt(id);
 
@@ -17,50 +18,45 @@ const community_collections = () => {
 
   if (!communityCollectionItems) return <Text>Loading...</Text>;
 
-  const leftColumn = [];
-  const rightColumn = [];
-
-  for (let i = 0; i < communityCollectionItems.length; i++) {
-    if (i % 2 === 0) {
-      leftColumn.push(communityCollectionItems[i]);
-    } else {
-      rightColumn.push(communityCollectionItems[i]);
-    }
-  }
-
   return (
-    <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
-      <ScrollView contentContainerStyle={styles.columnContainer}>
-        <View style={styles.column}>
-          {leftColumn.map((communityCollectionItem, i) => (
-            <CommunityCollectionItemPost
-              communityCollectionItem={communityCollectionItem}
-              key={`left${i}`}
-            />
-          ))}
+    <Tabs.FlatList
+      data={communityCollectionItems}
+      numColumns={2}
+      renderItem={({ item }) => (
+        <View style={styles.productCardContainer}>
+          <ProductCard
+            name={item.product.name}
+            username={'poop'}
+            thumbnailUrl={item.product.imageUrls[0]}
+            rating={4}
+            price={item.product.price}
+          />
         </View>
-        <View style={styles.column}>
-          {rightColumn.map((communityCollectionItem, i) => (
-            <CommunityCollectionItemPost
-              communityCollectionItem={communityCollectionItem}
-              key={`right${i}`}
-            />
-          ))}
-        </View>
-      </ScrollView>
-    </View>
+      )}
+    />
   );
 };
 
-export default community_collections;
+export default CommunityCollection;
 
 const styles = StyleSheet.create({
+  productCardContainer: {
+    flex: 1 / 2,
+    padding: 4,
+  },
   columnContainer: {
     flexGrow: 1,
     flexDirection: 'row',
     padding: Spacing.SPACING_2,
     gap: Spacing.SPACING_2,
-    backgroundColor: Color.SURFACE_PRIMARY,
+  },
+  columnWrapper: {
+    justifyContent: 'space-between',
+    marginBottom: 16,
+    backgroundColor: 'green',
+  },
+  separator: {
+    height: 16,
   },
   column: {
     flex: 1,

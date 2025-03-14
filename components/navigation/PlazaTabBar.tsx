@@ -1,3 +1,4 @@
+import Color from '@/constants/Color';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import { useEffect, useRef, useState } from 'react';
 import {
@@ -9,11 +10,12 @@ import {
   ScrollView,
   I18nManager,
   LayoutChangeEvent,
+  LayoutRectangle,
 } from 'react-native';
 
 const screenWidth = Dimensions.get('window').width;
 
-const DISTANCE_BETWEEN_TABS = 60;
+const DISTANCE_BETWEEN_TABS = 0;
 
 const PlazaTabBar = ({
   state,
@@ -21,6 +23,7 @@ const PlazaTabBar = ({
   navigation,
   position,
 }: MaterialTopTabBarProps): JSX.Element => {
+  const [layouts, setLayouts] = useState<LayoutRectangle[]>([]);
   const [widths, setWidths] = useState<(number | undefined)[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
   const transform = [];
@@ -101,8 +104,11 @@ const PlazaTabBar = ({
   const onLayout = (event: LayoutChangeEvent, index: number) => {
     const { width } = event.nativeEvent.layout;
     const newWidths = [...widths];
+    const newLayouts = [...layouts];
+    newLayouts[index] = event.nativeEvent.layout;
     newWidths[index] = width - DISTANCE_BETWEEN_TABS;
     setWidths(newWidths);
+    setLayouts(newLayouts);
   };
 
   // basic labels as suggested by react navigation
@@ -154,15 +160,10 @@ const PlazaTabBar = ({
 
   return (
     <View style={styles.contentContainer}>
-      <Animated.ScrollView
-        horizontal
-        ref={scrollViewRef}
-        showsHorizontalScrollIndicator={false}
-        style={styles.container}
-      >
+      <View style={styles.container}>
         {labels}
         <Animated.View style={[styles.indicator, { transform }]} />
-      </Animated.ScrollView>
+      </View>
     </View>
   );
 };
@@ -171,18 +172,21 @@ const styles = StyleSheet.create({
   button: {
     alignItems: 'center',
     justifyContent: 'center',
+    flex: 1,
   },
   buttonContainer: {
     paddingHorizontal: DISTANCE_BETWEEN_TABS / 2,
   },
   container: {
     flexDirection: 'row',
-    height: 34,
-    alignSelf: 'center',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flex: 1,
   },
   contentContainer: {
     height: 34,
-    width: '95%',
+    width: '100%',
+    backgroundColor: Color.SURFACE_PRIMARY,
     borderColor: 'gray',
     borderBottomWidth: 1,
   },

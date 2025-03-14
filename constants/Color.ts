@@ -17,6 +17,22 @@ enum Color {
 
   ICON_PRIMARY = GREY_500,
   ICON_TERTIARY = GREY_100,
+
+  // NEW COLORS
+
+  // Neutrals
+  NEUTRALS_WHITE = '#FFFFFF',
+  NEUTRALS_150 = '#E2DAD5',
+  NEUTRALS_100 = '#F5F2F0',
+
+  // Primary
+  PRIMARY_DEFAULT = '#F29520',
+  PRIMARY_100 = '#FDF2E4',
+
+  REVIEWS_500 = '#FDC200',
+
+  LIVES_500 = '#FF3B30',
+  LIVES_100 = '#FFE7E6',
 }
 
 export default Color;

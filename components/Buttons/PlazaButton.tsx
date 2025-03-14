@@ -1,10 +1,9 @@
 import { FC } from 'react';
 import PressableOpacity from './PressableOpacity';
-
 import { PressableProps, StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
-import StandardText from '../Texts/StandardText';
-import Spacing from '@/constants/Spacing';
+import BodyText from '../Texts/BodyText';
+import Radius from '@/constants/Radius';
 
 interface PlazaButtonProps extends PressableProps {
   title: string;
@@ -14,14 +13,14 @@ interface PlazaButtonProps extends PressableProps {
 const PlazaButton: FC<PlazaButtonProps> = ({
   title,
   style,
-  fontColor = Color.TEXT_PRIMARY_FLIP,
+  fontColor = Color.NEUTRALS_WHITE,
   ...rest
 }) => {
   return (
     <PressableOpacity style={[styles.container, style]} {...rest}>
-      <StandardText color={fontColor} fontWeight={600}>
+      <BodyText variant="md-bold" color={fontColor}>
         {title}
-      </StandardText>
+      </BodyText>
     </PressableOpacity>
   );
 };
@@ -30,11 +29,10 @@ export default PlazaButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Color.SURFACE_SECONDARY,
+    backgroundColor: Color.PRIMARY_DEFAULT,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Spacing.SPACING_4,
-    paddingVertical: Spacing.SPACING_3,
-    borderRadius: 100,
+    padding: 8,
+    borderRadius: Radius.MD,
   },
 });
