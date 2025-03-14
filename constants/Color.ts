@@ -85,8 +85,8 @@ enum Color {
 
   REVIEWS_500 = '#FDC200',
 
-  LIVES_500 = RED_100,
-  LIVES_100 = RED_500,
+  LIVES_500 = RED_500,
+  LIVES_100 = RED_100,
 
   // misc
   SURFACE_PRIMARY = GREY_100,
