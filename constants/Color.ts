@@ -1,10 +1,94 @@
 enum Color {
-  GREY_100 = '#FFFFFF',
-  GREY_200 = '#C5C5C5',
-  GREY_300 = '#808080',
-  GREY_400 = '#555555',
-  GREY_500 = '#000000',
+  // GREY_100 = '#FFFFFF',
+  // GREY_200 = '#C5C5C5',
+  // GREY_300 = '#808080',
+  // GREY_400 = '#555555',
+  // GREY_500 = '#000000',
 
+  // NEW COLORS
+  BLACK = '#000000',
+  WHITE = '#FFFFFF',
+
+  // grey
+  GREY_25 = '#FFFFFF40',
+  GREY_50 = '#D1CBC740',
+  GREY_100 = '#F4F2F0',
+  GREY_150 = '#E9E1DC',
+  GREY_200 = '#D1CBC7',
+  GREY_300 = '#BAB1AB',
+  GREY_400 = '#9E9894',
+  GREY_500 = '#867E79',
+  GREY_600 = '#6B6561',
+  GREY_700 = '#504C49',
+  GREY_750 = '#35333180',
+  GREY_800 = '#353331',
+  GREY_900 = '#1B1918',
+
+  // burnt
+  BURNT_100 = '#FDF2E4',
+  BURNT_200 = '#FCE5C7',
+  BURNT_300 = '#F9CA90',
+  BURNT_400 = '#F5B058',
+  BURNT_500 = '#F29520',
+  BURNT_600 = '#B67018',
+  BURNT_700 = '#794B10',
+  BURNT_800 = '#3D2508',
+
+  // green
+  GREEN_100 = '#E7F8EB',
+  GREEN_200 = '#CCF1D5',
+  GREEN_300 = '#99E3AC',
+  GREEN_400 = '#67D582',
+  GREEN_500 = '#34C759',
+  GREEN_600 = '#279543',
+  GREEN_700 = '#1A642D',
+  GREEN_800 = '#0D3216',
+
+  // orange
+  ORANGE_100 = '#FFEFE3',
+  ORANGE_200 = '#FFDDC5',
+  ORANGE_300 = '#FFBC8C',
+  ORANGE_400 = '#FF9A52',
+  ORANGE_500 = '#FF7918',
+  ORANGE_600 = '#BF5A12',
+  ORANGE_700 = '#803C0C',
+  ORANGE_800 = '#401E06',
+
+  // red
+  RED_100 = '#FFE7E6',
+  RED_200 = '#FFCECB',
+  RED_300 = '#FF9D97',
+  RED_400 = '#FF6C64',
+  RED_500 = '#FF3B30',
+  RED_600 = '#BF2C24',
+  RED_700 = '#801E18',
+  RED_800 = '#400F0C',
+
+  // blue
+  BLUE_100 = '#E0EFFF',
+  BLUE_200 = '#BFDEFF',
+  BLUE_300 = '#80BCFF',
+  BLUE_400 = '#409BFF',
+  BLUE_500 = '#007AFF',
+  BLUE_600 = '#005CBF',
+  BLUE_700 = '#003D80',
+  BLUE_800 = '#001F40',
+
+  // Neutrals
+  NEUTRALS_WHITE = WHITE,
+  NEUTRALS_150 = GREY_150,
+  NEUTRALS_100 = GREY_100,
+
+  // Primary
+  PRIMARY_DEFAULT = BURNT_500,
+  PRIMARY_100 = BURNT_100,
+
+  REVIEWS_500 = '#FDC200',
+
+  LIVES_500 = RED_100,
+  LIVES_100 = RED_500,
+
+  // misc
   SURFACE_PRIMARY = GREY_100,
   SURFACE_SECONDARY = GREY_200,
 
@@ -17,22 +101,6 @@ enum Color {
 
   ICON_PRIMARY = GREY_500,
   ICON_TERTIARY = GREY_100,
-
-  // NEW COLORS
-
-  // Neutrals
-  NEUTRALS_WHITE = '#FFFFFF',
-  NEUTRALS_150 = '#E2DAD5',
-  NEUTRALS_100 = '#F5F2F0',
-
-  // Primary
-  PRIMARY_DEFAULT = '#F29520',
-  PRIMARY_100 = '#FDF2E4',
-
-  REVIEWS_500 = '#FDC200',
-
-  LIVES_500 = '#FF3B30',
-  LIVES_100 = '#FFE7E6',
 }
 
 export default Color;
