@@ -6,6 +6,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSelectedCartItems } from '@/contexts/CartSelectedProductsContext';
 import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import { createPaymentIntent } from '@/services/stripe';
 import { useStripe } from '@stripe/stripe-react-native';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
@@ -23,13 +24,12 @@ const ConfirmScreen = () => {
   const [loading, setLoading] = useState(false);
 
   const fetchPaymentSheetParams = async () => {
-    const response = await fetch(``, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    const { paymentIntent, ephemeralKey, customer } = await response.json();
+    const { paymentIntent, ephemeralKey, customer } = await createPaymentIntent(
+      'cus_RwCJBAhK0TDjUd',
+      'acct_1R2JvMPDBPbyu0XD',
+      1000,
+      'usd'
+    );
 
     return {
       paymentIntent,

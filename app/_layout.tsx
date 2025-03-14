@@ -30,12 +30,11 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   // const colorScheme = useColorScheme();
-  const [publishableKey, setPublishableKey] = useState('');
+  const publishableKey = process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY;
 
-  const fetchPublishableKey = async () => {
-    // const key = await fetchKey(); // fetch key from your server here
-    // setPublishableKey(key);
-  };
+  if (!publishableKey) {
+    throw new Error('Stripe publishable key is not set');
+  }
 
   const [loaded] = useFonts({
     Inter_100Thin,
@@ -53,7 +52,6 @@ export default function RootLayout() {
     if (loaded) {
       SplashScreen.hideAsync();
     }
-    fetchPublishableKey();
   }, [loaded]);
 
   if (!loaded) {
@@ -68,7 +66,7 @@ export default function RootLayout() {
             <AuthProvider>
               <StripeProvider
                 publishableKey={publishableKey}
-                // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+                urlScheme="plazamarketplace://" // required for 3D Secure and bank redirects
                 // merchantIdentifier="merchant.com.your-app" // required for Apple Pay
               >
                 <Slot />
