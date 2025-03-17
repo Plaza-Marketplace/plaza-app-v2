@@ -12,7 +12,7 @@ import {
 } from '@expo-google-fonts/inter';
 import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'react-native-reanimated';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
@@ -21,6 +21,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/AuthContext';
 import 'react-native-get-random-values';
+import { StripeProvider } from '@stripe/stripe-react-native';
 
 const queryClient = new QueryClient();
 
@@ -28,7 +29,13 @@ const queryClient = new QueryClient();
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
+  const publishableKey = process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY;
+
+  if (!publishableKey) {
+    throw new Error('Stripe publishable key is not set');
+  }
+
   const [loaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,
@@ -57,7 +64,13 @@ export default function RootLayout() {
         <GestureHandlerRootView style={{ flex: 1 }}>
           <BottomSheetModalProvider>
             <AuthProvider>
-              <Slot />
+              <StripeProvider
+                publishableKey={publishableKey}
+                urlScheme="plazamarketplace://" // required for 3D Secure and bank redirects
+                // merchantIdentifier="merchant.com.your-app" // required for Apple Pay
+              >
+                <Slot />
+              </StripeProvider>
             </AuthProvider>
           </BottomSheetModalProvider>
         </GestureHandlerRootView>
