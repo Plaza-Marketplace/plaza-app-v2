@@ -47,7 +47,7 @@ const FeedTopTabs = () => {
       >
         <MaterialTopTabs.Screen name="feed" options={{ title: 'For You' }} />
         <MaterialTopTabs.Screen name="catalog" options={{ title: 'Catalog' }} />
-        <MaterialTopTabs.Screen name="(orders)" options={{ title: 'Orders' }} />
+        <MaterialTopTabs.Screen name="cart" options={{ title: 'Cart' }} />
       </MaterialTopTabs>
     </View>
   );

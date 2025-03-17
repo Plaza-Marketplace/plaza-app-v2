@@ -9,6 +9,7 @@ import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import BoldStandardText from '../Texts/BoldStandardText';
 import StandardText from '../Texts/StandardText';
+import PressableOpacity from '../Buttons/PressableOpacity';
 
 interface ProductProps {
   videoId: Id;
@@ -21,18 +22,20 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
 
   return (
     <>
-      <View style={styles.container}>
+      <PressableOpacity
+        style={styles.container}
+        onPress={() => {
+          track(Event.CLICKED_PRODUCT_ICON, {
+            productId: product.id,
+            videoId: videoId,
+          });
+          bottomSheetRef.current?.present();
+        }}
+      >
         <ProductIcon
           imageUrl={
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
           }
-          onPress={() => {
-            track(Event.CLICKED_PRODUCT_ICON, {
-              productId: product.id,
-              videoId: videoId,
-            });
-            bottomSheetRef.current?.present();
-          }}
         />
         <View style={styles.textContainer}>
           <BoldStandardText style={styles.text}>
@@ -47,7 +50,7 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
             ${product.price}
           </StandardText>
         </View>
-      </View>
+      </PressableOpacity>
       <ProductModal
         bottomSheetRef={bottomSheetRef}
         sellerId={sellerId}

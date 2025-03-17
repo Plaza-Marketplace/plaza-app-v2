@@ -7,12 +7,11 @@ import Color from '@/constants/Color';
 
 interface ProductIconProps {
   imageUrl?: Url;
-  onPress?: () => void;
 }
 
-const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
+const ProductIcon: FC<ProductIconProps> = ({ imageUrl }) => {
   return (
-    <PressableOpacity onPress={onPress}>
+    <View>
       {imageUrl ? (
         <Image
           source={{
@@ -25,7 +24,7 @@ const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
           style={[styles.image, { backgroundColor: Color.SURFACE_SECONDARY }]}
         />
       )}
-    </PressableOpacity>
+    </View>
   );
 };
 
