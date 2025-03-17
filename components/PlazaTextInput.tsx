@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     borderRadius: Radius.ROUNDED,
     borderColor: Color.BORDER_SECONDARY,
     borderWidth: 1,
-    padding: Spacing.SPACING_XS,
+    padding: Spacing.SPACING_3,
+    backgroundColor: Color.NEUTRALS_100,
   },
 });

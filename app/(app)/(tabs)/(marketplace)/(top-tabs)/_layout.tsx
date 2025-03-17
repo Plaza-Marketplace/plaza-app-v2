@@ -30,33 +30,23 @@ const FeedTopTabs = () => {
       style={{
         flex: 1,
         backgroundColor: Color.SURFACE_PRIMARY,
-        position: 'relative',
       }}
     >
       <MaterialTopTabs
-        tabBar={({ ...props }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'absolute',
-              zIndex: 1000,
-              top: inset.top,
-            }}
-          >
-            <MaterialTopTabBar {...props} />
-          </View>
-        )}
+        tabBar={({ ...props }) => <MaterialTopTabBar {...props} />}
         screenOptions={{
           tabBarStyle: {
             width: '100%',
             alignSelf: 'center',
             backgroundColor: 'transparent',
+            position: 'absolute',
+            zIndex: 9999,
+            top: inset.top,
           },
         }}
-        initialRouteName="feed"
       >
         <MaterialTopTabs.Screen name="feed" options={{ title: 'For You' }} />
+        <MaterialTopTabs.Screen name="catalog" options={{ title: 'Catalog' }} />
         <MaterialTopTabs.Screen name="(orders)" options={{ title: 'Orders' }} />
       </MaterialTopTabs>
     </View>

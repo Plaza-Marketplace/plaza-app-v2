@@ -4,6 +4,11 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from './ProductModal';
 import { StyleSheet, View } from 'react-native';
 import { Event, track } from '@/analytics/utils';
+import Spacing from '@/constants/Spacing';
+import Color from '@/constants/Color';
+import Radius from '@/constants/Radius';
+import BoldStandardText from '../Texts/BoldStandardText';
+import StandardText from '../Texts/StandardText';
 
 interface ProductProps {
   videoId: Id;
@@ -16,7 +21,7 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
 
   return (
     <>
-      <View style={styles.shadowContainer}>
+      <View style={styles.container}>
         <ProductIcon
           imageUrl={
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
@@ -29,6 +34,19 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
             bottomSheetRef.current?.present();
           }}
         />
+        <View style={styles.textContainer}>
+          <BoldStandardText style={styles.text}>
+            {product.name}
+          </BoldStandardText>
+
+          <StandardText
+            style={styles.text}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            ${product.price}
+          </StandardText>
+        </View>
       </View>
       <ProductModal
         bottomSheetRef={bottomSheetRef}
@@ -51,5 +69,22 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
+  },
+  container: {
+    padding: Spacing.SPACING_2,
+    backgroundColor: Color.NEUTRALS_750,
+    borderRadius: Radius.ROUNDED,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  text: {
+    color: Color.NEUTRALS_WHITE,
+  },
+  textContainer: {
+    marginLeft: Spacing.SPACING_2,
+    flexGrow: 1,
+    maxWidth: 100,
+    justifyContent: 'space-between',
+    flexDirection: 'column',
   },
 });
