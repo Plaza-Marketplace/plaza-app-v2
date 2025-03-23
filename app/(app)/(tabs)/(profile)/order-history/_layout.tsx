@@ -1,13 +1,9 @@
-import { View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { View, StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
-import { withLayoutContext } from 'expo-router';
+import { router, withLayoutContext } from 'expo-router';
 import {
   createMaterialTopTabNavigator,
-  MaterialTopTabBar,
   MaterialTopTabNavigationEventMap,
   MaterialTopTabNavigationOptions,
 } from '@react-navigation/material-top-tabs';
@@ -22,21 +18,36 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import { BackButton } from '@/components/PlazaIcons/ActionIcons';
+import Spacing from '@/constants/Spacing';
 
-const FeedTopTabs = () => {
+const OrdersLayout = () => {
   const inset = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Color.SURFACE_PRIMARY,
+        paddingTop: inset.top,
+      }}
+    >
       <MaterialTopTabs
         tabBar={({ ...props }) => (
           <View
             style={{
               alignItems: 'center',
               justifyContent: 'center',
+              position: 'relative',
             }}
           >
+            <PressableOpacity
+              style={styles.buttonStyle}
+              onPress={() => router.back()}
+            >
+              <BackButton color={Color.GREY_500} />
+            </PressableOpacity>
             <PlazaTabBar {...props} />
-            {/* <MaterialTopTabBar {...props} /> */}
           </View>
         )}
         screenOptions={{
@@ -48,18 +59,22 @@ const FeedTopTabs = () => {
         }}
       >
         <MaterialTopTabs.Screen
-          name="cart"
-          options={{ title: 'Shopping Cart' }}
+          name="purchases"
+          options={{ title: 'My Purchases' }}
         />
-        <MaterialTopTabs.Screen
-          name="order-history"
-          options={{ title: 'Order History' }}
-        />
+        <MaterialTopTabs.Screen name="sales" options={{ title: 'My Sales' }} />
       </MaterialTopTabs>
-    </SafeAreaView>
+    </View>
   );
 };
 
-export default FeedTopTabs;
+const styles = StyleSheet.create({
+  buttonStyle: {
+    position: 'absolute',
+    left: Spacing.SPACING_2,
+    paddingVertical: Spacing.SPACING_1,
+    zIndex: 99,
+  },
+});
 
-// const styles = StyleSheet.create({});
+export default OrdersLayout;

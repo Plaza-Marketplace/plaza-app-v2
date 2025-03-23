@@ -1,24 +1,21 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
-import { Tabs } from 'react-native-collapsible-tab-view';
 import VideoPreview from '@/components/VideoPreview';
 import { useGetVideosLikedByUserId } from '@/hooks/queries/useGetVideoLikes';
 import { router } from 'expo-router';
 import Spacing from '@/constants/Spacing';
 
-interface ProfileLikesProps {
-  userId: Id;
-}
+interface ProfileLikesProps {}
 
-const ProfileLikes: FC<ProfileLikesProps> = ({ userId }) => {
-  const { data: videos, isLoading } = useGetVideosLikedByUserId(userId);
+const ProfileLikes: FC<ProfileLikesProps> = () => {
+  const { data: videos, isLoading } = useGetVideosLikedByUserId();
 
   if (isLoading) {
     return <Text>Loading...</Text>;
   }
 
   return (
-    <Tabs.FlatList
+    <FlatList
       style={{ flex: 1 }}
       numColumns={3}
       data={videos}

@@ -1,4 +1,3 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import {
   CollapsibleRef,
@@ -7,53 +6,70 @@ import {
 } from 'react-native-collapsible-tab-view';
 import Radius from '@/constants/Radius';
 import { Ionicons } from '@expo/vector-icons';
-import ProfileVideos from '@/app/(app)/(tabs)/(profile)/profile-videos';
-import ProfileProducts from '@/app/(app)/(tabs)/(profile)/profile-products';
-import ProfileReviews from '@/app/(app)/(tabs)/(profile)/profile-reviews';
-import ProfileHeader from '@/app/(app)/(tabs)/(profile)/ProfileHeader';
+import ProfileVideos from './profile-videos';
+import ProfileProducts from './profile-products';
+import ProfileReviews from './profile-reviews';
+import ProfileHeader from './ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
-import ProfileLikes from '@/app/(app)/(tabs)/(profile)/likes-history/profile-likes';
-import { useLocalSearchParams } from 'expo-router';
+import ProfileLikes from './likes-history/profile-likes';
+import { Text } from 'react-native';
 import { useGetProfileData } from '@/hooks/routes/profile';
 import PlazaHeader from '@/components/PlazaHeader';
-import Color from '@/constants/Color';
+import { router } from 'expo-router';
 
-const ProfileModal = () => {
+const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
 
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { user: currentUser } = useAuth();
-  const user_id = parseInt(id);
-  const { data: profileData, isLoading } = useGetProfileData(
-    user_id,
-    currentUser.id
-  );
-
-  if (isLoading) {
-    return <Text>Loading...</Text>;
-  }
-  if (!profileData) {
+  const { user } = useAuth();
+  console.log(user);
+  if (!user) {
     return <Text>User not found...</Text>;
   }
-  if (!currentUser) {
-    return <Text>You got in without logging in...?</Text>;
+
+  const { data: profileData, isLoading } = useGetProfileData(user.id, user.id);
+
+  console.log(profileData);
+
+  if (isLoading || !profileData) {
+    return <Text>Loading...</Text>;
   }
 
-  const { user } = profileData;
-
   return (
-    <View style={{ flex: 1 }}>
+    <>
+      {/* <GeneralHeader
+        name={`${user.firstName} ${user.lastName}`}
+        id={user.id}
+        currentUser={user.id}
+      /> */}
       <PlazaHeader
         name={`${user.firstName} ${user.lastName}`}
-        leftIcon={
-          <Ionicons name="arrow-back" size={32} color={Color.GREY_500} />
-        }
+        leftIcon={null}
+        rightIcon={<Ionicons name="cog-outline" size={32} />}
+        rightOnClick={() => {
+          console.log('here');
+          router.push('/settings');
+        }}
+        headerDropdown
+        headerOptions={[
+          {
+            name: 'Orders',
+            onPress: () => {
+              router.push('/order-history');
+            },
+          },
+          {
+            name: 'Likes',
+            onPress: () => {
+              router.push('/likes-history');
+            },
+          },
+        ]}
       />
       <Tabs.Container
         renderHeader={() => (
           <ProfileHeader
             user={user}
-            currentUser={currentUser.id}
+            currentUser={user.id}
             followers={profileData.followerCount}
             following={profileData.followingCount}
             sales={profileData.salesCount}
@@ -97,19 +113,9 @@ const ProfileModal = () => {
         >
           <ProfileReviews sellerId={user.id} />
         </Tabs.Tab>
-        <Tabs.Tab
-          name="likes"
-          label={(props) => {
-            return <Ionicons name="heart-outline" size={Radius.XL} />;
-          }}
-        >
-          <ProfileLikes userId={user.id} />
-        </Tabs.Tab>
       </Tabs.Container>
-    </View>
+    </>
   );
 };
 
-export default ProfileModal;
-
-const styles = StyleSheet.create({});
+export default Profile;

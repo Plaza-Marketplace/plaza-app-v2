@@ -1,11 +1,19 @@
-enum OrderStatus {
+export enum OrderStatus {
   PENDING = 'PENDING',
+  CONFIRMED = 'CONFIRMED',
+  SHIPPED = 'SHIPPED',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED',
 }
 
-type OrderHistoryItem = {
+export type OrderHistoryItem = {
   id: Id;
 
-  userId: Id;
+  buyer: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
+
+  seller: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
+
+  finalPrice: number;
 
   product: Product;
 
@@ -14,12 +22,39 @@ type OrderHistoryItem = {
   createdAt: Timestamp;
 
   quantity: number;
+
+  shippingDate: Timestamp | null;
+
+  deliveredDate: Timestamp | null;
+
+  trackingNumber: string | null;
+
+  shippingProvider: string | null;
+
+  shippingAddress: string;
 };
 
-type CreateOrderHistoryItem = {
+export type CreateOrderHistoryItem = {
   userId: Id;
+
+  sellerId: Id;
+
+  finalPrice: number;
 
   productId: Id;
 
   quantity: number;
+  shippingAddress: string;
+};
+
+export type UpdateOrderHistoryItem = {
+  status: OrderStatus;
+
+  shippingDate: Timestamp | null;
+
+  deliveredDate: Timestamp | null;
+
+  trackingNumber: string | null;
+
+  shippingProvider: string | null;
 };

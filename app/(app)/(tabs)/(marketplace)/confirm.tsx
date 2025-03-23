@@ -17,11 +17,20 @@ import { Alert, StyleSheet, View } from 'react-native';
 const ConfirmScreen = () => {
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
+  const shippingAddress = 'lol';
   const { data: cartItems } = useGetCartItemsByUserId(user?.id);
   if (!cartItems) return <Loading />;
   const { mutate: createOrderHistoryItems } = useCreateOrderHistoryItems(
-    cartItems.map((cartItem) => cartItem.product.id),
-    user?.id
+    user
+      ? cartItems.map((cartItem) => ({
+          userId: user.id,
+          sellerId: cartItem.product.sellerId,
+          finalPrice: cartItem.product.price,
+          productId: cartItem.product.id,
+          shippingAddress: shippingAddress,
+          quantity: cartItem.quantity,
+        }))
+      : []
   );
 
   // const { initPaymentSheet, presentPaymentSheet } = useStripe();
