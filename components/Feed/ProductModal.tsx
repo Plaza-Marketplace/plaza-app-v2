@@ -15,6 +15,7 @@ import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
 import StandardText from '../Texts/StandardText';
 import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
 import { Event, track } from '@/analytics/utils';
+import { useSelectedCartItems } from '@/contexts/CartSelectedProductsContext';
 
 interface ProductModalProps {
   sellerId: Id;
@@ -28,6 +29,7 @@ const ProductModal: FC<ProductModalProps> = ({
   bottomSheetRef,
 }) => {
   const insets = useSafeAreaInsets();
+  const { dispatchSelectedCartItems } = useSelectedCartItems();
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
   const { mutate: createCartItem } = useCreateCartItem(product, user?.id);
@@ -38,7 +40,15 @@ const ProductModal: FC<ProductModalProps> = ({
   const { data: seller } = useGetSellerInfo(sellerId);
 
   const handleAddToCart = () => {
-    createCartItem();
+    createCartItem(undefined, {
+      onSuccess: (data) => {
+        dispatchSelectedCartItems({
+          type: 'ADD_ITEM',
+          id: product.id,
+          item: data,
+        });
+      },
+    });
     track(Event.CLICKED_ADD_TO_CART, { productId: product.id });
   };
 

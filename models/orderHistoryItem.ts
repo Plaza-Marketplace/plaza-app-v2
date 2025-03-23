@@ -12,10 +12,14 @@ type OrderHistoryItem = {
   status: OrderStatus;
 
   createdAt: Timestamp;
+
+  quantity: number;
 };
 
 type CreateOrderHistoryItem = {
   userId: Id;
 
   productId: Id;
+
+  quantity: number;
 };

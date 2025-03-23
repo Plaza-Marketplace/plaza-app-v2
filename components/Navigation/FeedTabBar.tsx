@@ -1,211 +1,145 @@
-import Color from '@/constants/Color';
+import React, { FC, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { Menu, Divider, Provider } from 'react-native-paper';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
-import { useEffect, useRef, useState } from 'react';
-import {
-  Animated,
-  Dimensions,
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  ScrollView,
-  I18nManager,
-  LayoutChangeEvent,
-  LayoutRectangle,
-} from 'react-native';
+import Color from '@/constants/Color';
+import Spacing from '@/constants/Spacing';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 
-const screenWidth = Dimensions.get('window').width;
+const Tab = createMaterialTopTabNavigator();
 
-const DISTANCE_BETWEEN_TABS = 0;
-
-const FeedTabBar = ({
+const FeedTabBar: FC<MaterialTopTabBarProps> = ({
   state,
   descriptors,
   navigation,
-  position,
-}: MaterialTopTabBarProps): JSX.Element => {
-  const [layouts, setLayouts] = useState<LayoutRectangle[]>([]);
-  const [widths, setWidths] = useState<(number | undefined)[]>([]);
-  const scrollViewRef = useRef<ScrollView>(null);
-  const transform = [];
-  const inputRange = state.routes.map((_, i) => i);
-  const focusedOptions = descriptors[state.routes[state.index].key].options;
-
-  // keep a ref to easily scroll the tab bar to the focused label
-  const outputRangeRef = useRef<number[]>([]);
-
-  const getTranslateX = (
-    position: Animated.AnimatedInterpolation<number>,
-    routes: never[],
-    widths: number[]
-  ) => {
-    const outputRange = routes.reduce((acc, _, i: number) => {
-      if (i === 0) return [DISTANCE_BETWEEN_TABS / 2 + widths[0] / 2];
-      return [
-        ...acc,
-        acc[i - 1] + widths[i - 1] / 2 + widths[i] / 2 + DISTANCE_BETWEEN_TABS,
-      ];
-    }, [] as number[]);
-    outputRangeRef.current = outputRange;
-    const translateX = position.interpolate({
-      inputRange,
-      outputRange,
-      extrapolate: 'clamp',
-    });
-    return Animated.multiply(translateX, I18nManager.isRTL ? -1 : 1);
-  };
-
-  // compute translateX and scaleX because we cannot animate width directly
-  if (
-    state.routes.length > 1 &&
-    widths.length === state.routes.length &&
-    !widths.includes(undefined)
-  ) {
-    const translateX = getTranslateX(
-      position,
-      state.routes as never[],
-      widths as number[]
-    );
-    transform.push({
-      translateX,
-    });
-    const outputRange = inputRange.map((_, i) => widths[i]) as number[];
-    transform.push({
-      scaleX:
-        state.routes.length > 1
-          ? position.interpolate({
-              inputRange,
-              outputRange,
-              extrapolate: 'clamp',
-            })
-          : outputRange[0],
-    });
-  }
-
-  // scrolls to the active tab label when a new tab is focused
-  useEffect(() => {
-    if (
-      state.routes.length > 1 &&
-      widths.length === state.routes.length &&
-      !widths.includes(undefined)
-    ) {
-      if (state.index === 0) {
-        scrollViewRef.current?.scrollTo({
-          x: 0,
-        });
-      } else {
-        // keep the focused label at the center of the screen
-        scrollViewRef.current?.scrollTo({
-          x: (outputRangeRef.current[state.index] as number) - screenWidth / 2,
-        });
-      }
-    }
-  }, [state.index, state.routes.length, widths]);
-
-  // get the label widths on mount
-  const onLayout = (event: LayoutChangeEvent, index: number) => {
-    const { width } = event.nativeEvent.layout;
-    const newWidths = [...widths];
-    const newLayouts = [...layouts];
-    newLayouts[index] = event.nativeEvent.layout;
-    newWidths[index] = width - DISTANCE_BETWEEN_TABS;
-    setWidths(newWidths);
-    setLayouts(newLayouts);
-  };
-
-  // basic labels as suggested by react navigation
-  const labels = state.routes.map((route, index) => {
-    const { options } = descriptors[route.key];
-    const label = options.title ? options.title : route.name;
-    const isFocused = state.index === index;
-
-    const onPress = () => {
-      const event = navigation.emit({
-        type: 'tabPress',
-        target: route.key,
-        canPreventDefault: true,
-      });
-
-      if (!isFocused && !event.defaultPrevented) {
-        // The `merge: true` option makes sure that the params inside the tab screen are preserved
-        // eslint-disable-next-line
-        // @ts-ignore
-        navigation.navigate({ name: route.name, merge: true });
-      }
-    };
-    const inputRange = state.routes.map((_, i) => i);
-    const opacity = position.interpolate({
-      inputRange,
-      outputRange: inputRange.map((i) => (i === index ? 1 : 0.5)),
-    });
-
-    return (
-      <TouchableOpacity
-        key={route.key}
-        accessibilityRole="button"
-        accessibilityState={isFocused ? { selected: true } : {}}
-        accessibilityLabel={options.tabBarAccessibilityLabel}
-        onPress={onPress}
-        style={[styles.button, focusedOptions.tabBarStyle]}
-      >
-        <View
-          onLayout={(event) => onLayout(event, index)}
-          style={styles.buttonContainer}
-        >
-          <Animated.Text style={[styles.text, { opacity }]}>
-            {label}
-          </Animated.Text>
-        </View>
-      </TouchableOpacity>
-    );
-  });
+}) => {
+  const [menuVisible, setMenuVisible] = useState(false);
 
   return (
-    <View style={styles.contentContainer}>
-      <View style={styles.container}>
-        {labels}
-        <Animated.View style={[styles.indicator, { transform }]} />
+    <>
+      <LinearGradient
+        colors={['rgba(0,0,0,0.2)', 'transparent']}
+        style={styles.background}
+      />
+      <View
+        style={[
+          styles.tabBar,
+          descriptors[state.routes[state.index].key]?.options?.tabBarStyle,
+        ]}
+      >
+        {state.routes.map((route, index) => {
+          const isFocused = state.index === index;
+
+          if (route.name === 'More') {
+            return (
+              <Menu
+                key={route.key}
+                visible={menuVisible}
+                onDismiss={() => setMenuVisible(false)}
+                anchor={
+                  <TouchableOpacity
+                    onPress={() => setMenuVisible(true)}
+                    style={styles.tabButton}
+                  >
+                    <Text style={styles.tabText}>More ▼</Text>
+                  </TouchableOpacity>
+                }
+              >
+                <Menu.Item
+                  onPress={() => {
+                    setMenuVisible(false);
+                    navigation.navigate('Settings');
+                  }}
+                  title="Settings"
+                />
+                <Divider />
+                <Menu.Item
+                  onPress={() => {
+                    setMenuVisible(false);
+                    navigation.navigate('Profile');
+                  }}
+                  title="Profile"
+                />
+              </Menu>
+            );
+          }
+
+          return (
+            <TouchableOpacity
+              key={route.key}
+              onPress={() => navigation.navigate(route.name)}
+              style={[
+                styles.tabButton,
+                isFocused && styles.activeTab,
+                index === 0 && { marginLeft: 0 },
+              ]}
+            >
+              <Text style={[styles.tabText, isFocused && styles.activeText]}>
+                {descriptors[route.key].options.title || route.name}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+        <TouchableOpacity
+          key={'cart'}
+          onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
+          style={[styles.cartButton]}
+        >
+          <Ionicons name="cart-outline" size={28} />
+        </TouchableOpacity>
       </View>
-    </View>
+    </>
   );
 };
 
 export default FeedTabBar;
 
 const styles = StyleSheet.create({
-  button: {
-    alignItems: 'center',
-    justifyContent: 'center',
+  screen: {
     flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  buttonContainer: {
-    paddingHorizontal: DISTANCE_BETWEEN_TABS / 2,
-  },
-  container: {
+  tabBar: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
-    flex: 1,
+    backgroundColor: '#333',
+    marginTop: 10,
+    paddingHorizontal: 10,
+    position: 'relative',
   },
-  contentContainer: {
-    height: 34,
-    width: '100%',
-    backgroundColor: Color.SURFACE_PRIMARY,
-    borderColor: 'gray',
-    borderBottomWidth: 1,
-  },
-  indicator: {
-    backgroundColor: 'black',
-    bottom: 0,
-    height: 2,
-    left: 0,
+  background: {
     position: 'absolute',
-    right: 0,
-    // this must be 1 for the scaleX animation to work properly
-    width: 1,
+    width: '100%',
+    height: 140,
+    zIndex: 1,
   },
-  text: {
-    color: 'black',
-    fontSize: 14,
-    textAlign: 'center',
+  tabButton: {
+    alignItems: 'center',
+    paddingVertical: 10,
+    marginLeft: Spacing.SPACING_5,
+  },
+  activeTab: {
+    borderBottomWidth: 3,
+    borderBottomColor: 'orange',
+  },
+  tabText: {
+    color: Color.WHITE,
+    fontSize: 16,
+  },
+  activeText: {
+    fontWeight: 'bold',
+    color: Color.PRIMARY_DEFAULT,
+  },
+  cartButton: {
+    position: 'absolute',
+    right: Spacing.SPACING_3,
+    height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

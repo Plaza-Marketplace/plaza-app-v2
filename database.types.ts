@@ -58,21 +58,21 @@ export type Database = {
           created_at: string
           id: number
           product_id: number
-          quantity: number | null
+          quantity: number
           user_id: number
         }
         Insert: {
           created_at?: string
           id?: number
           product_id: number
-          quantity?: number | null
+          quantity?: number
           user_id: number
         }
         Update: {
           created_at?: string
           id?: number
           product_id?: number
-          quantity?: number | null
+          quantity?: number
           user_id?: number
         }
         Relationships: [
@@ -495,6 +495,7 @@ export type Database = {
           final_price: number
           id: number
           product_id: number
+          quantity: number
           seller_id: number
           shipping_address_id: number
           shipping_date: string | null
@@ -509,6 +510,7 @@ export type Database = {
           final_price: number
           id?: number
           product_id: number
+          quantity?: number
           seller_id: number
           shipping_address_id: number
           shipping_date?: string | null
@@ -523,6 +525,7 @@ export type Database = {
           final_price?: number
           id?: number
           product_id?: number
+          quantity?: number
           seller_id?: number
           shipping_address_id?: number
           shipping_date?: string | null
@@ -945,9 +948,22 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      increment_cart_quantity: {
+        Args: {
+          item_id: number
+          increment_by: number
+        }
+        Returns: number
+      }
       is_current_user: {
         Args: {
           entity_id: number
+        }
+        Returns: boolean
+      }
+      is_user_already_community_member: {
+        Args: {
+          community_id: number
         }
         Returns: boolean
       }

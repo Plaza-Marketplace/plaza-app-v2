@@ -56,16 +56,57 @@ export const createCartItem = async (
       product_id: cartItem.productId,
       quantity: cartItem.quantity,
     })
-    .select(`
+    .select(
+      `
       *,
       product(
         *
       )
-    `)
+    `
+    )
     .single();
 
   if (error) throw new Error('Failed');
-  if(!data) throw new Error('Failed');
+  if (!data) throw new Error('Failed');
+
+  return {
+    id: data.id,
+    userId: data.user_id,
+    product: {
+      id: data.product.id,
+      sellerId: data.product.seller_id,
+      name: data.product.name,
+      description: data.product.description,
+      price: data.product.price,
+      shippingPrice: data.product.shipping_price,
+      quantity: data.product.quantity,
+      createdAt: data.product.created_at,
+      imageUrls: [],
+      category: data.product.category,
+      condition: data.product.condition,
+    },
+    quantity: data.quantity,
+    createdAt: data.created_at,
+  };
+};
+
+export const deleteCartItem = async (cartItemId: Id): Promise<CartItem> => {
+  const { data, error } = await supabase
+    .from('cart_item')
+    .delete()
+    .eq('id', cartItemId)
+    .select(
+      `
+      *,
+      product(
+        *
+      )
+    `
+    )
+    .single();
+
+  if (error) throw new Error('Failed');
+  if (!data) throw new Error('Failed');
 
   return {
     id: data.id,

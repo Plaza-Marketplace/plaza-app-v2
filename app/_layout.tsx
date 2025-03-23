@@ -22,6 +22,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/AuthContext';
 import 'react-native-get-random-values';
 import { StripeProvider } from '@stripe/stripe-react-native';
+import { PaperProvider } from 'react-native-paper';
 
 const queryClient = new QueryClient();
 
@@ -69,7 +70,9 @@ export default function RootLayout() {
                 urlScheme="plazamarketplace://" // required for 3D Secure and bank redirects
                 // merchantIdentifier="merchant.com.your-app" // required for Apple Pay
               >
-                <Slot />
+                <PaperProvider>
+                  <Slot />
+                </PaperProvider>
               </StripeProvider>
             </AuthProvider>
           </BottomSheetModalProvider>

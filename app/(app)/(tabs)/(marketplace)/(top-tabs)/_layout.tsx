@@ -22,6 +22,7 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const FeedTopTabs = () => {
   const inset = useSafeAreaInsets();
@@ -33,7 +34,7 @@ const FeedTopTabs = () => {
       }}
     >
       <MaterialTopTabs
-        tabBar={({ ...props }) => <MaterialTopTabBar {...props} />}
+        tabBar={({ ...props }) => <FeedTabBar {...props} />}
         screenOptions={{
           tabBarStyle: {
             width: '100%',
@@ -47,7 +48,6 @@ const FeedTopTabs = () => {
       >
         <MaterialTopTabs.Screen name="feed" options={{ title: 'For You' }} />
         <MaterialTopTabs.Screen name="catalog" options={{ title: 'Catalog' }} />
-        <MaterialTopTabs.Screen name="cart" options={{ title: 'Cart' }} />
       </MaterialTopTabs>
     </View>
   );

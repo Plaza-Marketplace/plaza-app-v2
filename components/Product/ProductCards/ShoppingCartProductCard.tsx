@@ -10,54 +10,26 @@ import HeaderText from '@/components/Texts/HeaderText';
 import BoldCaptionText from '@/components/Texts/BoldCaptionText';
 import { Ionicons } from '@expo/vector-icons';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
 
 interface ShoppingCartProductCardProps {
   product: Product;
-  isChecked?: boolean;
-  showCheckbox: boolean;
-  onPress?: () => void;
-  orderStatus?: OrderStatus;
+  interactable?: boolean;
+  amount: number | null;
+  onAddPress?: () => void;
+  onRemovePress?: () => void;
   styles?: ViewStyle;
 }
 
 const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
   product,
-  isChecked = false,
-  showCheckbox,
-  onPress,
-  orderStatus,
+  interactable = true,
+  amount,
+  onAddPress,
+  onRemovePress,
   styles: passedStyles,
 }) => {
   return (
-    // <View style={productCardStyles.shadow}>
-    //   <View style={styles.container}>
-    //     {product.imageUrls.length > 0 ? (
-    //       <Image
-    //         source={{
-    //           uri:
-    //             product.imageUrls.length > 0
-    //               ? product.imageUrls[0]
-    //               : 'https://via.placeholder.com/150',
-    //         }}
-    //         style={styles.image}
-    //       />
-    //     ) : (
-    //       <View
-    //         style={[styles.image, { backgroundColor: Color.SURFACE_SECONDARY }]}
-    //       />
-    //     )}
-    //     <View style={styles.productInfo}>
-    //       <StandardText>{product.name}</StandardText>
-    //       <CaptionText>{formatPrice(product.price)}</CaptionText>
-    //       <CaptionText>{orderStatus}</CaptionText>
-    //     </View>
-    //     {showCheckbox && (
-    //       <PressableOpacity onPress={onPress}>
-    //         <Checkbox value={isChecked} style={{ pointerEvents: 'none' }} />
-    //       </PressableOpacity>
-    //     )}
-    //   </View>
-    // </View>
     <View style={[passedStyles, styles.container]}>
       <View style={styles.infoContainer}>
         {product.imageUrls.length > 0 ? (
@@ -90,23 +62,37 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
         </View>
       </View>
 
-      <View style={styles.rightContainer}>
-        <View style={styles.amountContainer}>
-          <Ionicons
-            name="trash-outline"
-            size={20}
-            color={Color.PRIMARY_DEFAULT}
-          />
-          <BoldStandardText style={{ marginHorizontal: Spacing.SPACING_3 }}>
-            1
-          </BoldStandardText>
-          <Ionicons
-            name="add-outline"
-            size={20}
-            color={Color.PRIMARY_DEFAULT}
-          />
+      {interactable && (
+        <View style={[styles.rightContainer, styles.shadow]}>
+          <View style={styles.amountContainer}>
+            <PressableOpacity onPress={onRemovePress}>
+              <Ionicons
+                name="trash-outline"
+                size={20}
+                color={Color.PRIMARY_DEFAULT}
+              />
+            </PressableOpacity>
+            <BoldStandardText style={{ marginHorizontal: Spacing.SPACING_3 }}>
+              {amount}
+            </BoldStandardText>
+            <PressableOpacity onPress={onAddPress}>
+              <Ionicons
+                name="add-outline"
+                size={20}
+                color={Color.PRIMARY_DEFAULT}
+              />
+            </PressableOpacity>
+          </View>
         </View>
-      </View>
+      )}
+
+      {!interactable && (
+        <View style={[styles.rightContainer, styles.shadow]}>
+          <View style={styles.amountDisplay}>
+            <BoldStandardText>{amount}</BoldStandardText>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -148,5 +134,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: Spacing.SPACING_2,
+  },
+  amountDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 9999,
+    width: 30,
+    height: 30,
+    backgroundColor: Color.WHITE,
+  },
+  shadow: {
+    shadowColor: Color.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });

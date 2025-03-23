@@ -1,9 +1,9 @@
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import Loading from '@/components/Loading';
+import PlazaHeader from '@/components/PlazaHeader';
 import ShoppingCartProductCard from '@/components/Product/ProductCards/ShoppingCartProductCard';
-import BoldCaptionText from '@/components/Texts/BoldCaptionText';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import BoldSubheaderText from '@/components/Texts/BoldSubheaderText';
-import CaptionText from '@/components/Texts/CaptionText';
 import HeaderText from '@/components/Texts/HeaderText';
 import StandardText from '@/components/Texts/StandardText';
 import SubheaderText from '@/components/Texts/SubheaderText';
@@ -13,29 +13,26 @@ import { useAuth } from '@/contexts/AuthContext';
 import { useSelectedCartItems } from '@/contexts/CartSelectedProductsContext';
 import useGetCartItemsByUserId from '@/hooks/queries/useGetCartItemsByUserId';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import {
+  useAddQuantity,
+  useRemoveCartItem,
+  useRemoveQuantity,
+} from '@/hooks/routes/cart';
+import { formatPrice } from '@/utils/currency';
 import BottomSheet, {
   BottomSheetFooter,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { router } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
-import {
-  Dimensions,
-  LayoutChangeEvent,
-  StyleSheet,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import { StyleSheet, View } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
 import Animated, {
   useDerivedValue,
   useSharedValue,
 } from 'react-native-reanimated';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const CartScreen = () => {
-  const { selectedCartItems, setSelectedCartItems } = useSelectedCartItems();
-  const inset = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['20%', '40%'], []);
   const bottomSheetRef = useRef<BottomSheet>(null);
   const animatedPosition = useSharedValue(0);
@@ -50,15 +47,25 @@ const CartScreen = () => {
 
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
+  if (!user) return <Loading />;
   const { data: cartItems } = useGetCartItemsByUserId(user?.id);
 
-  const handleSelectItem = (cartItem: CartItem) => {
-    if (selectedCartItems.includes(cartItem)) {
-      setSelectedCartItems(
-        selectedCartItems.filter((item) => item !== cartItem)
-      );
+  const { mutate: incrementCartItem } = useAddQuantity(user.id);
+  const { mutate: decrementCartItem } = useRemoveQuantity(user.id);
+  const { mutate: removeCartItem } = useRemoveCartItem(user.id);
+
+  const handleAddPress = (cartItem: CartItem) => {
+    // Logic to add item to cart
+    incrementCartItem(cartItem.id);
+  };
+
+  const handleRemovePress = (cartItem: CartItem) => {
+    // Logic to remove item from cart
+    if (cartItem.quantity > 1) {
+      decrementCartItem(cartItem.id);
     } else {
-      setSelectedCartItems([...selectedCartItems, cartItem]);
+      // handle removing the item from the cart
+      removeCartItem(cartItem.id);
     }
   };
 
@@ -68,24 +75,28 @@ const CartScreen = () => {
 
   return (
     <View
-      style={[styles.container, { marginTop: inset.top }]}
+      style={[styles.container]}
       onLayout={({ nativeEvent }) => {
-        const { x, y, width, height } = nativeEvent.layout;
+        const { height } = nativeEvent.layout;
         setHeight(height);
       }}
     >
-      <ScrollView style={styles.content}>
-        {cartItems?.map((cartItem) => (
+      <PlazaHeader name="Cart" />
+      <FlatList
+        style={styles.content}
+        data={cartItems}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item: cartItem }) => (
           <ShoppingCartProductCard
             key={cartItem.id}
             product={cartItem.product}
-            onPress={() => handleSelectItem(cartItem)}
-            isChecked={selectedCartItems.includes(cartItem)}
-            showCheckbox
+            amount={cartItem.quantity}
+            onAddPress={() => handleAddPress(cartItem)}
+            onRemovePress={() => handleRemovePress(cartItem)}
             styles={{ marginBottom: Spacing.SPACING_3 }}
           />
-        ))}
-      </ScrollView>
+        )}
+      />
 
       <BottomSheet
         ref={bottomSheetRef}
@@ -97,7 +108,14 @@ const CartScreen = () => {
           <BottomSheetFooter style={styles.footerContainer} {...props}>
             <View style={styles.priceContainer}>
               <BoldSubheaderText>Total:</BoldSubheaderText>
-              <SubheaderText>$10.61</SubheaderText>
+              <SubheaderText>
+                {formatPrice(
+                  cartItems?.reduce(
+                    (acc, curr) => acc + curr.product.price * curr.quantity,
+                    0
+                  ) || 0
+                )}
+              </SubheaderText>
             </View>
             <PlazaButton
               style={{
@@ -111,7 +129,10 @@ const CartScreen = () => {
         )}
       >
         <BottomSheetView style={styles.modalView}>
-          <HeaderText>Total Items: 1</HeaderText>
+          <HeaderText>
+            Total Items:{' '}
+            {cartItems?.reduce((acc, curr) => acc + curr.quantity, 0) || 0}
+          </HeaderText>
 
           <Animated.View style={{ opacity: opacity }}>
             <View style={styles.textRow}>
@@ -141,9 +162,7 @@ export default CartScreen;
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 60,
     flex: 1,
-    padding: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
   },
   bottomSheetStyle: {
@@ -159,6 +178,8 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
+    paddingHorizontal: Spacing.SPACING_3,
+    marginTop: Spacing.SPACING_3,
   },
   modalView: {
     flex: 1,

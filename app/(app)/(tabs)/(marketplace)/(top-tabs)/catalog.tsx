@@ -50,30 +50,31 @@ const Catalog = () => {
     <View style={[styles.container, { marginTop: inset.top }]}>
       <PlazaTextInput style={styles.input} placeholder="Search for products" />
       <FlatList
-        data={mock}
-        horizontal={true}
-        style={{ marginTop: Spacing.SPACING_3, flexGrow: 0 }}
-        showsHorizontalScrollIndicator={false}
-        renderItem={({ item, index }) => (
-          <View
-            style={
-              index === mock.length - 1
-                ? { marginHorizontal: Spacing.SPACING_3 }
-                : { marginLeft: Spacing.SPACING_3 }
-            }
-          >
-            <CatalogCategory name={item.name} icon={null} />
-          </View>
-        )}
-        keyExtractor={(item) => `${item.id}`} // Ensure unique key for each item
-      />
-      <FlatList
         style={{
-          marginTop: Spacing.SPACING_3,
+          marginTop: Spacing.SPACING_2,
           flex: 1,
           flexGrow: 1,
           width: '95%',
         }}
+        ListHeaderComponent={
+          <FlatList
+            data={mock}
+            horizontal={true}
+            style={{ marginBottom: Spacing.SPACING_2, flexGrow: 0 }}
+            showsHorizontalScrollIndicator={false}
+            renderItem={({ item, index }) => (
+              <View
+                style={{
+                  marginRight:
+                    index === mock.length - 1 ? 0 : Spacing.SPACING_3,
+                }}
+              >
+                <CatalogCategory name={item.name} icon={null} />
+              </View>
+            )}
+            keyExtractor={(item) => `${item.id}`} // Ensure unique key for each item
+          />
+        }
         data={communityCollectionItems}
         numColumns={2}
         renderItem={({ item }) => (
