@@ -17,14 +17,12 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
   descriptors,
   navigation,
 }) => {
-  const [menuVisible, setMenuVisible] = useState(false);
+  // const [menuVisible, setMenuVisible] = useState(false);
+
+  const currentRoute = state.routes[state.index].name;
 
   return (
     <>
-      <LinearGradient
-        colors={['rgba(0,0,0,0.2)', 'transparent']}
-        style={styles.background}
-      />
       <View
         style={[
           styles.tabBar,
@@ -34,37 +32,58 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
 
-          if (route.name === 'More') {
+          // if (route.name === 'More') {
+          //   return (
+          //     <Menu
+          //       key={route.key}
+          //       visible={menuVisible}
+          //       onDismiss={() => setMenuVisible(false)}
+          //       anchor={
+          //         <TouchableOpacity
+          //           onPress={() => setMenuVisible(true)}
+          //           style={styles.tabButton}
+          //         >
+          //           <Text style={styles.tabText}>More ▼</Text>
+          //         </TouchableOpacity>
+          //       }
+          //     >
+          //       <Menu.Item
+          //         onPress={() => {
+          //           setMenuVisible(false);
+          //           navigation.navigate('Settings');
+          //         }}
+          //         title="Settings"
+          //       />
+          //       <Divider />
+          //       <Menu.Item
+          //         onPress={() => {
+          //           setMenuVisible(false);
+          //           navigation.navigate('Profile');
+          //         }}
+          //         title="Profile"
+          //       />
+          //     </Menu>
+          //   );
+          // }
+
+          if (route.name === 'feed') {
             return (
-              <Menu
+              <TouchableOpacity
                 key={route.key}
-                visible={menuVisible}
-                onDismiss={() => setMenuVisible(false)}
-                anchor={
-                  <TouchableOpacity
-                    onPress={() => setMenuVisible(true)}
-                    style={styles.tabButton}
-                  >
-                    <Text style={styles.tabText}>More ▼</Text>
-                  </TouchableOpacity>
-                }
+                onPress={() => navigation.navigate(route.name)}
+                style={[
+                  styles.tabButton,
+                  styles.shadow,
+                  isFocused && styles.activeTabFeed,
+                  index === 0 && { marginLeft: 0 },
+                ]}
               >
-                <Menu.Item
-                  onPress={() => {
-                    setMenuVisible(false);
-                    navigation.navigate('Settings');
-                  }}
-                  title="Settings"
-                />
-                <Divider />
-                <Menu.Item
-                  onPress={() => {
-                    setMenuVisible(false);
-                    navigation.navigate('Profile');
-                  }}
-                  title="Profile"
-                />
-              </Menu>
+                <Text
+                  style={[styles.tabText, isFocused && styles.activeTextFeed]}
+                >
+                  {descriptors[route.key].options.title || route.name}
+                </Text>
+              </TouchableOpacity>
             );
           }
 
@@ -74,6 +93,7 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
               onPress={() => navigation.navigate(route.name)}
               style={[
                 styles.tabButton,
+                styles.shadow,
                 isFocused && styles.activeTab,
                 index === 0 && { marginLeft: 0 },
               ]}
@@ -87,9 +107,13 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
         <TouchableOpacity
           key={'cart'}
           onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
-          style={[styles.cartButton]}
+          style={[styles.cartButton, styles.shadow]}
         >
-          <Ionicons name="cart-outline" size={28} />
+          <Ionicons
+            name="cart-outline"
+            size={28}
+            color={currentRoute === 'feed' ? Color.WHITE : Color.BLACK}
+          />
         </TouchableOpacity>
       </View>
     </>
@@ -125,15 +149,23 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 3,
-    borderBottomColor: 'orange',
+    borderBottomColor: Color.BLACK,
+  },
+  activeTabFeed: {
+    borderBottomWidth: 3,
+    borderBottomColor: Color.WHITE,
   },
   tabText: {
-    color: Color.WHITE,
+    color: Color.NEUTRALS_DEFAULT,
     fontSize: 16,
   },
   activeText: {
     fontWeight: 'bold',
-    color: Color.PRIMARY_DEFAULT,
+    color: Color.BLACK,
+  },
+  activeTextFeed: {
+    fontWeight: 'bold',
+    color: Color.WHITE,
   },
   cartButton: {
     position: 'absolute',
@@ -141,5 +173,15 @@ const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  shadow: {
+    shadowColor: Color.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 10,
   },
 });
