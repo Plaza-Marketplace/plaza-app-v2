@@ -11,37 +11,40 @@ export type Database = {
     Tables: {
       address: {
         Row: {
-          addressed_to: string | null
-          city: string | null
-          country: string | null
+          addr_line1: string
+          addr_line2: string | null
+          addressed_to: string
+          city: string
+          country: string
           created_at: string
           created_id: number
           id: number
-          state: string | null
-          street_addr: string | null
-          zip_code: string | null
+          state: string
+          zip_code: string
         }
         Insert: {
-          addressed_to?: string | null
-          city?: string | null
-          country?: string | null
+          addr_line1: string
+          addr_line2?: string | null
+          addressed_to: string
+          city: string
+          country: string
           created_at?: string
           created_id: number
           id?: number
-          state?: string | null
-          street_addr?: string | null
-          zip_code?: string | null
+          state: string
+          zip_code: string
         }
         Update: {
-          addressed_to?: string | null
-          city?: string | null
-          country?: string | null
+          addr_line1?: string
+          addr_line2?: string | null
+          addressed_to?: string
+          city?: string
+          country?: string
           created_at?: string
           created_id?: number
           id?: number
-          state?: string | null
-          street_addr?: string | null
-          zip_code?: string | null
+          state?: string
+          zip_code?: string
         }
         Relationships: [
           {
@@ -58,21 +61,21 @@ export type Database = {
           created_at: string
           id: number
           product_id: number
-          quantity: number | null
+          quantity: number
           user_id: number
         }
         Insert: {
           created_at?: string
           id?: number
           product_id: number
-          quantity?: number | null
+          quantity?: number
           user_id: number
         }
         Update: {
           created_at?: string
           id?: number
           product_id?: number
-          quantity?: number | null
+          quantity?: number
           user_id?: number
         }
         Relationships: [
@@ -100,6 +103,7 @@ export type Database = {
           icon_url: string | null
           id: number
           name: string
+          community_member_count: number | null
         }
         Insert: {
           banner_url?: string | null
@@ -306,6 +310,82 @@ export type Database = {
           },
         ]
       }
+      event: {
+        Row: {
+          address: string
+          banner_key: string | null
+          city: string
+          community_id: number
+          coordinates: unknown
+          created_at: string
+          end_date: string
+          id: number
+          name: string
+          start_date: string
+          state: string
+        }
+        Insert: {
+          address: string
+          banner_key?: string | null
+          city: string
+          community_id: number
+          coordinates: unknown
+          created_at?: string
+          end_date: string
+          id?: number
+          name: string
+          start_date: string
+          state: string
+        }
+        Update: {
+          address?: string
+          banner_key?: string | null
+          city?: string
+          community_id?: number
+          coordinates?: unknown
+          created_at?: string
+          end_date?: string
+          id?: number
+          name?: string
+          start_date?: string
+          state?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      featured_community: {
+        Row: {
+          community_id: number
+          created_at: string
+          id: number
+        }
+        Insert: {
+          community_id: number
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          community_id?: number
+          created_at?: string
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "featured_community_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       follow: {
         Row: {
           created_at: string
@@ -495,6 +575,7 @@ export type Database = {
           final_price: number
           id: number
           product_id: number
+          quantity: number
           seller_id: number
           shipping_address_id: number
           shipping_date: string | null
@@ -509,6 +590,7 @@ export type Database = {
           final_price: number
           id?: number
           product_id: number
+          quantity?: number
           seller_id: number
           shipping_address_id: number
           shipping_date?: string | null
@@ -523,6 +605,7 @@ export type Database = {
           final_price?: number
           id?: number
           product_id?: number
+          quantity?: number
           seller_id?: number
           shipping_address_id?: number
           shipping_date?: string | null
@@ -908,6 +991,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      community_member_count: {
+        Args: {
+          "": unknown
+        }
+        Returns: number
+      }
       create_ephemeral_key: {
         Args: {
           customer_id: string
@@ -945,9 +1034,22 @@ export type Database = {
         Args: Record<PropertyKey, never>
         Returns: number
       }
+      increment_cart_quantity: {
+        Args: {
+          item_id: number
+          increment_by: number
+        }
+        Returns: number
+      }
       is_current_user: {
         Args: {
           entity_id: number
+        }
+        Returns: boolean
+      }
+      is_user_already_community_member: {
+        Args: {
+          community_id: number
         }
         Returns: boolean
       }

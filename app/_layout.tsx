@@ -14,21 +14,32 @@ import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from '@/contexts/AuthContext';
 import 'react-native-get-random-values';
+import {
+  configureReanimatedLogger,
+  ReanimatedLogLevel,
+} from 'react-native-reanimated';
+import Mapbox from '@rnmapbox/maps';
 
 const queryClient = new QueryClient();
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
+configureReanimatedLogger({
+  level: ReanimatedLogLevel.warn,
+  strict: false, // Reanimated runs in strict mode by default
+});
+
+Mapbox.setAccessToken(
+  'pk.eyJ1Ijoiai1hY2tpZSIsImEiOiJjbHIycWV3ZncxM3ByMmpxYnkza3JpeXAxIn0.5lCTTnD_5qbS8vE9VVXUGA'
+);
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   const [loaded] = useFonts({
     Inter_100Thin,
     Inter_200ExtraLight,

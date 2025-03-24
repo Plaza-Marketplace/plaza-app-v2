@@ -1,5 +1,11 @@
 export { default as ChevronLeft } from './ChevronLeft';
 export { default as CollectionAdd } from './CollectionAdd';
+export { default as Glass } from './Glass';
+export { default as Jewelry } from './Jewelry';
+export { default as Knitting } from './Knitting';
 export { default as Person } from './Person';
+export { default as Plus } from './Plus';
+export { default as Pottery } from './Pottery';
+export { default as Search } from './Search';
 export { default as StarFull } from './StarFull';
 export { default as Upload } from './Upload';

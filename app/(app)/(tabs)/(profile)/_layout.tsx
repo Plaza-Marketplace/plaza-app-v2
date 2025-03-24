@@ -21,14 +21,12 @@ const Profile = () => {
   const ref = React.useRef<CollapsibleRef>();
 
   const { user } = useAuth();
-  console.log(user);
+
   if (!user) {
     return <Text>User not found...</Text>;
   }
 
   const { data: profileData, isLoading } = useGetProfileData(user.id, user.id);
-
-  console.log(profileData);
 
   if (isLoading || !profileData) {
     return <Text>Loading...</Text>;

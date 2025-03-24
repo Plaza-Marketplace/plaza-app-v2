@@ -11,8 +11,8 @@ enum Color {
 
   // grey
   GREY_25 = '#FFFFFF40',
-  GREY_50 = '#D1CBC740',
-  GREY_100 = '#F4F2F0',
+  GREY_50 = '#D1CBC7',
+  GREY_100 = '#F5F2F0',
   GREY_150 = '#E9E1DC',
   GREY_200 = '#D1CBC7',
   GREY_300 = '#BAB1AB',
@@ -25,7 +25,7 @@ enum Color {
   GREY_900 = '#1B1918',
 
   // burnt
-  BURNT_100 = '#FDF2E4',
+  BURNT_100 = '#F4E9E3',
   BURNT_200 = '#FCE5C7',
   BURNT_300 = '#F9CA90',
   BURNT_400 = '#F5B058',
@@ -76,11 +76,13 @@ enum Color {
 
   // Neutrals
   NEUTRALS_WHITE = WHITE,
+  NEUTRALS_200 = GREY_50,
   NEUTRALS_150 = GREY_150,
   NEUTRALS_100 = GREY_100,
+  NEUTRALS_DEFAULT = GREY_500,
 
   // Primary
-  PRIMARY_DEFAULT = BURNT_500,
+  PRIMARY_DEFAULT = '#A34414',
   PRIMARY_100 = BURNT_100,
 
   REVIEWS_500 = '#FDC200',

@@ -34,7 +34,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="(mingle)"
           options={{
-            title: 'Mingle',
+            title: 'Plaza',
             tabBarIcon: ({ color, focused }) => (
               <MingleIcon color={color} focused={focused} />
             ),

@@ -7,10 +7,15 @@ import Radius from '@/constants/Radius';
 import HeadingText from '../Texts/HeadingText';
 import BodyText from '../Texts/BodyText';
 import LiveIndicator from '../LiveIndicator';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { router } from 'expo-router';
 
 const OngoingEvent = () => {
   return (
-    <View style={styles.container}>
+    <PressableOpacity
+      style={styles.container}
+      onPress={() => router.push('/event')}
+    >
       <View style={{ gap: 4 }}>
         <HeadingText variant="h6">Jackalope Festival</HeadingText>
         <BodyText variant="md-medium">Old Pasadena, CA</BodyText>
@@ -20,7 +25,7 @@ const OngoingEvent = () => {
         source={{ uri: 'https://picsum.photos/200' }}
         style={{ width: 60, height: 60 }}
       />
-    </View>
+    </PressableOpacity>
   );
 };
 
