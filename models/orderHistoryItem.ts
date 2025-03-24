@@ -31,7 +31,7 @@ export type OrderHistoryItem = {
 
   shippingProvider: string | null;
 
-  shippingAddress: string;
+  shippingAddress: Id;
 };
 
 export type CreateOrderHistoryItem = {
@@ -44,7 +44,7 @@ export type CreateOrderHistoryItem = {
   productId: Id;
 
   quantity: number;
-  shippingAddress: string;
+  shippingAddress: Id;
 };
 
 export type UpdateOrderHistoryItem = {

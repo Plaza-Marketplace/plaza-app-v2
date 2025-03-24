@@ -4,1194 +4,1094 @@ export type Json =
   | boolean
   | null
   | { [key: string]: Json | undefined }
-  | Json[];
+  | Json[]
 
 export type Database = {
   public: {
     Tables: {
       address: {
         Row: {
-          addressed_to: string | null;
-          city: string | null;
-          country: string | null;
-          created_at: string;
-          created_id: number;
-          id: number;
-          state: string | null;
-          street_addr: string | null;
-          zip_code: string | null;
-        };
+          addr_line1: string
+          addr_line2: string | null
+          addressed_to: string
+          city: string
+          country: string
+          created_at: string
+          created_id: number
+          id: number
+          state: string
+          zip_code: string
+        }
         Insert: {
-          addressed_to?: string | null;
-          city?: string | null;
-          country?: string | null;
-          created_at?: string;
-          created_id: number;
-          id?: number;
-          state?: string | null;
-          street_addr?: string | null;
-          zip_code?: string | null;
-        };
+          addr_line1: string
+          addr_line2?: string | null
+          addressed_to: string
+          city: string
+          country: string
+          created_at?: string
+          created_id: number
+          id?: number
+          state: string
+          zip_code: string
+        }
         Update: {
-          addressed_to?: string | null;
-          city?: string | null;
-          country?: string | null;
-          created_at?: string;
-          created_id?: number;
-          id?: number;
-          state?: string | null;
-          street_addr?: string | null;
-          zip_code?: string | null;
-        };
+          addr_line1?: string
+          addr_line2?: string | null
+          addressed_to?: string
+          city?: string
+          country?: string
+          created_at?: string
+          created_id?: number
+          id?: number
+          state?: string
+          zip_code?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'address_created_id_fkey';
-            columns: ['created_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "address_created_id_fkey"
+            columns: ["created_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart_item: {
         Row: {
-          created_at: string;
-          id: number;
-          product_id: number;
-          quantity: number;
-          user_id: number;
-        };
+          created_at: string
+          id: number
+          product_id: number
+          quantity: number
+          user_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          product_id: number;
-          quantity?: number;
-          user_id: number;
-        };
+          created_at?: string
+          id?: number
+          product_id: number
+          quantity?: number
+          user_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          product_id?: number;
-          quantity?: number;
-          user_id?: number;
-        };
+          created_at?: string
+          id?: number
+          product_id?: number
+          quantity?: number
+          user_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'cart_item_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
+            foreignKeyName: "cart_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'cart_item_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "cart_item_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community: {
         Row: {
-          banner_url: string | null;
-          created_at: string;
-          description: string;
-          icon_url: string | null;
-          id: number;
-          name: string;
-        };
+          banner_url: string | null
+          created_at: string
+          description: string
+          icon_url: string | null
+          id: number
+          name: string
+        }
         Insert: {
-          banner_url?: string | null;
-          created_at?: string;
-          description: string;
-          icon_url?: string | null;
-          id?: number;
-          name: string;
-        };
+          banner_url?: string | null
+          created_at?: string
+          description: string
+          icon_url?: string | null
+          id?: number
+          name: string
+        }
         Update: {
-          banner_url?: string | null;
-          created_at?: string;
-          description?: string;
-          icon_url?: string | null;
-          id?: number;
-          name?: string;
-        };
-        Relationships: [];
-      };
+          banner_url?: string | null
+          created_at?: string
+          description?: string
+          icon_url?: string | null
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       community_collection_item: {
         Row: {
-          community_id: number;
-          created_at: string;
-          description: string | null;
-          id: number;
-          product_id: number;
-        };
+          community_id: number
+          created_at: string
+          description: string | null
+          id: number
+          product_id: number
+        }
         Insert: {
-          community_id: number;
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          product_id: number;
-        };
+          community_id: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          product_id: number
+        }
         Update: {
-          community_id?: number;
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          product_id?: number;
-        };
+          community_id?: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          product_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'community_collection_item_community_id_fkey';
-            columns: ['community_id'];
-            isOneToOne: false;
-            referencedRelation: 'community';
-            referencedColumns: ['id'];
+            foreignKeyName: "community_collection_item_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'community_collection_item_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "community_collection_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_member: {
         Row: {
-          community_id: number;
-          created_at: string;
-          id: number;
-          user_id: number;
-        };
+          community_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
         Insert: {
-          community_id: number;
-          created_at?: string;
-          id?: number;
-          user_id: number;
-        };
+          community_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
         Update: {
-          community_id?: number;
-          created_at?: string;
-          id?: number;
-          user_id?: number;
-        };
+          community_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'community_member_community_id_fkey';
-            columns: ['community_id'];
-            isOneToOne: false;
-            referencedRelation: 'community';
-            referencedColumns: ['id'];
+            foreignKeyName: "community_member_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'community_member_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "community_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       community_post: {
         Row: {
-          community_id: number;
-          created_at: string;
-          description: string;
-          id: number;
-          image_url: string | null;
-          post_type: Database['public']['Enums']['community_post_type'];
-          poster_id: number;
-          product_id: number | null;
-          title: string;
-        };
+          community_id: number
+          created_at: string
+          description: string
+          id: number
+          image_url: string | null
+          post_type: Database["public"]["Enums"]["community_post_type"]
+          poster_id: number
+          product_id: number | null
+          title: string
+        }
         Insert: {
-          community_id: number;
-          created_at?: string;
-          description: string;
-          id?: number;
-          image_url?: string | null;
-          post_type: Database['public']['Enums']['community_post_type'];
-          poster_id: number;
-          product_id?: number | null;
-          title: string;
-        };
+          community_id: number
+          created_at?: string
+          description: string
+          id?: number
+          image_url?: string | null
+          post_type: Database["public"]["Enums"]["community_post_type"]
+          poster_id: number
+          product_id?: number | null
+          title: string
+        }
         Update: {
-          community_id?: number;
-          created_at?: string;
-          description?: string;
-          id?: number;
-          image_url?: string | null;
-          post_type?: Database['public']['Enums']['community_post_type'];
-          poster_id?: number;
-          product_id?: number | null;
-          title?: string;
-        };
+          community_id?: number
+          created_at?: string
+          description?: string
+          id?: number
+          image_url?: string | null
+          post_type?: Database["public"]["Enums"]["community_post_type"]
+          poster_id?: number
+          product_id?: number | null
+          title?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'community_posts_community_id_fkey';
-            columns: ['community_id'];
-            isOneToOne: false;
-            referencedRelation: 'community';
-            referencedColumns: ['id'];
+            foreignKeyName: "community_posts_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'community_posts_poster_id_fkey';
-            columns: ['poster_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "community_posts_poster_id_fkey"
+            columns: ["poster_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'community_posts_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "community_posts_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       conversation: {
         Row: {
-          created_at: string;
-          id: number;
-          name: string;
-        };
+          created_at: string
+          id: number
+          name: string
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          name: string;
-        };
+          created_at?: string
+          id?: number
+          name: string
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          name?: string;
-        };
-        Relationships: [];
-      };
+          created_at?: string
+          id?: number
+          name?: string
+        }
+        Relationships: []
+      }
       conversation_member: {
         Row: {
-          conversation_id: number;
-          created_at: string;
-          id: number;
-          user_id: number;
-        };
+          conversation_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
         Insert: {
-          conversation_id: number;
-          created_at?: string;
-          id?: number;
-          user_id: number;
-        };
+          conversation_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
         Update: {
-          conversation_id?: number;
-          created_at?: string;
-          id?: number;
-          user_id?: number;
-        };
+          conversation_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'conversation_member_conversation_id_fkey';
-            columns: ['conversation_id'];
-            isOneToOne: false;
-            referencedRelation: 'conversation';
-            referencedColumns: ['id'];
+            foreignKeyName: "conversation_member_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'conversation_member_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "conversation_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       follow: {
         Row: {
-          created_at: string;
-          dest_id: number;
-          id: number;
-          source_id: number;
-        };
+          created_at: string
+          dest_id: number
+          id: number
+          source_id: number
+        }
         Insert: {
-          created_at?: string;
-          dest_id: number;
-          id?: number;
-          source_id: number;
-        };
+          created_at?: string
+          dest_id: number
+          id?: number
+          source_id: number
+        }
         Update: {
-          created_at?: string;
-          dest_id?: number;
-          id?: number;
-          source_id?: number;
-        };
+          created_at?: string
+          dest_id?: number
+          id?: number
+          source_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'follow_dest_id_fkey';
-            columns: ['dest_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "follow_dest_id_fkey"
+            columns: ["dest_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'follow_source_id_fkey';
-            columns: ['source_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "follow_source_id_fkey"
+            columns: ["source_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       follow_request: {
         Row: {
-          created_at: string;
-          id: number;
-          recipient_id: number;
-          sender_id: number;
-        };
+          created_at: string
+          id: number
+          recipient_id: number
+          sender_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          recipient_id: number;
-          sender_id: number;
-        };
+          created_at?: string
+          id?: number
+          recipient_id: number
+          sender_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          recipient_id?: number;
-          sender_id?: number;
-        };
+          created_at?: string
+          id?: number
+          recipient_id?: number
+          sender_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'follow_request_recipient_id_fkey';
-            columns: ['recipient_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "follow_request_recipient_id_fkey"
+            columns: ["recipient_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'follow_request_sender_id_fkey';
-            columns: ['sender_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "follow_request_sender_id_fkey"
+            columns: ["sender_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       message: {
         Row: {
-          content: string;
-          conversation_id: number;
-          created_at: string;
-          id: number;
-          user_id: number;
-        };
+          content: string
+          conversation_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
         Insert: {
-          content: string;
-          conversation_id: number;
-          created_at?: string;
-          id?: number;
-          user_id: number;
-        };
+          content: string
+          conversation_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
         Update: {
-          content?: string;
-          conversation_id?: number;
-          created_at?: string;
-          id?: number;
-          user_id?: number;
-        };
+          content?: string
+          conversation_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'message_conversation_id_fkey';
-            columns: ['conversation_id'];
-            isOneToOne: false;
-            referencedRelation: 'conversation';
-            referencedRelation: 'conversation';
-            referencedColumns: ['id'];
+            foreignKeyName: "message_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "conversation"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'message_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "message_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification: {
         Row: {
-          created_at: string;
-          description: string;
-          id: number;
-          is_read: boolean;
-          type: Database['public']['Enums']['notification_type'];
-          user_id: number;
-        };
+          created_at: string
+          description: string
+          id: number
+          is_read: boolean
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: number
+        }
         Insert: {
-          created_at?: string;
-          description: string;
-          id?: number;
-          is_read: boolean;
-          type: Database['public']['Enums']['notification_type'];
-          user_id: number;
-        };
+          created_at?: string
+          description: string
+          id?: number
+          is_read: boolean
+          type: Database["public"]["Enums"]["notification_type"]
+          user_id: number
+        }
         Update: {
-          created_at?: string;
-          description?: string;
-          id?: number;
-          is_read?: boolean;
-          type?: Database['public']['Enums']['notification_type'];
-          user_id?: number;
-        };
+          created_at?: string
+          description?: string
+          id?: number
+          is_read?: boolean
+          type?: Database["public"]["Enums"]["notification_type"]
+          user_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'notifications_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       notification_image: {
         Row: {
-          created_at: string;
-          id: number;
-          image_key: string;
-          is_left: boolean;
-          is_user: boolean;
-          notification_id: number;
-        };
+          created_at: string
+          id: number
+          image_key: string
+          is_left: boolean
+          is_user: boolean
+          notification_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          image_key: string;
-          is_left?: boolean;
-          is_user: boolean;
-          notification_id: number;
-        };
+          created_at?: string
+          id?: number
+          image_key: string
+          is_left?: boolean
+          is_user: boolean
+          notification_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          image_key?: string;
-          is_left?: boolean;
-          is_user?: boolean;
-          notification_id?: number;
-        };
+          created_at?: string
+          id?: number
+          image_key?: string
+          is_left?: boolean
+          is_user?: boolean
+          notification_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'notification_image_notification_id_fkey';
-            columns: ['notification_id'];
-            isOneToOne: false;
-            referencedRelation: 'notification';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      notification: {
-        Row: {
-          created_at: string;
-          description: string;
-          id: number;
-          is_read: boolean;
-          type: Database['public']['Enums']['notification_type'];
-          user_id: number;
-        };
-        Insert: {
-          created_at?: string;
-          description: string;
-          id?: number;
-          is_read: boolean;
-          type: Database['public']['Enums']['notification_type'];
-          user_id: number;
-        };
-        Update: {
-          created_at?: string;
-          description?: string;
-          id?: number;
-          is_read?: boolean;
-          type?: Database['public']['Enums']['notification_type'];
-          user_id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'notifications_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-      notification_image: {
-        Row: {
-          created_at: string;
-          id: number;
-          image_key: string;
-          is_left: boolean;
-          is_user: boolean;
-          notification_id: number;
-        };
-        Insert: {
-          created_at?: string;
-          id?: number;
-          image_key: string;
-          is_left?: boolean;
-          is_user: boolean;
-          notification_id: number;
-        };
-        Update: {
-          created_at?: string;
-          id?: number;
-          image_key?: string;
-          is_left?: boolean;
-          is_user?: boolean;
-          notification_id?: number;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'notification_image_notification_id_fkey';
-            columns: ['notification_id'];
-            isOneToOne: false;
-            referencedRelation: 'notification';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "notification_image_notification_id_fkey"
+            columns: ["notification_id"]
+            isOneToOne: false
+            referencedRelation: "notification"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       order_history_item: {
         Row: {
-          buyer_id: number;
-          buyer_id: number;
-          created_at: string;
-          delivered_date: string | null;
-          final_price: number;
-          delivered_date: string | null;
-          final_price: number;
-          id: number;
-          product_id: number;
-          quantity: number;
-          seller_id: number;
-          shipping_address_id: number;
-          shipping_date: string | null;
-          shipping_provider: string | null;
-          status: Database['public']['Enums']['order_status'];
-          tracking_number: string | null;
-          tracking_number: string | null;
-        };
+          buyer_id: number
+          created_at: string
+          delivered_date: string | null
+          final_price: number
+          id: number
+          product_id: number
+          quantity: number
+          seller_id: number
+          shipping_address_id: number
+          shipping_date: string | null
+          shipping_provider: string | null
+          status: Database["public"]["Enums"]["order_status"]
+          tracking_number: string | null
+        }
         Insert: {
-          buyer_id: number;
-          buyer_id: number;
-          created_at?: string;
-          delivered_date?: string | null;
-          final_price: number;
-          delivered_date?: string | null;
-          final_price: number;
-          id?: number;
-          product_id: number;
-          quantity?: number;
-          seller_id: number;
-          shipping_address_id: number;
-          shipping_date?: string | null;
-          shipping_provider?: string | null;
-          status?: Database['public']['Enums']['order_status'];
-          tracking_number?: string | null;
-          tracking_number?: string | null;
-        };
+          buyer_id: number
+          created_at?: string
+          delivered_date?: string | null
+          final_price: number
+          id?: number
+          product_id: number
+          quantity?: number
+          seller_id: number
+          shipping_address_id: number
+          shipping_date?: string | null
+          shipping_provider?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          tracking_number?: string | null
+        }
         Update: {
-          buyer_id?: number;
-          buyer_id?: number;
-          created_at?: string;
-          delivered_date?: string | null;
-          final_price?: number;
-          delivered_date?: string | null;
-          final_price?: number;
-          id?: number;
-          product_id?: number;
-          quantity?: number;
-          seller_id?: number;
-          shipping_address_id?: number;
-          shipping_date?: string | null;
-          shipping_provider?: string | null;
-          status?: Database['public']['Enums']['order_status'];
-          tracking_number?: string | null;
-          tracking_number?: string | null;
-        };
+          buyer_id?: number
+          created_at?: string
+          delivered_date?: string | null
+          final_price?: number
+          id?: number
+          product_id?: number
+          quantity?: number
+          seller_id?: number
+          shipping_address_id?: number
+          shipping_date?: string | null
+          shipping_provider?: string | null
+          status?: Database["public"]["Enums"]["order_status"]
+          tracking_number?: string | null
+        }
         Relationships: [
           {
-            foreignKeyName: 'order_history_item_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
+            foreignKeyName: "order_history_item_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'order_history_item_seller_id_fkey';
-            columns: ['seller_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "order_history_item_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'order_history_item_shipping_address_id_fkey';
-            columns: ['shipping_address_id'];
-            isOneToOne: false;
-            referencedRelation: 'address';
-            referencedColumns: ['id'];
+            foreignKeyName: "order_history_item_shipping_address_id_fkey"
+            columns: ["shipping_address_id"]
+            isOneToOne: false
+            referencedRelation: "address"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'order_history_item_user_id_fkey';
-            columns: ['buyer_id'];
-            columns: ['buyer_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "order_history_item_user_id_fkey"
+            columns: ["buyer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product: {
         Row: {
-          category: string;
-          condition: string;
-          created_at: string;
-          description: string;
-          id: number;
-          name: string;
-          price: number;
-          quantity: number | null;
-          seller_id: number;
-          shipping_price: number;
-        };
+          category: string
+          condition: string
+          created_at: string
+          description: string
+          id: number
+          name: string
+          price: number
+          quantity: number | null
+          seller_id: number
+          shipping_price: number
+        }
         Insert: {
-          category: string;
-          condition: string;
-          created_at?: string;
-          description: string;
-          id?: number;
-          name: string;
-          price: number;
-          quantity?: number | null;
-          seller_id: number;
-          shipping_price: number;
-        };
+          category: string
+          condition: string
+          created_at?: string
+          description: string
+          id?: number
+          name: string
+          price: number
+          quantity?: number | null
+          seller_id: number
+          shipping_price: number
+        }
         Update: {
-          category?: string;
-          condition?: string;
-          created_at?: string;
-          description?: string;
-          id?: number;
-          name?: string;
-          price?: number;
-          quantity?: number | null;
-          seller_id?: number;
-          shipping_price?: number;
-        };
+          category?: string
+          condition?: string
+          created_at?: string
+          description?: string
+          id?: number
+          name?: string
+          price?: number
+          quantity?: number | null
+          seller_id?: number
+          shipping_price?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'product_seller_id_fkey';
-            columns: ['seller_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "product_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_image: {
         Row: {
-          created_at: string;
-          id: number;
-          image_key: string;
-          product_id: number;
-        };
+          created_at: string
+          id: number
+          image_key: string
+          product_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          image_key: string;
-          product_id: number;
-        };
+          created_at?: string
+          id?: number
+          image_key: string
+          product_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          image_key?: string;
-          product_id?: number;
-        };
+          created_at?: string
+          id?: number
+          image_key?: string
+          product_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'product_image_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "product_image_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       product_review: {
         Row: {
-          created_at: string;
-          description: string;
-          id: number;
-          product_id: number;
-          rating: number;
-          reviewer_id: number;
-        };
+          created_at: string
+          description: string
+          id: number
+          product_id: number
+          rating: number
+          reviewer_id: number
+        }
         Insert: {
-          created_at?: string;
-          description: string;
-          id?: number;
-          product_id: number;
-          rating: number;
-          reviewer_id: number;
-        };
+          created_at?: string
+          description: string
+          id?: number
+          product_id: number
+          rating: number
+          reviewer_id: number
+        }
         Update: {
-          created_at?: string;
-          description?: string;
-          id?: number;
-          product_id?: number;
-          rating?: number;
-          reviewer_id?: number;
-        };
+          created_at?: string
+          description?: string
+          id?: number
+          product_id?: number
+          rating?: number
+          reviewer_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'product_review_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
+            foreignKeyName: "product_review_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'product_review_reviewer_id_fkey';
-            columns: ['reviewer_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "product_review_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       seller_review: {
         Row: {
-          created_at: string;
-          description: string;
-          id: number;
-          rating: number;
-          reviewer_id: number;
-          seller_id: number;
-        };
+          created_at: string
+          description: string
+          id: number
+          rating: number
+          reviewer_id: number
+          seller_id: number
+        }
         Insert: {
-          created_at?: string;
-          description: string;
-          id?: number;
-          rating: number;
-          reviewer_id: number;
-          seller_id: number;
-        };
+          created_at?: string
+          description: string
+          id?: number
+          rating: number
+          reviewer_id: number
+          seller_id: number
+        }
         Update: {
-          created_at?: string;
-          description?: string;
-          id?: number;
-          rating?: number;
-          reviewer_id?: number;
-          seller_id?: number;
-        };
+          created_at?: string
+          description?: string
+          id?: number
+          rating?: number
+          reviewer_id?: number
+          seller_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'seller_review_reviewer_id_fkey';
-            columns: ['reviewer_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "seller_review_reviewer_id_fkey"
+            columns: ["reviewer_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'seller_review_seller_id_fkey';
-            columns: ['seller_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "seller_review_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user: {
         Row: {
-          auth_id: string;
-          created_at: string;
-          description: string | null;
-          email: string;
-          first_name: string;
-          id: number;
-          last_name: string;
-          location: unknown | null;
-          profile_image_url: string | null;
-          username: string;
-        };
+          auth_id: string
+          created_at: string
+          description: string | null
+          email: string
+          first_name: string
+          id: number
+          last_name: string
+          location: unknown | null
+          profile_image_url: string | null
+          username: string
+        }
         Insert: {
-          auth_id?: string;
-          created_at?: string;
-          description?: string | null;
-          email: string;
-          first_name: string;
-          id?: number;
-          last_name: string;
-          location?: unknown | null;
-          profile_image_url?: string | null;
-          username: string;
-        };
+          auth_id?: string
+          created_at?: string
+          description?: string | null
+          email: string
+          first_name: string
+          id?: number
+          last_name: string
+          location?: unknown | null
+          profile_image_url?: string | null
+          username: string
+        }
         Update: {
-          auth_id?: string;
-          created_at?: string;
-          description?: string | null;
-          email?: string;
-          first_name?: string;
-          id?: number;
-          last_name?: string;
-          location?: unknown | null;
-          profile_image_url?: string | null;
-          username?: string;
-        };
-        Relationships: [];
-      };
+          auth_id?: string
+          created_at?: string
+          description?: string | null
+          email?: string
+          first_name?: string
+          id?: number
+          last_name?: string
+          location?: unknown | null
+          profile_image_url?: string | null
+          username?: string
+        }
+        Relationships: []
+      }
       video: {
         Row: {
-          created_at: string;
-          description: string | null;
-          id: number;
-          poster_id: number;
-          video_key: string;
-        };
+          created_at: string
+          description: string | null
+          id: number
+          poster_id: number
+          video_key: string
+        }
         Insert: {
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          poster_id: number;
-          video_key: string;
-        };
+          created_at?: string
+          description?: string | null
+          id?: number
+          poster_id: number
+          video_key: string
+        }
         Update: {
-          created_at?: string;
-          description?: string | null;
-          id?: number;
-          poster_id?: number;
-          video_key?: string;
-        };
+          created_at?: string
+          description?: string | null
+          id?: number
+          poster_id?: number
+          video_key?: string
+        }
         Relationships: [
           {
-            foreignKeyName: 'video_poster_id_fkey';
-            columns: ['poster_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "video_poster_id_fkey"
+            columns: ["poster_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_comment: {
         Row: {
-          created_at: string;
-          description: string;
-          id: number;
-          poster_id: number;
-          video_id: number;
-        };
+          created_at: string
+          description: string
+          id: number
+          poster_id: number
+          video_id: number
+        }
         Insert: {
-          created_at?: string;
-          description: string;
-          id?: number;
-          poster_id: number;
-          video_id: number;
-        };
+          created_at?: string
+          description: string
+          id?: number
+          poster_id: number
+          video_id: number
+        }
         Update: {
-          created_at?: string;
-          description?: string;
-          id?: number;
-          poster_id?: number;
-          video_id?: number;
-        };
+          created_at?: string
+          description?: string
+          id?: number
+          poster_id?: number
+          video_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'video_comment_poster_id_fkey';
-            columns: ['poster_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "video_comment_poster_id_fkey"
+            columns: ["poster_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'video_comment_video_id_fkey';
-            columns: ['video_id'];
-            isOneToOne: false;
-            referencedRelation: 'video';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "video_comment_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_like: {
         Row: {
-          created_at: string;
-          id: number;
-          liker_id: number;
-          video_id: number;
-        };
+          created_at: string
+          id: number
+          liker_id: number
+          video_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          liker_id: number;
-          video_id: number;
-        };
+          created_at?: string
+          id?: number
+          liker_id: number
+          video_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          liker_id?: number;
-          video_id?: number;
-        };
+          created_at?: string
+          id?: number
+          liker_id?: number
+          video_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'video_like_liker_id_fkey';
-            columns: ['liker_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
+            foreignKeyName: "video_like_liker_id_fkey"
+            columns: ["liker_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'video_like_video_id_fkey';
-            columns: ['video_id'];
-            isOneToOne: false;
-            referencedRelation: 'video';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
+            foreignKeyName: "video_like_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       video_product: {
         Row: {
-          created_at: string;
-          id: number;
-          product_id: number;
-          video_id: number;
-        };
+          created_at: string
+          id: number
+          product_id: number
+          video_id: number
+        }
         Insert: {
-          created_at?: string;
-          id?: number;
-          product_id: number;
-          video_id: number;
-        };
+          created_at?: string
+          id?: number
+          product_id: number
+          video_id: number
+        }
         Update: {
-          created_at?: string;
-          id?: number;
-          product_id?: number;
-          video_id?: number;
-        };
+          created_at?: string
+          id?: number
+          product_id?: number
+          video_id?: number
+        }
         Relationships: [
           {
-            foreignKeyName: 'video_product_product_id_fkey';
-            columns: ['product_id'];
-            isOneToOne: false;
-            referencedRelation: 'product';
-            referencedColumns: ['id'];
+            foreignKeyName: "video_product_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
           },
           {
-            foreignKeyName: 'video_product_video_id_fkey';
-            columns: ['video_id'];
-            isOneToOne: false;
-            referencedRelation: 'video';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
-    };
+            foreignKeyName: "video_product_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+    }
     Views: {
-      [_ in never]: never;
-    };
+      [_ in never]: never
+    }
     Functions: {
       create_ephemeral_key: {
         Args: {
-          customer_id: string;
-          stripe_version: string;
-        };
-        Returns: Json;
-      };
+          customer_id: string
+          stripe_version: string
+        }
+        Returns: Json
+      }
       create_payment_intent: {
         Args: {
-          customer_id: string;
-          amount: number;
-          currency: string;
-        };
-        Returns: Json;
-      };
+          customer_id: string
+          amount: number
+          currency: string
+        }
+        Returns: Json
+      }
       does_object_exist: {
         Args: {
-          key: string;
-        };
-        Returns: boolean;
-      };
+          key: string
+        }
+        Returns: boolean
+      }
       does_user_own_product: {
         Args: {
-          product_id: number;
-        };
-        Returns: boolean;
-      };
+          product_id: number
+        }
+        Returns: boolean
+      }
       does_user_own_video: {
         Args: {
-          video_id: number;
-        };
-        Returns: boolean;
-      };
+          video_id: number
+        }
+        Returns: boolean
+      }
       get_current_user_id: {
-        Args: Record<PropertyKey, never>;
-        Returns: number;
-      };
+        Args: Record<PropertyKey, never>
+        Returns: number
+      }
       increment_cart_quantity: {
         Args: {
-          item_id: number;
-          increment_by: number;
-        };
-        Returns: number;
-      };
+          item_id: number
+          increment_by: number
+        }
+        Returns: number
+      }
       is_current_user: {
         Args: {
-          entity_id: number;
-        };
-        Returns: boolean;
-      };
+          entity_id: number
+        }
+        Returns: boolean
+      }
       is_user_already_community_member: {
         Args: {
-          community_id: number;
-        };
-        Returns: boolean;
-      };
-    };
+          community_id: number
+        }
+        Returns: boolean
+      }
+    }
     Enums: {
-      community_post_type: 'POST' | 'SHOWCASE' | 'REVIEW';
+      community_post_type: "POST" | "SHOWCASE" | "REVIEW"
       notification_type:
-        | 'PURCHASE_CONFIRMED'
-        | 'ORDER_ON_THE_WAY'
-        | 'ORDER_DELIVERED'
-        | 'SOLD_ITEM'
-        | 'SOLD_ITEM_DELIVERED'
-        | 'LIKED_YOUR_VIDEO'
-        | 'COMMENTED_ON_YOUR_VIDEO'
-        | 'LIKED_YOUR_COMMENT'
-        | 'ITEM_ADDED_TO_COMMUNITY_COLLECTION'
-        | 'POST_UPLOADED_TO_COMMUNITY'
-        | 'LIKED_YOUR_COMMUNITY_POST'
-        | 'COMMENTED_ON_YOUR_COMMUNITY_POST';
+        | "PURCHASE_CONFIRMED"
+        | "ORDER_ON_THE_WAY"
+        | "ORDER_DELIVERED"
+        | "SOLD_ITEM"
+        | "SOLD_ITEM_DELIVERED"
+        | "LIKED_YOUR_VIDEO"
+        | "COMMENTED_ON_YOUR_VIDEO"
+        | "LIKED_YOUR_COMMENT"
+        | "ITEM_ADDED_TO_COMMUNITY_COLLECTION"
+        | "POST_UPLOADED_TO_COMMUNITY"
+        | "LIKED_YOUR_COMMUNITY_POST"
+        | "COMMENTED_ON_YOUR_COMMUNITY_POST"
       order_status:
-        | 'PENDING'
-        | 'CONFIRMED'
-        | 'SHIPPED'
-        | 'DELIVERED'
-        | 'CANCELED';
-      notification_type:
-        | 'PURCHASE_CONFIRMED'
-        | 'ORDER_ON_THE_WAY'
-        | 'ORDER_DELIVERED'
-        | 'SOLD_ITEM'
-        | 'SOLD_ITEM_DELIVERED'
-        | 'LIKED_YOUR_VIDEO'
-        | 'COMMENTED_ON_YOUR_VIDEO'
-        | 'LIKED_YOUR_COMMENT'
-        | 'ITEM_ADDED_TO_COMMUNITY_COLLECTION'
-        | 'POST_UPLOADED_TO_COMMUNITY'
-        | 'LIKED_YOUR_COMMUNITY_POST'
-        | 'COMMENTED_ON_YOUR_COMMUNITY_POST';
-      order_status:
-        | 'PENDING'
-        | 'CONFIRMED'
-        | 'SHIPPED'
-        | 'DELIVERED'
-        | 'CANCELED';
-    };
+        | "PENDING"
+        | "CONFIRMED"
+        | "SHIPPED"
+        | "DELIVERED"
+        | "CANCELED"
+    }
     CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
-};
+      [_ in never]: never
+    }
+  }
+}
 
-type PublicSchema = Database[Extract<keyof Database, 'public'>];
+type PublicSchema = Database[Extract<keyof Database, "public">]
 
 export type Tables<
   PublicTableNameOrOptions extends
-    | keyof (PublicSchema['Tables'] & PublicSchema['Views'])
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-        Database[PublicTableNameOrOptions['schema']]['Views'])
-    : never = never
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? (Database[PublicTableNameOrOptions['schema']]['Tables'] &
-      Database[PublicTableNameOrOptions['schema']]['Views'])[TableName] extends {
-      Row: infer R;
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R
     }
     ? R
     : never
-  : PublicTableNameOrOptions extends keyof (PublicSchema['Tables'] &
-      PublicSchema['Views'])
-  ? (PublicSchema['Tables'] &
-      PublicSchema['Views'])[PublicTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R
+      }
+      ? R
+      : never
     : never
-  : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-      Insert: infer I;
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I
     }
     ? I
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I
+      }
+      ? I
+      : never
     : never
-  : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
-    | keyof PublicSchema['Tables']
+    | keyof PublicSchema["Tables"]
     | { schema: keyof Database },
   TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicTableNameOrOptions['schema']]['Tables']
-    : never = never
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never,
 > = PublicTableNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicTableNameOrOptions['schema']]['Tables'][TableName] extends {
-      Update: infer U;
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U
     }
     ? U
     : never
-  : PublicTableNameOrOptions extends keyof PublicSchema['Tables']
-  ? PublicSchema['Tables'][PublicTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U
+      }
+      ? U
+      : never
     : never
-  : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
-    | keyof PublicSchema['Enums']
+    | keyof PublicSchema["Enums"]
     | { schema: keyof Database },
   EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
-    ? keyof Database[PublicEnumNameOrOptions['schema']]['Enums']
-    : never = never
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never,
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicEnumNameOrOptions['schema']]['Enums'][EnumName]
-  : PublicEnumNameOrOptions extends keyof PublicSchema['Enums']
-  ? PublicSchema['Enums'][PublicEnumNameOrOptions]
-  : never;
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
-    | keyof PublicSchema['CompositeTypes']
+    | keyof PublicSchema["CompositeTypes"]
     | { schema: keyof Database },
   CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
-    schema: keyof Database;
+    schema: keyof Database
   }
-    ? keyof Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes']
-    : never = never
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
-  ? Database[PublicCompositeTypeNameOrOptions['schema']]['CompositeTypes'][CompositeTypeName]
-  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema['CompositeTypes']
-  ? PublicSchema['CompositeTypes'][PublicCompositeTypeNameOrOptions]
-  : never;
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never

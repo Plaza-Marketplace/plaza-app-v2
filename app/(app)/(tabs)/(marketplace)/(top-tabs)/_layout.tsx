@@ -22,41 +22,34 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const FeedTopTabs = () => {
   const inset = useSafeAreaInsets();
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Color.SURFACE_PRIMARY,
+      }}
+    >
       <MaterialTopTabs
-        tabBar={({ ...props }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <PlazaTabBar {...props} />
-            {/* <MaterialTopTabBar {...props} /> */}
-          </View>
-        )}
+        tabBar={({ ...props }) => <FeedTabBar {...props} />}
         screenOptions={{
           tabBarStyle: {
             width: '100%',
             alignSelf: 'center',
             backgroundColor: 'transparent',
+            position: 'absolute',
+            zIndex: 9999,
+            top: inset.top,
           },
         }}
       >
-        <MaterialTopTabs.Screen
-          name="cart"
-          options={{ title: 'Shopping Cart' }}
-        />
-        <MaterialTopTabs.Screen
-          name="order-history"
-          options={{ title: 'Order History' }}
-        />
+        <MaterialTopTabs.Screen name="feed" options={{ title: 'For You' }} />
+        <MaterialTopTabs.Screen name="catalog" options={{ title: 'Catalog' }} />
       </MaterialTopTabs>
-    </SafeAreaView>
+    </View>
   );
 };
 
