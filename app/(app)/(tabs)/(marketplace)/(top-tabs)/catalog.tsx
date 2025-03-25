@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import {
   SafeAreaView,
@@ -10,6 +10,8 @@ import Spacing from '@/constants/Spacing';
 import StandardText from '@/components/Texts/StandardText';
 import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
 import ProductCard from '@/components/Product/ProductCard';
+import SearchBar from '@/components/SearchBar';
+import AllTags from '@/components/Tags/AllTags';
 
 const mock = [
   {
@@ -48,51 +50,40 @@ const Catalog = () => {
 
   return (
     <View style={[styles.container, { marginTop: inset.top }]}>
-      <PlazaTextInput style={styles.input} placeholder="Search for products" />
-      <FlatList
-        style={{
-          marginTop: Spacing.SPACING_2,
-          flex: 1,
-          flexGrow: 1,
-          width: '95%',
-        }}
-        ListHeaderComponent={
-          <FlatList
-            data={mock}
-            horizontal={true}
-            style={{ marginBottom: Spacing.SPACING_2, flexGrow: 0 }}
-            showsHorizontalScrollIndicator={false}
-            renderItem={({ item, index }) => (
-              <View
-                style={{
-                  marginRight:
-                    index === mock.length - 1 ? 0 : Spacing.SPACING_3,
-                }}
-              >
-                <CatalogCategory name={item.name} icon={null} />
-              </View>
-            )}
-            keyExtractor={(item) => `${item.id}`} // Ensure unique key for each item
+      <View style={styles.searchContainer}>
+        <View style={styles.searchBar}>
+          <SearchBar
+            placeholder="Search groups"
+            onChangeText={(text) => console.log(text)} // Placeholder for search functionality
           />
-        }
-        data={communityCollectionItems}
-        numColumns={2}
-        renderItem={({ item }) => (
-          <View style={styles.productCardContainer}>
-            <ProductCard
-              name={item.product.name}
-              username={'poop'}
-              thumbnailUrl={item.product.imageUrls[0]}
-              rating={4}
-              price={item.product.price}
-            />
-          </View>
-        )}
-        contentContainerStyle={{
-          columnGap: Spacing.SPACING_1,
-          rowGap: Spacing.SPACING_1,
-        }}
-      />
+        </View>
+      </View>
+      <ScrollView style={{ marginTop: Spacing.SPACING_2 }}>
+        <AllTags />
+        <FlatList
+          style={{
+            marginTop: Spacing.SPACING_2,
+            flex: 1,
+            flexGrow: 1,
+            width: '100%',
+            paddingHorizontal: Spacing.SPACING_3,
+          }}
+          scrollEnabled={false}
+          data={communityCollectionItems}
+          numColumns={2}
+          renderItem={({ item }) => (
+            <View style={styles.productCardContainer}>
+              <ProductCard
+                name={item.product.name}
+                username={'poop'}
+                thumbnailUrl={item.product.imageUrls[0]}
+                rating={4}
+                price={item.product.price}
+              />
+            </View>
+          )}
+        />
+      </ScrollView>
     </View>
   );
 };
@@ -111,5 +102,13 @@ const styles = StyleSheet.create({
   },
   productCardContainer: {
     flex: 1 / 2,
+  },
+  searchContainer: {
+    gap: 16,
+    paddingTop: Spacing.SPACING_2,
+    width: '100%',
+  },
+  searchBar: {
+    paddingHorizontal: 16,
   },
 });

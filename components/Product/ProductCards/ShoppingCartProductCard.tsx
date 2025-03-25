@@ -66,11 +66,19 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
         <View style={[styles.rightContainer, styles.shadow]}>
           <View style={styles.amountContainer}>
             <PressableOpacity onPress={onRemovePress}>
-              <Ionicons
-                name="trash-outline"
-                size={20}
-                color={Color.PRIMARY_DEFAULT}
-              />
+              {amount && amount > 1 ? (
+                <Ionicons
+                  name="remove-outline"
+                  size={20}
+                  color={Color.PRIMARY_DEFAULT}
+                />
+              ) : (
+                <Ionicons
+                  name="trash-outline"
+                  size={20}
+                  color={Color.PRIMARY_DEFAULT}
+                />
+              )}
             </PressableOpacity>
             <BoldStandardText style={{ marginHorizontal: Spacing.SPACING_3 }}>
               {amount}

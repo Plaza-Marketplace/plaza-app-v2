@@ -9,6 +9,7 @@ import Spacing from '@/constants/Spacing';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { Basket } from '../Icons';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -109,9 +110,9 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
           onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
           style={[styles.cartButton, styles.shadow]}
         >
-          <Ionicons
-            name="cart-outline"
-            size={28}
+          <Basket
+            width={28}
+            height={28}
             color={currentRoute === 'feed' ? Color.WHITE : Color.BLACK}
           />
         </TouchableOpacity>
