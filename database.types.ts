@@ -103,6 +103,7 @@ export type Database = {
           icon_url: string | null
           id: number
           name: string
+          community_member_count: number | null
         }
         Insert: {
           banner_url?: string | null
@@ -305,6 +306,82 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event: {
+        Row: {
+          address: string
+          banner_key: string | null
+          city: string
+          community_id: number
+          coordinates: unknown
+          created_at: string
+          end_date: string
+          id: number
+          name: string
+          start_date: string
+          state: string
+        }
+        Insert: {
+          address: string
+          banner_key?: string | null
+          city: string
+          community_id: number
+          coordinates: unknown
+          created_at?: string
+          end_date: string
+          id?: number
+          name: string
+          start_date: string
+          state: string
+        }
+        Update: {
+          address?: string
+          banner_key?: string | null
+          city?: string
+          community_id?: number
+          coordinates?: unknown
+          created_at?: string
+          end_date?: string
+          id?: number
+          name?: string
+          start_date?: string
+          state?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      featured_community: {
+        Row: {
+          community_id: number
+          created_at: string
+          id: number
+        }
+        Insert: {
+          community_id: number
+          created_at?: string
+          id?: number
+        }
+        Update: {
+          community_id?: number
+          created_at?: string
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "featured_community_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
             referencedColumns: ["id"]
           },
         ]
@@ -914,6 +991,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      community_member_count: {
+        Args: {
+          "": unknown
+        }
+        Returns: number
+      }
       create_ephemeral_key: {
         Args: {
           customer_id: string

@@ -24,6 +24,7 @@ export default Rating;
 
 const styles = StyleSheet.create({
   container: {
+    alignSelf: 'flex-start',
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 4,

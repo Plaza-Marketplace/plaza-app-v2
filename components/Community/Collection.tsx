@@ -36,7 +36,7 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
         )}
         contentContainerStyle={{ paddingTop: 16, paddingBottom: 72 }}
       />
-      
+
       <PlazaButton title="Add to Collection" style={styles.buttonContainer} />
     </View>
   );
@@ -54,6 +54,9 @@ const styles = StyleSheet.create({
     bottom: 16,
     marginBottom: 8,
     alignSelf: 'center',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 30 }, // Shadow position
+    shadowOpacity: 0.8, // Shadow transparency
+    shadowRadius: 50, // Blur radius
   },
 });

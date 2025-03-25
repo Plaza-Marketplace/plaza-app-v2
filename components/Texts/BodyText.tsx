@@ -24,6 +24,21 @@ const BodyText: FC<BodyTextProps> = ({ children, variant, ...rest }) => {
 export default BodyText;
 
 const styles = StyleSheet.create({
+  ['lg-bold']: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    lineHeight: 24,
+  },
+  ['lg-semibold']: {
+    fontSize: 16,
+    fontWeight: 'semibold',
+    lineHeight: 24,
+  },
+  ['lg-medium']: {
+    fontSize: 16,
+    fontWeight: 'medium',
+    lineHeight: 24,
+  },
   lg: {
     fontSize: 16,
     fontWeight: 'regular',
@@ -62,6 +77,11 @@ const styles = StyleSheet.create({
   ['sm-medium']: {
     fontSize: 12,
     fontWeight: 'medium',
+    lineHeight: 18,
+  },
+  sm: {
+    fontSize: 12,
+    fontWeight: 'regular',
     lineHeight: 18,
   },
 });

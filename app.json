@@ -32,7 +32,13 @@
       "expo-router",
       "expo-font",
       "expo-splash-screen",
-      "expo-video"
+      "expo-video",
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsDownloadToken": "sk.eyJ1Ijoiai1hY2tpZSIsImEiOiJjbHIycWo0ZTAxNmNkMm1xYnkyYXY4N3hsIn0.5jlxFDTm3eLFP_j1SZ8e7Q"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
