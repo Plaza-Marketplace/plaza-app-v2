@@ -104,6 +104,8 @@ enum Color {
 
   ICON_PRIMARY = GREY_500,
   ICON_TERTIARY = GREY_100,
+
+  SUCCESS_DEFAULT = GREEN_500,
 }
 
 export default Color;

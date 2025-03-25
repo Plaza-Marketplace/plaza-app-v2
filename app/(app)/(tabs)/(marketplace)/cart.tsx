@@ -70,7 +70,7 @@ const CartScreen = () => {
   };
 
   const handleSubmit = () => {
-    router.push('/confirm');
+    router.push('/checkout');
   };
 
   return (
