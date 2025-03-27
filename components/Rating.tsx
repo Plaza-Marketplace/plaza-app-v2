@@ -30,6 +30,6 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 4,
     gap: 4,
-    backgroundColor: Color.PRIMARY_100,
+    backgroundColor: Color.REVIEWS_100,
   },
 });

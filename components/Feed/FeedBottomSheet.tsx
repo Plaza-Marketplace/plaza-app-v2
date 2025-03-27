@@ -7,14 +7,14 @@ import { FC, PropsWithChildren, useMemo } from 'react';
 
 interface FeedBottomSheetProps extends PropsWithChildren {
   bottomSheetRef: React.RefObject<BottomSheetModal>;
+  snapPoints?: string[];
 }
 
 const FeedBottomSheet: FC<FeedBottomSheetProps> = ({
   bottomSheetRef,
+  snapPoints = useMemo(() => ['60%'], []),
   children,
 }) => {
-  const snapPoints = useMemo(() => ['60%'], []);
-
   return (
     <BottomSheetModal
       ref={bottomSheetRef}

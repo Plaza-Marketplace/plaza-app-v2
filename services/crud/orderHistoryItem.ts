@@ -122,7 +122,7 @@ export const createOrderHistoryItems = async (
         seller_id: item.sellerId,
         final_price: item.finalPrice,
         product_id: item.productId,
-        shipping_address: item.shippingAddress,
+        shipping_address_id: item.shippingAddress,
       }))
     )
     .select(queryString);

@@ -2,6 +2,7 @@ export { default as Basket } from './Basket';
 export { default as Bookmark } from './Bookmark';
 export { default as Check } from './Check';
 export { default as ChevronLeft } from './ChevronLeft';
+export { default as ChevronUp } from './ChevronUp';
 export { default as CollectionAdd } from './CollectionAdd';
 export { default as Comment } from './Comment';
 export { default as Create } from './Create';

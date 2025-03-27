@@ -54,6 +54,12 @@ const CartScreen = () => {
   const { mutate: decrementCartItem } = useRemoveQuantity(user.id);
   const { mutate: removeCartItem } = useRemoveCartItem(user.id);
 
+  const subtotal =
+    cartItems?.reduce(
+      (acc, curr) => acc + curr.product.price * curr.quantity,
+      0
+    ) || 0;
+
   const handleAddPress = (cartItem: CartItem) => {
     // Logic to add item to cart
     incrementCartItem(cartItem.id);
@@ -108,14 +114,7 @@ const CartScreen = () => {
           <BottomSheetFooter style={styles.footerContainer} {...props}>
             <View style={styles.priceContainer}>
               <BoldSubheaderText>Total:</BoldSubheaderText>
-              <SubheaderText>
-                {formatPrice(
-                  cartItems?.reduce(
-                    (acc, curr) => acc + curr.product.price * curr.quantity,
-                    0
-                  ) || 0
-                )}
-              </SubheaderText>
+              <SubheaderText>{formatPrice(subtotal)}</SubheaderText>
             </View>
             <PlazaButton
               style={{
@@ -137,7 +136,9 @@ const CartScreen = () => {
           <Animated.View style={{ opacity: opacity }}>
             <View style={styles.textRow}>
               <BoldStandardText style={styles.text}>Subtotal:</BoldStandardText>
-              <StandardText style={styles.text}>$3.33</StandardText>
+              <StandardText style={styles.text}>
+                {formatPrice(subtotal)}
+              </StandardText>
             </View>
 
             <View style={styles.textRow}>

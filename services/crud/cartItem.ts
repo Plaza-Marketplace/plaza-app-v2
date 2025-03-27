@@ -54,7 +54,7 @@ export const createCartItem = async (
     .insert({
       user_id: cartItem.userId,
       product_id: cartItem.productId,
-      quantity: cartItem.quantity,
+      quantity: cartItem.quantity || 1,
     })
     .select(
       `

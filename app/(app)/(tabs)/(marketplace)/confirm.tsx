@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import HeaderText from '@/components/Texts/HeaderText';
 import { Check } from '@/components/Icons';
 import Color from '@/constants/Color';
@@ -10,6 +10,9 @@ import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import useGetCartItemsByUserId from '@/hooks/queries/useGetCartItemsByUserId';
 import Loading from '@/components/Loading';
 import ProductIcon from '@/components/Product/ProductIcon';
+import { router } from 'expo-router';
+import PlazaButton from '@/components/Buttons/PlazaButton';
+import StandardText from '@/components/Texts/StandardText';
 
 const Confirm = () => {
   const { session } = useAuth();
@@ -20,6 +23,20 @@ const Confirm = () => {
 
   // TODO: Wait 10 seconds, and then automatically remove the cart items from the database
   // also automatically navigate back to the cart screen
+
+  const execute = () => {
+    cartItems?.forEach((cartItem) => {
+      removeCartItem(cartItem.id);
+    });
+    router.navigate('/(app)/(tabs)/(marketplace)/(top-tabs)/feed');
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      execute();
+    }, 5000); // 10 seconds
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -35,9 +52,23 @@ const Confirm = () => {
 
       <View style={[styles.productContainer, { marginTop: Spacing.SPACING_4 }]}>
         {cartItems?.map((cartItem) => (
-          <ProductIcon imageUrl={cartItem.product.imageUrls[0]} size={125} />
+          <ProductIcon
+            imageUrl={cartItem.product.imageUrls[0]}
+            size={125}
+            key={cartItem.id}
+          />
         ))}
       </View>
+
+      <PlazaButton
+        title="Continue Shopping"
+        onPress={execute}
+        style={{ marginTop: Spacing.SPACING_4, padding: Spacing.SPACING_3 }}
+      />
+
+      <StandardText style={{ marginTop: Spacing.SPACING_2 }}>
+        You will be redirected to the feed in 5 seconds.
+      </StandardText>
     </View>
   );
 };

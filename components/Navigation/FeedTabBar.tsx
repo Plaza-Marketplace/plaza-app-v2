@@ -113,7 +113,9 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
           <Basket
             width={28}
             height={28}
-            color={currentRoute === 'feed' ? Color.WHITE : Color.BLACK}
+            color={
+              currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
+            }
           />
         </TouchableOpacity>
       </View>
@@ -149,11 +151,11 @@ const styles = StyleSheet.create({
     marginLeft: Spacing.SPACING_5,
   },
   activeTab: {
-    borderBottomWidth: 3,
-    borderBottomColor: Color.BLACK,
+    borderBottomWidth: 0,
+    borderBottomColor: Color.PRIMARY_DEFAULT,
   },
   activeTabFeed: {
-    borderBottomWidth: 3,
+    borderBottomWidth: 0,
     borderBottomColor: Color.WHITE,
   },
   tabText: {
@@ -162,7 +164,7 @@ const styles = StyleSheet.create({
   },
   activeText: {
     fontWeight: 'bold',
-    color: Color.BLACK,
+    color: Color.PRIMARY_DEFAULT,
   },
   activeTextFeed: {
     fontWeight: 'bold',

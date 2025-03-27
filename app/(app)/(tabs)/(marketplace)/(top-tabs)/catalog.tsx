@@ -53,7 +53,7 @@ const Catalog = () => {
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <SearchBar
-            placeholder="Search groups"
+            placeholder="Search products"
             onChangeText={(text) => console.log(text)} // Placeholder for search functionality
           />
         </View>

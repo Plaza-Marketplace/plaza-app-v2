@@ -21,18 +21,13 @@ const Footer: FC<FooterProps> = ({
     <View style={styles.buttonsContainer}>
       <PlazaButton
         title={leftTitle}
-        style={{
-          flex: 1,
-          borderWidth: 1,
-          borderColor: Color.BORDER_SECONDARY,
-          backgroundColor: Color.SURFACE_PRIMARY,
-        }}
-        fontColor={Color.TEXT_SECONDARY}
+        style={[styles.leftButton, styles.buttonPadding]}
+        fontColor={Color.PRIMARY_DEFAULT}
         onPress={leftOnPress}
       />
       <PlazaButton
         title={rightTitle}
-        style={{ flex: 1, backgroundColor: Color.SURFACE_SECONDARY }}
+        style={[styles.rightButton, styles.buttonPadding]}
         onPress={rightOnPress}
       />
     </View>
@@ -48,7 +43,19 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderColor: Color.BORDER_SECONDARY,
     gap: Spacing.SPACING_2,
-    paddingHorizontal: Spacing.SPACING_2,
+    paddingHorizontal: Spacing.SPACING_4,
     paddingTop: Spacing.SPACING_3,
+  },
+  leftButton: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor: Color.PRIMARY_DEFAULT,
+    backgroundColor: Color.WHITE,
+  },
+  rightButton: {
+    flex: 1,
+  },
+  buttonPadding: {
+    paddingVertical: Spacing.SPACING_3,
   },
 });
