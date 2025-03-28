@@ -26,7 +26,7 @@ const LandingPage = () => {
         loop={false}
         width={Dimensions.get('window').width - 50}
         height={560}
-        data={[0, 1]}
+        data={[0, 1, 2]}
         renderItem={({ item }) => {
           if (item === 0) {
             return (
@@ -49,6 +49,29 @@ const LandingPage = () => {
               </View>
             );
           }
+          if (item == 1) {
+            return (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  marginHorizontal: Spacing.SPACING_4,
+                }}
+              >
+                <AddContentCard
+                  title="Upload a Video"
+                  description="Create a video that showcases the items in your profile!
+
+Videos will be shared to the marketplace for others to view."
+                  buttonTitle="Create a Video"
+                  nextRoute="/video-upload/landing-page"
+                >
+                  <VideoPreview />
+                </AddContentCard>
+              </View>
+            );
+          }
+
           return (
             <View
               style={{
@@ -58,12 +81,10 @@ const LandingPage = () => {
               }}
             >
               <AddContentCard
-                title="Upload a Video"
-                description="Create a video that showcases the items in your profile!
-
-Videos will be shared to the marketplace for others to view."
-                buttonTitle="Create a Video"
-                nextRoute="/video-upload/landing-page"
+                title="Shopify Integration"
+                description="Test shopify integration"
+                buttonTitle="Start Now"
+                nextRoute="/shopify-migration/landing-page"
               >
                 <VideoPreview />
               </AddContentCard>

@@ -62,7 +62,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: Color.NEUTRALS_150,
   },
-  textInputContainer: {},
+  textInputContainer: {
+    flex: 1,
+  },
   limit: {
     alignSelf: 'flex-end',
   },
