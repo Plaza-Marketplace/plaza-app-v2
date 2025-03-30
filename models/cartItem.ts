@@ -5,7 +5,7 @@ type CartItem = {
 
   product: Product;
 
-  quantity: number | null;
+  quantity: number;
 
   createdAt: Timestamp;
 };

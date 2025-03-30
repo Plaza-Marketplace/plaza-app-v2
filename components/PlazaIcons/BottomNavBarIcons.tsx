@@ -1,3 +1,4 @@
+import { Create, Inbox, Market, Plaza, Profile, Upload } from '../Icons';
 import { TabBarIcon } from '../Navigation/TabBarIcon';
 
 interface ActionIconsProps {
@@ -6,39 +7,23 @@ interface ActionIconsProps {
 }
 
 const ExploreIcon = ({ focused, color }: ActionIconsProps) => {
-  return (
-    <TabBarIcon
-      name={focused ? 'storefront' : 'storefront-outline'}
-      color={color}
-    />
-  );
+  return <Market color={color} />;
 };
 
 const MingleIcon = ({ focused, color }: ActionIconsProps) => {
-  return (
-    <TabBarIcon name={focused ? 'people' : 'people-outline'} color={color} />
-  );
+  return <Plaza color={color} />;
 };
 
 const UploadIcon = ({ focused, color }: ActionIconsProps) => {
-  return (
-    <TabBarIcon
-      name={focused ? 'add-circle' : 'add-circle-outline'}
-      color={color}
-    />
-  );
+  return <Create color={color} />;
 };
 
 const InboxIcon = ({ focused, color }: ActionIconsProps) => {
-  return (
-    <TabBarIcon name={focused ? 'albums' : 'albums-outline'} color={color} />
-  );
+  return <Inbox color={color} />;
 };
 
 const ProfileIcon = ({ focused, color }: ActionIconsProps) => {
-  return (
-    <TabBarIcon name={focused ? 'person' : 'person-outline'} color={color} />
-  );
+  return <Profile color={color} />;
 };
 
 export { ExploreIcon, MingleIcon, UploadIcon, InboxIcon, ProfileIcon };

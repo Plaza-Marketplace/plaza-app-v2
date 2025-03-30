@@ -12,7 +12,7 @@ import ProfileProducts from '@/app/(app)/(tabs)/(profile)/profile-products';
 import ProfileReviews from '@/app/(app)/(tabs)/(profile)/profile-reviews';
 import ProfileHeader from '@/app/(app)/(tabs)/(profile)/ProfileHeader';
 import { useAuth } from '@/contexts/AuthContext';
-import ProfileLikes from '@/app/(app)/(tabs)/(profile)/profile-likes';
+import ProfileLikes from '@/app/(app)/(tabs)/(profile)/likes-history/profile-likes';
 import { useLocalSearchParams } from 'expo-router';
 import { useGetProfileData } from '@/hooks/routes/profile';
 import PlazaHeader from '@/components/PlazaHeader';

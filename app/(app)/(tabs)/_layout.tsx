@@ -11,6 +11,7 @@ import {
 } from '@/components/PlazaIcons/BottomNavBarIcons';
 import { Platform } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
+import Color from '@/constants/Color';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -20,12 +21,13 @@ export default function TabLayout() {
       <Tabs
         screenOptions={{
           headerShown: false,
+          tabBarActiveTintColor: Color.PRIMARY_DEFAULT,
         }}
       >
         <Tabs.Screen
           name="(marketplace)"
           options={{
-            title: 'Marketplace',
+            title: 'Market',
             tabBarIcon: ({ color, focused }) => (
               <ExploreIcon color={color} focused={focused} />
             ),
@@ -44,7 +46,7 @@ export default function TabLayout() {
         <Tabs.Screen
           name="(upload)"
           options={{
-            title: 'Upload',
+            title: 'Create',
             tabBarIcon: ({ color, focused }) => (
               <UploadIcon color={color} focused={focused} />
             ),

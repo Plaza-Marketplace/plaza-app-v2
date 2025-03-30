@@ -97,27 +97,27 @@ export type Database = {
       }
       community: {
         Row: {
-          banner_url: string | null
+          banner_key: string | null
           created_at: string
           description: string
-          icon_url: string | null
+          icon_key: string | null
           id: number
           name: string
           community_member_count: number | null
         }
         Insert: {
-          banner_url?: string | null
+          banner_key?: string | null
           created_at?: string
           description: string
-          icon_url?: string | null
+          icon_key?: string | null
           id?: number
           name: string
         }
         Update: {
-          banner_url?: string | null
+          banner_key?: string | null
           created_at?: string
           description?: string
-          icon_url?: string | null
+          icon_key?: string | null
           id?: number
           name?: string
         }
@@ -646,6 +646,7 @@ export type Database = {
       }
       product: {
         Row: {
+          average_rating: number
           category: string
           condition: string
           created_at: string
@@ -658,6 +659,7 @@ export type Database = {
           shipping_price: number
         }
         Insert: {
+          average_rating?: number
           category: string
           condition: string
           created_at?: string
@@ -670,6 +672,7 @@ export type Database = {
           shipping_price: number
         }
         Update: {
+          average_rating?: number
           category?: string
           condition?: string
           created_at?: string
@@ -807,6 +810,7 @@ export type Database = {
       user: {
         Row: {
           auth_id: string
+          average_rating: number
           created_at: string
           description: string | null
           email: string
@@ -814,11 +818,14 @@ export type Database = {
           id: number
           last_name: string
           location: unknown | null
-          profile_image_url: string | null
+          profile_image_key: string | null
+          stripe_account_id: string | null
+          stripe_customer_id: string | null
           username: string
         }
         Insert: {
           auth_id?: string
+          average_rating?: number
           created_at?: string
           description?: string | null
           email: string
@@ -826,11 +833,14 @@ export type Database = {
           id?: number
           last_name: string
           location?: unknown | null
-          profile_image_url?: string | null
+          profile_image_key?: string | null
+          stripe_account_id?: string | null
+          stripe_customer_id?: string | null
           username: string
         }
         Update: {
           auth_id?: string
+          average_rating?: number
           created_at?: string
           description?: string | null
           email?: string
@@ -838,7 +848,9 @@ export type Database = {
           id?: number
           last_name?: string
           location?: unknown | null
-          profile_image_url?: string | null
+          profile_image_key?: string | null
+          stripe_account_id?: string | null
+          stripe_customer_id?: string | null
           username?: string
         }
         Relationships: []
@@ -1033,6 +1045,17 @@ export type Database = {
       get_current_user_id: {
         Args: Record<PropertyKey, never>
         Returns: number
+      }
+      get_event: {
+        Args: {
+          event_id: number
+        }
+        Returns: {
+          id: number
+          name: string
+          longitude: number
+          latitude: number
+        }[]
       }
       increment_cart_quantity: {
         Args: {
