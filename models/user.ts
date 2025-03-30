@@ -24,6 +24,10 @@ type User = {
   profileImageUrl: string | null;
 
   createdAt: Timestamp;
+
+  stripeCustomerId: string | null;
+
+  stripeAccountId: string | null;
 };
 
 type UpdateUser = {

@@ -3,21 +3,26 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import { Redirect, router } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import Loading from '@/components/Loading';
 
 const ShopifyLandingPage = () => {
   const [input, setInput] = useState('');
-
-  const store_url = 'sadmeowsong.myshopify.com';
   const api_key = process.env.EXPO_PUBLIC_SHOPIFY_API_KEY || '';
   const scope = 'read_products';
   const redirect_uri = 'https://www.plaza-app.com/shopify-migration/success';
-  const auth_url = `https://${store_url}/admin/oauth/authorize?client_id=${api_key}&scope=${scope}&redirect_uri=${redirect_uri}`;
 
   return (
     <SafeAreaView>
       <Text>ShopifyLandingPage</Text>
       <PlazaTextInput
-        placeholder="Search for products"
+        placeholder="Your Shopify Store URL (e.g., sadmeowsong.myshopify.com)"
+        autoCapitalize="none"
+        autoCorrect={false}
+        keyboardType="url"
+        textContentType="URL"
         value={input}
         onChangeText={setInput}
       />
@@ -26,6 +31,7 @@ const ShopifyLandingPage = () => {
         onPress={async () => {
           // Handle button press
           console.log('Shopify button pressed');
+          const auth_url = `https://${input}/admin/oauth/authorize?client_id=${api_key}&scope=${scope}&redirect_uri=${redirect_uri}`;
           const supported = await Linking.canOpenURL(auth_url);
           if (supported) {
             Linking.openURL(auth_url);

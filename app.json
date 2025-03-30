@@ -14,7 +14,14 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.plaza.app"
+      "bundleIdentifier": "com.plaza.app",
+      "associatedDomains": [
+        "applinks:www.plaza-app.com",
+        "applinks:www.plaza-app.com"
+      ],
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {

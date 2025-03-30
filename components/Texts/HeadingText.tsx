@@ -44,4 +44,14 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     lineHeight: 24,
   },
+  h3: {
+    fontSize: 28,
+    fontWeight: 'semibold',
+    lineHeight: 32,
+  },
+  ['h3-bold']: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    lineHeight: 32,
+  },
 });
