@@ -10,6 +10,14 @@ export type ExploreGroup = {
   is_member: boolean;
 };
 
+export type SearchGroup = {
+  id: Id;
+
+  name: string;
+
+  iconUrl: Url | null;
+};
+
 export type ExploreTab = {
   mostPopularGroups: {
     id: Id;
@@ -27,6 +35,8 @@ export type ExploreTab = {
     name: string;
 
     description: string;
+
+    iconUrl: Url | null;
 
     isMember: boolean;
   }[];

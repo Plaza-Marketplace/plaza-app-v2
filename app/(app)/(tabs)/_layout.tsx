@@ -1,7 +1,5 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
-// import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
 import {
   ExploreIcon,
   InboxIcon,
@@ -9,12 +7,9 @@ import {
   UploadIcon,
   ProfileIcon,
 } from '@/components/PlazaIcons/BottomNavBarIcons';
-import { Platform } from 'react-native';
 import { BottomSheetModalProvider } from '@gorhom/bottom-sheet';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <BottomSheetModalProvider>
       <Tabs
@@ -62,7 +57,7 @@ export default function TabLayout() {
         />
 
         <Tabs.Screen
-          name="(profile)"
+          name="profile"
           options={{
             title: 'Profile',
             tabBarIcon: ({ color, focused }) => (

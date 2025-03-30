@@ -26,6 +26,8 @@ export type ActivityTab = {
       id: Id;
 
       username: string;
+
+      profilePictureUrl: Url | null;
     };
 
     community: {
@@ -33,7 +35,7 @@ export type ActivityTab = {
 
       name: string;
 
-      memberCount: number;
+      iconUrl: Url | null;
     };
 
     product: {
@@ -41,12 +43,16 @@ export type ActivityTab = {
 
       name: string;
 
-      imageUrl: Url;
+      thumbnailUrl: Url | null;
 
       seller: {
         id: Id;
 
         username: string;
+
+        profilePictureUrl: Url | null;
+
+        averageRating: number;
       };
     } | null;
   }[];

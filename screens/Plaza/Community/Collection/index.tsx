@@ -3,7 +3,8 @@ import React, { FC } from 'react';
 import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
 import ProductCard from '@/components/Product/ProductCard';
 import { Tabs } from 'react-native-collapsible-tab-view';
-import PlazaButton from '../Buttons/PlazaButton';
+import PlazaButton from '@/components/Buttons/PlazaButton';
+import useGetCollectionProducts from './useGetCollectionProducts';
 
 interface CollectionProps {
   communityId: number;
@@ -11,7 +12,7 @@ interface CollectionProps {
 
 const Collection: FC<CollectionProps> = ({ communityId }) => {
   const { data: communityCollectionItems, error } =
-    useGetCommunityCollectionItems(communityId);
+    useGetCollectionProducts(communityId);
 
   if (error) return <Text>{error.message}</Text>;
 
@@ -25,12 +26,12 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
         renderItem={({ item }) => (
           <View style={styles.productCardContainer}>
             <ProductCard
-              id={item.product.id}
-              name={item.product.name}
-              username={'poop'}
-              thumbnailUrl={item.product.imageUrls[0]}
-              rating={4}
-              price={item.product.price}
+              id={item.id}
+              name={item.name}
+              username={item.seller.username}
+              thumbnailUrl={item.thumbnailUrl ?? ''}
+              rating={item.seller.averageRating}
+              price={item.price}
             />
           </View>
         )}

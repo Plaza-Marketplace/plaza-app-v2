@@ -1,23 +1,18 @@
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import CaptionText from './Texts/CaptionText';
 import ProfileIcon from './ProfileIcon';
-import Spacing from '@/constants/Spacing';
+import BodyText from './Texts/BodyText';
 
 interface UserInfoProps {
-  imageUrl?: string;
-  name: string;
-  description: string;
+  username: string;
+  profilePictureUrl: Url | null;
 }
 
-const UserInfo: FC<UserInfoProps> = ({ imageUrl, name, description }) => {
+const UserInfo: FC<UserInfoProps> = ({ username, profilePictureUrl }) => {
   return (
     <View style={styles.container}>
-      <ProfileIcon variant="user" url={imageUrl} />
-      <View>
-        <CaptionText>{name}</CaptionText>
-        {/* <CaptionText>{description}</CaptionText> */}
-      </View>
+      <ProfileIcon variant="user" url={profilePictureUrl ?? undefined} />
+      <BodyText variant="md-medium">{username}</BodyText>
     </View>
   );
 };
@@ -28,6 +23,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.SPACING_2,
+    gap: 8,
   },
 });

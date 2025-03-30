@@ -33,7 +33,7 @@ const JoinCard: FC<JoinCardProps> = ({
       style={styles.container}
       onPress={() => pushCommunityScreen(id)}
     >
-      <GroupIcon url={iconUrl} size={52} />
+      <GroupIcon id={id} url={iconUrl} size={52} />
       <View>
         <BodyText variant="lg-semibold" numberOfLines={1}>
           {name}

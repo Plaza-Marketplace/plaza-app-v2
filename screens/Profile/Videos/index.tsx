@@ -2,15 +2,14 @@ import { StyleSheet, Text, View } from 'react-native';
 import React, { FC } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import VideoPreview from '@/components/VideoPreview';
-import { useGetVideosByUserId } from '@/hooks/queries/useVideo';
 import { router } from 'expo-router';
-import Spacing from '@/constants/Spacing';
+import { useGetVideosByUserId } from './hooks';
 
-interface ProfileVideoProps {
+interface VideosProps {
   userId: number;
 }
 
-const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
+const Videos: FC<VideosProps> = ({ userId }) => {
   const { data: videos, isLoading } = useGetVideosByUserId(userId);
 
   if (isLoading) return <Text>Loading...</Text>;
@@ -23,17 +22,15 @@ const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
       renderItem={({ item }) => (
         <View
           style={{
-            width: '33.333%',
+            flex: 1 / 3,
             height: 200,
-            paddingHorizontal: Spacing.SPACING_1,
-            paddingTop: Spacing.SPACING_2,
           }}
         >
           <VideoPreview
             uri={item.videoUrl}
             onPress={() => {
               router.push({
-                pathname: 'video-display',
+                pathname: '/video-display',
                 params: { videoId: item.id },
               });
             }}
@@ -44,6 +41,6 @@ const ProfileVideos: FC<ProfileVideoProps> = ({ userId }) => {
   );
 };
 
-export default ProfileVideos;
+export default Videos;
 
 const styles = StyleSheet.create({});

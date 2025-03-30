@@ -56,5 +56,6 @@ const styles = StyleSheet.create({
     borderBottomColor: Color.BORDER_SECONDARY,
     paddingHorizontal: Spacing.SPACING_3,
     paddingVertical: Spacing.SPACING_1,
+    gap: 8,
   },
 });

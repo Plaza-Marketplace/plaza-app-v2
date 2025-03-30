@@ -10,13 +10,15 @@ import ExploreBanner from '@/components/Community/ExploreBanner';
 import Dots from '@/components/Dots';
 import AllTags from '@/components/Tags/AllTags';
 import useGetExploreTab from './useGetExploreTab';
+import SearchResults from './SearchResults';
 
 const Explore = () => {
   const { data: exploreTab, error: exploreTabError } = useGetExploreTab();
+  const [isSearchFocused, setIsSearchFocused] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [localSearchTerm, setLocalSearchTerm] = useState('');
   const { debouncedValue } = useDebounce(localSearchTerm, 500);
-  const { data, error } = useSearchGroups(debouncedValue);
+  const { data: searchGroups, error } = useSearchGroups(debouncedValue);
 
   const mostPopularGroups = exploreTab?.mostPopularGroups ?? [];
   const featuredGroups = exploreTab?.featuredGroups ?? [];
@@ -28,52 +30,64 @@ const Explore = () => {
           <SearchBar
             placeholder="Search groups"
             onChangeText={setLocalSearchTerm}
+            onFocus={() => setIsSearchFocused(true)}
+            onBlur={() => setIsSearchFocused(false)}
+            showCancelButton
           />
         </View>
         <AllTags />
       </View>
-      <View style={styles.section}>
-        <HeadingText variant="h5-bold">Most Popular Groups</HeadingText>
-        <View style={styles.carouselContainer}>
-          <View style={{ height: 200 }}>
-            <Carousel
-              data={mostPopularGroups}
-              renderItem={({ item }) => (
-                <View style={styles.carouselItem}>
-                  <ExploreBanner
+      {isSearchFocused ? (
+        <SearchResults searchGroups={searchGroups ?? []} />
+      ) : (
+        <>
+          <View style={styles.section}>
+            <HeadingText variant="h5-bold">Most Popular Groups</HeadingText>
+            <View style={styles.carouselContainer}>
+              <View style={{ height: 200 }}>
+                <Carousel
+                  data={mostPopularGroups}
+                  renderItem={({ item }) => (
+                    <View style={styles.carouselItem}>
+                      <ExploreBanner
+                        id={item.id}
+                        bannerUrl={item.bannerUrl}
+                        name={item.name}
+                        description={item.description}
+                      />
+                    </View>
+                  )}
+                  width={Dimensions.get('window').width}
+                  height={200}
+                  loop={false}
+                  onSnapToItem={setActiveIndex}
+                />
+              </View>
+              <Dots
+                count={mostPopularGroups.length}
+                activeIndex={activeIndex}
+              />
+            </View>
+          </View>
+          {featuredGroups.length > 0 && (
+            <View style={styles.section}>
+              <HeadingText variant="h5-bold">Featured Groups</HeadingText>
+              <FlatList
+                numColumns={2}
+                data={exploreTab?.featuredGroups}
+                renderItem={({ item }) => (
+                  <JoinCard
                     id={item.id}
-                    backgroundUrl={item.bannerUrl}
                     name={item.name}
                     description={item.description}
+                    iconUrl={item.iconUrl}
+                    isMember={item.isMember}
                   />
-                </View>
-              )}
-              width={Dimensions.get('window').width}
-              height={200}
-              loop={false}
-              onSnapToItem={setActiveIndex}
-            />
-          </View>
-          <Dots count={mostPopularGroups.length} activeIndex={activeIndex} />
-        </View>
-      </View>
-      {featuredGroups.length > 0 && (
-        <View style={styles.section}>
-          <HeadingText variant="h5-bold">Featured Groups</HeadingText>
-          <FlatList
-            numColumns={2}
-            data={exploreTab?.featuredGroups}
-            renderItem={({ item }) => (
-              <JoinCard
-                id={item.id}
-                name={item.name}
-                description={item.description}
-                iconUrl={null}
-                isMember={item.isMember}
+                )}
               />
-            )}
-          />
-        </View>
+            </View>
+          )}
+        </>
       )}
     </View>
   );
@@ -91,7 +105,10 @@ const styles = StyleSheet.create({
     paddingTop: 16,
   },
   searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
     paddingHorizontal: 16,
+    gap: 8,
   },
   section: {
     paddingHorizontal: 16,

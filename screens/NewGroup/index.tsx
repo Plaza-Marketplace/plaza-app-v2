@@ -20,7 +20,7 @@ const NewGroup = () => {
         onSubmit={async (values) => {
           const id = await createGroup(values);
           router.replace({
-            pathname: '/community/community_posts',
+            pathname: '/community',
             params: { id },
           });
         }}

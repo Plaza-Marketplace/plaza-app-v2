@@ -4,24 +4,39 @@ import { FC } from 'react';
 import BodyText from './Texts/BodyText';
 import Circle from './Circle';
 import Color from '@/constants/Color';
+import { formatDatetime, formatRange } from '@/utils/datetime';
+import { router } from 'expo-router';
 
 interface EventBannerProps {
   id: Id;
-  backgroundUrl: string | null;
   name: string;
-  description: string;
+  address: string;
+  city: string;
+  state: string;
+  startDate: Timestamp;
+  endDate: Timestamp;
+  bannerUrl: Url | null;
 }
 
 const EventBanner: FC<EventBannerProps> = ({
   id,
-  backgroundUrl,
   name,
-  description,
+  address,
+  city,
+  state,
+  startDate,
+  endDate,
+  bannerUrl,
 }) => {
-  const handlePress = () => {};
+  const handlePress = () => {
+    router.push({
+      pathname: '/event',
+      params: { id },
+    });
+  };
 
   return (
-    <Banner backgroundUrl={backgroundUrl} onPress={handlePress}>
+    <Banner backgroundUrl={bannerUrl} onPress={handlePress}>
       <View style={styles.content}>
         <View style={styles.liveContainer}>
           <Circle size={8} style={{ backgroundColor: Color.LIVES_500 }} />
@@ -29,9 +44,20 @@ const EventBanner: FC<EventBannerProps> = ({
             Live
           </BodyText>
         </View>
-        <BodyText variant="lg-bold" color={Color.NEUTRALS_WHITE}>
-          {name}
-        </BodyText>
+        <View>
+          <BodyText variant="lg-bold" color={Color.NEUTRALS_WHITE}>
+            {name}
+          </BodyText>
+          <BodyText variant="lg-medium" color={Color.NEUTRALS_WHITE}>
+            {city}, {state}
+          </BodyText>
+          <BodyText variant="lg-medium" color={Color.NEUTRALS_WHITE}>
+            {formatRange(startDate, endDate)}
+          </BodyText>
+          <BodyText variant="md" color={Color.NEUTRALS_WHITE}>
+            {address}
+          </BodyText>
+        </View>
       </View>
     </Banner>
   );

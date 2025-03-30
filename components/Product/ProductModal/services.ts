@@ -20,6 +20,7 @@ export const getProductModalProduct = async (
       seller: user (
         id,
         username,
+        average_rating,
         seller_review!seller_id(
           id,
           rating,
@@ -52,6 +53,7 @@ export const getProductModalProduct = async (
     seller: {
       id: data.seller.id,
       username: data.seller.username,
+      averageRating: data.seller.average_rating,
       reviews: data.seller.seller_review.map((review) => ({
         id: review.id,
         rating: review.rating,

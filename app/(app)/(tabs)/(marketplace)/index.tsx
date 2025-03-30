@@ -16,7 +16,7 @@ const ExploreTab = () => {
   const { data, error, refetch, isLoading } = useGetExploreTab();
   const getNextExploreTabVideos = useGetNextExploreTabVideos(data?.videos);
   const [refreshing, setRefreshing] = useState(false);
-
+  console.log(error);
   if (isLoading) return <Loading />;
 
   if (!data || error) return null;

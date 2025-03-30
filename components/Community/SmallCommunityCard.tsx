@@ -23,14 +23,14 @@ const SmallCommunityCard: FC<SmallCommunityCardProps> = ({
 }) => {
   const handlePress = () => {
     router.push({
-      pathname: '/community/community_posts',
+      pathname: '/community',
       params: { id },
     });
   };
 
   return (
     <PressableOpacity style={styles.container} onPress={handlePress}>
-      <GroupIcon size={52} url={iconUrl} />
+      <GroupIcon isPressable={false} id={id} size={52} url={iconUrl} />
       <View style={styles.infoContainer}>
         <HeadingText variant="h6-bold">{name}</HeadingText>
         <MemberCount count={memberCount} />

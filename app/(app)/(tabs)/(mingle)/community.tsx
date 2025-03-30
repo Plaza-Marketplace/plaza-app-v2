@@ -4,8 +4,8 @@ import PlazaText from '@/components/Texts/PlazaText';
 import useScreenTrack from '@/hooks/useScreenTrack';
 import { useLocalSearchParams } from 'expo-router';
 import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
-import Collection from '@/components/Community/Collection';
-import Posts from '@/components/Community/Posts';
+import Collection from '@/screens/Plaza/Community/Collection';
+import Posts from '@/screens/Plaza/Community/Posts';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetCommunityPage } from '@/hooks/routes/community';
 

@@ -4,11 +4,26 @@ import Color from '@/constants/Color';
 import PressableOpacity from './PressableOpacity';
 import { router } from 'expo-router';
 import Radius from '@/constants/Radius';
+import { FC } from 'react';
 
-const BackButton = () => {
+interface BackButtonProps {
+  alternativeColor?: boolean;
+}
+
+const BackButton: FC<BackButtonProps> = ({ alternativeColor = false }) => {
   return (
-    <PressableOpacity style={styles.container} onPress={router.back}>
-      <ChevronLeft color={'#000'} />
+    <PressableOpacity
+      style={[
+        styles.container,
+        {
+          backgroundColor: alternativeColor
+            ? Color.PRIMARY_DEFAULT
+            : Color.NEUTRALS_100,
+        },
+      ]}
+      onPress={router.back}
+    >
+      <ChevronLeft color={alternativeColor ? Color.NEUTRALS_WHITE : '#000'} />
     </PressableOpacity>
   );
 };

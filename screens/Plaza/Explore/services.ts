@@ -1,33 +1,19 @@
-import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
-import { ExploreGroup, ExploreTab } from './models';
-
-const COMMUNITY_QUERY = `
-  *,
-  member_count: community_member(
-    count
-  ),
-  is_member: community_member!inner(count)
-`;
-
-const formatExploreGroup = (
-  group: Tables<'community'>,
-  isMember: boolean,
-  memberCount: number
-) => ({
-  id: group.id,
-  name: group.name,
-  description: group.description,
-  member_count: memberCount,
-  is_member: isMember,
-});
+import { ExploreTab, SearchGroup } from './models';
+import { getImagePublicUrl } from '@/services/crud/storage';
 
 export const searchGroups = async (
   searchTerm: string
-): Promise<ExploreGroup[]> => {
+): Promise<SearchGroup[]> => {
   const { data, error } = await supabase
     .from('community')
-    .select(COMMUNITY_QUERY)
+    .select(
+      `
+      id,
+      name,
+      icon_key
+    `
+    )
     .textSearch('name', searchTerm)
     .limit(10);
 
@@ -35,13 +21,11 @@ export const searchGroups = async (
     throw new Error(error.message);
   }
 
-  return data.map((group) =>
-    formatExploreGroup(
-      group,
-      group.is_member[0].count === 1,
-      group.member_count[0].count
-    )
-  );
+  return data.map((group) => ({
+    id: group.id,
+    name: group.name,
+    iconUrl: group.icon_key ? getImagePublicUrl(group.icon_key) : null,
+  }));
 };
 
 export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
@@ -53,8 +37,7 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
         id,
         name,
         description,
-        banner_url,
-        member_count: community_member(count)
+        banner_key
       `
       )
       .order('community_member_count', { ascending: false })
@@ -72,6 +55,7 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
           id,
           name,
           description,
+          icon_key,
           is_member: community_member!inner(count)
         )
       `
@@ -90,7 +74,7 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
 
       description: group.description,
 
-      bannerUrl: group.banner_url,
+      bannerUrl: group.banner_key ? getImagePublicUrl(group.banner_key) : null,
     })),
     featuredGroups: featuredGroups.map((group) => ({
       id: group.community.id,
@@ -98,6 +82,10 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
       name: group.community.name,
 
       description: group.community.description,
+
+      iconUrl: group.community.icon_key
+        ? getImagePublicUrl(group.community.icon_key)
+        : null,
 
       isMember: group.community.is_member[0].count === 1,
     })),

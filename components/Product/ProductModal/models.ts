@@ -16,6 +16,8 @@ export type ProductModalProduct = {
 
     username: string;
 
+    averageRating: number;
+
     reviews: {
       id: Id;
 

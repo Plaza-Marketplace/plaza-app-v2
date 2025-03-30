@@ -1,5 +1,6 @@
 import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
+import { getImagePublicUrl } from '../crud/storage';
 
 const COMMUNITY_QUERY = `
   *,
@@ -21,8 +22,10 @@ const formatCommunityPage = (
     memberCount,
     isMember,
     createdAt: community.created_at,
-    iconUrl: community.icon_url,
-    bannerUrl: community.banner_url,
+    iconUrl: community.icon_key ? getImagePublicUrl(community.icon_key) : null,
+    bannerUrl: community.banner_key
+      ? getImagePublicUrl(community.banner_key)
+      : null,
   };
 };
 

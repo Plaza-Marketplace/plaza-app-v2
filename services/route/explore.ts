@@ -1,13 +1,17 @@
 import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
-import { getImagePublicUrls, getVideoPublicUrl } from '../crud/storage';
+import {
+  getImagePublicUrl,
+  getImagePublicUrls,
+  getVideoPublicUrl,
+} from '../crud/storage';
 
 const EXPLORE_TAB_VIDEO_QUERY = `
 *,
 poster: user(
   id,
   username,
-  profile_image_url
+  profile_image_key
 ),
 products: video_product(
   product(
@@ -32,7 +36,7 @@ seller_review_count: user(
 
 export const formatExploreTabVideo = (
   video: Tables<'video'>,
-  poster: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_url'>,
+  poster: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_key'>,
   products: Tables<'product'>[],
   productImageKeys: Tables<'product_image'>['image_key'][][],
   isLiked: boolean,
@@ -45,7 +49,9 @@ export const formatExploreTabVideo = (
     poster: {
       id: poster.id,
       username: poster.username,
-      profileImageUrl: poster.profile_image_url,
+      profileImageUrl: poster.profile_image_key
+        ? getImagePublicUrl(poster.profile_image_key)
+        : null,
     },
     videoUrl: getVideoPublicUrl(video.video_key),
     products: products.map((product, index) => ({

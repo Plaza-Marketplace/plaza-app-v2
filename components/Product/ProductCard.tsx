@@ -10,18 +10,17 @@ import Rating from '../Rating';
 import ProductModal from './ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import PressableOpacity from '../Buttons/PressableOpacity';
-import Radius from '@/constants/Radius';
 
 interface ProductCardProps {
   id: Id;
 
   name: string;
 
-  username: string;
+  username?: string;
 
-  thumbnailUrl: Url;
+  thumbnailUrl: Url | null;
 
-  rating: number;
+  rating?: number;
 
   price: number;
 }
@@ -49,24 +48,24 @@ const ProductCard: FC<ProductCardProps> = ({
             {name}
           </HeadingText>
           <BodyText variant="lg">{formatPrice(price)}</BodyText>
-          <View style={styles.sellerContainer}>
-            <View style={styles.seller}>
-              <ProfileIcon variant="user" size={24} />
-              <BodyText variant="md-medium">{username}</BodyText>
+          {username !== undefined && rating !== undefined && (
+            <View style={styles.sellerContainer}>
+              <View style={styles.seller}>
+                <ProfileIcon variant="user" size={24} />
+                <BodyText
+                  variant="md-medium"
+                  numberOfLines={1}
+                  style={{ flexShrink: 1 }}
+                >
+                  {username}
+                </BodyText>
+              </View>
+              <Rating rating={rating} />
             </View>
-            <Rating rating={rating} />
-          </View>
+          )}
         </View>
       </PressableOpacity>
-      <ProductModal
-        id={id}
-        name={name}
-        username={username}
-        profilePictureUrl={null}
-        rating={rating}
-        description={'hello'}
-        bottomSheetRef={bottomSheetRef}
-      />
+      <ProductModal id={id} bottomSheetRef={bottomSheetRef} />
     </>
   );
 };
@@ -86,6 +85,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   productImage: {
+    backgroundColor: Color.NEUTRALS_DEFAULT,
     width: '100%',
     aspectRatio: 1,
   },
@@ -94,8 +94,10 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginTop: 12,
+    gap: 4,
   },
   seller: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 4,

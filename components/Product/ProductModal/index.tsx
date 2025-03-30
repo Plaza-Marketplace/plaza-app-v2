@@ -2,13 +2,12 @@ import {
   BottomSheetBackdrop,
   BottomSheetModal,
   BottomSheetScrollView,
-  BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { FC, RefObject, useMemo, useState } from 'react';
 import HeadingText from '@/components/Texts/HeadingText';
 import ProfileIcon from '@/components/ProfileIcon';
 import BodyText from '@/components/Texts/BodyText';
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Rating from '@/components/Rating';
 import Footer from '@/components/Footer';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -19,6 +18,8 @@ import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import { formatPrice } from '@/utils/currency';
 import ReviewCard from '@/components/ReviewCard';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import { router } from 'expo-router';
 
 interface ProductModalProps {
   id: Id;
@@ -101,8 +102,17 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
           <View style={styles.infoContainer}>
             <ProfileIcon variant="user" size={32} url={undefined} />
             <View style={styles.sellerInfo}>
-              <BodyText variant="md">{data?.seller.username}</BodyText>
-              <Rating rating={4} />
+              <PressableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: '/profile-modal',
+                    params: { id: data?.seller.id },
+                  })
+                }
+              >
+                <BodyText variant="md">{data?.seller.username}</BodyText>
+              </PressableOpacity>
+              <Rating rating={data?.seller.averageRating ?? 0} />
             </View>
           </View>
           <BodyText variant="md">{data?.description}</BodyText>
@@ -134,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     padding: 16,
     gap: 12,
-    backgroundColor: Color.GREY_100,
+    backgroundColor: Color.WHITE,
   },
   infoContainer: {
     flexDirection: 'row',

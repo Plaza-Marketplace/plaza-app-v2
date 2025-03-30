@@ -3,29 +3,53 @@ import SearchBar from '@/components/SearchBar';
 import AllTags from '@/components/Tags/AllTags';
 import HeadingText from '@/components/Texts/HeadingText';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
-import { Camera, MapView } from '@rnmapbox/maps';
+import { Camera, MapView, PointAnnotation, UserLocation } from '@rnmapbox/maps';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useRef } from 'react';
 import { StyleSheet } from 'react-native';
 import { View } from 'react-native';
+import useGetEvent from './useGetEvent';
+import BodyText from '@/components/Texts/BodyText';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import BackButton from '@/components/Buttons/BackButton';
+import GroupIcon from '@/components/Community/GroupIcon';
 
 const Event = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const eventId = parseInt(id);
+  const { data, error } = useGetEvent(eventId);
 
-  const snapPoints = useMemo(() => ['10%', '80%'], []);
+  const snapPoints = useMemo(() => [60, '80%'], []);
 
   return (
     <View style={styles.container}>
-      <MapView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.backButtonContainer}>
+        <BackButton alternativeColor />
+      </SafeAreaView>
+      <MapView style={{ flex: 1 }} scaleBarEnabled={false} compassEnabled>
         <Camera
-          zoomLevel={5}
-          centerCoordinate={[37.789, 30.41]}
-          animationMode="flyTo"
-          animationDuration={1000}
+          zoomLevel={15}
+          centerCoordinate={data?.coordinates}
+          animationMode="none"
+          animationDuration={0}
         />
+        {data?.coordinates && (
+          <PointAnnotation
+            key="pointAnnotation"
+            id="pointAnnotation"
+            coordinate={data?.coordinates}
+            onSelected={() => bottomSheetRef.current?.expand()}
+          >
+            <View>
+              <GroupIcon size={32} url={null} />
+              <BodyText variant="sm-bold">{'Jackalope'}</BodyText>
+            </View>
+          </PointAnnotation>
+        )}
+
+        <UserLocation />
       </MapView>
       <BottomSheet
         index={0}
@@ -66,5 +90,10 @@ const styles = StyleSheet.create({
   },
   nearbyItems: {
     paddingHorizontal: 16,
+  },
+  backButtonContainer: {
+    position: 'absolute',
+    zIndex: 99,
+    paddingLeft: 16,
   },
 });

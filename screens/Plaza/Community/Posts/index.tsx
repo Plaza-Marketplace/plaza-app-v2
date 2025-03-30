@@ -1,30 +1,45 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
-import React from 'react';
-import PostCard from '@/components/PostCards/PostCard';
-import { useGetChatterPostsByCommunity } from '@/hooks/queries/useCommunityPosts';
-import { router, useLocalSearchParams } from 'expo-router';
+import { StyleSheet, Text, View } from 'react-native';
+import { FC } from 'react';
+import { router } from 'expo-router';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { FontAwesome6 } from '@expo/vector-icons';
 import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
+import { Tabs } from 'react-native-collapsible-tab-view';
+import Post from '@/components/Community/Post';
+import useGetPostsByCommunityId from './useGetPostsByCommunityId';
 
-const community_posts = () => {
-  const { communityId } = useLocalSearchParams<{ communityId: string }>();
+interface PostsProps {
+  communityId: Id;
+}
+
+const Posts: FC<PostsProps> = ({ communityId }) => {
   const {
     data: communityPosts,
     error: postErrors,
     isLoading: postsLoading,
-  } = useGetChatterPostsByCommunity(parseInt(communityId));
+  } = useGetPostsByCommunityId(communityId);
   if (postsLoading) return <Text>Loading...</Text>;
   if (!communityPosts || postErrors)
     return <Text>{`${JSON.stringify(communityPosts)}`}</Text>;
   return (
     <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
-      <ScrollView>
-        {communityPosts.map((post, i) => (
-          <PostCard communityPost={post} key={`post${i}`} />
-        ))}
-      </ScrollView>
+      <Tabs.FlatList
+        data={communityPosts}
+        renderItem={({ item }) => (
+          <Post
+            title={item.title}
+            description={item.description}
+            postType={item.postType}
+            product={item.product}
+            poster={item.poster}
+            community={item.community}
+            isOnCommunityPage
+          />
+        )}
+        keyExtractor={(item) => item.id.toString()}
+      />
+
       <PressableOpacity
         style={styles.addButton}
         onPress={() =>
@@ -40,7 +55,7 @@ const community_posts = () => {
   );
 };
 
-export default community_posts;
+export default Posts;
 
 const styles = StyleSheet.create({
   addButton: {

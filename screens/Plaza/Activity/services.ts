@@ -1,6 +1,7 @@
 import { supabase } from '@/utils/supabase';
 import { ActivityTab } from './models';
 import { PostType } from '@/models/communityPost';
+import { getImagePublicUrl } from '@/services/crud/storage';
 
 export const getActivityTab = async (userId: Id): Promise<ActivityTab> => {
   const { data: groups, error: groupsError } = await supabase
@@ -11,6 +12,7 @@ export const getActivityTab = async (userId: Id): Promise<ActivityTab> => {
         id,
         name,
         description,
+        icon_key,
         member_count: community_member(count)
       )  
     `
@@ -26,18 +28,24 @@ export const getActivityTab = async (userId: Id): Promise<ActivityTab> => {
     .select(
       `
       *,
-      poster: user(id, username),
+      poster: user(
+        id,
+        username,
+        profile_image_key
+      ),
       community(
         id, 
         name,
-        member_count: community_member(count)
+        icon_key
       ),
       product(
         *,
         image_keys: product_image(image_key),
         seller: user(
           id,
-          username
+          username,
+          profile_image_key,
+          average_rating
         )
       )
     `
@@ -58,7 +66,9 @@ export const getActivityTab = async (userId: Id): Promise<ActivityTab> => {
       id: group.community.id,
       name: group.community.name,
       memberCount: group.community.member_count[0].count,
-      iconUrl: null,
+      iconUrl: group.community.icon_key
+        ? getImagePublicUrl(group.community.icon_key)
+        : null,
     })),
     groupPostings: posts.map((post) => ({
       id: post.id,
@@ -69,20 +79,32 @@ export const getActivityTab = async (userId: Id): Promise<ActivityTab> => {
       poster: {
         id: post.poster.id,
         username: post.poster.username,
+        profilePictureUrl: post.poster.profile_image_key
+          ? getImagePublicUrl(post.poster.profile_image_key)
+          : null,
       },
       community: {
         id: post.community.id,
         name: post.community.name,
-        memberCount: post.community.member_count[0].count,
+        iconUrl: post.community.icon_key
+          ? getImagePublicUrl(post.community.icon_key)
+          : null,
       },
       product: post.product
         ? {
             id: post.product.id,
             name: post.product.name,
-            imageUrl: post.product.image_keys[0].image_key,
+            thumbnailUrl:
+              post.product.image_keys.length > 0
+                ? getImagePublicUrl(post.product.image_keys[0].image_key)
+                : null,
             seller: {
               id: post.product.seller.id,
               username: post.product.seller.username,
+              profilePictureUrl: post.product.seller.profile_image_key
+                ? getImagePublicUrl(post.product.seller.profile_image_key)
+                : null,
+              averageRating: post.product.seller.average_rating,
             },
           }
         : null,

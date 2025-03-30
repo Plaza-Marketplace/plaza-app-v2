@@ -9,7 +9,7 @@ const query = `
   poster: user!poster_id(
     id,
     username,
-    profile_image_url
+    profile_image_key
   ),
   products: video_product(
     product(
@@ -89,7 +89,7 @@ export const getVideos = async (lastVideoId: Id | null): Promise<Video[]> => {
         .select(query)
         .limit(5)
         .order('created_at', { ascending: false });
-
+  console.log(error);
   if (error) throw new Error('Failed');
 
   if (!data) return [];
@@ -231,7 +231,7 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
     poster: {
       id: uploadedVideo[0].poster.id,
       username: uploadedVideo[0].poster.username,
-      profileImageUrl: uploadedVideo[0].poster.profile_image_url,
+      profileImageUrl: uploadedVideo[0].poster.profile_image_key,
     },
     videoUrl: getVideoPublicUrl(key),
     description: uploadedVideo[0].description,
