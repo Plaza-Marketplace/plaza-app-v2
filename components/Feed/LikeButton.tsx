@@ -25,10 +25,9 @@ const LikeButton: FC<LikeButtonProps> = ({ videoId, isLiked, likeCount }) => {
 
   return (
     <FeedVideoButton
-      name="like"
+      name={isLiked ? 'like-active' : 'like-inactive'}
       count={likeCount}
       onPress={handleLike}
-      color={isLiked ? 'red' : 'white'}
     />
   );
 };

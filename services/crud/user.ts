@@ -12,6 +12,8 @@ export const formatUser = (user: Tables<'user'>): User => {
     description: user.description,
     profileImageUrl: user.profile_image_url,
     createdAt: user.created_at,
+    stripeCustomerId: user.stripe_customer_id,
+    stripeAccountId: user.stripe_account_id,
   };
 };
 
@@ -25,17 +27,7 @@ export const getUser = async (id: Id): Promise<User> => {
   if (error) throw new Error(error.message);
   if (!data) throw new Error('User not found');
 
-  return {
-    id: data.id,
-    authId: data.auth_id,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    username: data.username,
-    email: data.email,
-    description: data.description,
-    profileImageUrl: data.profile_image_url,
-    createdAt: data.created_at,
-  };
+  return formatUser(data);
 };
 
 export const getSellerInfo = async (sellerId: Id): Promise<Seller> => {
@@ -69,17 +61,7 @@ export const getUserByAuthId = async (authId: UUID): Promise<User> => {
 
   if (error) throw new Error(error.message);
 
-  return {
-    id: data.id,
-    authId: data.auth_id,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    username: data.username,
-    email: data.email,
-    description: data.description,
-    profileImageUrl: data.profile_image_url,
-    createdAt: data.created_at,
-  };
+  return formatUser(data);
 };
 
 export const createUser = async (
@@ -95,9 +77,14 @@ export const createUser = async (
       description: user.description,
       profile_image_url: user.profileImageUrl,
     })
-    .select();
+    .select()
+    .single();
 
-  return;
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return formatUser(data);
 };
 
 export const updateUser = async (updates: UpdateUser): Promise<User> => {
@@ -115,15 +102,5 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
   if (error) throw new Error(error.message);
   if (!data) throw new Error('User not found');
 
-  return {
-    id: data.id,
-    authId: data.auth_id,
-    firstName: data.first_name,
-    lastName: data.last_name,
-    username: data.username,
-    email: data.email,
-    description: data.description,
-    profileImageUrl: data.profile_image_url,
-    createdAt: data.created_at,
-  };
+  return formatUser(data);
 };

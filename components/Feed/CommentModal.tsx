@@ -11,6 +11,10 @@ import Comment from './Comment';
 import useGetCommentsByVideoId from '@/hooks/queries/useGetCommentsByVideoId';
 import PlazaButton from '../Buttons/PlazaButton';
 import useCreateVideoComment from '@/hooks/queries/useCreateVideoComment';
+import BoldSubheaderText from '../Texts/BoldSubheaderText';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { ChevronUp } from '../Icons';
+import Radius from '@/constants/Radius';
 
 interface CommentModalProps {
   videoId: Id;
@@ -32,7 +36,7 @@ const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
       <View style={styles.titleContainer}>
-        <StandardText>Comments</StandardText>
+        <BoldSubheaderText>Comments</BoldSubheaderText>
       </View>
       <FlatList
         data={data}
@@ -47,8 +51,19 @@ const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
           placeholder="Add a comment..."
           style={{ flex: 1 }}
           onChangeText={setDescription}
+          rightButton={
+            <PressableOpacity
+              onPress={handleSubmit}
+              style={{
+                backgroundColor: Color.NEUTRALS_DEFAULT,
+                padding: Spacing.SPACING_1,
+                borderRadius: Radius.LG,
+              }}
+            >
+              <ChevronUp color={Color.WHITE} />
+            </PressableOpacity>
+          }
         />
-        <PlazaButton title="Send" onPress={handleSubmit} />
       </View>
     </FeedBottomSheet>
   );
@@ -59,13 +74,12 @@ export default CommentModal;
 const styles = StyleSheet.create({
   titleContainer: {
     alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: Color.BORDER_SECONDARY,
     paddingVertical: Spacing.SPACING_1,
   },
   inputContainer: {
-    flexDirection: 'row',
-    gap: Spacing.SPACING_2,
-    paddingHorizontal: Spacing.SPACING_2,
+    paddingHorizontal: Spacing.SPACING_3,
+    paddingTop: Spacing.SPACING_3,
+    borderTopWidth: 1,
+    borderTopColor: Color.BORDER_SECONDARY,
   },
 });

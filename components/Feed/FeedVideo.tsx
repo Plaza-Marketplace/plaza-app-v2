@@ -128,7 +128,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               }}
             />
             <FeedVideoButton
-              name="share"
+              name="bookmark"
               onPress={() =>
                 addToCommunityCollectionModalRef.current?.present()
               }

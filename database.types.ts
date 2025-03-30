@@ -819,6 +819,8 @@ export type Database = {
           last_name: string
           location: unknown | null
           profile_image_key: string | null
+          stripe_account_id: string | null
+          stripe_customer_id: string | null
           username: string
         }
         Insert: {
@@ -832,6 +834,8 @@ export type Database = {
           last_name: string
           location?: unknown | null
           profile_image_key?: string | null
+          stripe_account_id?: string | null
+          stripe_customer_id?: string | null
           username: string
         }
         Update: {
@@ -845,6 +849,8 @@ export type Database = {
           last_name?: string
           location?: unknown | null
           profile_image_key?: string | null
+          stripe_account_id?: string | null
+          stripe_customer_id?: string | null
           username?: string
         }
         Relationships: []
@@ -1021,6 +1027,12 @@ export type Database = {
       does_object_exist: {
         Args: {
           key: string
+        }
+        Returns: boolean
+      }
+      does_user_follow_other_user: {
+        Args: {
+          user_id: number
         }
         Returns: boolean
       }

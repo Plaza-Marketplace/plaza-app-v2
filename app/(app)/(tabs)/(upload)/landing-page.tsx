@@ -7,6 +7,14 @@ import Color from '@/constants/Color';
 import VideoPreview from '@/components/VideoPreview';
 import { ProductDetails } from '@/models/communityPost';
 import Spacing from '@/constants/Spacing';
+import BoldSubheaderText from '@/components/Texts/BoldSubheaderText';
+import PlazaDescriptionButton from '@/components/Buttons/PlazaDescriptionButton';
+import { Redirect, router } from 'expo-router';
+import { Basket, Camera, ShopifyLogo } from '@/components/Icons';
+import { Ionicons } from '@expo/vector-icons';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import Loading from '@/components/Loading';
 
 const LandingPage = () => {
   const test: ProductDetails = {
@@ -20,55 +28,50 @@ const LandingPage = () => {
     },
   };
 
+  const { session } = useAuth();
+  const { data: user } = useGetUserByAuthId(session?.user.id);
+
+  if (!user) {
+    return <Loading />;
+  }
+
+  console.log(user);
+
+  if (!user.stripeAccountId) {
+    return <Redirect href={'/seller-onboarding'} />;
+  }
+
   return (
     <SafeAreaView style={styles.container}>
-      <Carousel
-        loop={false}
-        width={Dimensions.get('window').width - 50}
-        height={560}
-        data={[0, 1]}
-        renderItem={({ item }) => {
-          if (item === 0) {
-            return (
-              <View
-                style={{
-                  flex: 1,
-                  justifyContent: 'center',
-                  marginHorizontal: Spacing.SPACING_4,
-                }}
-              >
-                <AddContentCard
-                  title="List an Item"
-                  description="Upload an item to your profile so that others can buy it!Items can be added to videos you post and will be featured
-                  alongside them."
-                  buttonTitle="Start Listing"
-                  nextRoute="/list-item/create-listing"
-                >
-                  <ProductSelectedShowcase product={test} />
-                </AddContentCard>
-              </View>
-            );
-          }
-          return (
-            <View
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                marginHorizontal: Spacing.SPACING_4,
-              }}
-            >
-              <AddContentCard
-                title="Upload a Video"
-                description="Create a video that showcases the items in your profile!
+      <BoldSubheaderText>Create</BoldSubheaderText>
 
-Videos will be shared to the marketplace for others to view."
-                buttonTitle="Create a Video"
-                nextRoute="/video-upload/landing-page"
-              >
-                <VideoPreview />
-              </AddContentCard>
-            </View>
-          );
+      <PlazaDescriptionButton
+        style={styles.button} // Add margin to separate from the header
+        title="List a Product"
+        description="Upload an item you want to sell on your profile"
+        leftIcon={<Basket color={Color.PRIMARY_DEFAULT} />} // Replace with your icon component
+        onPress={() => {
+          router.push('/list-item/create-listing');
+        }}
+      />
+
+      <PlazaDescriptionButton
+        style={styles.button}
+        title="Upload a Video"
+        description="Upload a video that showcases the products from your storefront"
+        leftIcon={<Camera color={Color.PRIMARY_DEFAULT} />} // Replace with your icon component
+        onPress={() => {
+          router.push('/video-upload/landing-page');
+        }}
+      />
+
+      <PlazaDescriptionButton
+        style={styles.button}
+        title="Shopify Transfer"
+        description="Transfer your already listed items from Shopify to Plaza!"
+        leftIcon={<ShopifyLogo width={32} height={32} />} // Replace with your icon component
+        onPress={() => {
+          router.push('/shopify-migration/landing-page');
         }}
       />
     </SafeAreaView>
@@ -80,10 +83,13 @@ export default LandingPage;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    flexDirection: 'column',
     alignItems: 'center',
-    paddingHorizontal: Spacing.SPACING_4,
+    paddingHorizontal: Spacing.SPACING_3,
     paddingVertical: Spacing.SPACING_3,
     backgroundColor: Color.SURFACE_PRIMARY,
+  },
+  button: {
+    marginTop: Spacing.SPACING_3,
   },
 });

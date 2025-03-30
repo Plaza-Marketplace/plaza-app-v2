@@ -11,7 +11,10 @@ interface AddContentCardProps extends PropsWithChildren {
   title: string;
   description: string;
   buttonTitle: string;
-  nextRoute: '/list-item/create-listing' | '/video-upload/landing-page';
+  nextRoute:
+    | '/list-item/create-listing'
+    | '/video-upload/landing-page'
+    | '/shopify-migration/landing-page';
 }
 
 const AddContentCard: FC<AddContentCardProps> = ({

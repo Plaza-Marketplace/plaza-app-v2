@@ -1,18 +1,21 @@
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
-import { FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
 import HeadingText from './Texts/HeadingText';
 import BodyText from './Texts/BodyText';
+import Spacing from '@/constants/Spacing';
 
 interface PlazaTextInputProps extends TextInputProps {
   label?: string;
   limit?: number;
+  rightButton?: React.ReactNode;
 }
 
 const PlazaTextInput: FC<PlazaTextInputProps> = ({
   label,
   limit,
+  rightButton,
   style,
   onChangeText,
   ...rest
@@ -28,7 +31,7 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
 
   return (
     <View style={styles.container}>
-      <HeadingText variant="h6-bold">{label}</HeadingText>
+      {label && <HeadingText variant="h6-bold">{label}</HeadingText>}
       <TextInput
         style={[styles.textInputContainer, style]}
         onChangeText={handleTextChange}
@@ -39,6 +42,9 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
           {numChars}/{limit}
         </BodyText>
       )}
+      {rightButton && (
+        <View style={{ alignSelf: 'flex-end' }}>{rightButton}</View>
+      )}
     </View>
   );
 };
@@ -48,16 +54,16 @@ export default PlazaTextInput;
 const styles = StyleSheet.create({
   container: {
     gap: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderRadius: Radius.ROUNDED,
+    backgroundColor: Color.NEUTRALS_100,
+    flexDirection: 'row',
+    borderWidth: 1,
+    borderColor: Color.NEUTRALS_150,
   },
   textInputContainer: {
-    textAlignVertical: 'top',
-    fontFamily: 'Inter',
-    borderRadius: Radius.ROUNDED,
-    borderColor: Color.NEUTRALS_150,
-    backgroundColor: Color.NEUTRALS_100,
-    borderWidth: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
+    flex: 1,
   },
   limit: {
     alignSelf: 'flex-end',

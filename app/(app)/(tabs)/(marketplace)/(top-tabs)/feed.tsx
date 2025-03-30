@@ -31,27 +31,6 @@ const ExploreTab = () => {
 
   return (
     <>
-      <PressableOpacity
-        onPress={() => router.push('/cart')}
-        style={{
-          top: insets.top,
-          right: 16,
-          position: 'absolute',
-          zIndex: 99,
-        }}
-      >
-        <Ionicons
-          name="cart"
-          size={36}
-          color={Color.ICON_TERTIARY}
-          style={{
-            textShadowColor: 'black',
-            textShadowOffset: { width: 0.5, height: 0.5 },
-            textShadowRadius: 6,
-          }}
-        />
-      </PressableOpacity>
-
       <Feed
         videos={data.videos}
         refreshing={refreshing}

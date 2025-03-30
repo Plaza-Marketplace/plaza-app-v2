@@ -8,24 +8,36 @@ import Color from '@/constants/Color';
 interface ProductIconProps {
   imageUrl?: Url;
   onPress?: () => void;
+  size?: number;
 }
 
-const ProductIcon: FC<ProductIconProps> = ({ imageUrl, onPress }) => {
+const ProductIcon: FC<ProductIconProps> = ({
+  imageUrl,
+  onPress,
+  size = 64,
+}) => {
   return (
-    <PressableOpacity onPress={onPress}>
+    <View>
       {imageUrl ? (
         <Image
           source={{
             uri: imageUrl,
           }}
-          style={styles.image}
+          style={[styles.image, { width: size, height: size }]}
         />
       ) : (
         <View
-          style={[styles.image, { backgroundColor: Color.SURFACE_SECONDARY }]}
+          style={[
+            styles.image,
+            {
+              backgroundColor: Color.SURFACE_SECONDARY,
+              width: size,
+              height: size,
+            },
+          ]}
         />
       )}
-    </PressableOpacity>
+    </View>
   );
 };
 
@@ -33,8 +45,6 @@ export default ProductIcon;
 
 const styles = StyleSheet.create({
   image: {
-    width: 64,
-    height: 64,
     borderRadius: Radius.ROUNDED,
   },
 });
