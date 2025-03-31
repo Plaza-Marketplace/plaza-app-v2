@@ -6,34 +6,28 @@ import CaptionText from './Texts/CaptionText';
 import { returnRatings } from './PlazaIcons/RatingIcons';
 import StandardText from './Texts/StandardText';
 import ProfileIcon from './ProfileIcon';
-import { formatDatetime } from '@/utils/datetime';
 import Color from '@/constants/Color';
+import UserInfo from './UserInfo';
 
 interface ReviewProps {
   username: string;
 
+  profileImageUrl: Url | null;
+
   rating: number;
 
   description: string;
-
-  createdAt: Timestamp;
 }
 
 const ReviewCard: FC<ReviewProps> = ({
   username,
+  profileImageUrl,
   rating,
   description,
-  createdAt,
 }) => {
   return (
     <View style={styles.review}>
-      <View style={styles.reviewUser}>
-        <ProfileIcon variant="user" />
-        <View style={styles.name}>
-          <CaptionText>{`@${username}`}</CaptionText>
-          <CaptionText>{formatDatetime(createdAt)}</CaptionText>
-        </View>
-      </View>
+      <UserInfo username={username} profilePictureUrl={profileImageUrl} />
 
       <View style={styles.spacing}>{returnRatings(rating, 'small')}</View>
 

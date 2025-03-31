@@ -1,6 +1,6 @@
 import { supabase } from '@/utils/supabase';
 import { ProductModalProduct } from './models';
-import { getImagePublicUrls } from '@/services/crud/storage';
+import { getImagePublicUrl, getImagePublicUrls } from '@/services/crud/storage';
 
 export const getProductModalProduct = async (
   id: Id
@@ -20,15 +20,17 @@ export const getProductModalProduct = async (
       seller: user (
         id,
         username,
+        profile_image_key,
         average_rating,
         seller_review!seller_id(
           id,
           rating,
           description,
           created_at,
-          user!reviewer_id (
+          poster: user!reviewer_id (
             id,
-            username
+            username,
+            profile_image_key
           )
         )
       )  
@@ -59,9 +61,12 @@ export const getProductModalProduct = async (
         rating: review.rating,
         description: review.description,
         createdAt: review.created_at,
-        user: {
-          id: review.user.id,
-          username: review.user.username,
+        poster: {
+          id: review.poster.id,
+          username: review.poster.username,
+          profileImageUrl: review.poster.profile_image_key
+            ? getImagePublicUrl(review.poster.profile_image_key)
+            : null,
         },
       })),
     },

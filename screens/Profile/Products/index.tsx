@@ -25,7 +25,7 @@ const Products: FC<ProductsProps> = ({ userId }) => {
         gap: Spacing.SPACING_3,
       }}
       renderItem={({ item }) => (
-        <View style={{ flex: 1 / 2 }}>
+        <View style={{ flex: 1 / 2, padding: 4 }}>
           <ProductCard
             id={item.id}
             name={item.name}

@@ -4,19 +4,20 @@ import Radius from '@/constants/Radius';
 import ExpandableDescription from '@/components/ExpandableDescription';
 import ProfileIcon from '@/components/ProfileIcon';
 import PlazaButton from '@/components/Buttons/PlazaButton';
-import { useFollowUser, useGetHeader, useUnfollowUser } from './hooks';
+import { useFollowUser, useUnfollowUser } from './hooks';
 import { useAuth } from '@/contexts/AuthContext';
 import HeadingText from '@/components/Texts/HeadingText';
 import Rating from '@/components/Rating';
 import BodyText from '@/components/Texts/BodyText';
+import { Header as HeaderType } from './models';
 
 interface HeaderProps {
   userId: Id;
+  header: HeaderType;
 }
 
-const Header: FC<HeaderProps> = ({ userId }) => {
+const Header: FC<HeaderProps> = ({ userId, header }) => {
   const { user: currentUser } = useAuth();
-  const { data, error } = useGetHeader(userId);
   const { mutate: followUser } = useFollowUser();
   const { mutate: unfollowUser } = useUnfollowUser();
 
@@ -25,28 +26,28 @@ const Header: FC<HeaderProps> = ({ userId }) => {
       <View style={styles.headerTopRow}>
         <ProfileIcon
           variant="user"
-          url={data?.profileImageUrl || undefined}
+          url={header.profileImageUrl || undefined}
           size={2 * Radius.XL}
         />
         <View style={styles.userInfo}>
-          <HeadingText variant="h5-bold">{data?.username}</HeadingText>
-          <Rating rating={data?.averageRating ?? 0} />
+          <HeadingText variant="h5-bold">{header.username}</HeadingText>
+          <Rating rating={header.averageRating ?? 0} />
         </View>
       </View>
 
       <View style={styles.infoContainer}>
         <View>
-          <BodyText variant="lg-bold">{data?.salesCount}</BodyText>
+          <BodyText variant="lg-bold">{header.salesCount}</BodyText>
           <BodyText variant="lg-medium">Sales</BodyText>
         </View>
 
         <View>
-          <BodyText variant="lg-bold">{data?.followerCount}</BodyText>
+          <BodyText variant="lg-bold">{header.followerCount}</BodyText>
           <BodyText variant="lg-medium">Followers</BodyText>
         </View>
 
         <View>
-          <BodyText variant="lg-bold">{data?.followingCount}</BodyText>
+          <BodyText variant="lg-bold">{header.followingCount}</BodyText>
           <BodyText variant="lg-medium">Following</BodyText>
         </View>
       </View>
@@ -54,9 +55,9 @@ const Header: FC<HeaderProps> = ({ userId }) => {
         <View style={styles.choices}>
           <PlazaButton
             style={{ flex: 1 }}
-            title={data?.isFollowing ? 'Unfollow' : 'Follow'}
+            title={header.isFollowing ? 'Unfollow' : 'Follow'}
             onPress={() => {
-              if (data?.isFollowing) {
+              if (header.isFollowing) {
                 unfollowUser(userId);
               } else {
                 followUser(userId);
@@ -67,7 +68,7 @@ const Header: FC<HeaderProps> = ({ userId }) => {
         </View>
       )}
       <ExpandableDescription
-        description={data?.description ?? ''}
+        description={header.description ?? ''}
         initialNumberOfLines={4}
       />
     </View>

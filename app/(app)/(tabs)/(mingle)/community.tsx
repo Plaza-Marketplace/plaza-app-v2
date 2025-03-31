@@ -39,6 +39,7 @@ const Community = () => {
           bannerUrl={communityPage.bannerUrl}
           memberCount={communityPage.memberCount}
           isMember={communityPage.isMember}
+          ongoingEvent={communityPage.ongoingEvent}
         />
       )}
       renderTabBar={(props) => {

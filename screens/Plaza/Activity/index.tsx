@@ -14,10 +14,16 @@ const Activity = () => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.section}>
-        <HeadingText variant="h5-bold">Your Groups</HeadingText>
-        <ScrollView horizontal contentContainerStyle={styles.cardsContainer}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <View style={{ paddingTop: 16, gap: 16 }}>
+        <HeadingText style={{ paddingHorizontal: 16 }} variant="h5-bold">
+          Your Groups
+        </HeadingText>
+        <ScrollView
+          horizontal
+          contentContainerStyle={styles.cardsContainer}
+          showsHorizontalScrollIndicator={false}
+        >
           <Add onPress={handlePress} />
           {data?.yourGroups.map((group) => (
             <SmallCommunityCard
@@ -53,14 +59,16 @@ export default Activity;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 16,
+    flexGrow: 1,
     gap: 24,
+    paddingBottom: 16,
   },
   section: {
     gap: 16,
+    paddingHorizontal: 16,
   },
   cardsContainer: {
     gap: 8,
-    paddingBottom: 16,
+    paddingHorizontal: 16,
   },
 });

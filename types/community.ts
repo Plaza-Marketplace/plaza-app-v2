@@ -9,6 +9,18 @@ type CommunityPage = {
 
   description: string;
 
+  ongoingEvent: {
+    id: Id;
+
+    name: string;
+
+    city: string;
+
+    state: string;
+
+    iconUrl: Url | null;
+  } | null;
+
   iconUrl: string | null;
 
   bannerUrl: string | null;

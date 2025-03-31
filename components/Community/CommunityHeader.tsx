@@ -24,6 +24,13 @@ export interface CommunityHeaderProps {
   description: string;
   iconUrl: string | null;
   bannerUrl: string | null;
+  ongoingEvent: {
+    id: Id;
+    name: string;
+    city: string;
+    state: string;
+    iconUrl: Url | null;
+  } | null;
 }
 
 const CommunityHeader: FC<CommunityHeaderProps> = ({
@@ -34,6 +41,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
   description,
   iconUrl,
   bannerUrl,
+  ongoingEvent,
 }) => {
   const [expanded, setExpanded] = useState(false);
   const { mutate: joinCommunity } = useJoinCommunity(id);
@@ -77,7 +85,16 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
               {description}
             </BodyText>
           </PressableOpacity>
-          <OngoingEvent />
+          {ongoingEvent && (
+            <OngoingEvent
+              id={ongoingEvent.id}
+              name={ongoingEvent.name}
+              city={ongoingEvent.city}
+              state={ongoingEvent.state}
+              iconUrl={ongoingEvent.iconUrl}
+            />
+          )}
+
           <PlazaButton
             title={isMember ? 'Joined' : 'Join'}
             onPress={handlePress}

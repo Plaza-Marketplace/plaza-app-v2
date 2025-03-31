@@ -2,48 +2,69 @@ import EventBanner from '@/components/EventBanner';
 import SearchBar from '@/components/SearchBar';
 import AllTags from '@/components/Tags/AllTags';
 import HeadingText from '@/components/Texts/HeadingText';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import useGetEvents from './useGetEvents';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const Events = () => {
   const { data, error } = useGetEvents();
 
+  const currentlyLive =
+    data?.filter(
+      (event) =>
+        new Date(event.startDate) < new Date() &&
+        new Date(event.endDate) > new Date()
+    ) ?? [];
+  const upcomingEvents =
+    data?.filter((event) => new Date(event.startDate) > new Date()) ?? [];
+
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
           <SearchBar placeholder="Search events" />
         </View>
         <AllTags />
       </View>
-      <View style={styles.section}>
-        <HeadingText variant="h5-bold">Currently Live</HeadingText>
-        {/* <EventBanner
-          id={data.id}
-          backgroundUrl={data.bannerUrl}
-          name={mockData.name}
-          description={mockData.description}
-        /> */}
-      </View>
-      <View style={styles.section}>
-        <HeadingText variant="h5-bold">Upcoming Events</HeadingText>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
+      {currentlyLive.length > 0 && (
+        <View style={styles.section}>
+          <HeadingText variant="h5-bold">Currently Live</HeadingText>
+          {currentlyLive.map((event) => (
             <EventBanner
-              id={item.id}
-              name={item.name}
-              address={item.address}
-              city={item.city}
-              state={item.state}
-              startDate={item.startDate}
-              endDate={item.endDate}
-              bannerUrl={item.bannerUrl}
+              key={event.id}
+              id={event.id}
+              name={event.name}
+              address={event.address}
+              city={event.city}
+              state={event.state}
+              startDate={event.startDate}
+              endDate={event.endDate}
+              bannerUrl={event.bannerUrl}
+              isLive
             />
-          )}
-        />
-      </View>
-    </View>
+          ))}
+        </View>
+      )}
+      {upcomingEvents.length > 0 && (
+        <View style={styles.section}>
+          <HeadingText variant="h5-bold">Upcoming Events</HeadingText>
+          {upcomingEvents.map((event) => (
+            <EventBanner
+              key={event.id}
+              id={event.id}
+              name={event.name}
+              address={event.address}
+              city={event.city}
+              state={event.state}
+              startDate={event.startDate}
+              endDate={event.endDate}
+              bannerUrl={event.bannerUrl}
+              isLive={false}
+            />
+          ))}
+        </View>
+      )}
+    </ScrollView>
   );
 };
 

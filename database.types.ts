@@ -319,6 +319,7 @@ export type Database = {
           coordinates: unknown
           created_at: string
           end_date: string
+          icon_key: string | null
           id: number
           name: string
           start_date: string
@@ -332,6 +333,7 @@ export type Database = {
           coordinates: unknown
           created_at?: string
           end_date: string
+          icon_key?: string | null
           id?: number
           name: string
           start_date: string
@@ -345,6 +347,7 @@ export type Database = {
           coordinates?: unknown
           created_at?: string
           end_date?: string
+          icon_key?: string | null
           id?: number
           name?: string
           start_date?: string

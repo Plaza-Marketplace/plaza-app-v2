@@ -12,6 +12,7 @@ import { useAuth } from '@/contexts/AuthContext';
 import { ChevronLeft } from '@/components/Icons';
 import Color from '@/constants/Color';
 import { useGetHeader } from './Header/hooks';
+import BodyText from '@/components/Texts/BodyText';
 
 interface ProfileProps {
   userId: Id;
@@ -19,13 +20,21 @@ interface ProfileProps {
 
 const Profile: FC<ProfileProps> = ({ userId }) => {
   const { user: currentUser } = useAuth();
-  const { data, error } = useGetHeader(userId);
+  const { data, isLoading, error } = useGetHeader(userId);
   const pathname = usePathname();
-  console.log(pathname);
+
+  if (isLoading) {
+    return <BodyText variant="md">Loading...</BodyText>;
+  }
+
+  if (error || !data) {
+    return <BodyText variant="md">{error?.message}</BodyText>;
+  }
+
   return (
     <>
       <PlazaHeader
-        name={data?.username ?? ''}
+        name={data.username}
         leftIcon={
           pathname === '/profile' ? null : <ChevronLeft color={Color.BLACK} />
         }
@@ -39,7 +48,7 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
         }}
       />
       <Tabs.Container
-        renderHeader={() => <Header userId={userId} />}
+        renderHeader={() => <Header userId={userId} header={data} />}
         containerStyle={{ zIndex: -1 }}
         renderTabBar={(props) => {
           return (
@@ -73,7 +82,7 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
             return <Ionicons name="star-outline" size={Radius.XL} />;
           }}
         >
-          <Reviews sellerId={userId} />
+          <Reviews averageRating={data.averageRating} sellerId={userId} />
         </Tabs.Tab>
       </Tabs.Container>
     </>

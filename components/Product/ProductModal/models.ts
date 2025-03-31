@@ -27,10 +27,12 @@ export type ProductModalProduct = {
 
       createdAt: Timestamp;
 
-      user: {
+      poster: {
         id: Id;
 
         username: string;
+
+        profileImageUrl: Url | null;
       };
     }[];
   };

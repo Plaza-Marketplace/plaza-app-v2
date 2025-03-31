@@ -13,7 +13,7 @@ export type ReviewsTab = {
 
       username: string;
 
-      profilePictureUrl: Url | null;
+      profileImageUrl: Url | null;
     };
   }[];
 };

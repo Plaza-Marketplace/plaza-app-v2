@@ -10,7 +10,10 @@ import BodyText from '@/components/Texts/BodyText';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Rating from '@/components/Rating';
 import Footer from '@/components/Footer';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
 import useGetProductModalProduct from './useGetProductModalProduct';
 import { Image } from 'expo-image';
@@ -20,6 +23,7 @@ import { formatPrice } from '@/utils/currency';
 import ReviewCard from '@/components/ReviewCard';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface ProductModalProps {
   id: Id;
@@ -43,9 +47,10 @@ const CustomHandle = () => (
 );
 
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
-
+  const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
 
   return (
@@ -66,73 +71,81 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
       handleComponent={CustomHandle}
       backgroundStyle={{ borderRadius: Radius.LG }}
     >
-      <BottomSheetScrollView
-        style={{
-          flex: 1,
-          overflow: 'hidden',
-          borderTopLeftRadius: Radius.LG,
-          borderTopRightRadius: Radius.LG,
-        }}
-      >
-        <View style={styles.carouselContainer}>
-          <Carousel
-            loop={false}
-            data={data?.imageUrls ?? []}
-            renderItem={({ item }) => (
-              <Image
-                source={{ uri: item }}
-                style={{
-                  width: Dimensions.get('window').width,
-                  height: Dimensions.get('window').width - 32,
-                }}
-                contentFit="contain"
+      {!isLoading && data !== undefined && (
+        <>
+          <BottomSheetScrollView
+            style={{
+              flex: 1,
+              overflow: 'hidden',
+              borderTopLeftRadius: Radius.LG,
+              borderTopRightRadius: Radius.LG,
+            }}
+          >
+            <View style={styles.carouselContainer}>
+              <Carousel
+                loop={false}
+                data={data?.imageUrls ?? []}
+                renderItem={({ item }) => (
+                  <Image
+                    source={{ uri: item }}
+                    style={{
+                      width: Dimensions.get('window').width,
+                      height: Dimensions.get('window').width - 32,
+                    }}
+                    contentFit="contain"
+                  />
+                )}
+                width={Dimensions.get('window').width}
+                height={Dimensions.get('window').width - 32}
               />
-            )}
-            width={Dimensions.get('window').width}
-            height={Dimensions.get('window').width - 32}
-          />
-        </View>
-        <View style={styles.container}>
-          <View>
-            <HeadingText variant="h5-bold">{data?.name}</HeadingText>
-            <BodyText variant="lg-medium">
-              {formatPrice(data?.price ?? 0)}
-            </BodyText>
-          </View>
-          <View style={styles.infoContainer}>
-            <ProfileIcon variant="user" size={32} url={undefined} />
-            <View style={styles.sellerInfo}>
-              <PressableOpacity
-                onPress={() =>
-                  router.push({
-                    pathname: '/profile-modal',
-                    params: { id: data?.seller.id },
-                  })
-                }
-              >
-                <BodyText variant="md">{data?.seller.username}</BodyText>
-              </PressableOpacity>
-              <Rating rating={data?.seller.averageRating ?? 0} />
             </View>
+            <View style={styles.container}>
+              <View>
+                <HeadingText variant="h5-bold">{data?.name}</HeadingText>
+                <BodyText variant="lg-medium">
+                  {formatPrice(data?.price ?? 0)}
+                </BodyText>
+              </View>
+              <View style={styles.infoContainer}>
+                <ProfileIcon variant="user" size={32} url={undefined} />
+                <View style={styles.sellerInfo}>
+                  <PressableOpacity
+                    onPress={() =>
+                      router.push({
+                        pathname: '/profile-modal',
+                        params: { id: data?.seller.id },
+                      })
+                    }
+                  >
+                    <BodyText variant="md">{data?.seller.username}</BodyText>
+                  </PressableOpacity>
+                  <Rating rating={data?.seller.averageRating ?? 0} />
+                </View>
+              </View>
+              <BodyText variant="md">{data?.description}</BodyText>
+              <HeadingText variant="h6-bold">
+                Seller Reviews ({data?.seller.reviews.length})
+              </HeadingText>
+              {data?.seller.reviews.map((review) => (
+                <ReviewCard
+                  key={review.id}
+                  username={review.poster.username}
+                  profileImageUrl={review.poster.profileImageUrl}
+                  rating={review.rating}
+                  description={review.description}
+                />
+              ))}
+            </View>
+          </BottomSheetScrollView>
+          <View style={{ paddingBottom: insets.bottom }}>
+            {user?.id === data?.seller.id ? (
+              <Footer leftTitle="Delete Product" rightTitle="Edit Product" />
+            ) : (
+              <Footer leftTitle="Add to Cart" rightTitle="Buy Now" />
+            )}
           </View>
-          <BodyText variant="md">{data?.description}</BodyText>
-          <HeadingText variant="h6-bold">
-            Seller Reviews ({data?.seller.reviews.length})
-          </HeadingText>
-          {data?.seller.reviews.map((review) => (
-            <ReviewCard
-              key={review.id}
-              username={review.user.username}
-              rating={review.rating}
-              description={review.description}
-              createdAt={review.createdAt}
-            />
-          ))}
-        </View>
-      </BottomSheetScrollView>
-      <SafeAreaView>
-        <Footer leftTitle="Add to Cart" rightTitle="Buy Now" />
-      </SafeAreaView>
+        </>
+      )}
     </BottomSheetModal>
   );
 };

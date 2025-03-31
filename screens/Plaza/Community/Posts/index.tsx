@@ -1,13 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { FC } from 'react';
 import { router } from 'expo-router';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import { FontAwesome6 } from '@expo/vector-icons';
 import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import Post from '@/components/Community/Post';
 import useGetPostsByCommunityId from './useGetPostsByCommunityId';
+import PlazaButton from '@/components/Buttons/PlazaButton';
 
 interface PostsProps {
   communityId: Id;
@@ -22,6 +21,11 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
   if (postsLoading) return <Text>Loading...</Text>;
   if (!communityPosts || postErrors)
     return <Text>{`${JSON.stringify(communityPosts)}`}</Text>;
+
+  const handlePress = () => {
+    router.push({ pathname: '/create-post', params: { groupId: communityId } });
+  };
+
   return (
     <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
       <Tabs.FlatList
@@ -40,17 +44,11 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
         keyExtractor={(item) => item.id.toString()}
       />
 
-      <PressableOpacity
-        style={styles.addButton}
-        onPress={() =>
-          router.navigate({
-            pathname: '/add-post-modal',
-            params: { communityId: communityId },
-          })
-        }
-      >
-        <FontAwesome6 name="pen-to-square" size={24} color={Color.GREY_100} />
-      </PressableOpacity>
+      <PlazaButton
+        title="Create a Post"
+        style={styles.buttonContainer}
+        onPress={handlePress}
+      />
     </View>
   );
 };
@@ -65,5 +63,15 @@ const styles = StyleSheet.create({
     backgroundColor: Color.ICON_PRIMARY,
     padding: Spacing.SPACING_2,
     borderRadius: Spacing.SPACING_2XL,
+  },
+  buttonContainer: {
+    position: 'absolute',
+    bottom: 16,
+    marginBottom: 8,
+    alignSelf: 'center',
+    shadowColor: '#000', // Shadow color
+    shadowOffset: { width: 0, height: 30 }, // Shadow position
+    shadowOpacity: 0.8, // Shadow transparency
+    shadowRadius: 50, // Blur radius
   },
 });

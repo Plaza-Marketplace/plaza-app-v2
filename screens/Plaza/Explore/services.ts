@@ -5,6 +5,8 @@ import { getImagePublicUrl } from '@/services/crud/storage';
 export const searchGroups = async (
   searchTerm: string
 ): Promise<SearchGroup[]> => {
+  searchTerm = searchTerm.trim().replace(/ /g, '+');
+
   const { data, error } = await supabase
     .from('community')
     .select(
@@ -14,7 +16,7 @@ export const searchGroups = async (
       icon_key
     `
     )
-    .textSearch('name', searchTerm)
+    .textSearch('name', `${searchTerm}`)
     .limit(10);
 
   if (error) {

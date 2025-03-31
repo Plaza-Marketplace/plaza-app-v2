@@ -9,22 +9,36 @@ import BodyText from '../Texts/BodyText';
 import LiveIndicator from '../LiveIndicator';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
+import { FC } from 'react';
 
-const OngoingEvent = () => {
+interface OngoingEventProps {
+  id: Id;
+  name: string;
+  city: string;
+  state: string;
+  iconUrl: Url | null;
+}
+
+const OngoingEvent: FC<OngoingEventProps> = ({
+  id,
+  name,
+  city,
+  state,
+  iconUrl,
+}) => {
   return (
     <PressableOpacity
       style={styles.container}
-      onPress={() => router.push('/event')}
+      onPress={() => router.push({ pathname: '/event', params: { id } })}
     >
       <View style={{ gap: 4 }}>
-        <HeadingText variant="h6">Jackalope Festival</HeadingText>
-        <BodyText variant="md-medium">Old Pasadena, CA</BodyText>
+        <HeadingText variant="h6">{name}</HeadingText>
+        <BodyText variant="md-medium">
+          {city}, {state}
+        </BodyText>
         <LiveIndicator />
       </View>
-      <Image
-        source={{ uri: 'https://picsum.photos/200' }}
-        style={{ width: 60, height: 60 }}
-      />
+      <Image source={{ uri: iconUrl }} style={styles.image} />
     </PressableOpacity>
   );
 };
@@ -41,5 +55,11 @@ const styles = StyleSheet.create({
     borderRadius: Radius.LG,
     borderWidth: 1,
     borderColor: Color.NEUTRALS_150,
+  },
+  image: {
+    width: 60,
+    height: 60,
+    backgroundColor: Color.GREY_100,
+    borderRadius: Radius.ROUNDED,
   },
 });

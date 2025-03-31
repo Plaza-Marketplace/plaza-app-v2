@@ -1,44 +1,11 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import PlazaTextInput from '@/components/PlazaTextInput';
-import CatalogCategory from '@/components/Catalog/CatalogCategory';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Spacing from '@/constants/Spacing';
-import StandardText from '@/components/Texts/StandardText';
 import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityCollectionItems';
 import ProductCard from '@/components/Product/ProductCard';
 import SearchBar from '@/components/SearchBar';
 import AllTags from '@/components/Tags/AllTags';
-
-const mock = [
-  {
-    id: 1,
-    name: 'Jewelry',
-  },
-  {
-    id: 2,
-    name: 'Pottery',
-  },
-  {
-    id: 3,
-    name: 'Knitting',
-  },
-  {
-    id: 4,
-    name: 'Glass',
-  },
-  {
-    id: 5,
-    name: 'Keyboards',
-  },
-  {
-    id: 6,
-    name: 'Something',
-  },
-];
 
 const Catalog = () => {
   const inset = useSafeAreaInsets();

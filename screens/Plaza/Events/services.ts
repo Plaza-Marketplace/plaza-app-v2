@@ -3,16 +3,21 @@ import { Event } from './models';
 import { getImagePublicUrl } from '@/services/crud/storage';
 
 export const getEvents = async (): Promise<Event[]> => {
-  const { data, error } = await supabase.from('event').select(`
-    id,
-    name,
-    start_date,
-    end_date,
-    city,
-    state,
-    address,
-    banner_key
-  `);
+  const { data, error } = await supabase
+    .from('event')
+    .select(
+      `
+        id,
+        name,
+        start_date,
+        end_date,
+        city,
+        state,
+        address,
+        banner_key
+      `
+    )
+    .gte('end_date', new Date().toISOString());
 
   if (error) {
     throw new Error(error.message);

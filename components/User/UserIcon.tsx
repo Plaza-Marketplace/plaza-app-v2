@@ -1,5 +1,4 @@
 import { Image } from 'expo-image';
-import PressableOpacity from '../Buttons/PressableOpacity';
 import { FC } from 'react';
 import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
@@ -9,11 +8,7 @@ interface UserIconProps {
 }
 
 const UserIcon: FC<UserIconProps> = ({ profileImageUrl }) => {
-  return (
-    <PressableOpacity style={styles.container}>
-      <Image source={{ uri: profileImageUrl }} style={styles.user} />
-    </PressableOpacity>
-  );
+  return <Image source={{ uri: profileImageUrl }} style={styles.user} />;
 };
 
 export default UserIcon;
@@ -26,5 +21,6 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
+    backgroundColor: Color.GREY_200,
   },
 });

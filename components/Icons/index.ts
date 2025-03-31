@@ -7,6 +7,7 @@ export { default as ChevronUp } from './ChevronUp';
 export { default as CollectionAdd } from './CollectionAdd';
 export { default as Comment } from './Comment';
 export { default as Create } from './Create';
+export { default as Exit } from './Exit';
 export { default as Glass } from './Glass';
 export { default as HeartActive } from './HeartActive';
 export { default as HeartInactive } from './HeartInactive';

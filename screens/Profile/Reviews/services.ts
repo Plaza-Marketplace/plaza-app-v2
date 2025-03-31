@@ -32,7 +32,7 @@ export const getReviewsTab = async (userId: Id): Promise<ReviewsTab> => {
       reviewer: {
         id: review.reviewer.id,
         username: review.reviewer.username,
-        profilePictureUrl: review.reviewer.profile_image_key
+        profileImageUrl: review.reviewer.profile_image_key
           ? getImagePublicUrl(review.reviewer.profile_image_key)
           : null,
       },

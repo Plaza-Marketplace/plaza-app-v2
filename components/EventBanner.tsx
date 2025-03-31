@@ -16,6 +16,7 @@ interface EventBannerProps {
   startDate: Timestamp;
   endDate: Timestamp;
   bannerUrl: Url | null;
+  isLive: boolean;
 }
 
 const EventBanner: FC<EventBannerProps> = ({
@@ -27,6 +28,7 @@ const EventBanner: FC<EventBannerProps> = ({
   startDate,
   endDate,
   bannerUrl,
+  isLive,
 }) => {
   const handlePress = () => {
     router.push({
@@ -38,12 +40,16 @@ const EventBanner: FC<EventBannerProps> = ({
   return (
     <Banner backgroundUrl={bannerUrl} onPress={handlePress}>
       <View style={styles.content}>
-        <View style={styles.liveContainer}>
-          <Circle size={8} style={{ backgroundColor: Color.LIVES_500 }} />
-          <BodyText variant="sm" color={Color.NEUTRALS_WHITE}>
-            Live
-          </BodyText>
-        </View>
+        {isLive ? (
+          <View style={styles.liveContainer}>
+            <Circle size={8} style={{ backgroundColor: Color.LIVES_500 }} />
+            <BodyText variant="sm" color={Color.NEUTRALS_WHITE}>
+              Live
+            </BodyText>
+          </View>
+        ) : (
+          <View />
+        )}
         <View>
           <BodyText variant="lg-bold" color={Color.NEUTRALS_WHITE}>
             {name}
