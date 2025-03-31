@@ -30,21 +30,23 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
   };
 
   return (
-    <View style={styles.container}>
+    <View style={{ gap: 4 }}>
       {label && <HeadingText variant="h6-bold">{label}</HeadingText>}
-      <TextInput
-        style={[styles.textInputContainer, style]}
-        onChangeText={handleTextChange}
-        {...rest}
-      />
-      {limit && (
-        <BodyText variant="md" style={styles.limit}>
-          {numChars}/{limit}
-        </BodyText>
-      )}
-      {rightButton && (
-        <View style={{ alignSelf: 'flex-end' }}>{rightButton}</View>
-      )}
+      <View style={styles.container}>
+        <TextInput
+          style={[styles.textInputContainer, style]}
+          onChangeText={handleTextChange}
+          {...rest}
+        />
+        {limit && (
+          <BodyText variant="md" style={styles.limit}>
+            {numChars}/{limit}
+          </BodyText>
+        )}
+        {rightButton && (
+          <View style={{ alignSelf: 'flex-end' }}>{rightButton}</View>
+        )}
+      </View>
     </View>
   );
 };
