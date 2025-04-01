@@ -1,9 +1,5 @@
 import { View } from 'react-native';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
-import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { withLayoutContext } from 'expo-router';
 import {
   createMaterialTopTabNavigator,
@@ -22,7 +18,7 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
-import FeedTabBar from '@/components/navigation/FeedTabBar';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const FeedTopTabs = () => {
   const inset = useSafeAreaInsets();
