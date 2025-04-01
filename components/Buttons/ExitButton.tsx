@@ -4,10 +4,18 @@ import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import { router } from 'expo-router';
+import { FC } from 'react';
 
-const ExitButton = () => {
+interface ExitButtonProps {
+  onPress?: () => void;
+}
+
+const ExitButton: FC<ExitButtonProps> = ({ onPress }) => {
   return (
-    <PressableOpacity style={styles.container} onPress={router.back}>
+    <PressableOpacity
+      style={styles.container}
+      onPress={onPress ? onPress : router.back}
+    >
       <Exit color={Color.BLACK} />
     </PressableOpacity>
   );

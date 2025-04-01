@@ -3,17 +3,14 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
-import { FC, RefObject, useMemo, useState } from 'react';
+import { FC, RefObject, useMemo, useRef, useState } from 'react';
 import HeadingText from '@/components/Texts/HeadingText';
 import ProfileIcon from '@/components/ProfileIcon';
 import BodyText from '@/components/Texts/BodyText';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Rating from '@/components/Rating';
 import Footer from '@/components/Footer';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
 import useGetProductModalProduct from './useGetProductModalProduct';
 import { Image } from 'expo-image';
@@ -24,6 +21,8 @@ import ReviewCard from '@/components/ReviewCard';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
+import { Bookmark } from '@/components/Icons';
+import AddToGroupModal from '@/components/Community/AddToGroupModal';
 
 interface ProductModalProps {
   id: Id;
@@ -52,101 +51,120 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
+  const addToGroupRef = useRef<BottomSheetModal>(null);
 
   return (
-    <BottomSheetModal
-      ref={bottomSheetRef}
-      snapPoints={snapPoints}
-      backdropComponent={(props) => (
-        <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />
-      )}
-      enableDynamicSizing={false}
-      onChange={(index) => {
-        if (index === -1) {
-          setIsOpen(false);
-        } else {
-          setIsOpen(true);
-        }
-      }}
-      handleComponent={CustomHandle}
-      backgroundStyle={{ borderRadius: Radius.LG }}
-    >
-      {!isLoading && data !== undefined && (
-        <>
-          <BottomSheetScrollView
-            style={{
-              flex: 1,
-              overflow: 'hidden',
-              borderTopLeftRadius: Radius.LG,
-              borderTopRightRadius: Radius.LG,
-            }}
-          >
-            <View style={styles.carouselContainer}>
-              <Carousel
-                loop={false}
-                data={data?.imageUrls ?? []}
-                renderItem={({ item }) => (
-                  <Image
-                    source={{ uri: item }}
-                    style={{
-                      width: Dimensions.get('window').width,
-                      height: Dimensions.get('window').width - 32,
-                    }}
-                    contentFit="contain"
-                  />
-                )}
-                width={Dimensions.get('window').width}
-                height={Dimensions.get('window').width - 32}
-              />
-            </View>
-            <View style={styles.container}>
-              <View>
-                <HeadingText variant="h5-bold">{data?.name}</HeadingText>
-                <BodyText variant="lg-medium">
-                  {formatPrice(data?.price ?? 0)}
-                </BodyText>
-              </View>
-              <View style={styles.infoContainer}>
-                <ProfileIcon variant="user" size={32} url={undefined} />
-                <View style={styles.sellerInfo}>
-                  <PressableOpacity
-                    onPress={() =>
-                      router.push({
-                        pathname: '/profile-modal',
-                        params: { id: data?.seller.id },
-                      })
-                    }
-                  >
-                    <BodyText variant="md">{data?.seller.username}</BodyText>
-                  </PressableOpacity>
-                  <Rating rating={data?.seller.averageRating ?? 0} />
-                </View>
-              </View>
-              <BodyText variant="md">{data?.description}</BodyText>
-              <HeadingText variant="h6-bold">
-                Seller Reviews ({data?.seller.reviews.length})
-              </HeadingText>
-              {data?.seller.reviews.map((review) => (
-                <ReviewCard
-                  key={review.id}
-                  username={review.poster.username}
-                  profileImageUrl={review.poster.profileImageUrl}
-                  rating={review.rating}
-                  description={review.description}
+    <>
+      <AddToGroupModal productId={id} bottomSheetRef={addToGroupRef} />
+      <BottomSheetModal
+        ref={bottomSheetRef}
+        snapPoints={snapPoints}
+        backdropComponent={(props) => (
+          <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />
+        )}
+        enableDynamicSizing={false}
+        onChange={(index) => {
+          if (index === -1) {
+            setIsOpen(false);
+          } else {
+            setIsOpen(true);
+          }
+        }}
+        handleComponent={CustomHandle}
+        backgroundStyle={{ borderRadius: Radius.LG }}
+      >
+        {!isLoading && data !== undefined && (
+          <>
+            <BottomSheetScrollView
+              style={{
+                flex: 1,
+                overflow: 'hidden',
+                borderTopLeftRadius: Radius.LG,
+                borderTopRightRadius: Radius.LG,
+              }}
+            >
+              <View style={styles.carouselContainer}>
+                <Carousel
+                  loop={false}
+                  data={data?.imageUrls ?? []}
+                  renderItem={({ item }) => (
+                    <Image
+                      source={{ uri: item }}
+                      style={{
+                        width: Dimensions.get('window').width,
+                        height: Dimensions.get('window').width - 32,
+                      }}
+                      contentFit="contain"
+                    />
+                  )}
+                  width={Dimensions.get('window').width}
+                  height={Dimensions.get('window').width - 32}
                 />
-              ))}
+              </View>
+              <View style={styles.container}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <View>
+                    <HeadingText variant="h5-bold">{data?.name}</HeadingText>
+                    <BodyText variant="lg-medium">
+                      {formatPrice(data?.price ?? 0)}
+                    </BodyText>
+                  </View>
+                  <PressableOpacity
+                    onPress={() => {
+                      addToGroupRef.current?.present();
+                      console.log('HELLO');
+                    }}
+                  >
+                    <Bookmark color={Color.BLACK} />
+                  </PressableOpacity>
+                </View>
+                <View style={styles.infoContainer}>
+                  <ProfileIcon variant="user" size={32} url={undefined} />
+                  <View style={styles.sellerInfo}>
+                    <PressableOpacity
+                      onPress={() =>
+                        router.push({
+                          pathname: '/profile-modal',
+                          params: { id: data?.seller.id },
+                        })
+                      }
+                    >
+                      <BodyText variant="md">{data?.seller.username}</BodyText>
+                    </PressableOpacity>
+                    <Rating rating={data?.seller.averageRating ?? 0} />
+                  </View>
+                </View>
+                <BodyText variant="md">{data?.description}</BodyText>
+                <HeadingText variant="h6-bold">
+                  Seller Reviews ({data?.seller.reviews.length})
+                </HeadingText>
+                {data?.seller.reviews.map((review) => (
+                  <ReviewCard
+                    key={review.id}
+                    username={review.poster.username}
+                    profileImageUrl={review.poster.profileImageUrl}
+                    rating={review.rating}
+                    description={review.description}
+                  />
+                ))}
+              </View>
+            </BottomSheetScrollView>
+            <View style={{ paddingBottom: insets.bottom }}>
+              {user?.id === data?.seller.id ? (
+                <Footer leftTitle="Delete Product" rightTitle="Edit Product" />
+              ) : (
+                <Footer leftTitle="Add to Cart" rightTitle="Buy Now" />
+              )}
             </View>
-          </BottomSheetScrollView>
-          <View style={{ paddingBottom: insets.bottom }}>
-            {user?.id === data?.seller.id ? (
-              <Footer leftTitle="Delete Product" rightTitle="Edit Product" />
-            ) : (
-              <Footer leftTitle="Add to Cart" rightTitle="Buy Now" />
-            )}
-          </View>
-        </>
-      )}
-    </BottomSheetModal>
+          </>
+        )}
+      </BottomSheetModal>
+    </>
   );
 };
 

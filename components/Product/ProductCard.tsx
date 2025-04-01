@@ -16,6 +16,8 @@ interface ProductCardProps {
 
   name: string;
 
+  profileImageUrl?: Url | null;
+
   username?: string;
 
   thumbnailUrl: Url | null;
@@ -23,15 +25,22 @@ interface ProductCardProps {
   rating?: number;
 
   price: number;
+
+  onPress?: (productId: Id) => void;
+
+  isSelected?: boolean;
 }
 
 const ProductCard: FC<ProductCardProps> = ({
   id,
   name,
+  profileImageUrl,
   username,
   thumbnailUrl,
   rating,
   price,
+  onPress,
+  isSelected,
 }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
@@ -41,7 +50,13 @@ const ProductCard: FC<ProductCardProps> = ({
 
   return (
     <>
-      <PressableOpacity style={styles.container} onPress={handlePress}>
+      <PressableOpacity
+        style={[
+          styles.container,
+          isSelected && { borderColor: Color.PRIMARY_400, borderWidth: 2 },
+        ]}
+        onPress={onPress ? () => onPress(id) : handlePress}
+      >
         <Image source={{ uri: thumbnailUrl }} style={styles.productImage} />
         <View style={styles.infoContainer}>
           <HeadingText variant="h6" numberOfLines={1}>
@@ -51,7 +66,11 @@ const ProductCard: FC<ProductCardProps> = ({
           {username !== undefined && rating !== undefined && (
             <View style={styles.sellerContainer}>
               <View style={styles.seller}>
-                <ProfileIcon variant="user" size={24} />
+                <ProfileIcon
+                  variant="user"
+                  size={24}
+                  url={profileImageUrl ?? undefined}
+                />
                 <BodyText
                   variant="md-medium"
                   numberOfLines={1}

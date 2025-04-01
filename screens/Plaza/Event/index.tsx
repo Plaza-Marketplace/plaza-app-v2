@@ -42,9 +42,9 @@ const Event = () => {
             coordinate={data?.coordinates}
             onSelected={() => bottomSheetRef.current?.expand()}
           >
-            <View>
+            <View style={{ alignItems: 'center' }}>
               <GroupIcon size={32} url={null} />
-              <BodyText variant="sm-bold">{'Jackalope'}</BodyText>
+              <HeadingText variant="h6-bold">{data.name}</HeadingText>
             </View>
           </PointAnnotation>
         )}

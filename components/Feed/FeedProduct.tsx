@@ -1,7 +1,7 @@
 import ProductIcon from '../Product/ProductIcon';
 import { FC, useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import ProductModal from './ProductModal';
+import ProductModal from '../Product/ProductModal';
 import { StyleSheet, View } from 'react-native';
 import { Event, track } from '@/analytics/utils';
 import Spacing from '@/constants/Spacing';
@@ -51,11 +51,7 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
           </StandardText>
         </View>
       </PressableOpacity>
-      <ProductModal
-        bottomSheetRef={bottomSheetRef}
-        sellerId={sellerId}
-        product={product}
-      />
+      <ProductModal bottomSheetRef={bottomSheetRef} id={product.id} />
     </>
   );
 };

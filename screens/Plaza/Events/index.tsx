@@ -21,9 +21,9 @@ const Events = () => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.searchContainer}>
-        <View style={styles.searchBar}>
+        {/* <View style={styles.searchBar}>
           <SearchBar placeholder="Search events" />
-        </View>
+        </View> */}
         {/* <AllTags /> */}
       </View>
       {currentlyLive.length > 0 && (

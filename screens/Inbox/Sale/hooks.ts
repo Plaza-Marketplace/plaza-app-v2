@@ -20,8 +20,6 @@ export const useUpdateTrackingNumber = (saleId: Id) => {
       queryClient.setQueryData<SaleScreen>(['sale', saleId], (prev) => {
         if (!prev) return prev;
 
-        if (!trackingNumber) return prev;
-
         return {
           ...prev,
           trackingNumber,

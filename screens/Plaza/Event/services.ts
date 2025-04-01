@@ -10,6 +10,7 @@ export const getEvent = async (id: Id): Promise<Event> => {
     throw new Error(error.message);
   }
   return {
+    name: data.name,
     coordinates: [data.longitude, data.latitude],
   };
 };

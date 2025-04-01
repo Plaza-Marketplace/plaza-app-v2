@@ -30,14 +30,12 @@ const ExploreTab = () => {
   };
 
   return (
-    <>
-      <Feed
-        videos={data.videos}
-        refreshing={refreshing}
-        onRefresh={onRefresh}
-        fetchNextPage={getNextExploreTabVideos}
-      />
-    </>
+    <Feed
+      videos={data.videos}
+      refreshing={refreshing}
+      onRefresh={onRefresh}
+      fetchNextPage={getNextExploreTabVideos}
+    />
   );
 };
 

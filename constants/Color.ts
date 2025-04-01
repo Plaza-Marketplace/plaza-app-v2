@@ -85,6 +85,7 @@ enum Color {
   // Primary
   PRIMARY_DEFAULT = '#A34414',
   PRIMARY_100 = BURNT_100,
+  PRIMARY_400 = '#B5704E',
 
   REVIEWS_100 = '#FFF9E5',
   REVIEWS_500 = '#FDC200',
@@ -113,6 +114,9 @@ enum Color {
 
   WARNING_DEFAULT = '#FF7918',
   WARNING_200 = '#FFDDC5',
+
+  ERROR_DEFAULT = RED_500,
+  ERROR_100 = RED_100,
 }
 
 export default Color;

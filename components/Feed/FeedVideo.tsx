@@ -15,7 +15,6 @@ import ExpandableDescription from '../ExpandableDescription';
 import Products from './Products';
 import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
-import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
 import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
 
@@ -27,7 +26,6 @@ interface FeedVideoProps {
 const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
-  const addToCommunityCollectionModalRef = useRef<BottomSheetModal>(null);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
@@ -127,12 +125,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                 commentModalRef.current?.present();
               }}
             />
-            <FeedVideoButton
-              name="bookmark"
-              onPress={() =>
-                addToCommunityCollectionModalRef.current?.present()
-              }
-            />
           </View>
         </View>
       </VideoView>
@@ -142,10 +134,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         bottomSheetRef={reviewModalRef}
       />
       <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
-      <AddToCommunityCollectionModal
-        products={video.products}
-        bottomSheetRef={addToCommunityCollectionModalRef}
-      />
     </>
   );
 };

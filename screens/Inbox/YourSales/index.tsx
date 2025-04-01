@@ -1,12 +1,15 @@
 import HeadingText from '@/components/Texts/HeadingText';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import OrderCard from '@/components/Inbox/OrderCard';
 import { useGetYourSalesScreen } from './hooks';
 
 const YourSales = () => {
   const { data, error } = useGetYourSalesScreen();
-
+  const insets = useSafeAreaInsets();
   const pendingSales = data?.pendingSales ?? [];
   const completedSales = data?.completedSales ?? [];
 

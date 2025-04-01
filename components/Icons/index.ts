@@ -1,5 +1,6 @@
 export { default as Basket } from './Basket';
 export { default as Bookmark } from './Bookmark';
+export { default as Box } from './Box';
 export { default as Camera } from './Camera';
 export { default as Check } from './Check';
 export { default as ChevronDown } from './ChevronDown';
@@ -23,6 +24,7 @@ export { default as Plus } from './Plus';
 export { default as Pottery } from './Pottery';
 export { default as Profile } from './Profile';
 export { default as Review } from './Review';
+export { default as Sales } from './Sales';
 export { default as Search } from './Search';
 export { default as ShopifyLogo } from './ShopifyLogo';
 export { default as StarFull } from './StarFull';
