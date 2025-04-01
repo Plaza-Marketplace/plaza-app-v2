@@ -49,15 +49,13 @@ type CreateProduct = {
 
   description: string;
 
-  category: string;
-
-  condition: string;
-
   price: number;
 
   shippingPrice: number;
 
   base64Images: Base64[];
+
+  arrayBufferImages?: ArrayBuffer[];
 
   quantity?: number;
 };

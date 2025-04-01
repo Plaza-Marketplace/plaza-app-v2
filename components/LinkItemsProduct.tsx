@@ -3,6 +3,8 @@ import PressableOpacity from './Buttons/PressableOpacity';
 import { StyleSheet } from 'react-native';
 import ProductShowcase from './PostCards/ProductCards/ProductShowcase';
 import Spacing from '@/constants/Spacing';
+import Color from '@/constants/Color';
+import Radius from '@/constants/Radius';
 
 interface LinkItemsProductProps {
   product: Product;
@@ -27,8 +29,8 @@ const LinkItemsProduct: FC<LinkItemsProductProps> = ({
       style={[
         styles.container,
         {
-          // backgroundColor: isSelected ? Color.SURFACE_PRIMARY : 'transparent',
-          borderWidth: isSelected ? 2 : 0,
+          backgroundColor: isSelected ? Color.ORANGE_300 : 'transparent',
+          // borderWidth: isSelected ? 2 : 0,
         },
       ]}
       onPress={handlePress}
@@ -45,5 +47,6 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: Spacing.SPACING_2,
     padding: Spacing.SPACING_2,
+    borderRadius: Radius.LG,
   },
 });

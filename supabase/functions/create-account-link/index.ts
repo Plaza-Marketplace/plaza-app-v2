@@ -10,7 +10,14 @@ console.log('Hello from Functions!');
 
 Deno.serve(async (req) => {
   try {
-    const { account } = await req.json();
+    const { account, return_url, refresh_url } = await req.json();
+
+    console.log('return url: ', return_url);
+    console.log('refresh url: ', refresh_url);
+
+    new URL(return_url);
+    new URL(refresh_url);
+    // Ensure the return_url and refresh_url are valid
 
     console.log(req.headers.origin);
     console.log('Creating account link for account:', account);
@@ -19,8 +26,8 @@ Deno.serve(async (req) => {
       account: account,
       // return_url: `${req.headers.origin}/return/${account}`,
       // refresh_url: `${req.headers.origin}/refresh/${account}`,
-      return_url: 'https://example.com/return',
-      refresh_url: 'https://example.com/refresh',
+      return_url: `${return_url}?account=${account}`, // Example return URL
+      refresh_url: `${refresh_url}?account=${account}`, // Example refresh URL
       type: 'account_onboarding',
     });
 

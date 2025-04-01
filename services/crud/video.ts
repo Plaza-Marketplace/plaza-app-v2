@@ -202,7 +202,10 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       contentType: 'video/quicktime',
     });
 
-  if (error) throw new Error('Failed');
+  if (error) {
+    console.error(error);
+    throw new Error('Failed');
+  }
 
   const { data: uploadedVideo, error: uploadedVideoError } = await supabase
     .from('video')
@@ -213,7 +216,10 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
     })
     .select(query);
 
-  if (uploadedVideoError) throw new Error('Failed');
+  if (uploadedVideoError) {
+    console.error(uploadedVideoError);
+    throw new Error('Failed');
+  }
 
   const { error: createVideoProductError } = await supabase
     .from('video_product')
@@ -224,7 +230,10 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       }))
     );
 
-  if (createVideoProductError) throw new Error('Failed');
+  if (createVideoProductError) {
+    console.log(createVideoProductError);
+    throw new Error('Failed');
+  }
 
   return {
     id: uploadedVideo[0].id,
