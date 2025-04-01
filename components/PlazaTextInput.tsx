@@ -6,7 +6,7 @@ import HeadingText from './Texts/HeadingText';
 import BodyText from './Texts/BodyText';
 
 interface PlazaTextInputProps extends TextInputProps {
-  inputRef: Ref<TextInput>;
+  inputRef?: Ref<TextInput>;
   label?: string;
   limit?: number;
   rightButton?: React.ReactNode;

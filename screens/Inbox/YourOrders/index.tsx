@@ -22,6 +22,7 @@ const YourOrders = () => {
               status={order.status}
               product={order.product}
               createdAt={order.createdAt}
+              isOrder
             />
           ))}
         </View>
@@ -34,6 +35,7 @@ const YourOrders = () => {
               status={order.status}
               product={order.product}
               createdAt={order.createdAt}
+              isOrder
             />
           ))}
         </View>

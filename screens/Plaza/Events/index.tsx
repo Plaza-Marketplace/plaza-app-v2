@@ -24,7 +24,7 @@ const Events = () => {
         <View style={styles.searchBar}>
           <SearchBar placeholder="Search events" />
         </View>
-        <AllTags />
+        {/* <AllTags /> */}
       </View>
       {currentlyLive.length > 0 && (
         <View style={styles.section}>

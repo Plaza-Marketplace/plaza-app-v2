@@ -112,6 +112,7 @@ enum Color {
   STRIPE_DEFAULT = '#635BFF', // Stripe's brand color
 
   WARNING_DEFAULT = '#FF7918',
+  WARNING_200 = '#FFDDC5',
 }
 
 export default Color;

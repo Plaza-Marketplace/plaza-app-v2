@@ -62,7 +62,7 @@ const Event = () => {
             <HeadingText variant="h5-bold">Explore Products</HeadingText>
             <SearchBar placeholder="Search products" />
           </View>
-          <AllTags />
+          {/* <AllTags /> */}
 
           <View style={styles.nearbyItems}>
             <HeadingText variant="h6">Nearby Items</HeadingText>

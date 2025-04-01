@@ -35,7 +35,7 @@ const Explore = () => {
             showCancelButton
           />
         </View>
-        <AllTags />
+        {/* <AllTags /> */}
       </View>
       {isSearchFocused ? (
         <SearchResults searchGroups={searchGroups ?? []} />
@@ -76,13 +76,15 @@ const Explore = () => {
                 numColumns={2}
                 data={exploreTab?.featuredGroups}
                 renderItem={({ item }) => (
-                  <JoinCard
-                    id={item.id}
-                    name={item.name}
-                    description={item.description}
-                    iconUrl={item.iconUrl}
-                    isMember={item.isMember}
-                  />
+                  <View style={{ paddingHorizontal: 4, flex: 1 / 2 }}>
+                    <JoinCard
+                      id={item.id}
+                      name={item.name}
+                      description={item.description}
+                      iconUrl={item.iconUrl}
+                      isMember={item.isMember}
+                    />
+                  </View>
                 )}
               />
             </View>

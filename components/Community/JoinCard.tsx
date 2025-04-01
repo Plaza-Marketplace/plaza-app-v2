@@ -51,7 +51,6 @@ export default JoinCard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1 / 2,
     padding: 16,
     gap: 12,
     borderRadius: Radius.LG,

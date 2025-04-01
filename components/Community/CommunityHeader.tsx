@@ -52,6 +52,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
     if (isMember) {
       leaveCommunity();
     } else {
+      console.log('HELLO');
       joinCommunity();
     }
   };

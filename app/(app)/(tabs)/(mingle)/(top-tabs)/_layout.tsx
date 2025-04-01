@@ -5,9 +5,13 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { View } from 'react-native';
 import PlazaTabBar from '@/components/navigation/PlazaTabBar';
+import FeedTabBar from '@/components/navigation/FeedTabBar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -24,14 +28,8 @@ export default function TabLayout() {
   return (
     <MaterialTopTabs
       tabBar={({ ...props }) => (
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginTop: insets.top,
-          }}
-        >
-          <PlazaTabBar {...props} />
+        <View style={{ paddingTop: insets.top }}>
+          <FeedTabBar {...props} />
         </View>
       )}
       screenOptions={{

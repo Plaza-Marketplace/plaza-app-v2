@@ -34,7 +34,7 @@ const FeedTopTabs = () => {
       }}
     >
       <MaterialTopTabs
-        tabBar={({ ...props }) => <FeedTabBar {...props} />}
+        tabBar={({ ...props }) => <FeedTabBar showCart {...props} />}
         screenOptions={{
           tabBarStyle: {
             width: '100%',

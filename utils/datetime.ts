@@ -49,3 +49,12 @@ export const formatRange = (
     )} - ${endDay}${getOrdinalSuffix(endDay)}`;
   }
 };
+
+export const calculateDaysLeftUntil7Days = (datetime: string): number => {
+  const date = new Date(datetime);
+  const futureDate = new Date(date.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const now = new Date();
+  return Math.ceil(
+    (futureDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
+  );
+};

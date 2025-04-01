@@ -13,10 +13,15 @@ import { Basket } from '../Icons';
 
 const Tab = createMaterialTopTabNavigator();
 
-const FeedTabBar: FC<MaterialTopTabBarProps> = ({
+interface Props extends MaterialTopTabBarProps {
+  showCart?: boolean;
+}
+
+const FeedTabBar: FC<Props> = ({
   state,
   descriptors,
   navigation,
+  showCart,
 }) => {
   // const [menuVisible, setMenuVisible] = useState(false);
 
@@ -105,19 +110,21 @@ const FeedTabBar: FC<MaterialTopTabBarProps> = ({
             </TouchableOpacity>
           );
         })}
-        <TouchableOpacity
-          key={'cart'}
-          onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
-          style={[styles.cartButton, styles.shadow]}
-        >
-          <Basket
-            width={28}
-            height={28}
-            color={
-              currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
-            }
-          />
-        </TouchableOpacity>
+        {showCart && (
+          <TouchableOpacity
+            key={'cart'}
+            onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
+            style={[styles.cartButton, styles.shadow]}
+          >
+            <Basket
+              width={28}
+              height={28}
+              color={
+                currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
+              }
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </>
   );

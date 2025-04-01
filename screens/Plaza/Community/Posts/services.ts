@@ -38,7 +38,8 @@ export const getPostsByCommunityId = async (
       )
     `
     )
-    .eq('community_id', communityId);
+    .eq('community_id', communityId)
+    .order('created_at', { ascending: false });
 
   if (error) throw new Error(error.message);
 

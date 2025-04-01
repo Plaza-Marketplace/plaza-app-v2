@@ -26,7 +26,7 @@ const Catalog = () => {
         </View>
       </View>
       <ScrollView style={{ marginTop: Spacing.SPACING_2 }}>
-        <AllTags />
+        {/* <AllTags /> */}
         <FlatList
           style={{
             marginTop: Spacing.SPACING_2,

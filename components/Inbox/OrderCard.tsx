@@ -29,9 +29,17 @@ interface OrderCardProps {
   status: OrderStatus;
 
   createdAt: Timestamp;
+
+  isOrder: boolean;
 }
 
-const OrderCard: FC<OrderCardProps> = ({ id, product, status, createdAt }) => {
+const OrderCard: FC<OrderCardProps> = ({
+  id,
+  product,
+  status,
+  createdAt,
+  isOrder,
+}) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
 
   let statusText;
@@ -60,7 +68,7 @@ const OrderCard: FC<OrderCardProps> = ({ id, product, status, createdAt }) => {
       style={styles.container}
       onPress={() =>
         router.push({
-          pathname: '/order',
+          pathname: isOrder ? '/order' : '/sale',
           params: { id },
         })
       }

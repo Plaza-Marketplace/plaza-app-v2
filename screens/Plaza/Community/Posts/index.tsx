@@ -27,9 +27,20 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
+    <View
+      style={{
+        flex: 1,
+        backgroundColor: Color.SURFACE_PRIMARY,
+      }}
+    >
       <Tabs.FlatList
         data={communityPosts}
+        contentContainerStyle={{
+          paddingTop: 16,
+          paddingBottom: 80,
+          paddingHorizontal: 16,
+          gap: 16,
+        }}
         renderItem={({ item }) => (
           <Post
             title={item.title}
