@@ -42,7 +42,7 @@ export const getChatScreen = async (
   const members = data.conversation_member.filter(
     (member) => member.user_id !== userId
   );
-  console.log(data.conversation_member);
+
   return {
     name: members.length === 1 ? members[0].user.username : data.name,
     imageUrl:
@@ -58,5 +58,28 @@ export const getChatScreen = async (
         ? getImagePublicUrl(message.user.profile_image_key)
         : null,
     })),
+    members: data.conversation_member.map((member) => ({
+      id: member.user_id,
+      username: member.user.username,
+      profileImageUrl: member.user.profile_image_key
+        ? getImagePublicUrl(member.user.profile_image_key)
+        : null,
+    })),
   };
+};
+
+export const createMessage = async (
+  conversationId: Id,
+  userId: Id,
+  content: string
+) => {
+  const { error } = await supabase.from('message').insert({
+    conversation_id: conversationId,
+    user_id: userId,
+    content,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
 };

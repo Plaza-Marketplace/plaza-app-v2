@@ -35,7 +35,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
       <Image style={styles.image} source={{ uri: imageUrl }} />
       <View style={styles.content}>
         <HeadingText variant="h6">{name}</HeadingText>
-        <BodyText variant="md-medium" numberOfLines={1}>
+        <BodyText variant="md" numberOfLines={1} color={Color.NEUTRALS_DEFAULT}>
           {latestMessage}
         </BodyText>
       </View>
@@ -58,6 +58,6 @@ const styles = StyleSheet.create({
     width: 52,
     height: 52,
     borderRadius: 26,
-    backgroundColor: Color.GREY_100,
+    backgroundColor: Color.GREY_200,
   },
 });

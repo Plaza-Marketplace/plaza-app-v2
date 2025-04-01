@@ -110,6 +110,8 @@ enum Color {
   SUCCESS_DEFAULT = GREEN_500,
 
   STRIPE_DEFAULT = '#635BFF', // Stripe's brand color
+
+  WARNING_DEFAULT = '#FF7918',
 }
 
 export default Color;

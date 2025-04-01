@@ -14,4 +14,12 @@ export type ChatScreen = {
 
     createdAt: Timestamp;
   }[];
+
+  members: {
+    id: Id;
+
+    username: string;
+
+    profileImageUrl: Url | null;
+  }[];
 };
