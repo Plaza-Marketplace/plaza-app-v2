@@ -38,27 +38,20 @@ const LinkItems = () => {
     setSelectedProducts(tempSelectedProducts);
   };
 
+  console.log(products);
+
   return (
-    <View style={{ flex: 1 }}>
-      <PlazaHeader name="Link Items" />
-      <FlatList
-        numColumns={2}
-        data={products}
-        renderItem={({ item }) => (
-          <LinkItemsProduct
-            product={item}
-            isSelected={tempSelectedProducts.includes(item)}
-            onPress={handleSelectProduct}
-          />
-        )}
-      />
-      <Footer
-        leftTitle="Cancel"
-        rightTitle="Confirm Items"
-        leftOnPress={router.back}
-        rightOnPress={handleSubmit}
-      />
-    </View>
+    <FlatList
+      numColumns={2}
+      data={products}
+      renderItem={({ item }) => (
+        <LinkItemsProduct
+          product={item}
+          isSelected={tempSelectedProducts.includes(item)}
+          onPress={handleSelectProduct}
+        />
+      )}
+    />
   );
 };
 

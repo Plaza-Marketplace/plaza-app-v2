@@ -1,6 +1,10 @@
 import { supabase } from '@/utils/supabase';
 
-const createAccountLink = async (account: string) => {
+const createAccountLink = async (
+  account: string,
+  returnUrl: string,
+  refreshUrl: string
+) => {
   console.log('Creating account link for account:', account);
 
   const { data, error } = await supabase.functions.invoke(
@@ -8,6 +12,8 @@ const createAccountLink = async (account: string) => {
     {
       body: {
         account: account,
+        return_url: returnUrl, // Example return URL
+        refresh_url: refreshUrl, // Example refresh URL
       },
     }
   );

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Linking, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import BackButton from '@/components/Buttons/BackButton';
@@ -11,8 +11,37 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Color from '@/constants/Color';
 import { PlazaLogo, StripeColorLogo, StripeLogo } from '@/components/Icons';
 import { Ionicons } from '@expo/vector-icons';
+import { createAccountLink, createStripeAccount } from '@/services/stripe';
+import { useAuth } from '@/contexts/AuthContext';
+import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
+import Loading from '@/components/Loading';
+import { useUpdateUser } from '@/hooks/queries/useUser';
 
 const SellerOnboarding = () => {
+  const { session } = useAuth();
+  const { data: user, error } = useGetUserByAuthId(session?.user.id);
+  const { mutate: updateUser } = useUpdateUser();
+
+  if (!user) {
+    return <Loading />;
+  }
+
+  const handleCreateAccount = async () => {
+    try {
+      const { account } = await createStripeAccount(user.id, user.email);
+      console.log('Stripe account created successfully:', account);
+      const accountLink = await createAccountLink(
+        account,
+        'https://www.plaza-app.com/return',
+        'https://www.plaza-app.com/refresh'
+      );
+      Linking.openURL(accountLink.url);
+    } catch (error) {
+      console.error('Error creating account:', error);
+      alert('Failed to create account. Please try again later.');
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -36,7 +65,7 @@ const SellerOnboarding = () => {
       <View style={styles.buttonSectionContainer}>
         <PressableOpacity
           style={styles.stripeButton}
-          onPress={() => alert('Stripe button pressed!')}
+          onPress={handleCreateAccount}
         >
           <StripeLogo />
           <BodyText
@@ -47,15 +76,6 @@ const SellerOnboarding = () => {
             Create an Account
           </BodyText>
         </PressableOpacity>
-
-        <BodyText
-          variant="sm"
-          style={{
-            marginTop: Spacing.SPACING_2,
-          }}
-        >
-          Already have a Stripe Account? Log in
-        </BodyText>
       </View>
     </SafeAreaView>
   );

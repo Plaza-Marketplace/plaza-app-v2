@@ -1,14 +1,19 @@
 import { FlatList, Linking, StyleSheet, Text, View } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import QuickCrypto from 'react-native-quick-crypto';
-import { ScrollView } from 'react-native-gesture-handler';
 import { productShopifyToPlaza, ShopifyProduct } from '@/services/shopify';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import Spacing from '@/constants/Spacing';
-import ProductCard from '@/components/Product/ProductCard';
+import HeadingText from '@/components/Texts/HeadingText';
+import BodyText from '@/components/Texts/BodyText';
+import LinkItemsProduct from '@/components/LinkItemsProduct';
+import PlazaButton from '@/components/Buttons/PlazaButton';
+import Footer from '@/components/Footer';
+import { useUploadProducts } from '@/hooks/routes/shopify_transfer';
+import { testUploadArrayBuffers } from '@/services/crud/product';
 
 type ShopifySuccessParams = {
   code?: string;
@@ -18,25 +23,111 @@ type ShopifySuccessParams = {
   timestamp?: string;
 };
 
+async function imageUrlToBase64(url: string) {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise<string>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const data = reader.result;
+      if (typeof data !== 'string') {
+        reject('No data');
+        return;
+      }
+      resolve(data);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function imageUrlToArrayBuffer(url: string) {
+  const response = await fetch(url);
+  return await response.arrayBuffer();
+}
+
 const ShopifySuccess = () => {
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
-  const params = useLocalSearchParams<ShopifySuccessParams>();
-  // const url =
-  ('https://www.plaza-app.com/shopify-migration/success?code=cb2ebb44baec30b52107305b46029123&hmac=e930f1befda9cb9cf62c09681bfce074a29c0f55c157a32e9f8dcf0abbaffd23&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvc2FkbWVvd3Nvbmc&shop=sadmeowsong.myshopify.com&timestamp=1743300386');
+  const { mutate: createProducts } = useUploadProducts();
+  // const params = useLocalSearchParams<ShopifySuccessParams>();
+
+  const url =
+    'https://www.plaza-app.com/shopify-migration/success?code=611bfbd9c88c0b48d0b675239e66f62f&hmac=6031aff409eb9e24ccb62542e1866735dd170767b7ca9690e5385ce165e0cacc&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvc2FkbWVvd3Nvbmc&shop=sadmeowsong.myshopify.com&timestamp=1743480824';
   // Parse the URL to extract query parameters
-  // const parsedUrl = new URL(url);
-  // const params: ShopifySuccessParams = {
-  //   code: parsedUrl.searchParams.get('code') || undefined,
-  //   hmac: parsedUrl.searchParams.get('hmac') || undefined,
-  //   host: parsedUrl.searchParams.get('host') || undefined,
-  //   shop: parsedUrl.searchParams.get('shop') || undefined,
-  //   timestamp: parsedUrl.searchParams.get('timestamp') || undefined,
-  // };
+  const parsedUrl = new URL(url);
+  const params: ShopifySuccessParams = {
+    code: parsedUrl.searchParams.get('code') || undefined,
+    hmac: parsedUrl.searchParams.get('hmac') || undefined,
+    host: parsedUrl.searchParams.get('host') || undefined,
+    shop: parsedUrl.searchParams.get('shop') || undefined,
+    timestamp: parsedUrl.searchParams.get('timestamp') || undefined,
+  };
 
   const [accessToken, setAccessToken] = useState();
   const [products, setProducts] = useState<Product[]>();
   const [status, setStatus] = useState<string>('initializing');
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+
+  const handleSelectProduct = (product: Product) => {
+    if (selectedProducts.includes(product)) {
+      setSelectedProducts(selectedProducts.filter((p) => p !== product));
+    } else {
+      setSelectedProducts([...selectedProducts, product]);
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (selectedProducts.length === 0) {
+      console.log('No products selected');
+      return;
+    }
+
+    console.log('here');
+
+    const productsToUpload = await Promise.all(
+      selectedProducts.map(async (product) => {
+        console.log('anywhere');
+        const base64Images = await Promise.all(
+          product.imageUrls.map(async (imageUri) => {
+            return await imageUrlToArrayBuffer(imageUri);
+          })
+        );
+        console.log('there');
+        return {
+          name: product.name,
+          sellerId: user?.id,
+          description: product.description,
+          shippingPrice: product.shippingPrice,
+          price: product.price,
+          base64Images: [],
+          arrayBufferImages: base64Images,
+          quantity: product.quantity,
+        } as CreateProduct;
+      })
+    );
+
+    // const arrayBuffers = await Promise.all(
+    //   selectedProducts.map(async (product) => {
+    //     return await Promise.all(
+    //       product.imageUrls.map(async (imageUri) => {
+    //         return await imageUrlToArrayBuffer(imageUri);
+    //       })
+    //     );
+    //   })
+    // );
+
+    // console.log('productsToUpload', arrayBuffers.length);
+
+    // const keys = await testUploadArrayBuffers(arrayBuffers);
+
+    // console.log(keys);
+
+    console.log('number of products', productsToUpload.length);
+
+    createProducts(productsToUpload);
+    router.navigate('/(app)/(tabs)/(upload)/landing-page');
+  };
 
   useEffect(() => {
     const receivedHmac = params.hmac;
@@ -143,32 +234,58 @@ const ShopifySuccess = () => {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <Text>ShopifySuccess</Text>
-      <Text>Status: {status}</Text>
-      <Text>Received params: {JSON.stringify(params)}</Text>
-      <Text>Received access token: {accessToken}</Text>
-      <Text>Number of products: {products ? products.length : 0}</Text>
-      {products ? (
-        <FlatList
-          style={styles.flatlistContainer}
-          data={products}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <View style={styles.productCardContainer}>
-              <ProductCard
-                id={item.id}
-                name={item.name}
-                username={'poop'}
-                thumbnailUrl={item.imageUrls[0]}
-                rating={4}
-                price={item.price}
-              />
-            </View>
-          )}
-        />
-      ) : (
-        <Text>No products fetched yet.</Text>
-      )}
+      <View style={styles.container}>
+        <HeadingText variant="h5-bold">Products Transferring</HeadingText>
+        <BodyText variant="lg">
+          Here are some products that we fetched from your Shopify Store.
+        </BodyText>
+
+        <View
+          style={{
+            marginTop: Spacing.SPACING_4,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
+        >
+          <HeadingText variant="h6-bold">Select Products</HeadingText>
+          <PlazaButton
+            title={'Select All'}
+            onPress={() => {
+              if (products) {
+                setSelectedProducts(products);
+              }
+            }}
+          />
+        </View>
+        {products ? (
+          <FlatList
+            style={styles.flatlistContainer}
+            data={products}
+            numColumns={2}
+            renderItem={({ item }) => (
+              <View style={styles.productCardContainer}>
+                <LinkItemsProduct
+                  product={item}
+                  isSelected={selectedProducts.includes(item)}
+                  onPress={handleSelectProduct}
+                />
+              </View>
+            )}
+          />
+        ) : (
+          <Text>No products fetched yet.</Text>
+        )}
+      </View>
+
+      <Footer
+        leftTitle="Back"
+        rightTitle="Begin Transfer"
+        leftOnPress={() => {
+          router.navigate('/shopify-migration/landing-page');
+        }}
+        rightOnPress={handleSubmit}
+      />
     </SafeAreaView>
   );
 };
@@ -181,9 +298,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
     width: '100%',
-    paddingHorizontal: Spacing.SPACING_3,
   },
   productCardContainer: {
     flex: 1 / 2,
+  },
+  container: {
+    flex: 1,
+    paddingHorizontal: Spacing.SPACING_3,
+    paddingTop: Spacing.SPACING_4,
   },
 });

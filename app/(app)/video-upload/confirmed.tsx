@@ -14,31 +14,16 @@ import { router } from 'expo-router';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import StandardText from '@/components/Texts/StandardText';
 
-const Confirm = () => {
-  const { session } = useAuth();
-  const { data: user } = useGetUserByAuthId(session?.user.id);
-  if (!user) return <Loading />;
-  const { data: cartItems } = useGetCartItemsByUserId(user?.id);
-  const { mutate: removeCartItem } = useRemoveCartItem(user.id);
-
-  // TODO: Wait 10 seconds, and then automatically remove the cart items from the database
-  // also automatically navigate back to the cart screen
-
+const Confirmed = () => {
   const execute = () => {
-    router.navigate('/(app)/(tabs)/(marketplace)/(top-tabs)/feed');
+    router.navigate('/(app)/(tabs)/(upload)/landing-page');
   };
-
-  useEffect(() => {
-    cartItems?.forEach((cartItem) => {
-      removeCartItem(cartItem.id);
-    });
-  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.textContainer}>
         <HeaderText style={styles.text}>
-          Your Purchase Has Been Confirmed!
+          Your video has been uploaded!
         </HeaderText>
       </View>
 
@@ -46,18 +31,8 @@ const Confirm = () => {
         <Check width={75} height={75} color={Color.WHITE} />
       </View>
 
-      <View style={[styles.productContainer, { marginTop: Spacing.SPACING_4 }]}>
-        {cartItems?.map((cartItem) => (
-          <ProductIcon
-            imageUrl={cartItem.product.imageUrls[0]}
-            size={125}
-            key={cartItem.id}
-          />
-        ))}
-      </View>
-
       <PlazaButton
-        title="Continue Shopping"
+        title="Continue"
         onPress={execute}
         style={{ marginTop: Spacing.SPACING_4, padding: Spacing.SPACING_3 }}
       />
@@ -65,7 +40,7 @@ const Confirm = () => {
   );
 };
 
-export default Confirm;
+export default Confirmed;
 
 const styles = StyleSheet.create({
   container: {

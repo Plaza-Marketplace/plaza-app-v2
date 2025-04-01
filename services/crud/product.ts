@@ -93,8 +93,8 @@ export const createProduct = async (
       seller_id: product.sellerId,
       name: product.name,
       description: product.description,
-      category: product.category,
-      condition: product.condition,
+      category: '',
+      condition: '',
       price: product.price,
       shipping_price: product.shippingPrice,
       quantity: product.quantity ?? null,
@@ -136,6 +136,145 @@ export const createProduct = async (
     quantity: data[0].quantity,
     createdAt: data[0].created_at,
   };
+};
+
+export const testUploadArrayBuffers = async (
+  arrayOfArrayBuffers: ArrayBuffer[][]
+): Promise<string[][]> => {
+  const keys = await Promise.all(
+    arrayOfArrayBuffers.map(async (arrayBuffers) => {
+      return await Promise.all(
+        arrayBuffers.map(async (arrayBuffer) => {
+          const key = uuidv4();
+          const path = `private/${key}`;
+
+          const { data, error } = await supabase.storage
+            .from('images')
+            .upload(path, arrayBuffer, {
+              contentType: 'image/jpeg',
+            });
+
+          if (error) {
+            console.error(error);
+            throw new Error(
+              `The create product image query failed with exception ${error}`
+            );
+          }
+
+          return key;
+        })
+      );
+    })
+  );
+
+  return keys;
+};
+
+export const createProducts = async (
+  products: CreateProduct[]
+): Promise<Product[]> => {
+  const keys = await Promise.all(
+    products.map(async (product) => {
+      if (product.arrayBufferImages) {
+        return await Promise.all(
+          product.arrayBufferImages.map(async (arrayBuffer) => {
+            const key = uuidv4();
+            const path = `private/${key}`;
+
+            await supabase.storage.from('images').upload(path, arrayBuffer, {
+              contentType: 'image/jpeg',
+            });
+
+            return key;
+          })
+        );
+      } else {
+        return await Promise.all(
+          product.base64Images.map(async (base64Image) => {
+            const key = uuidv4();
+            const path = `private/${key}`;
+
+            const { data, error } = await supabase.storage
+              .from('images')
+              .upload(path, decode(base64Image), {
+                contentType: 'image/jpeg',
+              });
+
+            if (error) {
+              console.error(error);
+              throw new Error(
+                `The create product image query failed with exception ${error}`
+              );
+            }
+
+            return key;
+          })
+        );
+      }
+    })
+  );
+
+  const { data, error } = await supabase
+    .from('product')
+    .insert(
+      products.map((product) => {
+        return {
+          seller_id: product.sellerId,
+          name: product.name,
+          description: product.description,
+          category: '',
+          condition: '',
+          price: product.price,
+          shipping_price: product.shippingPrice,
+          quantity: product.quantity ?? null,
+        };
+      })
+    )
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error(`The create products query failed with exception ${error}`);
+  } else if (!data) {
+    throw new Error(`The create products query failed for unknown reasons`);
+  }
+
+  const result = await Promise.all(
+    data.map(async (product, index) => {
+      return await Promise.all(
+        keys[index].map(async (key) => {
+          const { error } = await supabase.from('product_image').insert({
+            product_id: product.id,
+            image_key: key,
+          });
+
+          if (error) {
+            console.error(error);
+            throw new Error(
+              `The create product image query failed with exception ${error}`
+            );
+          }
+        })
+      );
+    })
+  );
+
+  return data.map((product, index) => {
+    console.log(keys[index]);
+    return {
+      id: product.id,
+      sellerId: product.seller_id,
+      name: product.name,
+      description: product.description,
+      category: product.category,
+      condition: product.condition,
+      price: product.price,
+      shippingPrice: product.shipping_price,
+      imageUrls: getImagePublicUrls(keys[index]),
+      quantity: product.quantity,
+      createdAt: product.created_at,
+    };
+  });
 };
 
 export const getProduct = async (id: Id): Promise<Product> => {

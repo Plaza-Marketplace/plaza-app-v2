@@ -88,13 +88,13 @@ export const createUser = async (
 };
 
 export const updateUser = async (updates: UpdateUser): Promise<User> => {
+  const filteredData = Object.fromEntries(
+    Object.entries(updates).filter(([_, v]) => v !== null && v !== undefined)
+  );
+
   const { data, error } = await supabase
     .from('user')
-    .update({
-      first_name: updates.firstName,
-      last_name: updates.lastName,
-      description: updates.description,
-    })
+    .update(filteredData)
     .eq('id', updates.id)
     .select()
     .single();
