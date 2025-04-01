@@ -10,8 +10,8 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import { View } from 'react-native';
-import PlazaTabBar from '@/components/navigation/PlazaTabBar';
-import FeedTabBar from '@/components/navigation/FeedTabBar';
+import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
