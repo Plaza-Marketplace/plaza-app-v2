@@ -33,7 +33,31 @@ export const getProductModalProduct = async (
             profile_image_key
           )
         )
-      )  
+      ),
+      has_variants,
+      product_variant (
+        id,
+        price,
+        product_variant_option (
+          id,
+          product_variant_value (
+            id,
+            name,
+            product_variant_type (
+              id,
+              name
+            )
+          )
+        )
+      ),
+      product_variant_type (
+        id,
+        name,
+        product_variant_value (
+          id,
+          name
+        )
+      )
     `
     )
     .eq('id', id)
@@ -48,6 +72,22 @@ export const getProductModalProduct = async (
     name: data.name,
     description: data.description,
     price: data.price,
+    hasVariants: data.has_variants,
+    variants: data.product_variant_type.reduce((acc, variantType) => {
+      acc[variantType.name] = variantType.product_variant_value.map(
+        (variantValue) => variantValue.name
+      );
+      return acc;
+    }, {} as Record<string, string[]>),
+    variantInfo: data.product_variant.map((variant) => ({
+      id: variant.id,
+      selectedVariants: variant.product_variant_option.reduce((acc, option) => {
+        acc[option.product_variant_value.product_variant_type.name] =
+          option.product_variant_value.name;
+        return acc;
+      }, {} as Record<string, string>),
+      price: variant.price,
+    })),
     imageUrls: getImagePublicUrls(
       data.image_keys.map((imageKey) => imageKey.image_key)
     ),

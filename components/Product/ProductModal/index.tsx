@@ -3,7 +3,7 @@ import {
   BottomSheetModal,
   BottomSheetScrollView,
 } from '@gorhom/bottom-sheet';
-import { FC, RefObject, useMemo, useRef, useState } from 'react';
+import { FC, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import HeadingText from '@/components/Texts/HeadingText';
 import ProfileIcon from '@/components/ProfileIcon';
 import BodyText from '@/components/Texts/BodyText';
@@ -23,6 +23,8 @@ import { router } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
 import { Bookmark } from '@/components/Icons';
 import AddToGroupModal from '@/components/Community/AddToGroupModal';
+import Chip from '@/components/Chip';
+import { areObjectsEqual } from '@/utils/misc';
 
 interface ProductModalProps {
   id: Id;
@@ -47,11 +49,29 @@ const CustomHandle = () => (
 
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { user } = useAuth();
+  const [selectedVariantValues, setSelectedVariantValues] = useState<
+    Record<string, string>
+  >({});
   const [isOpen, setIsOpen] = useState(false);
   const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
   const addToGroupRef = useRef<BottomSheetModal>(null);
+  console.log(data?.variantInfo[0].selectedVariants, selectedVariantValues);
+  useEffect(() => {
+    if (data?.variants) {
+      const initialSelectedVariantValues: Record<string, string> = {};
+      Object.entries(data.variants).forEach(([type, values]) => {
+        initialSelectedVariantValues[type] = values[0];
+      });
+
+      setSelectedVariantValues(initialSelectedVariantValues);
+    }
+  }, [data?.variants]);
+
+  const handleVariantSelect = (type: string, value: string) => {
+    setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
+  };
 
   return (
     <>
@@ -111,7 +131,16 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                   <View>
                     <HeadingText variant="h5-bold">{data?.name}</HeadingText>
                     <BodyText variant="lg-medium">
-                      {formatPrice(data?.price ?? 0)}
+                      {!data.hasVariants
+                        ? formatPrice(data.price ?? NaN)
+                        : formatPrice(
+                            data.variantInfo.find((variant) =>
+                              areObjectsEqual(
+                                variant.selectedVariants,
+                                selectedVariantValues
+                              )
+                            )?.price ?? NaN
+                          )}
                     </BodyText>
                   </View>
                   <PressableOpacity
@@ -140,6 +169,29 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                   </View>
                 </View>
                 <BodyText variant="md">{data?.description}</BodyText>
+                <View>
+                  {data.hasVariants &&
+                    Object.entries(data.variants).map(([type, values]) => (
+                      <View key={type} style={styles.variantsContainer}>
+                        <BodyText variant="lg-medium">{type}</BodyText>
+                        <View style={styles.productVariants}>
+                          {values.map((value) => (
+                            <PressableOpacity
+                              key={value}
+                              onPress={() => handleVariantSelect(type, value)}
+                            >
+                              <Chip
+                                title={value}
+                                isSelected={
+                                  selectedVariantValues[type] === value
+                                }
+                              />
+                            </PressableOpacity>
+                          ))}
+                        </View>
+                      </View>
+                    ))}
+                </View>
                 <HeadingText variant="h6-bold">
                   Seller Reviews ({data?.seller.reviews.length})
                 </HeadingText>
@@ -189,5 +241,13 @@ const styles = StyleSheet.create({
   },
   sellerInfo: {
     gap: 4,
+  },
+  variantsContainer: {
+    gap: 4,
+  },
+  productVariants: {
+    flexDirection: 'row',
+    gap: 4,
+    flexWrap: 'wrap',
   },
 });
