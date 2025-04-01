@@ -68,7 +68,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "~0.19.13",
-    "uuid": "^11.0.5"
+    "uuid": "^11.0.5",
+    "expo-updates": "~0.27.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
