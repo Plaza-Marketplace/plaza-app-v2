@@ -57,7 +57,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
   const addToGroupRef = useRef<BottomSheetModal>(null);
-  console.log(data?.variantInfo[0].selectedVariants, selectedVariantValues);
+
   useEffect(() => {
     if (data?.variants) {
       const initialSelectedVariantValues: Record<string, string> = {};

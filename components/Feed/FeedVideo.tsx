@@ -80,7 +80,10 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                     shadowOffset: { width: 0.5, height: 0.5 },
                   }}
                 >
-                  <ProfileIcon variant="user" />
+                  <ProfileIcon
+                    variant="user"
+                    url={video.poster.profileImageUrl ?? undefined}
+                  />
                 </View>
                 <BoldSubheaderText
                   color={'white'}

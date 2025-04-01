@@ -21,6 +21,9 @@ products: video_product(
     ),
     product_review_count: product_review(
       count
+    ),
+    product_variant(
+      price
     )
   )
 ),
@@ -42,7 +45,8 @@ export const formatExploreTabVideo = (
   isLiked: boolean,
   likeCount: number,
   commentCount: number,
-  reviewCount: number
+  reviewCount: number,
+  variantPrices: (number | null)[]
 ): ExploreTab['videos'][0] => {
   return {
     id: video.id,
@@ -61,7 +65,9 @@ export const formatExploreTabVideo = (
       description: product.description,
       category: product.category,
       condition: product.condition,
-      price: product.price,
+      price: !product.has_variants
+        ? product.price ?? NaN
+        : variantPrices[index] ?? NaN,
       shippingPrice: product.shipping_price,
       imageUrls: getImagePublicUrls(productImageKeys[index]),
       createdAt: product.created_at,
@@ -82,7 +88,8 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
     .select(EXPLORE_TAB_VIDEO_QUERY)
     .eq('isLiked.liker_id', userId)
     .order('created_at', { ascending: false })
-    .limit(5);
+    .limit(5)
+    .limit(1, { referencedTable: 'video_product.product.product_variant' });
 
   if (error) throw new Error(error.message);
 
@@ -103,7 +110,12 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
             (acc, product) =>
               acc + product.product.product_review_count[0].count,
             0
-          )
+          ),
+        video.products.map((videoProduct) =>
+          videoProduct.product.product_variant.length > 0
+            ? videoProduct.product.product_variant[0].price
+            : null
+        )
       )
     ),
   };
@@ -138,7 +150,12 @@ export const getNextExploreTabVideos = async (
         video.products.reduce(
           (acc, product) => acc + product.product.product_review_count[0].count,
           0
-        )
+        ),
+      video.products.map((videoProduct) =>
+        videoProduct.product.product_variant.length > 0
+          ? videoProduct.product.product_variant[0].price
+          : null
+      )
     )
   );
 };
