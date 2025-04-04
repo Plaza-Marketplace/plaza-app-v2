@@ -44,10 +44,10 @@ const ShopifyLandingPage = () => {
         </View>
       </KeyboardView>
 
-      <PlazaButton
+      {/* <PlazaButton
         title="Test jump straight to success"
         onPress={() => router.push('/shopify-migration/success')}
-      />
+      /> */}
 
       <Footer
         leftTitle="Back"

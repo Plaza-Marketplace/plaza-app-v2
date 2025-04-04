@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HeadingText from '@/components/Texts/HeadingText';
@@ -11,6 +11,9 @@ import Color from '@/constants/Color';
 import { Ionicons } from '@expo/vector-icons';
 import ExitButton from '@/components/Buttons/ExitButton';
 import { router } from 'expo-router';
+import { Formik } from 'formik';
+import { supabase } from '@/utils/supabase';
+import { getUserByAuthId } from '@/services/crud/user';
 
 const CreateAccount = () => {
   return (
@@ -33,31 +36,75 @@ const CreateAccount = () => {
         <ExitButton />
       </View>
       <View style={{ width: '90%' }}>
-        <HeadingText variant="h3-bold">Create an Account</HeadingText>
+        <HeadingText variant="h3-bold">Sign Up</HeadingText>
 
-        <View style={{ marginTop: Spacing.SPACING_3 }}>
-          <PlazaTextInput
-            label="Email"
-            placeholder="Enter your email"
-            keyboardType="email-address"
-            style={styles.inputStyle}
-          />
-        </View>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={async (values) => {
+            const {
+              data: { session },
+              error,
+            } = await supabase.auth.signUp({
+              email: values.email,
+              password: values.password,
+              options: {
+                emailRedirectTo: 'https://www.plaza-app.com/account-confirmed',
+              },
+            });
 
-        <View style={{ marginTop: Spacing.SPACING_3 }}>
-          <PlazaTextInput
-            label="Password"
-            placeholder="Enter your password"
-            secureTextEntry
-            style={styles.inputStyle}
-          />
-        </View>
+            if (error) {
+              Alert.alert(error.message);
+              return;
+            }
+            if (!session) {
+              Alert.alert('Please check your inbox for email verification!');
+              return;
+            }
 
-        <PlazaButton
-          title="Create Account"
-          style={styles.buttonStyle}
-          onPress={() => router.push('/onboarding/account-details')}
-        />
+            const user = await getUserByAuthId(session.user.id);
+
+            router.push({
+              pathname: '/onboarding/account-details',
+              params: {
+                userId: user?.id, // Ensure user exists
+                authId: session.user.id,
+              },
+            });
+          }}
+        >
+          {({ handleChange, handleSubmit }) => (
+            <>
+              <View style={{ marginTop: Spacing.SPACING_3 }}>
+                <PlazaTextInput
+                  label="Email"
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                  onChangeText={handleChange('email')}
+                  style={styles.inputStyle}
+                />
+              </View>
+
+              <View style={{ marginTop: Spacing.SPACING_3 }}>
+                <PlazaTextInput
+                  label="Password"
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  onChangeText={handleChange('password')}
+                  style={styles.inputStyle}
+                />
+              </View>
+
+              <PlazaButton
+                title="Create Account"
+                style={styles.buttonStyle}
+                onPress={handleSubmit}
+              />
+            </>
+          )}
+        </Formik>
 
         <BodyText variant="sm" style={{ marginTop: Spacing.SPACING_2 }}>
           By creating an account, you agree to our Terms of Service and Privacy

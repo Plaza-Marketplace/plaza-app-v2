@@ -50,19 +50,19 @@ const ShopifySuccess = () => {
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
   const { mutate: createProducts } = useUploadProducts();
-  // const params = useLocalSearchParams<ShopifySuccessParams>();
+  const params = useLocalSearchParams<ShopifySuccessParams>();
 
-  const url =
-    'https://www.plaza-app.com/shopify-migration/success?code=611bfbd9c88c0b48d0b675239e66f62f&hmac=6031aff409eb9e24ccb62542e1866735dd170767b7ca9690e5385ce165e0cacc&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvc2FkbWVvd3Nvbmc&shop=sadmeowsong.myshopify.com&timestamp=1743480824';
-  // Parse the URL to extract query parameters
-  const parsedUrl = new URL(url);
-  const params: ShopifySuccessParams = {
-    code: parsedUrl.searchParams.get('code') || undefined,
-    hmac: parsedUrl.searchParams.get('hmac') || undefined,
-    host: parsedUrl.searchParams.get('host') || undefined,
-    shop: parsedUrl.searchParams.get('shop') || undefined,
-    timestamp: parsedUrl.searchParams.get('timestamp') || undefined,
-  };
+  // const url =
+  //   'https://www.plaza-app.com/shopify-migration/success?code=611bfbd9c88c0b48d0b675239e66f62f&hmac=6031aff409eb9e24ccb62542e1866735dd170767b7ca9690e5385ce165e0cacc&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvc2FkbWVvd3Nvbmc&shop=sadmeowsong.myshopify.com&timestamp=1743480824';
+  // // Parse the URL to extract query parameters
+  // const parsedUrl = new URL(url);
+  // const params: ShopifySuccessParams = {
+  //   code: parsedUrl.searchParams.get('code') || undefined,
+  //   hmac: parsedUrl.searchParams.get('hmac') || undefined,
+  //   host: parsedUrl.searchParams.get('host') || undefined,
+  //   shop: parsedUrl.searchParams.get('shop') || undefined,
+  //   timestamp: parsedUrl.searchParams.get('timestamp') || undefined,
+  // };
 
   const [accessToken, setAccessToken] = useState();
   const [products, setProducts] = useState<Product[]>();

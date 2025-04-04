@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HeadingText from '@/components/Texts/HeadingText';
@@ -10,8 +10,17 @@ import BodyText from '@/components/Texts/BodyText';
 import Color from '@/constants/Color';
 import { Ionicons } from '@expo/vector-icons';
 import ExitButton from '@/components/Buttons/ExitButton';
+import { Formik } from 'formik';
+import { supabase } from '@/utils/supabase';
+import { useAuth } from '@/contexts/AuthContext';
+import { Redirect } from 'expo-router';
 
 const Login = () => {
+  const { isLoading, session } = useAuth();
+
+  if (!isLoading && session) {
+    return <Redirect href="/" />;
+  }
   return (
     <SafeAreaView
       style={{
@@ -34,25 +43,53 @@ const Login = () => {
       <View style={{ width: '90%' }}>
         <HeadingText variant="h3-bold">Login</HeadingText>
 
-        <View style={{ marginTop: Spacing.SPACING_3 }}>
-          <PlazaTextInput
-            label="Email"
-            placeholder="Enter your email"
-            keyboardType="email-address"
-            style={styles.inputStyle}
-          />
-        </View>
+        <Formik
+          initialValues={{
+            email: '',
+            password: '',
+          }}
+          onSubmit={async (values) => {
+            console.log('here');
+            const { error } = await supabase.auth.signInWithPassword({
+              email: values.email,
+              password: values.password,
+            });
 
-        <View style={{ marginTop: Spacing.SPACING_3 }}>
-          <PlazaTextInput
-            label="Password"
-            placeholder="Enter your password"
-            secureTextEntry
-            style={styles.inputStyle}
-          />
-        </View>
+            if (error) Alert.alert(error.message);
+          }}
+        >
+          {({ handleChange, handleSubmit, values }) => (
+            <>
+              <View style={{ marginTop: Spacing.SPACING_3 }}>
+                <PlazaTextInput
+                  onChangeText={handleChange('email')}
+                  label="Email"
+                  placeholder="Enter your email"
+                  keyboardType="email-address"
+                  style={styles.inputStyle}
+                  autoCapitalize="none"
+                />
+              </View>
 
-        <PlazaButton title="Log In" style={styles.buttonStyle} />
+              <View style={{ marginTop: Spacing.SPACING_3 }}>
+                <PlazaTextInput
+                  onChangeText={handleChange('password')}
+                  label="Password"
+                  placeholder="Enter your password"
+                  secureTextEntry
+                  style={styles.inputStyle}
+                  autoCapitalize="none"
+                />
+              </View>
+
+              <PlazaButton
+                title="Log In"
+                style={styles.buttonStyle}
+                onPress={handleSubmit}
+              />
+            </>
+          )}
+        </Formik>
 
         <View style={styles.borderContainer}>
           <View style={styles.border} />

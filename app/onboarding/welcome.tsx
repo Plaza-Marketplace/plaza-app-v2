@@ -21,19 +21,6 @@ const Welcome = () => {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      ref.current?.scrollTo({
-        count: 1,
-        animated: true,
-      });
-    }, 3000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
-
   const slideshow = [
     {
       description: 'Enjoy authentic crafts content',
@@ -68,6 +55,8 @@ const Welcome = () => {
           width={width}
           data={slideshow}
           onProgressChange={progress}
+          autoPlay={true}
+          autoPlayInterval={3000}
           renderItem={({ index }) => (
             <View
               style={{
