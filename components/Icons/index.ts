@@ -11,6 +11,7 @@ export { default as Comment } from './Comment';
 export { default as Create } from './Create';
 export { default as Exit } from './Exit';
 export { default as Glass } from './Glass';
+export { default as GoogleLogo } from './GoogleLogo';
 export { default as HeartActive } from './HeartActive';
 export { default as HeartInactive } from './HeartInactive';
 export { default as Inbox } from './Inbox';

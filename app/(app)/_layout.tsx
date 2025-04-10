@@ -11,6 +11,15 @@ export default function AppLayout() {
     // in the headless Node process that the pages are rendered in.
     return <Redirect href="/onboarding/welcome" />;
   }
+  // the user created an account but hasn't filled out their account details yet
+  if (
+    !isLoading &&
+    session &&
+    !session.user.user_metadata?.completed_onboarding
+  ) {
+    console.log(session.user.user_metadata);
+    return <Redirect href="/onboarding/account-details" />;
+  }
 
   // This layout can be deferred because it's not the root layout.
   return <Stack screenOptions={{ headerShown: false }} />;

@@ -14,6 +14,8 @@ import { Formik } from 'formik';
 import { supabase } from '@/utils/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { Redirect } from 'expo-router';
+import GoogleOAuth from '@/components/Auth/GoogleOAuth';
+import AppleOAuth from '@/components/Auth/AppleOAuth';
 
 const Login = () => {
   const { isLoading, session } = useAuth();
@@ -28,6 +30,7 @@ const Login = () => {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        backgroundColor: Color.WHITE,
       }}
     >
       <View
@@ -103,24 +106,16 @@ const Login = () => {
           <View style={styles.border} />
         </View>
 
-        <PlazaButton
-          title="Continue with Google"
-          style={[
-            styles.buttonStyle,
-            { backgroundColor: Color.WHITE, borderWidth: 1 },
-          ]}
-          fontColor={Color.BLACK}
-          icon={<Ionicons name="logo-google" size={20} color={Color.BLACK} />}
+        <GoogleOAuth
+          style={{
+            marginTop: Spacing.SPACING_3,
+          }}
         />
 
-        <PlazaButton
-          title="Continue with Apple"
-          style={[
-            styles.buttonStyle,
-            { backgroundColor: Color.WHITE, borderWidth: 1 },
-          ]}
-          fontColor={Color.BLACK}
-          icon={<Ionicons name="logo-apple" size={20} color={Color.BLACK} />}
+        <AppleOAuth
+          style={{
+            marginTop: Spacing.SPACING_3,
+          }}
         />
       </View>
     </SafeAreaView>

@@ -17,6 +17,8 @@ type User = {
    */
   username: string;
 
+  displayName: string;
+
   email: string;
 
   description: string | null;
@@ -36,6 +38,10 @@ type UpdateUser = {
   firstName?: string;
 
   lastName?: string;
+
+  username?: string;
+
+  displayName?: string;
 
   description?: string | null;
 

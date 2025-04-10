@@ -10,12 +10,21 @@ import BodyText from '@/components/Texts/BodyText';
 import Color from '@/constants/Color';
 import { Ionicons } from '@expo/vector-icons';
 import ExitButton from '@/components/Buttons/ExitButton';
-import { router } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { Formik } from 'formik';
 import { supabase } from '@/utils/supabase';
 import { getUserByAuthId } from '@/services/crud/user';
+import GoogleOAuth from '@/components/Auth/GoogleOAuth';
+import AppleOAuth from '@/components/Auth/AppleOAuth';
+import { useAuth } from '@/contexts/AuthContext';
 
 const CreateAccount = () => {
+  const { isLoading, session } = useAuth();
+
+  if (!isLoading && session) {
+    return <Redirect href="/" />;
+  }
+
   return (
     <SafeAreaView
       style={{
@@ -23,6 +32,7 @@ const CreateAccount = () => {
         justifyContent: 'center',
         alignItems: 'center',
         position: 'relative',
+        backgroundColor: Color.WHITE,
       }}
     >
       <View
@@ -51,7 +61,14 @@ const CreateAccount = () => {
               email: values.email,
               password: values.password,
               options: {
-                emailRedirectTo: 'https://www.plaza-app.com/account-confirmed',
+                emailRedirectTo:
+                  'https://www.plaza-app.com/supabase-auth/success',
+                data: {
+                  first_name: '',
+                  last_name: '',
+                  username: '',
+                  completed_onboarding: false, // Set to false to indicate onboarding is not complete
+                },
               },
             });
 
@@ -68,10 +85,6 @@ const CreateAccount = () => {
 
             router.push({
               pathname: '/onboarding/account-details',
-              params: {
-                userId: user?.id, // Ensure user exists
-                authId: session.user.id,
-              },
             });
           }}
         >
@@ -84,6 +97,7 @@ const CreateAccount = () => {
                   keyboardType="email-address"
                   onChangeText={handleChange('email')}
                   style={styles.inputStyle}
+                  autoCapitalize="none"
                 />
               </View>
 
@@ -94,6 +108,7 @@ const CreateAccount = () => {
                   secureTextEntry
                   onChangeText={handleChange('password')}
                   style={styles.inputStyle}
+                  autoCapitalize="none"
                 />
               </View>
 
@@ -123,24 +138,16 @@ const CreateAccount = () => {
           <View style={styles.border} />
         </View>
 
-        <PlazaButton
-          title="Continue with Google"
-          style={[
-            styles.buttonStyle,
-            { backgroundColor: Color.WHITE, borderWidth: 1 },
-          ]}
-          fontColor={Color.BLACK}
-          icon={<Ionicons name="logo-google" size={20} color={Color.BLACK} />}
+        <GoogleOAuth
+          style={{
+            marginTop: Spacing.SPACING_3,
+          }}
         />
 
-        <PlazaButton
-          title="Continue with Apple"
-          style={[
-            styles.buttonStyle,
-            { backgroundColor: Color.WHITE, borderWidth: 1 },
-          ]}
-          fontColor={Color.BLACK}
-          icon={<Ionicons name="logo-apple" size={20} color={Color.BLACK} />}
+        <AppleOAuth
+          style={{
+            marginTop: Spacing.SPACING_3,
+          }}
         />
       </View>
     </SafeAreaView>

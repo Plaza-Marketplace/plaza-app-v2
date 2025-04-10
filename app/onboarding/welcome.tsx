@@ -48,7 +48,7 @@ const Welcome = () => {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.WHITE }}>
       <View style={{ flex: 1 }}>
         <Carousel
           ref={ref}
