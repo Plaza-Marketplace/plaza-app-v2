@@ -46,7 +46,12 @@
           ],
           "category": ["BROWSABLE", "DEFAULT"]
         }
-      ]
+      ],
+      "production": {
+        "android": {
+          "releaseStatus": "draft"
+        }
+      }
     },
     "web": {
       "bundler": "metro",

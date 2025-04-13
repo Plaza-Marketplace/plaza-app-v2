@@ -11,6 +11,7 @@ import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
 import {
+  Alert,
   FlatList,
   Keyboard,
   KeyboardAvoidingView,
@@ -50,7 +51,7 @@ const LandingPage = () => {
   const { session } = useAuth();
   const { data: user, isLoading } = useGetUserByAuthId(session?.user.id);
   const { selectedProducts, setSelectedProducts } = useSelectedProducts();
-  const { recordedVideo, setRecordedVideo } = useRecordedVideo();
+  const { recordedVideo } = useRecordedVideo();
   const [tempSelectedProducts, setTempSelectedProducts] = useState<Product[]>(
     []
   );
@@ -122,16 +123,21 @@ const LandingPage = () => {
 
             console.log('base64Video', base64Video);
 
-            await createVideo({
-              posterId: user.id,
-              description: values.description || null,
-              base64Video: base64Video,
-              products: selectedProducts,
-            });
+            try {
+              await createVideo({
+                posterId: user.id,
+                description: values.description || null,
+                base64Video: base64Video,
+                products: selectedProducts,
+              });
 
-            console.log('Video uploaded successfully');
+              console.log('Video uploaded successfully');
 
-            router.push('/video-upload/confirmed');
+              router.push('/video-upload/confirmed');
+            } catch (e) {
+              Alert.alert('Error', 'Failed to upload video. Please try again.');
+              console.error('Error uploading video:', e);
+            }
           }}
         >
           {({ handleChange, handleSubmit, values }) => {

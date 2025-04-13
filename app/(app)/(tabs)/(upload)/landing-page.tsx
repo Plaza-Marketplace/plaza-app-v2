@@ -1,17 +1,12 @@
-import Carousel from 'react-native-reanimated-carousel';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import ProductSelectedShowcase from '@/components/PostCards/ProductCards/ProductSelectedShowcase';
-import AddContentCard from '@/components/AddContentCard';
+import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
-import VideoPreview from '@/components/VideoPreview';
 import { ProductDetails } from '@/models/communityPost';
 import Spacing from '@/constants/Spacing';
 import BoldSubheaderText from '@/components/Texts/BoldSubheaderText';
 import PlazaDescriptionButton from '@/components/Buttons/PlazaDescriptionButton';
 import { Redirect, router } from 'expo-router';
 import { Basket, Camera, ShopifyLogo } from '@/components/Icons';
-import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import Loading from '@/components/Loading';
@@ -37,9 +32,9 @@ const LandingPage = () => {
 
   console.log(user);
 
-  if (!user.stripeAccountId) {
-    return <Redirect href={'/seller-onboarding'} />;
-  }
+  // if (!user.stripeAccountId) {
+  //   return <Redirect href={'/seller-onboarding'} />;
+  // }
 
   return (
     <SafeAreaView style={styles.container}>

@@ -193,6 +193,7 @@ export const getVideoIsLiked = async (
 };
 
 export const createVideo = async (video: CreateVideo): Promise<Video> => {
+  console.log(video);
   const key = uuidv4();
   const path = `private/${key}`;
 
