@@ -17,6 +17,7 @@ import { getUserByAuthId } from '@/services/crud/user';
 import GoogleOAuth from '@/components/Auth/GoogleOAuth';
 import AppleOAuth from '@/components/Auth/AppleOAuth';
 import { useAuth } from '@/contexts/AuthContext';
+import LinkText from '@/components/Texts/LinkText';
 
 const CreateAccount = () => {
   const { isLoading, session } = useAuth();
@@ -122,8 +123,21 @@ const CreateAccount = () => {
         </Formik>
 
         <BodyText variant="sm" style={{ marginTop: Spacing.SPACING_2 }}>
-          By creating an account, you agree to our Terms of Service and Privacy
-          Policy.
+          By creating an account, you agree to our{' '}
+          <LinkText
+            variant="sm"
+            href="https://www.plaza-app.com/terms-of-service"
+          >
+            Terms of Service
+          </LinkText>{' '}
+          and{' '}
+          <LinkText
+            variant="sm"
+            href="https://www.plaza-app.com/privacy-policy"
+          >
+            Privacy Policy
+          </LinkText>
+          .
         </BodyText>
 
         <View style={styles.borderContainer}>
