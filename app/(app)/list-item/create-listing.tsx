@@ -107,17 +107,17 @@ const CreateListingScreen = () => {
             console.log(variantValues);
             console.log(variantOptions);
 
-            // createProduct({
-            //   sellerId: user.id,
-            //   name: values.title,
-            //   description: values.description,
-            //   quantity: values.quantity,
-            //   price: values.price,
-            //   shippingPrice: values.price,
-            //   base64Images: base64Images,
-            // });
+            createProduct({
+              sellerId: user.id,
+              name: values.title,
+              description: values.description,
+              quantity: values.quantity,
+              price: values.price,
+              shippingPrice: values.price,
+              base64Images: base64Images,
+            });
 
-            // router.push('/list-item/confirmed');
+            router.push('/list-item/confirmed');
           } catch (e) {
             Alert.alert('Error', 'Failed to create listing. Please try again.');
             console.error(e);
