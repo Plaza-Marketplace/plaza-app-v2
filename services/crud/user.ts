@@ -8,6 +8,7 @@ export const formatUser = (user: Tables<'user'>): User => {
     firstName: user.first_name,
     lastName: user.last_name,
     username: user.username,
+    displayName: user.display_name,
     email: user.email,
     description: user.description,
     profileImageUrl: user.profile_image_url,
@@ -88,9 +89,24 @@ export const createUser = async (
 };
 
 export const updateUser = async (updates: UpdateUser): Promise<User> => {
+  const supabaseUpdates = {
+    first_name: updates.firstName,
+    last_name: updates.lastName,
+    username: updates.username,
+    display_name: updates.displayName,
+    description: updates.description,
+    profile_image_url: updates.profileImageUrl,
+    stripe_customer_id: updates.stripeCustomerId,
+    stripe_account_id: updates.stripeAccountId,
+  };
+
   const filteredData = Object.fromEntries(
-    Object.entries(updates).filter(([_, v]) => v !== null && v !== undefined)
+    Object.entries(supabaseUpdates).filter(
+      ([_, v]) => v !== null && v !== undefined
+    )
   );
+
+  console.log(supabaseUpdates, filteredData);
 
   const { data, error } = await supabase
     .from('user')
@@ -99,8 +115,14 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
     .select()
     .single();
 
-  if (error) throw new Error(error.message);
-  if (!data) throw new Error('User not found');
+  if (error) {
+    console.log(error);
+    throw new Error(error.message);
+  }
+  if (!data) {
+    console.log('????????');
+    throw new Error('User not found');
+  }
 
   return formatUser(data);
 };

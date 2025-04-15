@@ -20,7 +20,11 @@ const IconButton: FC<IconButtonProps> = ({
   ...rest
 }) => {
   return (
-    <PressableOpacity style={[styles.buttonContainer, style]} onPress={onPress}>
+    <PressableOpacity
+      style={[styles.buttonContainer, style]}
+      onPress={onPress}
+      {...rest}
+    >
       {icon}
       {label && (
         <BodyText variant="sm" style={{ color: Color.PRIMARY_DEFAULT }}>

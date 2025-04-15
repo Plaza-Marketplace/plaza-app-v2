@@ -9,10 +9,11 @@ import Color from '@/constants/Color';
 import { Basket, Sales } from '@/components/Icons';
 
 interface UserTypeProps {
+  selected: number | null;
   setSelected: (id: number) => void;
 }
 
-const UserType: FC<UserTypeProps> = ({ setSelected }) => {
+const UserType: FC<UserTypeProps> = ({ selected, setSelected }) => {
   const choices = [
     {
       id: 0,
@@ -102,6 +103,16 @@ const UserType: FC<UserTypeProps> = ({ setSelected }) => {
           onSelect={(item) => setSelected(item.id)}
         />
       </View>
+      {selected === 1 && (
+        <BodyText
+          variant="md"
+          style={{ marginTop: Spacing.SPACING_2 }}
+          color={Color.NEUTRALS_DEFAULT}
+        >
+          We'll direct you to our seller onboarding after we're done setting up
+          your account.
+        </BodyText>
+      )}
     </View>
   );
 };

@@ -3,7 +3,6 @@ import Footer from '../Footer';
 import {
   BottomSheetBackdrop,
   BottomSheetModal,
-  BottomSheetScrollView,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
@@ -16,7 +15,6 @@ import useCreateCartItem from '@/hooks/queries/useCreateCartItem';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import useGetSellerInfo from '@/hooks/queries/useGetSellerInfo';
-import StandardText from '../Texts/StandardText';
 import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
 import { Event, track } from '@/analytics/utils';
 import HeaderText from '../Texts/HeaderText';
