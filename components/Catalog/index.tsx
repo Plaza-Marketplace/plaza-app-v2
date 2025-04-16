@@ -2,7 +2,7 @@ import { FlatList, View } from 'react-native';
 import { useGetCatalogProducts, useGetNextCatalogProducts } from './hooks';
 import ProductCard from '../Product/ProductCard';
 import { FC } from 'react';
-import Color from '@/constants/Color';
+import HeadingText from '../Texts/HeadingText';
 
 interface CatalogProps {
   enabled: boolean;
@@ -23,6 +23,11 @@ const Catalog: FC<CatalogProps> = ({
       numColumns={2}
       contentContainerStyle={{ padding: 4 }}
       data={data}
+      ListHeaderComponent={
+        <View style={{ padding: 8 }}>
+          <HeadingText variant="h5-bold">Product Catalog</HeadingText>
+        </View>
+      }
       renderItem={({ item }) => (
         <View style={{ flex: 1 / 2, padding: 4 }}>
           <ProductCard

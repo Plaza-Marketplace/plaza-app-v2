@@ -75,8 +75,8 @@ export default function RootLayout() {
     <QueryClientProvider client={queryClient}>
       <SafeAreaProvider>
         <GestureHandlerRootView style={{ flex: 1 }}>
-          <BottomSheetModalProvider>
-            <AuthProvider>
+          <AuthProvider>
+            <BottomSheetModalProvider>
               <StripeProvider
                 publishableKey={publishableKey}
                 urlScheme="plazamarketplace://" // required for 3D Secure and bank redirects
@@ -86,8 +86,8 @@ export default function RootLayout() {
                   <Slot />
                 </PaperProvider>
               </StripeProvider>
-            </AuthProvider>
-          </BottomSheetModalProvider>
+            </BottomSheetModalProvider>
+          </AuthProvider>
         </GestureHandlerRootView>
       </SafeAreaProvider>
     </QueryClientProvider>

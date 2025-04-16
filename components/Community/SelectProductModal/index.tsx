@@ -10,8 +10,9 @@ import {
 } from '@gorhom/bottom-sheet';
 import { FC, RefObject, useState } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
-import Carousel from 'react-native-reanimated-carousel';
+import Carousel, { Pagination } from 'react-native-reanimated-carousel';
 import Dots from '@/components/Dots';
+import { useSharedValue } from 'react-native-reanimated';
 
 interface SelectProductModalProps {
   multiple: boolean;
@@ -29,7 +30,7 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProductIds, setSelectedProductIds] = useState<Id[]>([]);
-
+  console.log(isOpen);
   const handlePress = (productId: Id) => {
     if (!multiple) {
       setSelectedProductIds([productId]);
@@ -42,15 +43,13 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
       setSelectedProductIds((prev) => [...prev, productId]);
     }
   };
-
-  console.log(isOpen);
-
   const handleSubmit = () => {
-    // addProductsToCollection(selectedProductIds);
     onSubmit(selectedProductIds);
     bottomSheetRef.current?.close();
     setSelectedProductIds([]);
   };
+
+  const progress = useSharedValue(0);
 
   return (
     <BottomSheetModal
@@ -96,6 +95,7 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
         >
           <Carousel
             pagingEnabled
+            onProgressChange={progress}
             onSnapToItem={(index) => setActiveIndex(index)}
             loop={false}
             width={Dimensions.get('window').width}

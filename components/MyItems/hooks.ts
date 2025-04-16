@@ -6,10 +6,11 @@ import { useState } from 'react';
 
 export const useGetMyItemsProducts = (enabled: boolean) => {
   const { user } = useAuth();
-
+  console.log('USER: ', user);
   return useQuery({
     queryKey: ['myItems', user?.id],
     queryFn: user ? () => getMyItemProducts(user.id) : skipToken,
+    staleTime: 1000 * 60 * 5,
     enabled,
   });
 };

@@ -10,7 +10,7 @@ export const createGroupCollectionItems = async (
       product_id: productId,
     }))
   );
-  console.log(error);
+
   if (error) {
     throw new Error(error.message);
   }

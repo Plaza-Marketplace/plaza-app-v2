@@ -112,3 +112,29 @@ export const getProductModalProduct = async (
     },
   };
 };
+
+export const createCartItem = async (
+  productId: Id,
+  userId: Id,
+  quantity: Id
+) => {
+  const { error } = await supabase.from('cart_item').insert([
+    {
+      product_id: productId,
+      user_id: userId,
+      quantity,
+    },
+  ]);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const deleteProduct = async (productId: Id) => {
+  const { error } = await supabase.from('product').delete().eq('id', productId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};

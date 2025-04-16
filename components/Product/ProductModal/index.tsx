@@ -12,7 +12,11 @@ import Rating from '@/components/Rating';
 import Footer from '@/components/Footer';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Carousel from 'react-native-reanimated-carousel';
-import useGetProductModalProduct from './useGetProductModalProduct';
+import {
+  useAddToCart,
+  useDeleteProduct,
+  useGetProductModalProduct,
+} from './hooks';
 import { Image } from 'expo-image';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
@@ -49,11 +53,15 @@ const CustomHandle = () => (
 
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { user } = useAuth();
+  const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
+  const { mutate: addToCart } = useAddToCart(id);
+  const { mutate: deleteProduct } = useDeleteProduct(id);
+
   const [selectedVariantValues, setSelectedVariantValues] = useState<
     Record<string, string>
   >({});
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
+
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
   const addToGroupRef = useRef<BottomSheetModal>(null);
@@ -112,7 +120,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                       source={{ uri: item }}
                       style={{
                         width: Dimensions.get('window').width,
-                        height: Dimensions.get('window').width - 32,
+                        height: Dimensions.get('window').width,
                       }}
                       contentFit="contain"
                     />
@@ -208,9 +216,17 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
             </BottomSheetScrollView>
             <View style={{ paddingBottom: insets.bottom }}>
               {user?.id === data?.seller.id ? (
-                <Footer leftTitle="Delete Product" rightTitle="Edit Product" />
+                <Footer
+                  leftTitle="Delete Product"
+                  rightTitle="Edit Product"
+                  leftOnPress={deleteProduct}
+                />
               ) : (
-                <Footer leftTitle="Add to Cart" rightTitle="Buy Now" />
+                <Footer
+                  leftTitle="Add to Cart"
+                  rightTitle="Buy Now"
+                  leftOnPress={addToCart}
+                />
               )}
             </View>
           </>

@@ -6,7 +6,7 @@ const useGetActivityTab = () => {
   const { user } = useAuth();
 
   return useQuery({
-    queryKey: ['activityTab'],
+    queryKey: ['activityTab', user?.id],
     queryFn: user ? () => getActivityTab(user.id) : skipToken,
     staleTime: 1000 * 60 * 5,
   });

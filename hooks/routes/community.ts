@@ -15,7 +15,7 @@ export const useJoinCommunity = (id: Id) => {
     mutationFn: user
       ? () => createCommunityMember({ communityId: id, userId: user.id })
       : undefined,
-    onMutate: () =>
+    onMutate: () => {
       queryClient.setQueryData<CommunityPage>(['community', id], (data) => {
         if (!data) return data;
 
@@ -24,7 +24,10 @@ export const useJoinCommunity = (id: Id) => {
           memberCount: data.memberCount + 1,
           isMember: true,
         };
-      }),
+      });
+
+      queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] });
+    },
   });
 };
 

@@ -21,6 +21,7 @@ export const getCommunityPage = async (id: Id): Promise<CommunityPage> => {
       `
     )
     .eq('id', id)
+    .eq('is_member.user_id', 11)
     .lte('event.start_date', new Date().toISOString())
     .gte('event.end_date', new Date().toISOString())
     .single();

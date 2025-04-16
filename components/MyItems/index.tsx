@@ -3,6 +3,8 @@ import { useGetMyItemsProducts, useGetNextMyItemsProducts } from './hooks';
 import { FlatList } from 'react-native-gesture-handler';
 import ProductCard from '../Product/ProductCard';
 import { FC } from 'react';
+import HeadingText from '../Texts/HeadingText';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface MyItemsProps {
   enabled?: boolean;
@@ -15,14 +17,22 @@ const MyItems: FC<MyItemsProps> = ({
   onPress,
   selectedProductIds,
 }) => {
+  const { user } = useAuth();
   const { data, error } = useGetMyItemsProducts(enabled);
   const getNextMyItemsProducts = useGetNextMyItemsProducts();
+
+  console.log(user, 'WAOWO');
 
   return (
     <FlatList
       numColumns={2}
       contentContainerStyle={{ padding: 4 }}
       data={data}
+      ListHeaderComponent={
+        <View style={{ padding: 8 }}>
+          <HeadingText variant="h5-bold">My Items</HeadingText>
+        </View>
+      }
       renderItem={({ item }) => (
         <View style={{ flex: 1 / 2, padding: 4 }}>
           <ProductCard

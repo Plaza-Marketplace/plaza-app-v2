@@ -35,7 +35,7 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
   const { mutate: createGroupPost } = useCreateGroupPost(groupId);
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-
+  console.log()
   return (
     <Formik
       initialValues={{ title: '', description: '', productId: null }}
@@ -128,15 +128,15 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
                 rightOnPress={handleSubmit}
               />
             </View>
+            <SelectProductModal
+              title="Select Product"
+              multiple={false}
+              onSubmit={(productIds: Id[]) =>
+                setSelectedProductId(productIds[0] ?? null)
+              }
+              bottomSheetRef={bottomSheetRef}
+            />
           </KeyboardAvoidingView>
-          <SelectProductModal
-            title="Select Product"
-            multiple={false}
-            onSubmit={(productIds: Id[]) =>
-              setSelectedProductId(productIds[0] ?? null)
-            }
-            bottomSheetRef={bottomSheetRef}
-          />
         </>
       )}
     </Formik>
