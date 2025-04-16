@@ -25,9 +25,9 @@ export const useJoinCommunity = (id: Id) => {
           isMember: true,
         };
       });
-
-      queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] });
     },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] }),
   });
 };
 
@@ -40,7 +40,7 @@ export const useLeaveCommunity = (id: Id) => {
     mutationFn: user
       ? () => deleteCommunityMember({ communityId: id, userId: user.id })
       : undefined,
-    onMutate: () =>
+    onMutate: () => {
       queryClient.setQueryData<CommunityPage>(['community', id], (data) => {
         if (!data) return data;
 
@@ -49,7 +49,10 @@ export const useLeaveCommunity = (id: Id) => {
           memberCount: data.memberCount - 1,
           isMember: false,
         };
-      }),
+      });
+    },
+    onSuccess: () =>
+      queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] }),
   });
 };
 

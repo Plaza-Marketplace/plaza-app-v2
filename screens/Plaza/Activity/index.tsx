@@ -8,7 +8,7 @@ import Post from '@/components/Community/Post';
 
 const Activity = () => {
   const { data, error } = useGetActivityTab();
-  console.log(data);
+
   const handlePress = () => {
     router.push('/new-group');
   };

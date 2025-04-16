@@ -30,7 +30,7 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
   const [isOpen, setIsOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const [selectedProductIds, setSelectedProductIds] = useState<Id[]>([]);
-  console.log(isOpen);
+
   const handlePress = (productId: Id) => {
     if (!multiple) {
       setSelectedProductIds([productId]);
@@ -61,6 +61,7 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
       snapPoints={['90%']}
       onChange={(index) => {
         if (index === -1) {
+          setSelectedProductIds([]);
           setIsOpen(false);
         } else {
           setIsOpen(true);
@@ -84,7 +85,11 @@ const SelectProductModal: FC<SelectProductModalProps> = ({
           </View>
 
           <View style={{ flex: 1 / 5 }}>
-            <PlazaButton title="Add" onPress={handleSubmit} />
+            <PlazaButton
+              title="Add"
+              onPress={handleSubmit}
+              disabled={selectedProductIds.length === 0}
+            />
           </View>
         </View>
         <View
