@@ -90,6 +90,14 @@ const Settings = () => {
 
               <PressableOpacity
                 onPress={() => {
+                  router.push('/test-api-route');
+                }}
+              >
+                <Text style={{ color: Color.BLACK }}>Test API Route</Text>
+              </PressableOpacity>
+
+              <PressableOpacity
+                onPress={() => {
                   supabase.auth.signOut();
                   // queryClient.clear();
                   router.navigate('/login');

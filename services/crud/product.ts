@@ -98,6 +98,7 @@ export const createProduct = async (
       price: product.price,
       shipping_price: product.shippingPrice,
       quantity: product.quantity ?? null,
+      has_variants: product.hasVariants ?? false,
     })
     .select();
 

@@ -8,6 +8,7 @@ import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import SellerTab from './SellerTab';
 import ProductTab from './ProductTab';
+import HeadingText from '../Texts/HeadingText';
 
 interface ReviewModalProps {
   seller: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
@@ -20,29 +21,12 @@ const ReviewModal: FC<ReviewModalProps> = ({
   product,
   bottomSheetRef,
 }) => {
-  const [sellerTabSelected, setSellerTabSelected] = useState(true);
-
   return (
     <FeedBottomSheet bottomSheetRef={bottomSheetRef}>
       <View style={styles.container}>
-        <PressableOpacity
-          onPress={() => setSellerTabSelected(true)}
-          style={{ borderBottomWidth: sellerTabSelected ? 2 : 0 }}
-        >
-          <StandardText>Seller</StandardText>
-        </PressableOpacity>
-        <PressableOpacity
-          onPress={() => setSellerTabSelected(false)}
-          style={{ borderBottomWidth: sellerTabSelected ? 0 : 2 }}
-        >
-          <StandardText>Product</StandardText>
-        </PressableOpacity>
+        <HeadingText variant={'h6-bold'}>Seller Reviews</HeadingText>
       </View>
-      {sellerTabSelected ? (
-        <SellerTab seller={seller} />
-      ) : (
-        <ProductTab product={product} />
-      )}
+      <SellerTab seller={seller} />
     </FeedBottomSheet>
   );
 };

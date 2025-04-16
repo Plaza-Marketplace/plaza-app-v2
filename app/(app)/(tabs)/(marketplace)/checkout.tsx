@@ -20,7 +20,7 @@ import {
 import useCreateOrderHistoryItems from '@/hooks/queries/useCreateOrderHistoryItems';
 import useGetCartItemsByUserId from '@/hooks/queries/useGetCartItemsByUserId';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
-import { createPaymentIntent } from '@/services/stripe';
+import { createPayment, createPaymentIntent } from '@/services/stripe';
 import { formatPrice } from '@/utils/currency';
 import { Ionicons } from '@expo/vector-icons';
 import {
@@ -32,6 +32,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
+import { v4 as uuidv4 } from 'uuid';
 
 enum FormType {
   PAYMENT = 'PAYMENT',
@@ -68,6 +69,12 @@ const ConfirmScreen = () => {
       0
     ) || 0;
 
+  const shippingPrice =
+    cartItems?.reduce(
+      (acc, curr) => acc + curr.product.shippingPrice * curr.quantity,
+      0
+    ) || 0;
+
   const totalCount =
     cartItems?.reduce((acc, curr) => acc + curr.quantity, 0) || 0;
 
@@ -83,13 +90,11 @@ const ConfirmScreen = () => {
         Alert.alert('Please select a shipping address');
         return;
       }
-      const { paymentIntent, ephemeralKey, customer } =
-        await createPaymentIntent(
-          'cus_RwCJBAhK0TDjUd',
-          'acct_1R2JvMPDBPbyu0XD',
-          subtotalPrice * 100,
-          'usd'
-        );
+      const paymentGroup = uuidv4();
+      const { paymentIntent, ephemeralKey, customer } = await createPayment(
+        paymentGroup
+      );
+
       await stripe.initPaymentSheet({
         merchantDisplayName: 'Plaza',
         customerId: customer,
@@ -169,15 +174,12 @@ const ConfirmScreen = () => {
             </View>
 
             <View style={styles.textRow}>
-              <BoldStandardText style={styles.text}>Taxes:</BoldStandardText>
-              <StandardText style={styles.text}>lol</StandardText>
-            </View>
-
-            <View style={styles.textRow}>
               <BoldStandardText style={styles.text}>
                 Delivery Fee:
               </BoldStandardText>
-              <StandardText style={styles.text}>FREE</StandardText>
+              <StandardText style={styles.text}>
+                {formatPrice(shippingPrice)}
+              </StandardText>
             </View>
 
             <View style={styles.textRow}>

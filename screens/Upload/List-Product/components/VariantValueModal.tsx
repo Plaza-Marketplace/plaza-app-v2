@@ -1,6 +1,11 @@
 import { View, Text, SectionList } from 'react-native';
 import React, { FC, useEffect, useMemo, useState } from 'react';
-import { VariantOption, VariantsDisplay, VariantValue } from '../schema';
+import {
+  VariantOption,
+  VariantsDisplay,
+  VariantTypeToValue,
+  VariantValue,
+} from '../schema';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import HeadingText from '@/components/Texts/HeadingText';
 import Spacing from '@/constants/Spacing';
@@ -45,9 +50,10 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
     if (variantOptions.length > 0) {
       const combinations: VariantsDisplay[] = [];
       const generateCombinations = (
-        currentCombination: string[],
+        currentCombination: VariantTypeToValue[],
         index: number
       ) => {
+        const option = variantOptions[index];
         if (index === variantOptions.length) {
           combinations.push({
             fields: currentCombination,
@@ -59,9 +65,11 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
           });
           return;
         }
-        const option = variantOptions[index];
         option.values.forEach((value) => {
-          generateCombinations([...currentCombination, value], index + 1);
+          generateCombinations(
+            [...currentCombination, { type: option.name, value: value }],
+            index + 1
+          );
         });
       };
       generateCombinations([], 0);
@@ -153,7 +161,9 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
                   variant="h5-bold"
                   style={{ marginTop: Spacing.SPACING_3 }}
                 >
-                  {selectedVariant?.fields.map((field) => field).join(' / ')}
+                  {selectedVariant?.fields
+                    .map((field) => field.value)
+                    .join(' / ')}
                 </HeadingText>
 
                 <HeadingText
@@ -171,7 +181,7 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
                   }}
                 >
                   {selectedVariant?.fields.map((item, index) => (
-                    <Chip key={index} title={item} />
+                    <Chip key={index} title={item.value} />
                   ))}
                 </View>
 

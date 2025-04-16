@@ -85,7 +85,7 @@ export const createProductVariant = async (
     .select(VARIANT_QUERY)
     .single();
 
-  if (error) throw new Error('Failed to create product variant');
+  if (error) throw new Error('Failed to create product variant', error);
 
   return formatProductVariant(variant);
 };
@@ -102,7 +102,7 @@ export const createVariantType = async (
     .select(VARIANT_TYPE_QUERY)
     .single();
 
-  if (error) throw new Error('Failed to create variant type');
+  if (error) throw new Error('Failed to create variant type', error);
 
   return formatVariantType(variantType);
 };
@@ -119,7 +119,7 @@ export const createVariantValue = async (
     .select(VARIANT_VALUE_QUERY)
     .single();
 
-  if (error) throw new Error('Failed to create variant value');
+  if (error) throw new Error('Failed to create variant value', error);
 
   return formatVariantValue(
     variantValue,
@@ -139,7 +139,7 @@ export const createVariantOption = async (
     .select(VARIANT_OPTION_QUERY)
     .single();
 
-  if (error) throw new Error('Failed to create variant option');
+  if (error) throw new Error('Failed to create variant option', error);
 
   return formatVariantOption(
     variantOption,
@@ -147,6 +147,94 @@ export const createVariantOption = async (
     formatVariantValue(
       variantOption.variant_value,
       formatVariantType(variantOption.variant_value.variant_type)
+    )
+  );
+};
+
+// bulk creates
+
+export const bulkCreateProductVariants = async (
+  variants: CreateProductVariant[]
+): Promise<ProductVariant[]> => {
+  const { data, error } = await supabase
+    .from('product_variant')
+    .insert(
+      variants.map((variant) => ({
+        price: variant.price,
+        quantity: variant.quantity,
+        product_id: variant.productId,
+      }))
+    )
+    .select(VARIANT_QUERY);
+
+  if (error) throw new Error('Failed to create product variants', error);
+
+  return data.map(formatProductVariant);
+};
+
+export const bulkCreateVariantTypes = async (
+  variantTypes: CreateVariantType[]
+): Promise<VariantType[]> => {
+  const { data, error } = await supabase
+    .from('product_variant_type')
+    .insert(
+      variantTypes.map((variantType) => ({
+        name: variantType.name,
+        product_id: variantType.productId,
+      }))
+    )
+    .select(VARIANT_TYPE_QUERY);
+
+  if (error) throw new Error('Failed to create variant types', error);
+
+  return data.map(formatVariantType);
+};
+
+export const bulkCreateVariantValues = async (
+  variantValues: CreateVariantValue[]
+): Promise<VariantValue[]> => {
+  const { data, error } = await supabase
+    .from('product_variant_value')
+    .insert(
+      variantValues.map((value) => ({
+        name: value.name,
+        type_id: value.variantTypeId,
+      }))
+    )
+    .select(VARIANT_VALUE_QUERY);
+
+  if (error) throw new Error('Failed to create variant values', error);
+
+  return data.map((value) =>
+    formatVariantValue(value, formatVariantType(value.variant_type))
+  );
+};
+
+export const bulkCreateVariantOptions = async (
+  variantOptions: CreateVariantOption[]
+): Promise<VariantOption[]> => {
+  const { data, error } = await supabase
+    .from('product_variant_option')
+    .insert(
+      variantOptions.map((option) => ({
+        variant_id: option.variantId,
+        value_id: option.variantValueId,
+      }))
+    )
+    .select(VARIANT_OPTION_QUERY);
+
+  console.error(error);
+
+  if (error) throw new Error('Failed to create variant options', error);
+
+  return data.map((option) =>
+    formatVariantOption(
+      option,
+      formatProductVariant(option.variant),
+      formatVariantValue(
+        option.variant_value,
+        formatVariantType(option.variant_value.variant_type)
+      )
     )
   );
 };

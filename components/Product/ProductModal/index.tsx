@@ -79,6 +79,17 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
 
   const handleVariantSelect = (type: string, value: string) => {
     setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
+    console.log('what', data?.variantInfo);
+  };
+
+  const handleAddToCart = () => {
+    createCartItem();
+    track(Event.CLICKED_ADD_TO_CART, { productId: product.id });
+  };
+
+  const handleBuyNow = () => {
+    createOrderHistoryItem();
+    track(Event.CLICKED_BUY_NOW, { productId: product.id });
   };
 
   return (
