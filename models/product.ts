@@ -58,4 +58,6 @@ type CreateProduct = {
   arrayBufferImages?: ArrayBuffer[];
 
   quantity?: number;
+
+  hasVariants: boolean;
 };

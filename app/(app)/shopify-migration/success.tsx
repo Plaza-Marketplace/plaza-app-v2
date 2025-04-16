@@ -103,6 +103,7 @@ const ShopifySuccess = () => {
           base64Images: [],
           arrayBufferImages: base64Images,
           quantity: product.quantity,
+          hasVariants: false,
         } as CreateProduct;
       })
     );
@@ -126,7 +127,7 @@ const ShopifySuccess = () => {
     console.log('number of products', productsToUpload.length);
 
     createProducts(productsToUpload);
-    router.navigate('/(app)/(tabs)/(upload)/landing-page');
+    router.navigate('/shopify-migration/confirmation');
   };
 
   useEffect(() => {

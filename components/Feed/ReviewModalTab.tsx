@@ -1,4 +1,8 @@
-import { FeedReview, Review as ReviewType } from '@/models/review';
+import {
+  FeedReview,
+  Review as ReviewType,
+  SellerReview,
+} from '@/models/review';
 import { FC } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import Review from './Review';
@@ -9,37 +13,26 @@ import Spacing from '@/constants/Spacing';
 import BoldStandardText from '../Texts/BoldStandardText';
 import Color from '@/constants/Color';
 import ProductIcon from '../Product/ProductIcon';
+import ReviewCard from '../ReviewCard';
 
 interface ReviewModalTabProps {
-  isSeller: boolean;
-  imageUrl?: Url;
-  name: string;
-  reviews: FeedReview[];
+  reviews: SellerReview[];
 }
 
-const ReviewModalTab: FC<ReviewModalTabProps> = ({
-  name,
-  imageUrl,
-  isSeller,
-  reviews,
-}) => {
+const ReviewModalTab: FC<ReviewModalTabProps> = ({ reviews }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.mainInfoContainer}>
-        <View style={styles.infoContainer}>
-          {!isSeller ? (
-            <ProductIcon imageUrl={imageUrl} />
-          ) : (
-            <ProfileIcon variant="user" url={imageUrl} size={64} />
-          )}
-          <View>
-            <SubheaderText>{name}</SubheaderText>
-          </View>
-        </View>
-      </View>
       <FlatList
         data={reviews}
-        renderItem={({ item }) => <Review key={item.id} review={item} />}
+        renderItem={({ item }) => (
+          <ReviewCard
+            key={item.id}
+            username={item.reviewer.username}
+            profileImageUrl={item.reviewer.profileImageUrl}
+            rating={item.rating}
+            description={item.description}
+          />
+        )}
         contentContainerStyle={{
           gap: Spacing.SPACING_4,
           padding: Spacing.SPACING_2,

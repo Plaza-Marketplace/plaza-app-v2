@@ -957,14 +957,14 @@ export type Database = {
           description: string | null
           display_name: string
           email: string
-          first_name: string
+          first_name: string | null
           id: number
-          last_name: string
+          last_name: string | null
           location: unknown | null
           profile_image_key: string | null
           stripe_account_id: string | null
           stripe_customer_id: string | null
-          username: string
+          username: string | null
         }
         Insert: {
           auth_id?: string
@@ -973,14 +973,14 @@ export type Database = {
           description?: string | null
           display_name?: string
           email: string
-          first_name: string
+          first_name?: string | null
           id?: number
-          last_name: string
+          last_name?: string | null
           location?: unknown | null
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username: string
+          username?: string | null
         }
         Update: {
           auth_id?: string
@@ -989,14 +989,14 @@ export type Database = {
           description?: string | null
           display_name?: string
           email?: string
-          first_name?: string
+          first_name?: string | null
           id?: number
-          last_name?: string
+          last_name?: string | null
           location?: unknown | null
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username?: string
+          username?: string | null
         }
         Relationships: []
       }
@@ -1161,7 +1161,7 @@ export type Database = {
         Returns: Json
       }
       does_object_exist: {
-        Args: { key: string }
+        Args: { key: string } | { key: string; bucket: string }
         Returns: boolean
       }
       does_user_follow_other_user: {

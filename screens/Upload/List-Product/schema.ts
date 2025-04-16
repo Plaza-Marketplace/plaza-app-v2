@@ -22,7 +22,12 @@ export type VariantValue = {
   quantity: number;
 };
 
+export type VariantTypeToValue = {
+  type: string;
+  value: string;
+};
+
 export type VariantsDisplay = {
-  fields: string[];
+  fields: VariantTypeToValue[];
   value: VariantValue;
 };

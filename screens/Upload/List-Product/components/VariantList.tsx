@@ -24,7 +24,7 @@ const VariantList: FC<VariantListProps> = ({ variantValues, onPressItem }) => {
         paddingHorizontal: Spacing.SPACING_2,
         paddingBottom: Spacing.SPACING_5,
       }}
-      keyExtractor={(item, index) => item.fields[0] + index}
+      keyExtractor={(item, index) => item.fields[0].value + index}
       renderItem={({ item, index }) => (
         <PressableOpacity
           style={{
@@ -39,7 +39,7 @@ const VariantList: FC<VariantListProps> = ({ variantValues, onPressItem }) => {
         >
           <View>
             <BodyText variant="md">
-              {item.fields.map((field) => field).join(' / ')}
+              {item.fields.map((field) => field.value).join(' / ')}
             </BodyText>
             <BodyText variant="sm" style={{ color: Color.GREY_500 }}>
               {formatPrice(item.value.price)} | {item.value.quantity} available

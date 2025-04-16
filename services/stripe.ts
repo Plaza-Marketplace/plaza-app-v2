@@ -99,9 +99,28 @@ const createStripeCustomer = async (userId: Id, email: string) => {
   return data;
 };
 
+const createPayment = async (transfer_group: UUID) => {
+  const { data, error } = await supabase.functions.invoke(
+    'create-plaza-payment',
+    {
+      body: {
+        transfer_group: transfer_group,
+      },
+    }
+  );
+
+  if (error) {
+    console.error('Error creating payment:', error);
+    throw error;
+  }
+
+  return data;
+};
+
 export {
   createAccountLink,
   createPaymentIntent,
   createStripeAccount,
   createStripeCustomer,
+  createPayment,
 };

@@ -9,11 +9,7 @@ export const getProductModalProduct = async (
     .from('product')
     .select(
       `
-      id,
-      name,
-      description,
-      price,
-      created_at,
+      *,
       image_keys: product_image (
         image_key
       ),

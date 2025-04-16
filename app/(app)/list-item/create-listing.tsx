@@ -25,6 +25,16 @@ import Variants from '@/screens/Upload/List-Product/components/Variants';
 import VariantValueModal from '@/screens/Upload/List-Product/components/VariantValueModal';
 import VariantOptionAddModal from '@/screens/Upload/List-Product/components/VariantOptionAddModal';
 import VariantOptionEditModal from '@/screens/Upload/List-Product/components/VariantOptionEditModal';
+import {
+  bulkCreateProductVariants,
+  bulkCreateVariantOptions,
+  bulkCreateVariantTypes,
+  bulkCreateVariantValues,
+  createProductVariant,
+  createVariantOption,
+  createVariantType,
+  createVariantValue,
+} from '@/services/crud/variant';
 
 const CreateListingScreen = () => {
   const { session } = useAuth();
@@ -104,10 +114,7 @@ const CreateListingScreen = () => {
           );
 
           try {
-            console.log(variantValues);
-            console.log(variantOptions);
-
-            createProduct({
+            const product = await createProduct({
               sellerId: user.id,
               name: values.title,
               description: values.description,
@@ -115,7 +122,75 @@ const CreateListingScreen = () => {
               price: values.price,
               shippingPrice: values.price,
               base64Images: base64Images,
+              hasVariants: isVariantsEnabled,
             });
+
+            if (isVariantsEnabled) {
+              // create variants first, mapping value names to their IDs
+              const variantMap = new Map<string, Id>();
+              const variantTypeMap = new Map<string, Id>();
+
+              const createVariants: CreateProductVariant[] = variantValues.map(
+                (variantValue) => ({
+                  price: variantValue.value.price,
+                  quantity: variantValue.value.quantity,
+                  productId: product.id,
+                })
+              );
+
+              const createdVariants = await bulkCreateProductVariants(
+                createVariants
+              );
+
+              createdVariants.forEach((variant, index) => {
+                variantValues[index].fields.forEach((field) => {
+                  variantMap.set(`${field.type}-${field.value}`, variant.id);
+                });
+              });
+
+              const createVariantTypes: CreateVariantType[] =
+                variantOptions.map((option) => ({
+                  name: option.name,
+                  productId: product.id,
+                }));
+              const createdVariantTypes = await bulkCreateVariantTypes(
+                createVariantTypes
+              );
+              createdVariantTypes.forEach((type) => {
+                variantTypeMap.set(type.name, type.id);
+              });
+
+              const createVariantValues: CreateVariantValue[] = variantOptions
+                .map((option) =>
+                  option.values.map((value) => ({
+                    name: value,
+                    variantTypeId: variantTypeMap.get(option.name) || -1,
+                  }))
+                )
+                .flat();
+
+              const createdVariantValues = await bulkCreateVariantValues(
+                createVariantValues
+              );
+
+              const createVariantOptions: CreateVariantOption[] =
+                createdVariantValues.map((value) => {
+                  // first take the variantTypeId and map it back to its corresponding type name
+                  const variantTypeName = variantOptions.find((option) =>
+                    option.values.includes(value.name)
+                  )?.name;
+                  // then find the variant associated with the type-name
+                  const variantId = variantMap.get(
+                    `${variantTypeName}-${value.name}`
+                  );
+                  return {
+                    variantId: variantId || -1,
+                    variantValueId: value.id,
+                  };
+                });
+
+              await bulkCreateVariantOptions(createVariantOptions);
+            }
 
             router.push('/list-item/confirmed');
           } catch (e) {

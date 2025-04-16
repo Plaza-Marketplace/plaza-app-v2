@@ -17,13 +17,13 @@ const UserType: FC<UserTypeProps> = ({ selected, setSelected }) => {
   const choices = [
     {
       id: 0,
-      title: "I don't want to sell yet",
-      description: 'You can become a seller at any point later on in the app.',
+      title: 'Join as a user',
+      description: 'Discover unique products and shop from real craft sellers.',
       icon: 'basket',
     },
     {
       id: 1,
-      title: 'I want to start selling now',
+      title: 'Join as a seller',
       description:
         'Start selling products you want to build a community around.',
       icon: 'tabler-icon',

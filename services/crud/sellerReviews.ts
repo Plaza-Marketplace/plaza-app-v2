@@ -1,5 +1,10 @@
-import { CreateSellerReview, SellerReview, UpdateSellerReview } from "@/models/review";
-import { supabase } from "@/utils/supabase";
+import {
+  CreateSellerReview,
+  SellerReview,
+  UpdateSellerReview,
+} from '@/models/review';
+import { supabase } from '@/utils/supabase';
+import { getImagePublicUrl } from './storage';
 
 const supabaseToSellerReview = (data: any): SellerReview => {
   return {
@@ -7,20 +12,22 @@ const supabaseToSellerReview = (data: any): SellerReview => {
     seller: {
       id: data.seller.id,
       username: data.seller.username,
-      profileImageUrl: data.seller.profile_image_url,
+      profileImageUrl: getImagePublicUrl(data.seller.profile_image_key),
     },
     reviewer: {
       id: data.reviewer.id,
       username: data.reviewer.username,
-      profileImageUrl: data.reviewer.profile_image_url,
+      profileImageUrl: getImagePublicUrl(data.reviewer.profile_image_key),
     },
     rating: data.rating,
     description: data.description,
     createdAt: data.created_at,
   };
-}
+};
 
-export const createSellerReview = async (review: CreateSellerReview): Promise<SellerReview> => {
+export const createSellerReview = async (
+  review: CreateSellerReview
+): Promise<SellerReview> => {
   const { data, error } = await supabase
     .from('seller_review')
     .insert({
@@ -29,54 +36,65 @@ export const createSellerReview = async (review: CreateSellerReview): Promise<Se
       rating: review.rating,
       description: review.description,
     })
-    .select(`
+    .select(
+      `
       *,
       seller:user!seller_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       ),
       reviewer:user!reviewer_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       )
-      `)
-      .single();
+      `
+    )
+    .single();
 
   if (error) throw new Error('Failed');
 
   if (!data) throw new Error('Failed');
 
   return supabaseToSellerReview(data);
-}
+};
 
-export const getSellerReviewsBySellerId = async (sellerId: Id): Promise<SellerReview[]> => {
+export const getSellerReviewsBySellerId = async (
+  sellerId: Id
+): Promise<SellerReview[]> => {
   const { data, error } = await supabase
     .from('seller_review')
-    .select(`
+    .select(
+      `
       *,
       seller:user!seller_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       ),
       reviewer:user!reviewer_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       )
-    `)
+    `
+    )
     .eq('seller_id', sellerId);
 
+  console.log(error);
+  console.log(data);
   if (error) throw new Error('Failed');
 
   if (!data) return [];
 
   return data.map(supabaseToSellerReview);
-}
+};
 
-export const updateSellerReview = async (sellerId: Id, review: UpdateSellerReview): Promise<SellerReview> => {
+export const updateSellerReview = async (
+  sellerId: Id,
+  review: UpdateSellerReview
+): Promise<SellerReview> => {
   const { data, error } = await supabase
     .from('seller_review')
     .update({
@@ -84,19 +102,21 @@ export const updateSellerReview = async (sellerId: Id, review: UpdateSellerRevie
       description: review.description,
     })
     .eq('id', sellerId)
-    .select(`
+    .select(
+      `
       *,
       seller:user!seller_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       ),
       reviewer:user!reviewer_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       )
-    `)
+    `
+    )
     .single();
 
   if (error) throw new Error('Failed');
@@ -104,26 +124,30 @@ export const updateSellerReview = async (sellerId: Id, review: UpdateSellerRevie
   if (!data) throw new Error('Failed');
 
   return supabaseToSellerReview(data);
-}
+};
 
-export const deleteSellerReview = async (reviewId: Id): Promise<SellerReview> => {
+export const deleteSellerReview = async (
+  reviewId: Id
+): Promise<SellerReview> => {
   const { data, error } = await supabase
     .from('seller_review')
     .delete()
     .eq('id', reviewId)
-    .select(`
+    .select(
+      `
       *,
       seller:user!seller_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       ),
       reviewer:user!reviewer_id(
         id,
         username,
-        profile_image_url
+        profile_image_key
       )
-    `)
+    `
+    )
     .single();
 
   if (error) throw new Error('Failed');
@@ -131,4 +155,4 @@ export const deleteSellerReview = async (reviewId: Id): Promise<SellerReview> =>
   if (!data) throw new Error('Failed');
 
   return supabaseToSellerReview(data);
-}
+};
