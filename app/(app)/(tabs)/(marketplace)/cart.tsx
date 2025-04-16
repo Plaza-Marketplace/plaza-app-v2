@@ -87,7 +87,7 @@ const CartScreen = () => {
         setHeight(height);
       }}
     >
-      <PlazaHeader name="Cart" />
+      <PlazaHeader name="Your Cart Things" />
       <FlatList
         style={styles.content}
         data={cartItems}

@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Plaza Marketplace",
+    "name": "Plaza",
     "slug": "plaza",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,17 +15,14 @@
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.plaza.app",
-      "associatedDomains": [
-        "applinks:www.plaza-app.com",
-        "applinks:www.plaza-app.com"
-      ],
+      "associatedDomains": ["applinks:www.plaza-app.com"],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.plaza.app",
