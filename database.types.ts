@@ -63,6 +63,7 @@ export type Database = {
           product_id: number
           quantity: number
           user_id: number
+          variant_id: number | null
         }
         Insert: {
           created_at?: string
@@ -70,6 +71,7 @@ export type Database = {
           product_id: number
           quantity?: number
           user_id: number
+          variant_id?: number | null
         }
         Update: {
           created_at?: string
@@ -77,6 +79,7 @@ export type Database = {
           product_id?: number
           quantity?: number
           user_id?: number
+          variant_id?: number | null
         }
         Relationships: [
           {
@@ -91,6 +94,13 @@ export type Database = {
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "cart_item_variant_id_fkey"
+            columns: ["variant_id"]
+            isOneToOne: false
+            referencedRelation: "product_variant"
             referencedColumns: ["id"]
           },
         ]
@@ -964,7 +974,7 @@ export type Database = {
           profile_image_key: string | null
           stripe_account_id: string | null
           stripe_customer_id: string | null
-          username: string | null
+          username: string
         }
         Insert: {
           auth_id?: string
@@ -980,7 +990,7 @@ export type Database = {
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username?: string | null
+          username?: string
         }
         Update: {
           auth_id?: string
@@ -996,7 +1006,7 @@ export type Database = {
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username?: string | null
+          username?: string
         }
         Relationships: []
       }
