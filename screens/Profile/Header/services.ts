@@ -17,12 +17,16 @@ export const getHeader = async (
         sales_count: order_history_item!seller_id(count),
         followers: follow!dest_id(count),
         following: follow!source_id(count),
-        is_following: follow!dest_id!inner(count)
+        is_following: follow!dest_id!inner(count),
+        dm_conversation1: dm_conversation!user1_id(id),
+        dm_conversation2: dm_conversation!user2_id(id)
       `
     )
     .eq('id', userId)
     .eq('is_following.source_id', currentUserId)
     .eq('is_following.dest_id', userId)
+    .eq('dm_conversation1.user2_id', currentUserId)
+    .eq('dm_conversation2.user1_id', currentUserId)
     .single();
 
   if (error) {
@@ -40,6 +44,12 @@ export const getHeader = async (
     followerCount: data.followers[0].count,
     followingCount: data.following[0].count,
     isFollowing: data.is_following[0].count > 0,
+    dmConversationId:
+      data.dm_conversation1.length > 0
+        ? data.dm_conversation1[0].id
+        : data.dm_conversation2.length > 0
+        ? data.dm_conversation2[0].id
+        : null,
   };
 };
 

@@ -40,6 +40,7 @@ const Activity = () => {
         <HeadingText variant="h5-bold">Group Postings</HeadingText>
         {data?.groupPostings.map((post) => (
           <Post
+            id={post.id}
             key={post.id}
             title={post.title}
             description={post.description}

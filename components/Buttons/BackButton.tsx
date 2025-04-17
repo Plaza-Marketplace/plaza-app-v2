@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ChevronLeft } from '../Icons';
 import Color from '@/constants/Color';
 import PressableOpacity from './PressableOpacity';

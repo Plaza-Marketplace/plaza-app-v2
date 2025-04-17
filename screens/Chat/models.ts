@@ -1,4 +1,6 @@
 export type ChatScreen = {
+  id: Id | null;
+
   imageUrl: Url | null;
 
   name: string;

@@ -14,4 +14,6 @@ export type Header = {
   followingCount: number;
 
   isFollowing: boolean;
+
+  dmConversationId: Id | null;
 };

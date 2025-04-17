@@ -43,6 +43,7 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
         }}
         renderItem={({ item }) => (
           <Post
+            id={item.id}
             title={item.title}
             description={item.description}
             postType={item.postType}

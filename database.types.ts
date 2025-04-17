@@ -270,17 +270,17 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          name: string
+          name: string | null
         }
         Insert: {
           created_at?: string
           id?: number
-          name: string
+          name?: string | null
         }
         Update: {
           created_at?: string
           id?: number
-          name?: string
+          name?: string | null
         }
         Relationships: []
       }
@@ -313,6 +313,81 @@ export type Database = {
           },
           {
             foreignKeyName: "conversation_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dm_conversation: {
+        Row: {
+          created_at: string
+          id: number
+          user1_id: number
+          user2_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          user1_id: number
+          user2_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          user1_id?: number
+          user2_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dm_conversation_user1_id_fkey"
+            columns: ["user1_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dm_conversation_user2_id_fkey"
+            columns: ["user2_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dm_conversation_message: {
+        Row: {
+          content: string
+          created_at: string
+          dm_conversation_id: number
+          id: number
+          user_id: number
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          dm_conversation_id: number
+          id?: number
+          user_id: number
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          dm_conversation_id?: number
+          id?: number
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dm_conversation_message_dm_conversation_id_fkey"
+            columns: ["dm_conversation_id"]
+            isOneToOne: false
+            referencedRelation: "dm_conversation"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "dm_conversation_message_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"

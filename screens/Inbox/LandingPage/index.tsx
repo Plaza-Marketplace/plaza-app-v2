@@ -47,6 +47,7 @@ export const LandingPage = () => {
             <ChatPreview
               key={message.id}
               id={message.id}
+              userId={message.userId}
               name={message.name}
               imageUrl={message.imageUrl}
               latestMessage={message.latestMessage}

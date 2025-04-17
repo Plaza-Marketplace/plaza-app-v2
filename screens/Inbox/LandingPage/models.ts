@@ -6,6 +6,8 @@ export type LandingPage = {
 
     name: string;
 
+    userId: Id;
+
     latestMessage: string;
   }[];
 };

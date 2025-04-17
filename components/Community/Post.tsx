@@ -11,6 +11,8 @@ import { router } from 'expo-router';
 import ProductActivityCard from '../Product/ProductActivityCard';
 
 interface PostProps {
+  id: Id;
+
   title: string;
 
   description: string;
@@ -52,9 +54,12 @@ interface PostProps {
   };
 
   isOnCommunityPage: boolean;
+
+  isPressable?: boolean;
 }
 
 const Post: FC<PostProps> = ({
+  id,
   title,
   description,
   postType,
@@ -62,9 +67,19 @@ const Post: FC<PostProps> = ({
   poster,
   community,
   isOnCommunityPage,
+  isPressable = true,
 }) => {
+  const handlePress = () => {
+    router.push({
+      pathname: '/post-modal',
+      params: { postId: id },
+    });
+  };
+
+  const Container = isPressable ? PressableOpacity : View;
+
   return (
-    <View style={styles.container}>
+    <Container style={styles.container} onPress={handlePress}>
       {isOnCommunityPage ? (
         <UserInfo
           username={poster.username}
@@ -84,9 +99,18 @@ const Post: FC<PostProps> = ({
             >
               <BodyText variant="sm-medium">{community.name}</BodyText>
             </PressableOpacity>
-            <BodyText variant="sm" color={Color.NEUTRALS_DEFAULT}>
-              @{poster.username}
-            </BodyText>
+            <PressableOpacity
+              onPress={() =>
+                router.push({
+                  pathname: '/profile-modal',
+                  params: { id: poster.id },
+                })
+              }
+            >
+              <BodyText variant="sm" color={Color.NEUTRALS_DEFAULT}>
+                @{poster.username}
+              </BodyText>
+            </PressableOpacity>
           </View>
         </View>
       )}
@@ -100,7 +124,7 @@ const Post: FC<PostProps> = ({
           thumbnailUrl={product.thumbnailUrl}
         />
       )}
-    </View>
+    </Container>
   );
 };
 

@@ -1,6 +1,18 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { FlatList, KeyboardAvoidingView, Platform, View } from 'react-native';
-import { useGetChatScreen, useSendMessage } from './hooks';
+import {
+  FlatList,
+  KeyboardAvoidingView,
+  Platform,
+  TextInput,
+  View,
+} from 'react-native';
+import {
+  useGetConversationScreen,
+  useGetDirectMessageScreen,
+  useSendDmMessage,
+  useSendFirstMessage,
+  useSendMessage,
+} from './hooks';
 import { Image } from 'expo-image';
 import HeadingText from '@/components/Texts/HeadingText';
 import Message from '@/components/Inbox/Message';
@@ -17,32 +29,55 @@ import BackButton from '@/components/Buttons/BackButton';
 import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChatScreen } from './models';
-import { TextInput } from 'react-native-gesture-handler';
 
 interface ChatProps {
-  conversationId: Id;
+  conversationId?: Id;
+  userId?: Id;
 }
 
-const Chat: FC<ChatProps> = ({ conversationId }) => {
+const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const { data, error } = useGetChatScreen(conversationId);
+
+  // Hooks used if the user is in a conversation
+  const { data: conversationScreen, error: conversationScreenError } =
+    useGetConversationScreen(conversationId);
   const { mutate: sendMessage } = useSendMessage(conversationId);
+
+  // Hooks used if the user is in a direct message
+  const { data: directMessageScreen, error: directMessageScreenError } =
+    useGetDirectMessageScreen(userId);
+  const { mutate: sendDmMessage } = useSendDmMessage(
+    directMessageScreen?.id ?? undefined
+  );
+  const { mutate: sendFirstMessage } = useSendFirstMessage(userId);
+
   const [content, setContent] = useState('');
   const inputRef = useRef<TextInput>(null);
 
-  const handleSubmit = () => {
+  const screenData = conversationScreen ?? directMessageScreen;
+
+  const handleSubmit = async () => {
     if (content === '') return;
 
-    sendMessage(content);
+    if (conversationId) {
+      sendMessage(content);
+    } else if (directMessageScreen?.id) {
+      sendDmMessage(content);
+    } else {
+      sendFirstMessage(content);
+    }
+
     inputRef.current?.blur();
     inputRef.current?.clear();
     setContent('');
   };
 
-  const members = data?.members ?? [];
+  const members = screenData?.members ?? [];
 
   useEffect(() => {
+    if (!conversationId) return;
+
     const channel = supabase
       .channel(`messages_in_${conversationId}`)
       .on(
@@ -86,7 +121,53 @@ const Chat: FC<ChatProps> = ({ conversationId }) => {
     };
   }, [conversationId, user?.id]);
 
-  const messages = data?.messages ?? [];
+  useEffect(() => {
+    if (!directMessageScreen?.id) return;
+
+    const channel = supabase
+      .channel(`dm_messages_in_${directMessageScreen.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'dm_conversation_message',
+          filter: `dm_conversation_id=eq.${directMessageScreen.id}`,
+        },
+        (payload) => {
+          queryClient.setQueryData<ChatScreen>(
+            ['chatScreen', userId, user?.id],
+            (oldData) => {
+              if (!oldData) return oldData;
+
+              const newMessage = {
+                id: payload.new.id,
+                content: payload.new.content,
+                senderId: payload.new.user_id,
+                profileImageUrl:
+                  members.find((member) => member.id === payload.new.user_id)
+                    ?.profileImageUrl ?? null,
+                createdAt: payload.new.created_at,
+              };
+
+              const newMessages = [newMessage, ...oldData.messages];
+
+              return {
+                ...oldData,
+                messages: newMessages,
+              };
+            }
+          );
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [directMessageScreen?.id, user?.id]);
+
+  const messages = screenData?.messages ?? [];
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,10 +184,10 @@ const Chat: FC<ChatProps> = ({ conversationId }) => {
               borderRadius: 16,
               backgroundColor: Color.GREY_200,
             }}
-            source={{ uri: data?.imageUrl }}
+            source={{ uri: screenData?.imageUrl }}
           />
 
-          <HeadingText variant="h6-bold">{data?.name}</HeadingText>
+          <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
         </View>
         <FlatList
           data={messages}

@@ -2,9 +2,17 @@ import Chat from '@/screens/Chat';
 import { useLocalSearchParams } from 'expo-router';
 
 const ChatScreen = () => {
-  const { conversationId } = useLocalSearchParams<{ conversationId: string }>();
+  const { conversationId, userId } = useLocalSearchParams<{
+    conversationId?: string;
+    userId?: string;
+  }>();
 
-  return <Chat conversationId={parseInt(conversationId)} />;
+  return (
+    <Chat
+      conversationId={conversationId ? parseInt(conversationId) : undefined}
+      userId={userId ? parseInt(userId) : undefined}
+    />
+  );
 };
 
 export default ChatScreen;

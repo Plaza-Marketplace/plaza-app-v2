@@ -12,6 +12,8 @@ interface ChatPreviewProps {
 
   imageUrl: string | null;
 
+  userId: Id;
+
   name: string;
 
   latestMessage: string;
@@ -20,13 +22,14 @@ interface ChatPreviewProps {
 const ChatPreview: FC<ChatPreviewProps> = ({
   id,
   imageUrl,
+  userId,
   name,
   latestMessage,
 }) => {
   const handlePress = () => {
     router.push({
       pathname: '/chat',
-      params: { conversationId: id },
+      params: { userId: userId },
     });
   };
 

@@ -3,7 +3,7 @@ export type CatalogProduct = {
 
   name: string;
 
-  price: number;
+  price: number | null;
 
   thumbnailUrl: Url | null;
 

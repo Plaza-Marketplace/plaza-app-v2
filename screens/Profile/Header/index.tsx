@@ -10,6 +10,7 @@ import HeadingText from '@/components/Texts/HeadingText';
 import Rating from '@/components/Rating';
 import BodyText from '@/components/Texts/BodyText';
 import { Header as HeaderType } from './models';
+import { router } from 'expo-router';
 
 interface HeaderProps {
   userId: Id;
@@ -20,6 +21,13 @@ const Header: FC<HeaderProps> = ({ userId, header }) => {
   const { user: currentUser } = useAuth();
   const { mutate: followUser } = useFollowUser();
   const { mutate: unfollowUser } = useUnfollowUser();
+
+  const handlePress = () => {
+    router.push({
+      pathname: '/chat',
+      params: { userId: userId },
+    });
+  };
 
   return (
     <View style={styles.header}>
@@ -64,7 +72,11 @@ const Header: FC<HeaderProps> = ({ userId, header }) => {
               }
             }}
           />
-          <PlazaButton style={{ flex: 1 }} title="Message" />
+          <PlazaButton
+            style={{ flex: 1 }}
+            title="Message"
+            onPress={handlePress}
+          />
         </View>
       )}
       <ExpandableDescription
