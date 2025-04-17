@@ -15,7 +15,7 @@ import { supabase } from '@/utils/supabase';
 import { useAuth } from '@/contexts/AuthContext';
 import { Redirect } from 'expo-router';
 import GoogleOAuth from '@/components/Auth/GoogleOAuth';
-import AppleOAuth from '@/components/Auth/AppleOAuth';
+import AppleOAuth from '@/components/Auth/AppleSignIn';
 
 const Login = () => {
   const { isLoading, session } = useAuth();

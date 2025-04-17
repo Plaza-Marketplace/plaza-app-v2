@@ -14,6 +14,7 @@
     },
     "ios": {
       "supportsTablet": false,
+      "usesAppleSignIn": true,
       "bundleIdentifier": "com.plaza.app",
       "associatedDomains": ["applinks:www.plaza-app.com"],
       "infoPlist": {
@@ -62,6 +63,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
       "expo-font",
       "expo-splash-screen",
       "expo-video",
