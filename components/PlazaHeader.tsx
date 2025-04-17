@@ -59,7 +59,6 @@ export default PlazaHeader;
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: Color.WHITE,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

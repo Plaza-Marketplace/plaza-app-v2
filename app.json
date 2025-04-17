@@ -17,7 +17,12 @@
       "bundleIdentifier": "com.plaza.app",
       "associatedDomains": ["applinks:www.plaza-app.com"],
       "infoPlist": {
-        "ITSAppUsesNonExemptEncryption": false
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Plaza uses the camera for product photo taking and video recording for uploading to the marketplace. The photos and videos you take are stored in our database and are not shared with any third party.",
+        "NSMicrophoneUsageDescription": "Plaza uses the microphone for video recording for content in the marketplace. The videos you record are stored in our database and are not shared with any third party.",
+        "NSPhotoLibraryUsageDescription": "Plaza uses the photo library for product photo taking and video recording for uploading to the marketplace. The photos and videos you take are stored in our database and are not shared with any third party.",
+        "NSLocationWhenInUseUsageDescription": "Plaza uses your location to show your current location on the craft fair map and to refer you to craft fair stands near your location. Your location history is NOT stored in our database.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Plaza uses your location to show your current location on the craft fair map and to refer you to craft fair stands near your location. Your location history is NOT stored in our database."
       }
     },
     "android": {
