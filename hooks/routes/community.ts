@@ -4,7 +4,12 @@ import {
   deleteCommunityMember,
 } from '@/services/crud/communityMember';
 import { getCommunityPage } from '@/services/route/community';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  skipToken,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export const useJoinCommunity = (id: Id) => {
   const { user } = useAuth();
@@ -57,9 +62,10 @@ export const useLeaveCommunity = (id: Id) => {
 };
 
 export const useGetCommunityPage = (id: Id) => {
+  const { user } = useAuth();
   return useQuery({
-    queryKey: ['community', id],
-    queryFn: () => getCommunityPage(id),
+    queryKey: ['community', id, user?.id],
+    queryFn: user ? () => getCommunityPage(id, user.id) : skipToken,
     staleTime: 1000 * 60 * 5,
   });
 };

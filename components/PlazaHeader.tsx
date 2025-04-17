@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native';
 import React, { FC, ReactNode } from 'react';
-import HeaderText from './Texts/HeaderText';
 import PressableOpacity from './Buttons/PressableOpacity';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import Spacing from '@/constants/Spacing';
@@ -8,7 +7,6 @@ import { router } from 'expo-router';
 import Color from '@/constants/Color';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Dropdown from './Dropdown/Dropdown';
-import SubheaderText from './Texts/SubheaderText';
 import BoldSubheaderText from './Texts/BoldSubheaderText';
 
 interface PlazaHeaderProps {
@@ -61,6 +59,7 @@ export default PlazaHeader;
 
 const styles = StyleSheet.create({
   header: {
+    backgroundColor: Color.WHITE,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
