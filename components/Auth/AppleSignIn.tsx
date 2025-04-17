@@ -3,13 +3,12 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { supabase } from '@/utils/supabase';
 import Radius from '@/constants/Radius';
 import { FC } from 'react';
-import Color from '@/constants/Color';
 
-interface AppleOAuthProps {
+interface AppleSignInButtonProps {
   style?: ViewStyle;
 }
 
-const AppleOAuth: FC<AppleOAuthProps> = ({ style }) => {
+const AppleSignInButton: FC<AppleSignInButtonProps> = ({ style }) => {
   if (Platform.OS === 'ios')
     return (
       <AppleAuthentication.AppleAuthenticationButton
@@ -52,13 +51,14 @@ const AppleOAuth: FC<AppleOAuthProps> = ({ style }) => {
             if (e.code === 'ERR_REQUEST_CANCELED') {
               // handle that the user canceled the sign-in flow
             } else {
-              // handle other errors
+              console.log(e);
             }
           }
         }}
       />
     );
-  return <>{/* Implement Android Auth options. */}</>;
+
+  return null;
 };
 
-export default AppleOAuth;
+export default AppleSignInButton;

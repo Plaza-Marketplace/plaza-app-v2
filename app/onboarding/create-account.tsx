@@ -15,7 +15,7 @@ import { Formik } from 'formik';
 import { supabase } from '@/utils/supabase';
 import { getUserByAuthId } from '@/services/crud/user';
 import GoogleOAuth from '@/components/Auth/GoogleOAuth';
-import AppleOAuth from '@/components/Auth/AppleOAuth';
+import AppleOAuth from '@/components/Auth/AppleSignIn';
 import { useAuth } from '@/contexts/AuthContext';
 import LinkText from '@/components/Texts/LinkText';
 

@@ -2,7 +2,7 @@ import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function AppLayout() {
-  const { session, user, isLoading } = useAuth();
+  const { session, isLoading } = useAuth();
 
   // Only require authentication within the (app) group's layout as users
   // need to be able to access the (auth) group and sign in again.
