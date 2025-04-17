@@ -47,12 +47,13 @@ const CartScreen = () => {
 
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
-  if (!user) return <Loading />;
   const { data: cartItems } = useGetCartItemsByUserId(user?.id);
 
   const { mutate: incrementCartItem } = useAddQuantity(user.id);
   const { mutate: decrementCartItem } = useRemoveQuantity(user.id);
   const { mutate: removeCartItem } = useRemoveCartItem(user.id);
+
+  if (!user) return <Loading />;
 
   const subtotal =
     cartItems?.reduce(
