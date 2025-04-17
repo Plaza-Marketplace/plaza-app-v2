@@ -25,10 +25,11 @@ import ReviewCard from '@/components/ReviewCard';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { useAuth } from '@/contexts/AuthContext';
-import { Bookmark } from '@/components/Icons';
+import { Bookmark, Check } from '@/components/Icons';
 import AddToGroupModal from '@/components/Community/AddToGroupModal';
 import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
+import Spacing from '@/constants/Spacing';
 
 interface ProductModalProps {
   id: Id;
@@ -56,6 +57,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
   const { mutate: addToCart } = useAddToCart(id);
   const { mutate: deleteProduct } = useDeleteProduct(id);
+  const [showConfirmAdded, setShowConfirmAdded] = useState(false);
 
   const [selectedVariantValues, setSelectedVariantValues] = useState<
     Record<string, string>
@@ -80,16 +82,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const handleVariantSelect = (type: string, value: string) => {
     setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
     console.log('what', data?.variantInfo);
-  };
-
-  const handleAddToCart = () => {
-    createCartItem();
-    track(Event.CLICKED_ADD_TO_CART, { productId: product.id });
-  };
-
-  const handleBuyNow = () => {
-    createOrderHistoryItem();
-    track(Event.CLICKED_BUY_NOW, { productId: product.id });
   };
 
   return (
@@ -236,9 +228,39 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                 <Footer
                   leftTitle="Add to Cart"
                   rightTitle="Buy Now"
-                  leftOnPress={addToCart}
+                  leftOnPress={() => {
+                    addToCart();
+                    setShowConfirmAdded(true);
+                    setTimeout(() => {
+                      setShowConfirmAdded(false);
+                    }, 2000);
+                  }}
                 />
               )}
+            </View>
+
+            <View
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                display: showConfirmAdded ? 'flex' : 'none',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <View
+                style={[
+                  styles.checkContainer,
+                  { marginBottom: Spacing.SPACING_4 },
+                ]}
+              >
+                <Check width={45} height={45} color={Color.WHITE} />
+              </View>
+              <HeadingText variant="h5-bold">Added to cart!</HeadingText>
             </View>
           </>
         )}
@@ -276,5 +298,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: 4,
     flexWrap: 'wrap',
+  },
+  checkContainer: {
+    padding: 10,
+    backgroundColor: Color.SUCCESS_DEFAULT,
+    borderRadius: 9999,
   },
 });

@@ -39,17 +39,11 @@ type UpdateUser = {
 
   lastName?: string;
 
-  username?: string;
-
   displayName?: string;
 
   description?: string | null;
 
-  profileImageUrl?: string | null;
-
-  stripeCustomerId?: string | null;
-
-  stripeAccountId?: string | null;
+  profileImageKey?: string | null;
 };
 
 type Seller = {
