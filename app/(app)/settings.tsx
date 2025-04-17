@@ -3,6 +3,7 @@ import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
 import Spacing from '@/constants/Spacing';
 import {
+  Alert,
   KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
@@ -21,6 +22,10 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import PlazaHeader from '@/components/PlazaHeader';
+import ProfileHeader from '@/components/Headers/ProfileHeader';
+import PlazaButton from '@/components/Buttons/PlazaButton';
+import { deleteAccount } from '@/services/supabase_functions/deleteUser';
+import { Ionicons } from '@expo/vector-icons';
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -40,14 +45,45 @@ const Settings = () => {
       </SafeAreaView>
     );
   }
+
+  const onPressDelete = () => {
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete your account?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            // Call your delete function here
+            console.log('User confirmed delete');
+            await deleteAccount();
+            // router.replace('/login');
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   return (
-    <View style={styles.container}>
-      <PlazaHeader name="Settings" />
+    <SafeAreaView style={styles.container}>
+      <ProfileHeader
+        name="Settings"
+        accountForSafeArea={false}
+        rightIcon={<Ionicons name="chevron-back" size={24} color="black" />}
+        rightOnClick={() => router.back()}
+      />
       <Formik
         initialValues={{
           firstName: user.firstName,
           lastName: user.lastName,
           description: user.description,
+          displayName: user.displayName,
         }}
         onSubmit={(values) => {
           const updates: UpdateUser = {
@@ -55,6 +91,7 @@ const Settings = () => {
             firstName: values.firstName,
             lastName: values.lastName,
             description: values.description,
+            displayName: values.displayName,
           };
           mutate(updates);
         }}
@@ -62,48 +99,44 @@ const Settings = () => {
         {({ handleChange, handleBlur, handleSubmit, values }) => (
           <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
             <ScrollView contentContainerStyle={styles.container}>
-              <View style={{ gap: Spacing.SPACING_3 }}>
-                <BoldStandardText>First Name</BoldStandardText>
-                <PlazaTextInput
-                  onChangeText={handleChange('firstName')}
-                  placeholder="Your first name..."
-                  value={values.firstName}
-                />
-              </View>
-              <View style={{ gap: Spacing.SPACING_3 }}>
-                <BoldStandardText>Last Name</BoldStandardText>
-                <PlazaTextInput
-                  onChangeText={handleChange('lastName')}
-                  placeholder="Your last name..."
-                  value={values.lastName}
-                />
-              </View>
-              <View style={{ gap: Spacing.SPACING_3 }}>
-                <BoldStandardText>Description</BoldStandardText>
-                <PlazaTextInput
-                  onChangeText={handleChange('description')}
-                  placeholder="Example: i am cool"
-                  style={{ height: 100 }}
-                  value={values.description || ''}
-                />
-              </View>
+              <PlazaTextInput
+                label="First Name"
+                onChangeText={handleChange('firstName')}
+                placeholder="Your first name..."
+                value={values.firstName}
+              />
+              <PlazaTextInput
+                label="Last Name"
+                onChangeText={handleChange('lastName')}
+                placeholder="Your last name..."
+                value={values.lastName}
+              />
+              <PlazaTextInput
+                label="Display Name"
+                onChangeText={handleChange('displayName')}
+                placeholder="Your display name..."
+                value={values.displayName || ''}
+              />
+              <PlazaTextInput
+                label="Description"
+                multiline
+                onChangeText={handleChange('description')}
+                placeholder="Example: i am cool"
+                style={{ height: 100 }}
+                value={values.description || ''}
+              />
 
-              <PressableOpacity
-                onPress={() => {
-                  router.push('/test-api-route');
-                }}
-              >
-                <Text style={{ color: Color.BLACK }}>Test API Route</Text>
-              </PressableOpacity>
-
-              <PressableOpacity
+              <PlazaButton
+                title="Log out"
                 onPress={() => {
                   supabase.auth.signOut();
                   // queryClient.clear();
                   router.navigate('/login');
                 }}
-              >
-                <Text style={{ color: 'red' }}>Logout</Text>
+              />
+
+              <PressableOpacity onPress={onPressDelete}>
+                <Text style={{ color: 'red' }}>Delete Account</Text>
               </PressableOpacity>
             </ScrollView>
 
@@ -118,7 +151,7 @@ const Settings = () => {
           </KeyboardAvoidingView>
         )}
       </Formik>
-    </View>
+    </SafeAreaView>
   );
 };
 
