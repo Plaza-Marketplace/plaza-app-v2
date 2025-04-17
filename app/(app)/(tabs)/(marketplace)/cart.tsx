@@ -61,6 +61,11 @@ const CartScreen = () => {
       0
     ) || 0;
 
+  const shipping = cartItems?.reduce(
+    (acc, curr) => acc + curr.product.shippingPrice * curr.quantity,
+    0
+  );
+
   const handleAddPress = (cartItem: CartItem) => {
     // Logic to add item to cart
     incrementCartItem(cartItem.id);
@@ -143,15 +148,12 @@ const CartScreen = () => {
             </View>
 
             <View style={styles.textRow}>
-              <BoldStandardText style={styles.text}>Taxes:</BoldStandardText>
-              <StandardText style={styles.text}>lol</StandardText>
-            </View>
-
-            <View style={styles.textRow}>
               <BoldStandardText style={styles.text}>
                 Delivery Fee:
               </BoldStandardText>
-              <StandardText style={styles.text}>FREE</StandardText>
+              <StandardText style={styles.text}>
+                {formatPrice(shipping)}
+              </StandardText>
             </View>
           </Animated.View>
         </BottomSheetView>
