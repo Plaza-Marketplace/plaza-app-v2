@@ -21,15 +21,18 @@ export const useJoinCommunity = (id: Id) => {
       ? () => createCommunityMember({ communityId: id, userId: user.id })
       : undefined,
     onMutate: () => {
-      queryClient.setQueryData<CommunityPage>(['community', id], (data) => {
-        if (!data) return data;
+      queryClient.setQueryData<CommunityPage>(
+        ['community', id, user?.id],
+        (data) => {
+          if (!data) return data;
 
-        return {
-          ...data,
-          memberCount: data.memberCount + 1,
-          isMember: true,
-        };
-      });
+          return {
+            ...data,
+            memberCount: data.memberCount + 1,
+            isMember: true,
+          };
+        }
+      );
     },
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] }),
@@ -46,15 +49,18 @@ export const useLeaveCommunity = (id: Id) => {
       ? () => deleteCommunityMember({ communityId: id, userId: user.id })
       : undefined,
     onMutate: () => {
-      queryClient.setQueryData<CommunityPage>(['community', id], (data) => {
-        if (!data) return data;
+      queryClient.setQueryData<CommunityPage>(
+        ['community', id, user?.id],
+        (data) => {
+          if (!data) return data;
 
-        return {
-          ...data,
-          memberCount: data.memberCount - 1,
-          isMember: false,
-        };
-      });
+          return {
+            ...data,
+            memberCount: data.memberCount - 1,
+            isMember: false,
+          };
+        }
+      );
     },
     onSuccess: () =>
       queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] }),

@@ -152,7 +152,7 @@ const CartScreen = () => {
                 Delivery Fee:
               </BoldStandardText>
               <StandardText style={styles.text}>
-                {formatPrice(shipping)}
+                {shipping ? formatPrice(shipping) : 'Free'}
               </StandardText>
             </View>
           </Animated.View>
