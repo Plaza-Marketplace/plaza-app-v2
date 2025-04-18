@@ -30,6 +30,7 @@ import AddToGroupModal from '@/components/Community/AddToGroupModal';
 import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
 import Spacing from '@/constants/Spacing';
+import { createBuyNow } from '@/services/stripe';
 
 interface ProductModalProps {
   id: Id;
@@ -54,7 +55,11 @@ const CustomHandle = () => (
 
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { user } = useAuth();
-  const { data, isLoading, error } = useGetProductModalProduct(id, isOpen);
+  const {
+    data: product,
+    isLoading,
+    error,
+  } = useGetProductModalProduct(id, isOpen);
   const { mutate: addToCart } = useAddToCart(id);
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const [showConfirmAdded, setShowConfirmAdded] = useState(false);
@@ -69,20 +74,34 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const addToGroupRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
-    if (data?.variants) {
+    if (product?.variants) {
       const initialSelectedVariantValues: Record<string, string> = {};
-      Object.entries(data.variants).forEach(([type, values]) => {
+      Object.entries(product.variants).forEach(([type, values]) => {
         initialSelectedVariantValues[type] = values[0];
       });
 
       setSelectedVariantValues(initialSelectedVariantValues);
     }
-  }, [data?.variants]);
+  }, [product?.variants]);
 
   const handleVariantSelect = (type: string, value: string) => {
     setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
-    console.log('what', data?.variantInfo);
+    console.log('what', product?.variantInfo);
   };
+
+  const handleBuyNow = () => {
+    console.log('here');
+    router.push({
+      pathname: '/checkout-item',
+      params: { productId: id },
+    });
+  };
+
+  if (!product || isLoading || error) {
+    return null;
+  }
+
+  console.log('product', product);
 
   return (
     <>
@@ -104,7 +123,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
         handleComponent={CustomHandle}
         backgroundStyle={{ borderRadius: Radius.LG }}
       >
-        {!isLoading && data !== undefined && (
+        {!isLoading && product !== undefined && (
           <>
             <BottomSheetScrollView
               style={{
@@ -117,7 +136,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
               <View style={styles.carouselContainer}>
                 <Carousel
                   loop={false}
-                  data={data?.imageUrls ?? []}
+                  data={product?.imageUrls ?? []}
                   renderItem={({ item }) => (
                     <Image
                       source={{ uri: item }}
@@ -140,12 +159,12 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                   }}
                 >
                   <View>
-                    <HeadingText variant="h5-bold">{data?.name}</HeadingText>
+                    <HeadingText variant="h5-bold">{product?.name}</HeadingText>
                     <BodyText variant="lg-medium">
-                      {!data.hasVariants
-                        ? formatPrice(data.price ?? NaN)
+                      {!product.hasVariants
+                        ? formatPrice(product.price ?? NaN)
                         : formatPrice(
-                            data.variantInfo.find((variant) =>
+                            product.variantInfo.find((variant) =>
                               areObjectsEqual(
                                 variant.selectedVariants,
                                 selectedVariantValues
@@ -170,19 +189,21 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                       onPress={() =>
                         router.push({
                           pathname: '/profile-modal',
-                          params: { id: data?.seller.id },
+                          params: { id: product?.seller.id },
                         })
                       }
                     >
-                      <BodyText variant="md">{data?.seller.username}</BodyText>
+                      <BodyText variant="md">
+                        {product?.seller.username}
+                      </BodyText>
                     </PressableOpacity>
-                    <Rating rating={data?.seller.averageRating ?? 0} />
+                    <Rating rating={product?.seller.averageRating ?? 0} />
                   </View>
                 </View>
-                <BodyText variant="md">{data?.description}</BodyText>
+                <BodyText variant="md">{product?.description}</BodyText>
                 <View>
-                  {data.hasVariants &&
-                    Object.entries(data.variants).map(([type, values]) => (
+                  {product.hasVariants &&
+                    Object.entries(product.variants).map(([type, values]) => (
                       <View key={type} style={styles.variantsContainer}>
                         <BodyText variant="lg-medium">{type}</BodyText>
                         <View style={styles.productVariants}>
@@ -204,9 +225,9 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     ))}
                 </View>
                 <HeadingText variant="h6-bold">
-                  Seller Reviews ({data?.seller.reviews.length})
+                  Seller Reviews ({product?.seller.reviews.length})
                 </HeadingText>
-                {data?.seller.reviews.map((review) => (
+                {product?.seller.reviews.map((review) => (
                   <ReviewCard
                     key={review.id}
                     username={review.poster.username}
@@ -218,7 +239,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
               </View>
             </BottomSheetScrollView>
             <View style={{ paddingBottom: insets.bottom }}>
-              {user?.id === data?.seller.id ? (
+              {user?.id === product?.seller.id ? (
                 <Footer
                   leftTitle="Delete Product"
                   rightTitle="Edit Product"
@@ -234,6 +255,10 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     setTimeout(() => {
                       setShowConfirmAdded(false);
                     }, 2000);
+                  }}
+                  rightOnPress={() => {
+                    bottomSheetRef.current?.close();
+                    handleBuyNow();
                   }}
                 />
               )}

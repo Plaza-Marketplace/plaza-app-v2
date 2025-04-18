@@ -117,10 +117,26 @@ const createPayment = async (transfer_group: UUID) => {
   return data;
 };
 
+const createBuyNow = async (productId: Id) => {
+  const { data, error } = await supabase.functions.invoke('create-buy-now', {
+    body: {
+      productId: productId,
+    },
+  });
+
+  if (error) {
+    console.error('Error creating buy now:', error);
+    throw error;
+  }
+
+  return data;
+};
+
 export {
   createAccountLink,
   createPaymentIntent,
   createStripeAccount,
   createStripeCustomer,
   createPayment,
+  createBuyNow,
 };

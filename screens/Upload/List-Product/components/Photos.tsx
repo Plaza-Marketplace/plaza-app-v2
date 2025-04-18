@@ -1,7 +1,7 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import React, { FC, useState } from 'react';
 import { CreateListingForm } from '../schema';
-import { FormikProps, useFormikContext } from 'formik';
+import { useFormikContext } from 'formik';
 import * as ImagePicker from 'expo-image-picker';
 import HighlightButton from '@/components/Buttons/HighlightButton';
 import { Upload } from '@/components/Icons';

@@ -7,7 +7,7 @@ import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
 import * as FileSystem from 'expo-file-system';
 import PlazaHeader from '@/components/PlazaHeader';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTakenPhoto } from '@/contexts/TakenPhotoProvider';
 import { router } from 'expo-router';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -16,7 +16,6 @@ import {
   CreateListingForm,
   VariantOption,
   VariantsDisplay,
-  VariantValue,
 } from '@/screens/Upload/List-Product/schema';
 import { styles } from '@/screens/Upload/List-Product/styles';
 import Photos from '@/screens/Upload/List-Product/components/Photos';
@@ -30,10 +29,6 @@ import {
   bulkCreateVariantOptions,
   bulkCreateVariantTypes,
   bulkCreateVariantValues,
-  createProductVariant,
-  createVariantOption,
-  createVariantType,
-  createVariantValue,
 } from '@/services/crud/variant';
 
 const CreateListingScreen = () => {

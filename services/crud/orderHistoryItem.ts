@@ -7,12 +7,13 @@ import {
   UpdateOrderHistoryItem,
 } from '@/models/orderHistoryItem';
 import { Tables } from '@/database.types';
+import { getImagePublicUrl } from './storage';
 
 // format data returned by supabase
 const formatOrderHistoryData = (
   orderHistoryItem: Tables<'order_history_item'>,
-  buyer: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_url'>,
-  seller: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_url'>,
+  buyer: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_key'>,
+  seller: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_key'>,
   product: Tables<'product'>,
   imageKeys: { image_key: string }[]
 ): OrderHistoryItem => {
@@ -21,12 +22,12 @@ const formatOrderHistoryData = (
     buyer: {
       id: buyer.id,
       username: buyer.username,
-      profileImageUrl: buyer.profile_image_url,
+      profileImageUrl: getImagePublicUrl(buyer.profile_image_key),
     },
     seller: {
       id: seller.id,
       username: seller.username,
-      profileImageUrl: seller.profile_image_url,
+      profileImageUrl: getImagePublicUrl(seller.profile_image_key),
     },
     finalPrice: orderHistoryItem.final_price,
     product: formatProduct(product, imageKeys),
@@ -45,12 +46,12 @@ const queryString = `
     buyer: user!buyer_id(
       id,
       username,
-      profile_image_url
+      profile_image_key
     ),
     seller: user!seller_id(
       id,
       username,
-      profile_image_url
+      profile_image_key
     ),
     product: product!product_id(
       *,
@@ -127,14 +128,15 @@ export const createOrderHistoryItems = async (
     )
     .select(queryString);
 
+  console.log(data);
+  console.error(error);
+
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(
       `The create order history items query failed with exception ${error}`
     );
   }
-
-  console.log(data);
 
   return data.map((item) =>
     formatOrderHistoryData(

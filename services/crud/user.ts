@@ -1,5 +1,8 @@
 import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
+import { decode } from 'base64-arraybuffer';
+import { v4 as uuidv4 } from 'uuid';
+import { getImagePublicUrl } from './storage';
 
 export const formatUser = (user: Tables<'user'>): User => {
   return {
@@ -11,7 +14,9 @@ export const formatUser = (user: Tables<'user'>): User => {
     displayName: user.display_name,
     email: user.email,
     description: user.description,
-    profileImageUrl: user.profile_image_url,
+    profileImageUrl: user.profile_image_key
+      ? getImagePublicUrl(user.profile_image_key)
+      : null,
     createdAt: user.created_at,
     stripeCustomerId: user.stripe_customer_id,
     stripeAccountId: user.stripe_account_id,
@@ -92,13 +97,23 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
   const supabaseUpdates = {
     first_name: updates.firstName,
     last_name: updates.lastName,
-    username: updates.username,
     display_name: updates.displayName,
     description: updates.description,
-    profile_image_url: updates.profileImageUrl,
-    stripe_customer_id: updates.stripeCustomerId,
-    stripe_account_id: updates.stripeAccountId,
+    profile_image_key: updates.profileImageBase64,
   };
+
+  if (updates.profileImageBase64) {
+    const key = uuidv4();
+    const path = `private/${key}`;
+
+    await supabase.storage
+      .from('images')
+      .upload(path, decode(updates.profileImageBase64), {
+        contentType: 'image/jpeg',
+      });
+
+    supabaseUpdates.profile_image_key = key;
+  }
 
   const filteredData = Object.fromEntries(
     Object.entries(supabaseUpdates).filter(

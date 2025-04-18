@@ -43,7 +43,7 @@ type UpdateUser = {
 
   description?: string | null;
 
-  profileImageKey?: string | null;
+  profileImageBase64?: string | null;
 };
 
 type Seller = {
