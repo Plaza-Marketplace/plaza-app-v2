@@ -71,7 +71,7 @@ export const getProfileHeaderData = async (
     .single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(
       `The get profile header data query for ${profileUserId} failed with exception ${error}`
     );

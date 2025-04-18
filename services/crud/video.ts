@@ -89,7 +89,7 @@ export const getVideos = async (lastVideoId: Id | null): Promise<Video[]> => {
         .select(query)
         .limit(5)
         .order('created_at', { ascending: false });
-  console.log(error);
+  console.error(error);
   if (error) throw new Error('Failed');
 
   if (!data) return [];
@@ -193,7 +193,6 @@ export const getVideoIsLiked = async (
 };
 
 export const createVideo = async (video: CreateVideo): Promise<Video> => {
-  console.log(video);
   const key = uuidv4();
   const path = `private/${key}`;
 
@@ -232,7 +231,7 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
     );
 
   if (createVideoProductError) {
-    console.log(createVideoProductError);
+    console.error(createVideoProductError);
     throw new Error('Failed');
   }
 

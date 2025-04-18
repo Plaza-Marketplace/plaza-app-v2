@@ -77,7 +77,7 @@ export const getPurchaseHistory = async (
     .eq('buyer_id', userId);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(
       `The get purchases query for ${userId} failed with exception ${error}`
     );
@@ -104,7 +104,7 @@ export const getSalesHistory = async (
     .eq('seller_id', userId);
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(
       `The get sales query for ${userId} failed with exception ${error}`
     );

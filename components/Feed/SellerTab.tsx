@@ -9,8 +9,6 @@ interface SellerTabProps {
 const SellerTab: FC<SellerTabProps> = ({ seller }) => {
   const { data, error } = useGetSellerReviews(seller.id);
 
-  console.log(data);
-
   const reviews = data ?? [];
 
   return <ReviewModalTab reviews={reviews} />;

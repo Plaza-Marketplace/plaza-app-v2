@@ -7,7 +7,6 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 const TestAPIRoute = () => {
   const handlePress = async () => {
     const result = await createPayment();
-    console.log(result);
   };
 
   return (

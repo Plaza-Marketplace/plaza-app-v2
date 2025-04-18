@@ -79,21 +79,16 @@ const ShopifySuccess = () => {
 
   const handleSubmit = async () => {
     if (selectedProducts.length === 0) {
-      console.log('No products selected');
       return;
     }
 
-    console.log('here');
-
     const productsToUpload = await Promise.all(
       selectedProducts.map(async (product) => {
-        console.log('anywhere');
         const base64Images = await Promise.all(
           product.imageUrls.map(async (imageUri) => {
             return await imageUrlToArrayBuffer(imageUri);
           })
         );
-        console.log('there');
         return {
           name: product.name,
           sellerId: user?.id,
@@ -107,24 +102,6 @@ const ShopifySuccess = () => {
         } as CreateProduct;
       })
     );
-
-    // const arrayBuffers = await Promise.all(
-    //   selectedProducts.map(async (product) => {
-    //     return await Promise.all(
-    //       product.imageUrls.map(async (imageUri) => {
-    //         return await imageUrlToArrayBuffer(imageUri);
-    //       })
-    //     );
-    //   })
-    // );
-
-    // console.log('productsToUpload', arrayBuffers.length);
-
-    // const keys = await testUploadArrayBuffers(arrayBuffers);
-
-    // console.log(keys);
-
-    console.log('number of products', productsToUpload.length);
 
     createProducts(productsToUpload);
     router.navigate('/shopify-migration/confirmation');
@@ -208,7 +185,6 @@ const ShopifySuccess = () => {
           // Check if products are returned
           if (!data.products || data.products.length === 0) {
             setStatus('No products found');
-            console.log('No products found.');
             return;
           }
           const fetchedProducts: Product[] = data.products.map(

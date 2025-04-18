@@ -121,8 +121,6 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
     )
   );
 
-  console.log(supabaseUpdates, filteredData);
-
   const { data, error } = await supabase
     .from('user')
     .update(filteredData)
@@ -131,11 +129,10 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
     .single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(error.message);
   }
   if (!data) {
-    console.log('????????');
     throw new Error('User not found');
   }
 

@@ -219,7 +219,6 @@ const ConfirmItemScreen = () => {
               )}
               onSelect={(selectedItem) => {
                 // Handle address selection
-                console.log('Selected address:', selectedItem);
                 setSelectedAddress(selectedItem);
               }}
             />
@@ -274,7 +273,7 @@ const ConfirmItemScreen = () => {
         onError={(error) => {
           if (error.code === AddressSheetError.Failed) {
             Alert.alert('There was an error.', 'Check the logs for details.');
-            console.log(error?.localizedMessage);
+            console.error(error?.localizedMessage);
           }
           // Make sure to set `visible` back to false to dismiss the address element.
           setAddressSheetVisible(false);

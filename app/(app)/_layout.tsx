@@ -17,7 +17,6 @@ export default function AppLayout() {
     session &&
     !session.user.user_metadata?.completed_onboarding
   ) {
-    console.log(session.user.user_metadata);
     return <Redirect href="/onboarding/account-details" />;
   }
 

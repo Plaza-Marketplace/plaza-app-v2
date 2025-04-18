@@ -71,7 +71,6 @@ export const getNextCatalogProducts = async (
     .order('created_at', { ascending: false })
     .lt('id', lastProductId)
     .limit(10);
-  console.log(error);
   if (error) {
     throw new Error(error.message);
   }

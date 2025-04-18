@@ -6,7 +6,7 @@ export const addCartQuantity = async (cartItemId: Id) => {
     increment_by: 1,
   });
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error('Failed');
   }
   return;

@@ -56,7 +56,6 @@ const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
             optionValues: [] as string[],
           }}
           onSubmit={(values, { resetForm }) => {
-            console.log(values);
             const newVariant: VariantOption = {
               id: `${values.optionName}-option`,
               name: values.optionName,

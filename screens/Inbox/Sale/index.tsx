@@ -45,7 +45,6 @@ const Sale: FC<SaleProps> = ({ id }) => {
   }
 
   const isOnStep1 = data.trackingNumber === null || data.trackingNumber === '';
-  console.log(isOnStep1);
 
   return (
     <KeyboardAvoidingView

@@ -109,10 +109,7 @@ const LandingPage = () => {
           innerRef={formRef}
           initialValues={initialValues}
           onSubmit={async (values) => {
-            console.log('here');
             if (!values.videoUri) return;
-
-            console.log('ok');
 
             const base64Video = await FileSystem.readAsStringAsync(
               values.videoUri,
@@ -121,8 +118,6 @@ const LandingPage = () => {
               }
             );
 
-            console.log('base64Video', base64Video);
-
             try {
               await createVideo({
                 posterId: user.id,
@@ -130,8 +125,6 @@ const LandingPage = () => {
                 base64Video: base64Video,
                 products: selectedProducts,
               });
-
-              console.log('Video uploaded successfully');
 
               router.push('/video-upload/confirmed');
             } catch (e) {
@@ -239,7 +232,6 @@ const LandingPage = () => {
                         style={styles.iconContainer}
                         onPress={() => {
                           listItemsModalRef.current?.present();
-                          console.log('here');
                         }}
                       >
                         <PlazaText>+</PlazaText>

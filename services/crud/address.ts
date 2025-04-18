@@ -46,8 +46,6 @@ const deleteAddress = async (addressId: Id): Promise<Address> => {
     .select('*')
     .single();
 
-  console.log(data, error);
-
   if (error) throw new Error(error.message);
   if (!data) throw new Error('No data returned');
 
@@ -72,8 +70,6 @@ const getAddresses = async (userId: Id): Promise<Address[]> => {
     .from('address')
     .select('*')
     .eq('created_id', userId);
-
-  console.log(data, error);
 
   if (error) throw new Error(error.message);
   if (!data) throw new Error('No data returned');

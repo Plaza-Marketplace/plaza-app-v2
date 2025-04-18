@@ -38,8 +38,6 @@ const LinkItems = () => {
     setSelectedProducts(tempSelectedProducts);
   };
 
-  console.log(products);
-
   return (
     <FlatList
       numColumns={2}

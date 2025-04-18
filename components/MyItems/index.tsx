@@ -21,8 +21,6 @@ const MyItems: FC<MyItemsProps> = ({
   const { data, error } = useGetMyItemsProducts(enabled);
   const getNextMyItemsProducts = useGetNextMyItemsProducts();
 
-  console.log(user, 'WAOWO');
-
   return (
     <FlatList
       numColumns={2}

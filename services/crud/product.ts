@@ -261,7 +261,6 @@ export const createProducts = async (
   );
 
   return data.map((product, index) => {
-    console.log(keys[index]);
     return {
       id: product.id,
       sellerId: product.seller_id,

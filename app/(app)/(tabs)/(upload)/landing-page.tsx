@@ -30,8 +30,6 @@ const LandingPage = () => {
     return <Loading />;
   }
 
-  console.log(user);
-
   // if (!user.stripeAccountId) {
   //   return <Redirect href={'/seller-onboarding'} />;
   // }

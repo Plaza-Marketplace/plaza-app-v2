@@ -52,7 +52,6 @@ const Login = () => {
             password: '',
           }}
           onSubmit={async (values) => {
-            console.log('here');
             const { error } = await supabase.auth.signInWithPassword({
               email: values.email,
               password: values.password,

@@ -71,7 +71,6 @@ const Settings = () => {
           style: 'destructive',
           onPress: async () => {
             // Call your delete function here
-            console.log('User confirmed delete');
             await deleteAccount();
             // router.replace('/login');
           },

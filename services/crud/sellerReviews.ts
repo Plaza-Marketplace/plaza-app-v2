@@ -82,8 +82,6 @@ export const getSellerReviewsBySellerId = async (
     )
     .eq('seller_id', sellerId);
 
-  console.log(error);
-  console.log(data);
   if (error) throw new Error('Failed');
 
   if (!data) return [];

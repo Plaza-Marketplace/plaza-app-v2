@@ -6,8 +6,6 @@ export const checkUsernameUnique = async (username: string) => {
     .select('username')
     .eq('username', username);
 
-  console.log(data);
-
   if (error) {
     console.error(error);
     throw new Error(error.message);

@@ -86,11 +86,9 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
 
   const handleVariantSelect = (type: string, value: string) => {
     setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
-    console.log('what', product?.variantInfo);
   };
 
   const handleBuyNow = () => {
-    console.log('here');
     router.push({
       pathname: '/checkout-item',
       params: { productId: id },
@@ -100,8 +98,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   if (!product || isLoading || error) {
     return null;
   }
-
-  console.log('product', product);
 
   return (
     <>
@@ -176,7 +172,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                   <PressableOpacity
                     onPress={() => {
                       addToGroupRef.current?.present();
-                      console.log('HELLO');
                     }}
                   >
                     <Bookmark color={Color.BLACK} />

@@ -5,7 +5,6 @@ import { getImagePublicUrl } from '@/services/crud/storage';
 export const getMyItemProducts = async (
   userId: Id
 ): Promise<MyItemsProduct[]> => {
-  console.log('YO HELLO?');
   const { data, error } = await supabase
     .from('product')
     .select(
@@ -21,12 +20,9 @@ export const getMyItemProducts = async (
     .order('created_at', { ascending: false })
     .eq('seller_id', userId)
     .limit(10);
-  console.log('WTFFF', error);
   if (error) {
-    console.log(error);
     throw new Error(error.message);
   }
-  console.log('HERES?');
   return data.map((product) => ({
     id: product.id,
     name: product.name,

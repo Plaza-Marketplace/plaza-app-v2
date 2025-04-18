@@ -18,6 +18,5 @@ export enum Event {
 }
 
 export const track = (event: Event, properties?: Record<string, any>) => {
-  console.log('Tracking event', event, properties);
   mixpanel.track(event, properties);
 };

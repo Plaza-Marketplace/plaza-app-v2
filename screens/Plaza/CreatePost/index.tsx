@@ -35,7 +35,6 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
   const { mutate: createGroupPost } = useCreateGroupPost(groupId);
   const insets = useSafeAreaInsets();
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  console.log()
   return (
     <Formik
       initialValues={{ title: '', description: '', productId: null }}

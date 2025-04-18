@@ -52,7 +52,6 @@ const VideoRecorder = () => {
   };
 
   const onMediaCaptured = useCallback((media: VideoFile, type: 'video') => {
-    console.log(`Media captured! ${JSON.stringify(media)}`);
     setRecordedVideo(media);
     router.navigate('/video-upload/landing-page');
   }, []);
@@ -65,7 +64,6 @@ const VideoRecorder = () => {
           fileType: 'mp4',
           flash: 'off',
           onRecordingFinished: (video) => {
-            console.log('Video saved at:', video.path);
             onMediaCaptured(video, 'video');
           },
           onRecordingError: (error) => {

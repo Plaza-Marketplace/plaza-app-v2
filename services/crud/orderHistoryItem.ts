@@ -96,7 +96,6 @@ export const createOrderHistoryItem = async (
     .single();
 
   if (error) {
-    console.log(error);
     throw new Error(
       `The create order history item query for ${item.userId} failed with exception ${error}`
     );
@@ -128,7 +127,6 @@ export const createOrderHistoryItems = async (
     )
     .select(queryString);
 
-  console.log(data);
   console.error(error);
 
   if (error) {

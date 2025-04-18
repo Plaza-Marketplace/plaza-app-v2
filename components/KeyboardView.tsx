@@ -19,7 +19,6 @@ const KeyboardView: FC<ViewProps> = ({ children, ...rest }) => {
     >
       <Pressable
         onPress={() => {
-          console.log('here');
           if (Keyboard.isVisible()) {
             Keyboard.dismiss();
           }

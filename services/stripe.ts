@@ -5,8 +5,6 @@ const createAccountLink = async (
   returnUrl: string,
   refreshUrl: string
 ) => {
-  console.log('Creating account link for account:', account);
-
   const { data, error } = await supabase.functions.invoke(
     'create-account-link',
     {
@@ -32,13 +30,6 @@ const createPaymentIntent = async (
   amount: number,
   currency: string
 ) => {
-  console.log(
-    'Creating payment intent for amount:',
-    amount,
-    'currency:',
-    currency
-  );
-
   const { data, error } = await supabase.functions.invoke(
     'create-payment-intent',
     {
@@ -60,8 +51,6 @@ const createPaymentIntent = async (
 };
 
 const createStripeAccount = async (userId: Id, email: string) => {
-  console.log('Creating Stripe account for email:', email, 'userId:', userId);
-
   const { data, error } = await supabase.functions.invoke(
     'create-stripe-account',
     {
@@ -80,8 +69,6 @@ const createStripeAccount = async (userId: Id, email: string) => {
 };
 
 const createStripeCustomer = async (userId: Id, email: string) => {
-  console.log('Creating Stripe customer for email:', email, 'userId:', userId);
-
   const { data, error } = await supabase.functions.invoke(
     'create-stripe-customer',
     {

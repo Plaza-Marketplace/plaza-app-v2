@@ -56,7 +56,6 @@ const VideoRecorder = () => {
   };
 
   const onMediaCaptured = useCallback((media: PhotoFile, type: 'photo') => {
-    console.log(`Media captured! ${JSON.stringify(media)}`);
     setTakenPhoto(media);
     router.navigate('/list-item/create-listing');
   }, []);
@@ -64,7 +63,6 @@ const VideoRecorder = () => {
   const startTaking = async () => {
     if (device) {
       try {
-        console.log('Taking photo...');
         const photo = await camera.current?.takePhoto({
           enableShutterSound: false,
         });
