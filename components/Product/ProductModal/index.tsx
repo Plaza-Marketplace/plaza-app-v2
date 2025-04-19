@@ -30,7 +30,6 @@ import AddToGroupModal from '@/components/Community/AddToGroupModal';
 import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
 import Spacing from '@/constants/Spacing';
-import { createBuyNow } from '@/services/stripe';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 
 interface ProductModalProps {
@@ -61,14 +60,16 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
     isLoading,
     error,
   } = useGetProductModalProduct(id, isOpen);
-  const { mutate: addToCart } = useAddToCart(id);
-  const { mutate: deleteProduct } = useDeleteProduct(id);
   const [showConfirmAdded, setShowConfirmAdded] = useState(false);
 
   const [selectedVariantValues, setSelectedVariantValues] = useState<
     Record<string, string>
   >({});
+  const [selectedVariantId, setSelectedVariantId] = useState<Id | null>(null);
   const [isOpen, setIsOpen] = useState(false);
+
+  const { mutate: deleteProduct } = useDeleteProduct(id);
+  const { mutate: addToCart } = useAddToCart(id, selectedVariantId);
 
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
@@ -85,10 +86,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
     }
   }, [product?.variants]);
 
-  const handleVariantSelect = (type: string, value: string) => {
-    setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
-  };
-
   const handleBuyNow = () => {
     router.push({
       pathname: '/checkout-item',
@@ -99,6 +96,14 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   if (!product || isLoading || error) {
     return null;
   }
+
+  const handleVariantSelect = (type: string, value: string) => {
+    setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
+    const variantId = product.variantInfo.find((variant) =>
+      areObjectsEqual(variant.selectedVariants, selectedVariantValues)
+    )?.id;
+    setSelectedVariantId(variantId ?? null);
+  };
 
   return (
     <>

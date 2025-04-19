@@ -135,7 +135,7 @@ const CartScreen = () => {
               }}
               title="Checkout"
               onPress={handleSubmit}
-              disabled={cartItems.length === 0}
+              disabled={cartItems?.length === 0}
             />
           </BottomSheetFooter>
         )}

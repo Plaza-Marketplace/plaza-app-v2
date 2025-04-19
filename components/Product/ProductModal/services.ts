@@ -112,11 +112,13 @@ export const getProductModalProduct = async (
 export const createCartItem = async (
   productId: Id,
   userId: Id,
-  quantity: Id
+  quantity: Id,
+  variantId?: Id | null
 ) => {
   const { error } = await supabase.from('cart_item').insert([
     {
       product_id: productId,
+      variant_id: variantId ?? null,
       user_id: userId,
       quantity,
     },

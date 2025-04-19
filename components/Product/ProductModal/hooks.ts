@@ -14,12 +14,14 @@ export const useGetProductModalProduct = (productId: Id, isOpen: boolean) =>
     enabled: isOpen,
   });
 
-export const useAddToCart = (productId: Id) => {
+export const useAddToCart = (productId: Id, variantId: Id | null) => {
   const { user } = useAuth();
 
   return useMutation({
     mutationKey: ['addToCart'],
-    mutationFn: user ? () => createCartItem(productId, user.id, 1) : undefined,
+    mutationFn: user
+      ? () => createCartItem(productId, user.id, 1, variantId)
+      : undefined,
   });
 };
 
