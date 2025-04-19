@@ -80,7 +80,7 @@ const ShopifySuccess = () => {
           hasVariants: false,
         } as CreateProduct;
 
-        if (product.options && product.options.length > 0) {
+        if (product.options && product.options.length > 1) {
           productUpload.hasVariants = true;
           const options = product.options.map((option) => ({
             name: option.name,
