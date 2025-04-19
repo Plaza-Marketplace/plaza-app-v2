@@ -8,6 +8,7 @@ type ShopifyProduct = {
   updated_at: string;
   published_at: string | null;
   tags: string[];
+  options: ShopifyVariantOptions[];
   variants: ShopifyVariants[];
   images: ShopifyImages[];
 };
@@ -18,12 +19,20 @@ type ShopifyVariants = {
   title: string;
   price: string;
   sku: string | null;
+  option1: string;
+  option2: string | null;
+  option3: string | null;
   requires_shipping: boolean;
   taxable: boolean;
   inventory_quantity: number | null;
   inventory_management: string | null;
   created_at: string;
   updated_at: string;
+};
+
+type ShopifyVariantOptions = {
+  name: string;
+  values: string[];
 };
 
 type ShopifyImages = {
@@ -38,10 +47,39 @@ type ShopifyImages = {
   src: string; // URL to the image
 };
 
+type PlazaProduct = {
+  id: number;
+  sellerId: Id;
+  name: string;
+  description: string;
+  category: string;
+  condition: string;
+  price: number;
+  shippingPrice: number;
+  imageUrls: string[];
+  quantity: number;
+  createdAt: string;
+  options: PlazaVariantOptions[];
+  variants: PlazaVariantValues[];
+};
+
+type PlazaVariantOptions = {
+  name: string;
+  values: string[];
+};
+
+type PlazaVariantValues = {
+  id: number;
+  variant1: string;
+  variant2: string | null;
+  price: number;
+  quantity: number;
+};
+
 const productShopifyToPlaza = (
   userId: Id,
   product: ShopifyProduct
-): Product => {
+): PlazaProduct => {
   return {
     id: product.id, // Convert to string for consistency
     sellerId: userId,
@@ -57,6 +95,23 @@ const productShopifyToPlaza = (
       0
     ),
     createdAt: new Date(product.created_at).toISOString(), // Convert to ISO string
+    options:
+      product.options.map((option) => {
+        return {
+          name: option.name,
+          values: option.values,
+        };
+      }) || [],
+    variants:
+      product.variants.map((variant) => {
+        return {
+          id: variant.id,
+          variant1: variant.option1,
+          variant2: variant.option2,
+          price: parseFloat(variant.price),
+          quantity: variant.inventory_quantity || 0,
+        };
+      }) || [],
   };
 };
 
@@ -64,5 +119,9 @@ export {
   ShopifyProduct,
   ShopifyVariants,
   ShopifyImages,
+  ShopifyVariantOptions,
+  PlazaProduct,
+  PlazaVariantOptions,
+  PlazaVariantValues,
   productShopifyToPlaza,
 };

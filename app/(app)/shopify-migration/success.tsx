@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { router, useLocalSearchParams } from 'expo-router';
 import QuickCrypto from 'react-native-quick-crypto';
-import { productShopifyToPlaza, ShopifyProduct } from '@/services/shopify';
+import {
+  PlazaProduct,
+  productShopifyToPlaza,
+  ShopifyProduct,
+} from '@/services/shopify';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import Spacing from '@/constants/Spacing';
@@ -13,7 +17,12 @@ import LinkItemsProduct from '@/components/LinkItemsProduct';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import Footer from '@/components/Footer';
 import { useUploadProducts } from '@/hooks/routes/shopify_transfer';
-import { testUploadArrayBuffers } from '@/services/crud/product';
+import {
+  VariantOption,
+  VariantsDisplay,
+} from '@/screens/Upload/List-Product/schema';
+import { uploadProductsAndVariants } from '@/services/variants';
+import { createProduct } from '@/services/crud/product';
 
 type ShopifySuccessParams = {
   code?: string;
@@ -22,24 +31,6 @@ type ShopifySuccessParams = {
   shop?: string;
   timestamp?: string;
 };
-
-async function imageUrlToBase64(url: string) {
-  const response = await fetch(url);
-  const blob = await response.blob();
-  return new Promise<string>((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const data = reader.result;
-      if (typeof data !== 'string') {
-        reject('No data');
-        return;
-      }
-      resolve(data);
-    };
-    reader.onerror = reject;
-    reader.readAsDataURL(blob);
-  });
-}
 
 async function imageUrlToArrayBuffer(url: string) {
   const response = await fetch(url);
@@ -52,24 +43,12 @@ const ShopifySuccess = () => {
   const { mutate: createProducts } = useUploadProducts();
   const params = useLocalSearchParams<ShopifySuccessParams>();
 
-  // const url =
-  //   'https://www.plaza-app.com/shopify-migration/success?code=611bfbd9c88c0b48d0b675239e66f62f&hmac=6031aff409eb9e24ccb62542e1866735dd170767b7ca9690e5385ce165e0cacc&host=YWRtaW4uc2hvcGlmeS5jb20vc3RvcmUvc2FkbWVvd3Nvbmc&shop=sadmeowsong.myshopify.com&timestamp=1743480824';
-  // // Parse the URL to extract query parameters
-  // const parsedUrl = new URL(url);
-  // const params: ShopifySuccessParams = {
-  //   code: parsedUrl.searchParams.get('code') || undefined,
-  //   hmac: parsedUrl.searchParams.get('hmac') || undefined,
-  //   host: parsedUrl.searchParams.get('host') || undefined,
-  //   shop: parsedUrl.searchParams.get('shop') || undefined,
-  //   timestamp: parsedUrl.searchParams.get('timestamp') || undefined,
-  // };
-
   const [accessToken, setAccessToken] = useState();
-  const [products, setProducts] = useState<Product[]>();
+  const [products, setProducts] = useState<PlazaProduct[]>();
   const [status, setStatus] = useState<string>('initializing');
-  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [selectedProducts, setSelectedProducts] = useState<PlazaProduct[]>([]);
 
-  const handleSelectProduct = (product: Product) => {
+  const handleSelectProduct = (product: PlazaProduct) => {
     if (selectedProducts.includes(product)) {
       setSelectedProducts(selectedProducts.filter((p) => p !== product));
     } else {
@@ -89,7 +68,7 @@ const ShopifySuccess = () => {
             return await imageUrlToArrayBuffer(imageUri);
           })
         );
-        return {
+        const productUpload = {
           name: product.name,
           sellerId: user?.id,
           description: product.description,
@@ -100,10 +79,36 @@ const ShopifySuccess = () => {
           quantity: product.quantity,
           hasVariants: false,
         } as CreateProduct;
+
+        if (product.options && product.options.length > 0) {
+          productUpload.hasVariants = true;
+          const options = product.options.map((option) => ({
+            name: option.name,
+            values: option.values,
+          })) as VariantOption[];
+          const values = product.variants.map((variant) => ({
+            value: {
+              price: variant.price,
+              quantity: variant.quantity,
+            },
+            fields: [
+              {
+                type: options[0].name,
+                value: variant.variant1,
+              },
+              ...(variant.variant2
+                ? [{ type: options[1].name, value: variant.variant2 }]
+                : []),
+            ],
+          })) as VariantsDisplay[];
+
+          return uploadProductsAndVariants(productUpload, options, values);
+        }
+
+        return createProduct(productUpload);
       })
     );
 
-    createProducts(productsToUpload);
     router.navigate('/shopify-migration/confirmation');
   };
 
@@ -187,7 +192,7 @@ const ShopifySuccess = () => {
             setStatus('No products found');
             return;
           }
-          const fetchedProducts: Product[] = data.products.map(
+          const fetchedProducts: PlazaProduct[] = data.products.map(
             (product: ShopifyProduct) => {
               return productShopifyToPlaza(user.id, product);
             }
