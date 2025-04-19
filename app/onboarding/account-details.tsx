@@ -55,10 +55,16 @@ const AccountDetails = () => {
   // const [categories, setCategories] = React.useState<string[]>([]);
 
   // formik
+
+  const fullname = session?.user.user_metadata.name || '';
+  const [firstName, lastName] = fullname.split(' ');
+  const initialFirstName = firstName || '';
+  const initialLastName = lastName || '';
+
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
+      firstName: initialFirstName,
+      lastName: initialLastName,
       username: '',
       displayName: '',
     },
@@ -94,6 +100,7 @@ const AccountDetails = () => {
       console.error('unclear as to how this happened, but session is null');
       return;
     }
+    console.log(user);
 
     const currentIndex = ref.current?.getCurrentIndex();
     if (currentIndex === undefined) {

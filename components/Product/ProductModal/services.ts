@@ -115,6 +115,58 @@ export const createCartItem = async (
   quantity: Id,
   variantId?: Id | null
 ) => {
+  let existingCount = 0;
+  if (variantId) {
+    const { count, error: countError } = await supabase
+      .from('cart_item')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('product_id', productId)
+      .eq('variant_id', variantId);
+
+    if (countError) {
+      throw new Error(countError.message);
+    }
+    existingCount = count || 0;
+  } else {
+    const { count, error: countError } = await supabase
+      .from('cart_item')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_id', userId)
+      .eq('product_id', productId)
+      .is('variant_id', null);
+
+    if (countError) {
+      throw new Error(countError.message);
+    }
+    existingCount = count || 0;
+  }
+
+  if (existingCount > 0 && variantId) {
+    const { error: updateError } = await supabase
+      .from('cart_item')
+      .update({ quantity: existingCount + quantity })
+      .eq('user_id', userId)
+      .eq('product_id', productId)
+      .eq('variant_id', variantId ?? null);
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+    return;
+  }
+  if (existingCount > 0 && !variantId) {
+    const { error: updateError } = await supabase
+      .from('cart_item')
+      .update({ quantity: existingCount + quantity })
+      .eq('user_id', userId)
+      .eq('product_id', productId)
+      .is('variant_id', null);
+    if (updateError) {
+      throw new Error(updateError.message);
+    }
+    return;
+  }
+
   const { error } = await supabase.from('cart_item').insert([
     {
       product_id: productId,

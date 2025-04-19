@@ -1,38 +1,47 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { StyleSheet } from 'react-native';
+import { Linking, StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
-import { ProductDetails } from '@/models/communityPost';
 import Spacing from '@/constants/Spacing';
 import BoldSubheaderText from '@/components/Texts/BoldSubheaderText';
 import PlazaDescriptionButton from '@/components/Buttons/PlazaDescriptionButton';
-import { Redirect, router } from 'expo-router';
-import { Basket, Camera, ShopifyLogo } from '@/components/Icons';
+import { router } from 'expo-router';
+import { Basket, Camera, ShopifyLogo, StripeLogo } from '@/components/Icons';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import Loading from '@/components/Loading';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import BodyText from '@/components/Texts/BodyText';
+import { createAccountLink, createStripeAccount } from '@/services/stripe';
+import { useUpdateUser } from '@/hooks/queries/useUser';
 
 const LandingPage = () => {
-  const test: ProductDetails = {
-    id: 1,
-    name: 'Product',
-    imageUrls: ['test'],
-    price: 1,
-    seller: {
-      id: 1,
-      username: 'Joe',
-    },
-  };
-
   const { session } = useAuth();
   const { data: user } = useGetUserByAuthId(session?.user.id);
+  const { mutate: updateUser } = useUpdateUser();
 
   if (!user) {
     return <Loading />;
   }
 
-  // if (!user.stripeAccountId) {
-  //   return <Redirect href={'/seller-onboarding'} />;
-  // }
+  const handleCreateAccount = async () => {
+    try {
+      const { account } = await createStripeAccount(user.id, user.email);
+      console.log('Stripe account created successfully:', account);
+      updateUser({
+        id: user.id,
+        stripeAccountId: account,
+      });
+      const accountLink = await createAccountLink(
+        account,
+        'https://www.plaza-app.com/stripe/creation-success',
+        'https://www.plaza-app.com/stripe/creation-failure'
+      );
+      Linking.openURL(accountLink.url);
+    } catch (error) {
+      console.error('Error creating account:', error);
+      alert('Failed to create account. Please try again later.');
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -67,6 +76,22 @@ const LandingPage = () => {
           router.push('/shopify-migration/landing-page');
         }}
       />
+
+      {!user.stripeAccountId && (
+        <PressableOpacity
+          style={styles.stripeButton}
+          onPress={handleCreateAccount}
+        >
+          <StripeLogo />
+          <BodyText
+            variant="md"
+            color={Color.WHITE}
+            style={{ marginLeft: Spacing.SPACING_2 }}
+          >
+            Create a Stripe Account
+          </BodyText>
+        </PressableOpacity>
+      )}
     </SafeAreaView>
   );
 };
@@ -84,5 +109,16 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: Spacing.SPACING_3,
+  },
+  stripeButton: {
+    backgroundColor: Color.STRIPE_DEFAULT, // Stripe's brand color
+    paddingVertical: Spacing.SPACING_2,
+    paddingHorizontal: Spacing.SPACING_4,
+    borderRadius: 8,
+    marginTop: Spacing.SPACING_3,
+    width: '100%',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

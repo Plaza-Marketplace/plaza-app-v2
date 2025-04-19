@@ -97,10 +97,16 @@ export const updateUser = async (updates: UpdateUser): Promise<User> => {
   const supabaseUpdates = {
     first_name: updates.firstName,
     last_name: updates.lastName,
+    username: updates.username,
     display_name: updates.displayName,
     description: updates.description,
     profile_image_key: updates.profileImageBase64,
+    stripe_account_id: updates.stripeAccountId,
+    stripe_customer_id: updates.stripeCustomerId,
   };
+
+  console.log(updates);
+  console.log(supabaseUpdates);
 
   if (updates.profileImageBase64) {
     const key = uuidv4();
