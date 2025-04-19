@@ -31,6 +31,7 @@ import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
 import Spacing from '@/constants/Spacing';
 import { createBuyNow } from '@/services/stripe';
+import PlazaButton from '@/components/Buttons/PlazaButton';
 
 interface ProductModalProps {
   id: Id;
@@ -231,6 +232,22 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     description={review.description}
                   />
                 ))}
+
+                <PlazaButton
+                  title="test print product"
+                  onPress={() => {
+                    console.log(selectedVariantValues);
+                    console.log(product.variantInfo);
+                    console.log(
+                      product.variantInfo.find((variant) =>
+                        areObjectsEqual(
+                          variant.selectedVariants,
+                          selectedVariantValues
+                        )
+                      )
+                    );
+                  }}
+                />
               </View>
             </BottomSheetScrollView>
             <View style={{ paddingBottom: insets.bottom }}>

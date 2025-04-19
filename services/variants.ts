@@ -23,6 +23,7 @@ export const uploadProductsAndVariants = async (
   // create variants first, mapping value names to their IDs
   const variantMap = new Map<string, Id>();
   const variantTypeMap = new Map<string, Id>();
+  const variantValueMap = new Map<string, Id>();
 
   const createVariants: CreateProductVariant[] = values.map((variantValue) => ({
     price: variantValue.value.price,
@@ -32,10 +33,11 @@ export const uploadProductsAndVariants = async (
 
   const createdVariants = await bulkCreateProductVariants(createVariants);
 
+  console.log('created variants: ', createdVariants);
+  console.log('values: ', values);
+
   createdVariants.forEach((variant, index) => {
-    values[index].fields.forEach((field) => {
-      variantMap.set(`${field.type}-${field.value}`, variant.id);
-    });
+    variantMap.set(values[index].value.id, variant.id);
   });
 
   const createVariantTypes: CreateVariantType[] = options.map((option) => ({
@@ -60,20 +62,33 @@ export const uploadProductsAndVariants = async (
     createVariantValues
   );
 
-  const createVariantOptions: CreateVariantOption[] = createdVariantValues.map(
-    (value) => {
-      // first take the variantTypeId and map it back to its corresponding type name
-      const variantTypeName = options.find((option) =>
-        option.values.includes(value.name)
-      )?.name;
-      // then find the variant associated with the type-name
-      const variantId = variantMap.get(`${variantTypeName}-${value.name}`);
-      return {
-        variantId: variantId || -1,
-        variantValueId: value.id,
-      };
-    }
-  );
+  createdVariantValues.forEach((value) => {
+    variantValueMap.set(value.name, value.id);
+  });
+
+  console.log('variant map: ', variantMap);
+  console.log('variant type map: ', variantTypeMap);
+
+  const createVariantOptions: CreateVariantOption[] = [];
+
+  values.forEach((variantValue) => {
+    const variantId = variantMap.get(variantValue.value.id);
+    if (!variantId) return;
+
+    variantValue.fields.forEach((field) => {
+      const variantTypeId = variantTypeMap.get(field.type);
+      const variantValueId = variantValueMap.get(field.value);
+
+      if (variantTypeId && variantValueId) {
+        createVariantOptions.push({
+          variantId: variantId,
+          variantValueId: variantValueId,
+        });
+      }
+    });
+  });
+
+  console.log('create variant options: ', createVariantOptions);
 
   await bulkCreateVariantOptions(createVariantOptions);
 };
