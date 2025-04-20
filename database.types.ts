@@ -213,18 +213,21 @@ export type Database = {
           community_id: number
           created_at: string
           id: number
+          member_role: Database["public"]["Enums"]["member_role"]
           user_id: number
         }
         Insert: {
           community_id: number
           created_at?: string
           id?: number
+          member_role?: Database["public"]["Enums"]["member_role"]
           user_id: number
         }
         Update: {
           community_id?: number
           created_at?: string
           id?: number
+          member_role?: Database["public"]["Enums"]["member_role"]
           user_id?: number
         }
         Relationships: [
@@ -1628,6 +1631,7 @@ export type Database = {
     }
     Enums: {
       community_post_type: "POST" | "SHOWCASE" | "REVIEW"
+      member_role: "MEMBER" | "ADMIN"
       notification_type:
         | "PURCHASE_CONFIRMED"
         | "ORDER_ON_THE_WAY"
@@ -1763,6 +1767,7 @@ export const Constants = {
   public: {
     Enums: {
       community_post_type: ["POST", "SHOWCASE", "REVIEW"],
+      member_role: ["MEMBER", "ADMIN"],
       notification_type: [
         "PURCHASE_CONFIRMED",
         "ORDER_ON_THE_WAY",

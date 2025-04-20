@@ -6,6 +6,8 @@ type CommunityMember = {
   communityId: Id;
 
   createdAt: Timestamp;
+
+  role: CommunityMemberRole;
 };
 
 type CreateCommunityMember = {
@@ -19,3 +21,8 @@ type DeleteCommunityMember = {
 
   communityId: Id;
 };
+
+enum CommunityMemberRole {
+  MEMBER = 'MEMBER',
+  ADMIN = 'ADMIN',
+}

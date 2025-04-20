@@ -9,6 +9,7 @@ export const formatCommunityMember = (
     userId: communityMember.user_id,
     communityId: communityMember.community_id,
     createdAt: communityMember.created_at,
+    role: communityMember.member_role as CommunityMemberRole,
   };
 };
 
