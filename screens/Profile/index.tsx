@@ -6,13 +6,16 @@ import { router, usePathname } from 'expo-router';
 import Reviews from './Reviews';
 import Videos from './Videos';
 import Header from './Header';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import Products from './Products';
 import { useAuth } from '@/contexts/AuthContext';
 import { ChevronLeft } from '@/components/Icons';
 import Color from '@/constants/Color';
 import { useGetHeader } from './Header/hooks';
 import BodyText from '@/components/Texts/BodyText';
+import ProfileHeader from '@/components/Headers/ProfileHeader';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import UserReportModal from '@/components/Report/ReportModal/UserReportModal';
 
 interface ProfileProps {
   userId: Id;
@@ -22,6 +25,7 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
   const { user: currentUser } = useAuth();
   const { data, isLoading, error } = useGetHeader(userId);
   const pathname = usePathname();
+  const reportRef = useRef<BottomSheetModal>(null);
 
   if (isLoading) {
     return <BodyText variant="md">Loading...</BodyText>;
@@ -33,19 +37,24 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
 
   return (
     <>
-      <PlazaHeader
-        name={data.username}
+      <UserReportModal userId={currentUser?.id} bottomSheetRef={reportRef} />
+      <ProfileHeader
+        name={data.displayName}
         leftIcon={
           pathname === '/profile' ? null : <ChevronLeft color={Color.BLACK} />
         }
         rightIcon={
           currentUser?.id === userId ? (
             <Ionicons name="cog-outline" size={32} />
-          ) : null
+          ) : (
+            <Ionicons name="flag-outline" size={32} />
+          )
         }
-        rightOnClick={() => {
-          router.push('/settings');
-        }}
+        rightOnClick={
+          currentUser?.id === userId
+            ? () => router.push('/settings')
+            : () => reportRef.current?.present()
+        }
       />
       <Tabs.Container
         renderHeader={() => <Header userId={userId} header={data} />}

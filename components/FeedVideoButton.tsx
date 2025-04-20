@@ -13,7 +13,13 @@ import {
 } from './Icons';
 
 interface FeedVideoButtonProps {
-  name: 'like-inactive' | 'like-active' | 'review' | 'comment' | 'bookmark';
+  name:
+    | 'like-inactive'
+    | 'like-active'
+    | 'review'
+    | 'comment'
+    | 'bookmark'
+    | 'report';
   count?: number;
   onPress: () => void;
   color?: string;
@@ -31,6 +37,8 @@ const handleName = (name: string) => {
       return <Comment width={40} height={40} color={'white'} />;
     case 'bookmark':
       return <Bookmark width={40} height={40} color={'white'} />;
+    case 'report':
+      return <Ionicons name="flag-outline" size={40} color={'white'} />;
   }
 };
 

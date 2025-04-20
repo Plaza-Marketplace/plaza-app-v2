@@ -56,6 +56,42 @@ export type Database = {
           },
         ]
       }
+      block: {
+        Row: {
+          block_id: number
+          created_at: string
+          id: number
+          user_id: number
+        }
+        Insert: {
+          block_id: number
+          created_at?: string
+          id?: number
+          user_id: number
+        }
+        Update: {
+          block_id?: number
+          created_at?: string
+          id?: number
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blocks_block_id_fkey"
+            columns: ["block_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blocks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       cart_item: {
         Row: {
           created_at: string
@@ -992,6 +1028,309 @@ export type Database = {
           },
         ]
       }
+      report_community: {
+        Row: {
+          community_id: number
+          created_at: string
+          id: number
+          reason: string | null
+          reporter_id: number | null
+        }
+        Insert: {
+          community_id: number
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Update: {
+          community_id?: number
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_community_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_community_collection: {
+        Row: {
+          collection_id: number
+          community_id: number
+          created_at: string
+          id: number
+          reason: string | null
+          reporter_id: number | null
+        }
+        Insert: {
+          collection_id: number
+          community_id: number
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Update: {
+          collection_id?: number
+          community_id?: number
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_community_collection_collection_id_fkey"
+            columns: ["collection_id"]
+            isOneToOne: false
+            referencedRelation: "community_collection_item"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_collection_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_collection_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_community_member: {
+        Row: {
+          community_id: number | null
+          created_at: string
+          id: number
+          reason: string | null
+          reporter_id: number | null
+          user_id: number
+        }
+        Insert: {
+          community_id?: number | null
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          user_id: number
+        }
+        Update: {
+          community_id?: number | null
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_community_member_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_member_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_community_post: {
+        Row: {
+          community_id: number
+          created_at: string
+          id: number
+          post_id: number
+          reason: string | null
+          reporter_id: number | null
+        }
+        Insert: {
+          community_id: number
+          created_at?: string
+          id?: number
+          post_id: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Update: {
+          community_id?: number
+          created_at?: string
+          id?: number
+          post_id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_community_post_community_id_fkey"
+            columns: ["community_id"]
+            isOneToOne: false
+            referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_post_post_id_fkey"
+            columns: ["post_id"]
+            isOneToOne: false
+            referencedRelation: "community_post"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_community_post_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_member: {
+        Row: {
+          created_at: string
+          id: number
+          reason: string | null
+          reporter_id: number | null
+          user_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          user_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          user_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_member_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_member_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_product: {
+        Row: {
+          created_at: string
+          id: number
+          product_id: number
+          reason: string | null
+          reporter_id: number | null
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          product_id: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          product_id?: number
+          reason?: string | null
+          reporter_id?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_product_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_product_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      report_video: {
+        Row: {
+          created_at: string
+          id: number
+          reason: string | null
+          reporter_id: number | null
+          video_id: number
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          video_id: number
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          reason?: string | null
+          reporter_id?: number | null
+          video_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_video_reporter_id_fkey"
+            columns: ["reporter_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "report_video_video_id_fkey"
+            columns: ["video_id"]
+            isOneToOne: false
+            referencedRelation: "video"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       seller_review: {
         Row: {
           created_at: string
@@ -1049,7 +1388,7 @@ export type Database = {
           profile_image_key: string | null
           stripe_account_id: string | null
           stripe_customer_id: string | null
-          username: string
+          username: string | null
         }
         Insert: {
           auth_id?: string
@@ -1065,7 +1404,7 @@ export type Database = {
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username?: string
+          username?: string | null
         }
         Update: {
           auth_id?: string
@@ -1081,7 +1420,7 @@ export type Database = {
           profile_image_key?: string | null
           stripe_account_id?: string | null
           stripe_customer_id?: string | null
-          username?: string
+          username?: string | null
         }
         Relationships: []
       }

@@ -1,6 +1,8 @@
 export type Header = {
   username: string;
 
+  displayName: string;
+
   description: string | null;
 
   profileImageUrl: string | null;

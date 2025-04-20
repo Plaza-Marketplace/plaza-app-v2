@@ -9,6 +9,8 @@ import HeadingText from '../Texts/HeadingText';
 
 interface ProfileHeaderProps {
   name: string;
+  leftIcon?: ReactNode;
+  leftOnClick?: () => void;
   rightIcon?: ReactNode;
   rightOnClick?: () => void;
   accountForSafeArea?: boolean;
@@ -18,6 +20,10 @@ interface ProfileHeaderProps {
 
 const ProfileHeader: FC<ProfileHeaderProps> = ({
   name,
+  leftIcon = null,
+  leftOnClick = () => {
+    router.back();
+  },
   rightIcon = null,
   rightOnClick,
   accountForSafeArea = true,
@@ -30,7 +36,14 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({
         { paddingTop: accountForSafeArea ? inset.top : 0 },
       ]}
     >
-      <HeadingText variant="h6-bold">{name}</HeadingText>
+      <View style={styles.leftContainer}>
+        {leftIcon ? (
+          <PressableOpacity onPress={leftOnClick}>{leftIcon}</PressableOpacity>
+        ) : (
+          ''
+        )}
+        <HeadingText variant="h6-bold">{name}</HeadingText>
+      </View>
       <View style={styles.iconContainer}>
         <PressableOpacity onPress={rightOnClick}>{rightIcon}</PressableOpacity>
       </View>
@@ -53,5 +66,10 @@ const styles = StyleSheet.create({
   iconContainer: {
     width: 30,
     height: 30,
+  },
+  leftContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: Spacing.SPACING_2,
   },
 });

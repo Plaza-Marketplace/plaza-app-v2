@@ -11,6 +11,7 @@ export const getHeader = async (
     .select(
       `
         username,
+        display_name,
         description,
         profile_image_key,
         average_rating,
@@ -35,6 +36,7 @@ export const getHeader = async (
 
   return {
     username: data.username,
+    displayName: data.display_name,
     description: data.description,
     profileImageUrl: data.profile_image_key
       ? getImagePublicUrl(data.profile_image_key)

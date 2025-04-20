@@ -17,6 +17,7 @@ import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
 import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
+import VideoReportModal from '../Report/ReportModal/VideoReportModal';
 
 interface FeedVideoProps {
   video: Video;
@@ -26,6 +27,8 @@ interface FeedVideoProps {
 const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
+  const reportVideoRef = useRef<BottomSheetModal>(null);
+  const reportProductRef = useRef<BottomSheetModal>(null);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
@@ -113,6 +116,14 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               likeCount={video.likeCount}
             />
             <FeedVideoButton
+              name="comment"
+              count={video.commentCount}
+              onPress={() => {
+                track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
+                commentModalRef.current?.present();
+              }}
+            />
+            <FeedVideoButton
               name="review"
               count={video.reviewCount}
               onPress={() => {
@@ -121,11 +132,9 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
               }}
             />
             <FeedVideoButton
-              name="comment"
-              count={video.commentCount}
+              name="report"
               onPress={() => {
-                track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
-                commentModalRef.current?.present();
+                reportVideoRef.current?.present();
               }}
             />
           </View>
@@ -137,6 +146,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         bottomSheetRef={reviewModalRef}
       />
       <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
+      <VideoReportModal videoId={video.id} bottomSheetRef={reportVideoRef} />
     </>
   );
 };

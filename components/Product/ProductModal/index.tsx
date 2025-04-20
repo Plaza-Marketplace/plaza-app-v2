@@ -31,6 +31,8 @@ import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
 import Spacing from '@/constants/Spacing';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import ProductReportModal from '@/components/Report/ReportModal/ProductReportModal';
+import { Ionicons } from '@expo/vector-icons';
 
 interface ProductModalProps {
   id: Id;
@@ -74,6 +76,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const insets = useSafeAreaInsets();
   const snapPoints = useMemo(() => ['90%'], []);
   const addToGroupRef = useRef<BottomSheetModal>(null);
+  const reportProductRef = useRef<BottomSheetModal>(null);
 
   useEffect(() => {
     if (product?.variants) {
@@ -107,6 +110,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
 
   return (
     <>
+      <ProductReportModal productId={id} bottomSheetRef={reportProductRef} />
       <AddToGroupModal productId={id} bottomSheetRef={addToGroupRef} />
       <BottomSheetModal
         ref={bottomSheetRef}
@@ -175,13 +179,29 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                           )}
                     </BodyText>
                   </View>
-                  <PressableOpacity
-                    onPress={() => {
-                      addToGroupRef.current?.present();
-                    }}
+                  <View
+                    style={{ flexDirection: 'row', gap: Spacing.SPACING_3 }}
                   >
-                    <Bookmark color={Color.BLACK} />
-                  </PressableOpacity>
+                    <PressableOpacity
+                      onPress={() => {
+                        reportProductRef.current?.present();
+                      }}
+                    >
+                      <Ionicons
+                        name="flag-outline"
+                        color={Color.BLACK}
+                        size={32}
+                      />
+                    </PressableOpacity>
+
+                    <PressableOpacity
+                      onPress={() => {
+                        addToGroupRef.current?.present();
+                      }}
+                    >
+                      <Bookmark color={Color.BLACK} />
+                    </PressableOpacity>
+                  </View>
                 </View>
                 <View style={styles.infoContainer}>
                   <ProfileIcon variant="user" size={32} url={undefined} />
@@ -237,22 +257,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     description={review.description}
                   />
                 ))}
-
-                <PlazaButton
-                  title="test print product"
-                  onPress={() => {
-                    console.log(selectedVariantValues);
-                    console.log(product.variantInfo);
-                    console.log(
-                      product.variantInfo.find((variant) =>
-                        areObjectsEqual(
-                          variant.selectedVariants,
-                          selectedVariantValues
-                        )
-                      )
-                    );
-                  }}
-                />
               </View>
             </BottomSheetScrollView>
             <View style={{ paddingBottom: insets.bottom }}>
