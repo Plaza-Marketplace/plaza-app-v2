@@ -20,7 +20,7 @@ import { useUpdateUser } from '@/hooks/queries/useUser';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
-import ProfileHeader from '@/components/Headers/ProfileHeader';
+import ProfileHeader from '@/screens/Profile/ProfileHeader';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { deleteAccount } from '@/services/supabase_functions/deleteUser';
 import { Ionicons } from '@expo/vector-icons';
@@ -32,6 +32,7 @@ import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import { Check } from '@/components/Icons';
 import HeadingText from '@/components/Texts/HeadingText';
+import PlazaHeader from '@/components/PlazaHeader';
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -82,10 +83,10 @@ const Settings = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ProfileHeader
+      <PlazaHeader
         name="Settings"
         accountForSafeArea={false}
-        rightIcon={<Ionicons name="chevron-back" size={24} color="black" />}
+        leftIcon={<Ionicons name="chevron-back" size={24} color="black" />}
         rightOnClick={() => router.back()}
       />
       <Formik

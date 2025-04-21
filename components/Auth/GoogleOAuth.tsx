@@ -22,7 +22,7 @@ interface GoogleOAuthProps {
 
 const GoogleOAuth: FC<GoogleOAuthProps> = ({ style }) => {
   GoogleSignin.configure({
-    scopes: ['https://www.googleapis.com/auth/drive.readonly', 'profile'],
+    scopes: ['profile'],
     iosClientId:
       '1039660036666-0vh7t5g63rqfo08m3ai7kmfiab08a2ho.apps.googleusercontent.com',
   });

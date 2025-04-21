@@ -1,116 +1,82 @@
 import { StyleSheet, View } from 'react-native';
-import React, { FC } from 'react';
-import Radius from '@/constants/Radius';
-import ExpandableDescription from '@/components/ExpandableDescription';
-import ProfileIcon from '@/components/ProfileIcon';
-import PlazaButton from '@/components/Buttons/PlazaButton';
-import { useFollowUser, useUnfollowUser } from './hooks';
-import { useAuth } from '@/contexts/AuthContext';
+import { FC, useRef } from 'react';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import Spacing from '@/constants/Spacing';
+import { router, usePathname } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import HeadingText from '@/components/Texts/HeadingText';
-import Rating from '@/components/Rating';
-import BodyText from '@/components/Texts/BodyText';
-import { Header as HeaderType } from './models';
-import { router } from 'expo-router';
+import Color from '@/constants/Color';
+import { useAuth } from '@/contexts/AuthContext';
+import { Ionicons } from '@expo/vector-icons';
+import { ChevronLeft } from '@/components/Icons';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import Options from './Options';
 
-interface HeaderProps {
+interface ProfileHeaderProps {
   userId: Id;
-  header: HeaderType;
+  name: string;
 }
 
-const Header: FC<HeaderProps> = ({ userId, header }) => {
-  const { user: currentUser } = useAuth();
-  const { mutate: followUser } = useFollowUser();
-  const { mutate: unfollowUser } = useUnfollowUser();
+const ProfileHeader: FC<ProfileHeaderProps> = ({ userId, name }) => {
+  const pathname = usePathname();
+  const { user } = useAuth();
+  const inset = useSafeAreaInsets();
+  const optionsRef = useRef<BottomSheetModal>(null);
 
-  const handlePress = () => {
-    router.push({
-      pathname: '/chat',
-      params: { userId: userId },
-    });
-  };
+  const isCurrentUser = user?.id === userId;
 
   return (
-    <View style={styles.header}>
-      <View style={styles.headerTopRow}>
-        <ProfileIcon
-          variant="user"
-          url={header.profileImageUrl || undefined}
-          size={2 * Radius.XL}
-        />
-        <View style={styles.userInfo}>
-          <HeadingText variant="h5-bold">{header.username}</HeadingText>
-          <Rating rating={header.averageRating ?? 0} />
+    <>
+      <View style={[styles.header, { paddingTop: inset.top }]}>
+        <View style={styles.leftContainer}>
+          {pathname !== '/profile' && (
+            <PressableOpacity onPress={router.back}>
+              <ChevronLeft color={Color.BLACK} />
+            </PressableOpacity>
+          )}
+          <HeadingText variant="h6-bold">{name}</HeadingText>
+        </View>
+        <View style={styles.iconContainer}>
+          <PressableOpacity
+            onPress={
+              isCurrentUser
+                ? () => router.push('/settings')
+                : () => optionsRef.current?.present()
+            }
+          >
+            {isCurrentUser ? (
+              <Ionicons name="cog-outline" size={32} />
+            ) : (
+              <Ionicons name="ellipsis-horizontal-outline" size={32} />
+            )}
+          </PressableOpacity>
         </View>
       </View>
-
-      <View style={styles.infoContainer}>
-        <View>
-          <BodyText variant="lg-bold">{header.salesCount}</BodyText>
-          <BodyText variant="lg-medium">Sales</BodyText>
-        </View>
-
-        <View>
-          <BodyText variant="lg-bold">{header.followerCount}</BodyText>
-          <BodyText variant="lg-medium">Followers</BodyText>
-        </View>
-
-        <View>
-          <BodyText variant="lg-bold">{header.followingCount}</BodyText>
-          <BodyText variant="lg-medium">Following</BodyText>
-        </View>
-      </View>
-      {userId !== currentUser?.id && (
-        <View style={styles.choices}>
-          <PlazaButton
-            style={{ flex: 1 }}
-            title={header.isFollowing ? 'Unfollow' : 'Follow'}
-            onPress={() => {
-              if (header.isFollowing) {
-                unfollowUser(userId);
-              } else {
-                followUser(userId);
-              }
-            }}
-          />
-          <PlazaButton
-            style={{ flex: 1 }}
-            title="Message"
-            onPress={handlePress}
-          />
-        </View>
-      )}
-      <ExpandableDescription
-        description={header.description ?? ''}
-        initialNumberOfLines={4}
-      />
-    </View>
+      <Options userId={userId} bottomSheetRef={optionsRef} />
+    </>
   );
 };
 
-export default Header;
+export default ProfileHeader;
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'column',
-    padding: 16,
-    gap: 16,
-  },
-  headerTopRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-  },
-  infoContainer: {
-    flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    paddingHorizontal: Spacing.SPACING_3,
+    paddingVertical: Spacing.SPACING_1,
+    gap: 8,
+    borderBottomWidth: 1,
+    backgroundColor: Color.WHITE,
   },
-  choices: {
+  iconContainer: {
+    width: 30,
+    height: 30,
+  },
+  leftContainer: {
     flexDirection: 'row',
-    gap: 22,
-  },
-  userInfo: {
-    gap: 4,
+    alignItems: 'center',
+    gap: Spacing.SPACING_2,
   },
 });

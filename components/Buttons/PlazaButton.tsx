@@ -21,11 +21,7 @@ const PlazaButton: FC<PlazaButtonProps> = ({
 }) => {
   return (
     <PressableOpacity style={[styles.container, style]} {...rest}>
-      {icon ? (
-        <View style={{ marginRight: Spacing.SPACING_1 }}>{icon}</View>
-      ) : (
-        ''
-      )}
+      {icon && <View style={{ marginRight: Spacing.SPACING_1 }}>{icon}</View>}
       <BodyText variant="md-bold" color={fontColor}>
         {title}
       </BodyText>

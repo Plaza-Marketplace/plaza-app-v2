@@ -32,7 +32,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
-    player.volume = 0.5;
     player.pause();
   });
 

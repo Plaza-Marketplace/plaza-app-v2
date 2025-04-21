@@ -58,34 +58,34 @@ export type Database = {
       }
       block: {
         Row: {
-          block_id: number
+          blocked_id: number
+          blocker_id: number
           created_at: string
           id: number
-          user_id: number
         }
         Insert: {
-          block_id: number
+          blocked_id: number
+          blocker_id: number
           created_at?: string
           id?: number
-          user_id: number
         }
         Update: {
-          block_id?: number
+          blocked_id?: number
+          blocker_id?: number
           created_at?: string
           id?: number
-          user_id?: number
         }
         Relationships: [
           {
             foreignKeyName: "blocks_block_id_fkey"
-            columns: ["block_id"]
+            columns: ["blocked_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
           },
           {
             foreignKeyName: "blocks_user_id_fkey"
-            columns: ["user_id"]
+            columns: ["blocker_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
@@ -1382,7 +1382,7 @@ export type Database = {
           average_rating: number
           created_at: string
           description: string | null
-          display_name: string
+          display_name: string | null
           email: string
           first_name: string | null
           id: number
@@ -1398,7 +1398,7 @@ export type Database = {
           average_rating?: number
           created_at?: string
           description?: string | null
-          display_name?: string
+          display_name?: string | null
           email: string
           first_name?: string | null
           id?: number
@@ -1414,7 +1414,7 @@ export type Database = {
           average_rating?: number
           created_at?: string
           description?: string | null
-          display_name?: string
+          display_name?: string | null
           email?: string
           first_name?: string | null
           id?: number

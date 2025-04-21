@@ -14,9 +14,8 @@ import { createUserReport } from '../services';
 import { useAuth } from '@/contexts/AuthContext';
 
 interface UserReportModalProps {
-  // Define any props if needed
   userId: Id;
-  bottomSheetRef?: RefObject<BottomSheetModal>; // Adjust type as needed
+  bottomSheetRef: RefObject<BottomSheetModal>; // Adjust type as needed
 }
 
 const UserReportModal: FC<UserReportModalProps> = ({
