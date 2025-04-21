@@ -37,7 +37,7 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
 
   return (
     <>
-      <UserReportModal userId={currentUser?.id} bottomSheetRef={reportRef} />
+      <UserReportModal userId={userId} bottomSheetRef={reportRef} />
       <ProfileHeader
         name={data.displayName}
         leftIcon={
