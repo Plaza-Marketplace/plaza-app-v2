@@ -1,4 +1,6 @@
 export type CollectionProduct = {
+  collectionId: Id;
+
   id: Id;
 
   name: string;

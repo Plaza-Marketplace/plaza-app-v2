@@ -7,6 +7,14 @@ import useGetCollectionProducts from './useGetCollectionProducts';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import SelectProductModal from '@/components/Community/SelectProductModal';
 import { useAddProductsToCollection } from '@/components/Community/SelectProductModal/hooks';
+import MenuModal from '@/components/Menu';
+import MenuButton from '@/components/Menu/MenuButton';
+import { Ionicons } from '@expo/vector-icons';
+import Color from '@/constants/Color';
+import CollectionReportModal from '@/components/Report/CommunityReportModal/CollectionReportModal';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import Spacing from '@/constants/Spacing';
+import CollectionCard from '@/components/Community/CollectionCard';
 
 interface CollectionProps {
   communityId: number;
@@ -30,18 +38,10 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
           data={communityCollectionItems}
           numColumns={2}
           renderItem={({ item }) => (
-            <View style={styles.productCardContainer}>
-              <ProductCard
-                id={item.id}
-                name={item.name}
-                username={item.seller.username}
-                thumbnailUrl={item.thumbnailUrl ?? ''}
-                rating={item.seller.averageRating}
-                price={item.price}
-              />
-            </View>
+            <CollectionCard communityId={communityId} item={item} />
           )}
           contentContainerStyle={{ paddingTop: 16, paddingBottom: 72 }}
+          keyExtractor={(item) => item.id.toString()}
         />
 
         <PlazaButton
@@ -63,10 +63,6 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
 export default Collection;
 
 const styles = StyleSheet.create({
-  productCardContainer: {
-    flex: 1 / 2,
-    padding: 4,
-  },
   buttonContainer: {
     position: 'absolute',
     bottom: 16,

@@ -51,6 +51,9 @@ const CollectionReportModal: FC<CollectionReportModalProps> = ({
           onSubmit={async (values) => {
             // Handle report submission logic here
             try {
+              console.log('communityId:', communityId);
+              console.log('collectionId:', collectionId);
+              console.log('reason:', values.reason);
               await createCommunityCollectionReport({
                 communityId: communityId,
                 reporteeId: collectionId,

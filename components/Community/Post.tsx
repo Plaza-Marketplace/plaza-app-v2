@@ -1,5 +1,5 @@
 import Radius from '@/constants/Radius';
-import { FC } from 'react';
+import { FC, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import UserInfo from '../UserInfo';
 import { PostType } from '@/models/communityPost';
@@ -9,6 +9,12 @@ import Color from '@/constants/Color';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import ProductActivityCard from '../Product/ProductActivityCard';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import MenuModal from '../Menu';
+import { Ionicons } from '@expo/vector-icons';
+import Spacing from '@/constants/Spacing';
+import MenuButton from '../Menu/MenuButton';
+import PostReportModal from '../Report/CommunityReportModal/PostReportModal';
 
 interface PostProps {
   id: Id;
@@ -76,55 +82,95 @@ const Post: FC<PostProps> = ({
     });
   };
 
+  const menuRef = useRef<BottomSheetModal>(null);
+  const reportRef = useRef<BottomSheetModal>(null);
+
   const Container = isPressable ? PressableOpacity : View;
 
   return (
-    <Container style={styles.container} onPress={handlePress}>
-      {isOnCommunityPage ? (
-        <UserInfo
-          username={poster.username}
-          profilePictureUrl={poster.profilePictureUrl}
-        />
-      ) : (
-        <View style={styles.infoContainer}>
-          <GroupIcon id={community.id} size={32} url={community.iconUrl} />
-          <View>
-            <PressableOpacity
-              onPress={() =>
-                router.push({
-                  pathname: '/community',
-                  params: { id: community.id },
-                })
-              }
-            >
-              <BodyText variant="sm-medium">{community.name}</BodyText>
-            </PressableOpacity>
-            <PressableOpacity
-              onPress={() =>
-                router.push({
-                  pathname: '/profile-modal',
-                  params: { id: poster.id },
-                })
-              }
-            >
-              <BodyText variant="sm" color={Color.NEUTRALS_DEFAULT}>
-                @{poster.username}
-              </BodyText>
-            </PressableOpacity>
+    <>
+      <Container style={styles.container} onPress={handlePress}>
+        <PressableOpacity
+          style={{
+            position: 'absolute',
+            top: Spacing.SPACING_3,
+            right: Spacing.SPACING_3,
+            zIndex: 9999,
+          }}
+          onPress={() => menuRef.current?.present()}
+        >
+          <Ionicons
+            name="ellipsis-vertical"
+            size={20}
+            color={Color.NEUTRALS_DEFAULT}
+          />
+        </PressableOpacity>
+        {isOnCommunityPage ? (
+          <UserInfo
+            username={poster.username}
+            profilePictureUrl={poster.profilePictureUrl}
+          />
+        ) : (
+          <View style={styles.infoContainer}>
+            <GroupIcon id={community.id} size={32} url={community.iconUrl} />
+            <View>
+              <PressableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: '/community',
+                    params: { id: community.id },
+                  })
+                }
+              >
+                <BodyText variant="sm-medium">{community.name}</BodyText>
+              </PressableOpacity>
+              <PressableOpacity
+                onPress={() =>
+                  router.push({
+                    pathname: '/profile-modal',
+                    params: { id: poster.id },
+                  })
+                }
+              >
+                <BodyText variant="sm" color={Color.NEUTRALS_DEFAULT}>
+                  @{poster.username}
+                </BodyText>
+              </PressableOpacity>
+            </View>
           </View>
-        </View>
-      )}
-      <BodyText variant="lg-bold">{title}</BodyText>
-      <BodyText variant="md">{description}</BodyText>
-      {product && (
-        <ProductActivityCard
-          id={product.id}
-          name={product.name}
-          seller={product.seller}
-          thumbnailUrl={product.thumbnailUrl}
+        )}
+        <BodyText variant="lg-bold">{title}</BodyText>
+        <BodyText variant="md">{description}</BodyText>
+        {product && (
+          <ProductActivityCard
+            id={product.id}
+            name={product.name}
+            seller={product.seller}
+            thumbnailUrl={product.thumbnailUrl}
+          />
+        )}
+      </Container>
+      <MenuModal bottomSheetRef={menuRef}>
+        <MenuButton
+          title="Report Post"
+          icon={
+            <Ionicons
+              name="warning-outline"
+              size={20}
+              color={Color.NEUTRALS_DEFAULT}
+            />
+          }
+          onPress={() => {
+            reportRef.current?.present();
+          }}
         />
-      )}
-    </Container>
+      </MenuModal>
+      <PostReportModal
+        bottomSheetRef={reportRef}
+        communityId={community.id}
+        postId={id}
+      />
+    </>
   );
 };
 

@@ -9,6 +9,7 @@ export const getCollectionProducts = async (
     .from('community_collection_item')
     .select(
       `
+        id,
         product (
           id,
           name,
@@ -32,6 +33,7 @@ export const getCollectionProducts = async (
   }
 
   return data.map((item) => ({
+    collectionId: item.id,
     id: item.product.id,
     name: item.product.name,
     price: item.product.price,
