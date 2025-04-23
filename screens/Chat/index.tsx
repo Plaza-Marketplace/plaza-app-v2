@@ -29,6 +29,7 @@ import BackButton from '@/components/Buttons/BackButton';
 import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChatScreen } from './models';
+import { router } from 'expo-router';
 
 interface ChatProps {
   conversationId?: Id;
@@ -169,6 +170,17 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
 
   const messages = screenData?.messages ?? [];
 
+  const handlePress = () => {
+    if (userId) {
+      router.push({
+        pathname: '/profile-modal',
+        params: {
+          id: userId,
+        },
+      });
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <KeyboardAvoidingView
@@ -177,52 +189,90 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
       >
         <View style={styles.header}>
           <BackButton />
-          <Image
-            style={{
-              width: 32,
-              height: 32,
-              borderRadius: 16,
-              backgroundColor: Color.GREY_200,
-            }}
-            source={{ uri: screenData?.imageUrl }}
-          />
-
-          <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
-        </View>
-        <FlatList
-          data={messages}
-          contentContainerStyle={{ gap: 16, padding: 16 }}
-          renderItem={({ item }) => (
-            <Message
-              senderId={item.senderId}
-              profileImageUrl={item.profileImageUrl}
-              content={item.content}
-              createdAt={item.createdAt}
-              isCurrentUser={item.senderId === user?.id}
-            />
-          )}
-          inverted
-        />
-        <View style={styles.inputContainer}>
-          <PlazaTextInput
-            inputRef={inputRef}
-            placeholder="Send a message"
-            style={{ flex: 1 }}
-            onChangeText={setContent}
-            rightButton={
-              <PressableOpacity
-                onPress={handleSubmit}
+          {userId ? (
+            <PressableOpacity
+              onPress={handlePress}
+              style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
+            >
+              <Image
                 style={{
-                  backgroundColor: Color.NEUTRALS_DEFAULT,
-                  padding: Spacing.SPACING_1,
-                  borderRadius: Radius.LG,
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  backgroundColor: Color.GREY_200,
                 }}
-              >
-                <ChevronUp color={Color.WHITE} />
-              </PressableOpacity>
-            }
-          />
+                source={{ uri: screenData?.imageUrl }}
+              />
+
+              <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
+            </PressableOpacity>
+          ) : (
+            <>
+              <Image
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: 16,
+                  backgroundColor: Color.GREY_200,
+                }}
+                source={{ uri: screenData?.imageUrl }}
+              />
+
+              <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
+            </>
+          )}
         </View>
+        {screenData?.isBlocked ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 8,
+            }}
+          >
+            <HeadingText variant="h6-bold">
+              You have blocked this user
+            </HeadingText>
+          </View>
+        ) : (
+          <>
+            <FlatList
+              data={messages}
+              contentContainerStyle={{ gap: 16, padding: 16 }}
+              renderItem={({ item }) => (
+                <Message
+                  senderId={item.senderId}
+                  profileImageUrl={item.profileImageUrl}
+                  content={item.content}
+                  createdAt={item.createdAt}
+                  isCurrentUser={item.senderId === user?.id}
+                />
+              )}
+              inverted
+            />
+            <View style={styles.inputContainer}>
+              <PlazaTextInput
+                inputRef={inputRef}
+                placeholder="Send a message"
+                style={{ flex: 1 }}
+                onChangeText={setContent}
+                rightButton={
+                  <PressableOpacity
+                    onPress={handleSubmit}
+                    style={{
+                      backgroundColor: Color.NEUTRALS_DEFAULT,
+                      padding: Spacing.SPACING_1,
+                      borderRadius: Radius.LG,
+                    }}
+                  >
+                    <ChevronUp color={Color.WHITE} />
+                  </PressableOpacity>
+                }
+              />
+            </View>
+          </>
+        )}
       </KeyboardAvoidingView>
     </SafeAreaView>
   );

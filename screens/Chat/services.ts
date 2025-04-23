@@ -187,12 +187,18 @@ export const getDirectMessageScreen = async (
       user1: user!user1_id (
         id,
         username,
-        profile_image_key
+        profile_image_key,
+        block!blocked_id(
+          count
+        )
       ),
       user2: user!user2_id (
         id,
         username,
-        profile_image_key
+        profile_image_key,
+        block!blocked_id(
+          count
+        )
       ),
       dm_conversation_message (
         id,
@@ -210,12 +216,14 @@ export const getDirectMessageScreen = async (
       `and(user1_id.eq.${userId},user2_id.eq.${currentUserId}),` +
         `and(user1_id.eq.${currentUserId},user2_id.eq.${userId})`
     )
+    .eq('user1.block.blocker_id', currentUserId)
+    .eq('user2.block.blocker_id', currentUserId)
     .order('created_at', {
       referencedTable: 'dm_conversation_message',
       ascending: false,
     })
     .maybeSingle();
-
+  console.log(data?.user1.block);
   if (error) {
     throw new Error(error.message);
   }
@@ -255,6 +263,11 @@ export const getDirectMessageScreen = async (
             : null,
         }))
       : [],
+    isBlocked: data
+      ? data.user1.block[0].count > 0
+        ? true
+        : data.user2.block[0].count > 0
+      : false,
   };
 };
 

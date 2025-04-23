@@ -6,7 +6,7 @@ export const useGetLandingPage = () => {
   const { user } = useAuth();
 
   return useQuery({
-    queryKey: ['landingPage', user?.id],
+    queryKey: ['inbox', user?.id],
     queryFn: user ? () => getLandingPage(user.id) : skipToken,
   });
 };

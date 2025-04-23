@@ -24,4 +24,6 @@ export type ChatScreen = {
 
     profileImageUrl: Url | null;
   }[];
+
+  isBlocked: boolean;
 };

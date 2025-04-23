@@ -15,6 +15,7 @@ interface BlockModalProps {
 const BlockModal: FC<BlockModalProps> = ({ userId, bottomSheetRef }) => {
   const [submitted, setSubmitted] = useState(false);
   const snapPoints = useMemo(() => ['50%'], []);
+  const { mutateAsync: blockUser } = useBlockUser();
 
   const handleSubmit = async () => {
     try {
@@ -29,8 +30,6 @@ const BlockModal: FC<BlockModalProps> = ({ userId, bottomSheetRef }) => {
 
     bottomSheetRef.current?.close();
   };
-
-  const { mutateAsync: blockUser } = useBlockUser();
 
   return (
     <BottomSheetModal

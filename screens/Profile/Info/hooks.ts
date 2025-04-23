@@ -46,6 +46,12 @@ export const useUnblockUser = () => {
       : undefined,
     onMutate: (blockedId: Id) => {
       queryClient.setQueryData(['blocked', currentUser?.id, blockedId], false);
+      queryClient.invalidateQueries({
+        queryKey: ['inbox', currentUser?.id],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['chatScreen', blockedId, currentUser?.id],
+      });
     },
   });
 };

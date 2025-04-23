@@ -1,6 +1,8 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { createBlock } from './services';
+import { LandingPage } from '@/screens/Inbox/LandingPage/models';
+import { ChatScreen } from '@/screens/Chat/models';
 
 export const useBlockUser = () => {
   const { user } = useAuth();
@@ -15,6 +17,32 @@ export const useBlockUser = () => {
       console.log(blockId);
       console.log(user?.id);
       queryClient.setQueryData(['blocked', user?.id, blockId], true);
+      queryClient.setQueryData<LandingPage>(['inbox', user?.id], (oldData) => {
+        if (!oldData) return oldData;
+
+        const newData = {
+          ...oldData,
+          messages: oldData.messages.filter(
+            (message) => message.userId !== blockId
+          ),
+        };
+
+        return newData;
+      });
+
+      queryClient.setQueryData<ChatScreen>(
+        ['chatScreen', blockId, user?.id],
+        (oldData) => {
+          if (!oldData) return oldData;
+
+          const newData = {
+            ...oldData,
+            isBlocked: true,
+          };
+
+          return newData;
+        }
+      );
     },
   });
 };
