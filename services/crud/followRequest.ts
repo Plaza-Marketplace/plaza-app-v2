@@ -1,6 +1,6 @@
-import { CreateFollowRequest, FollowRequest } from "@/models/followRequest";
-import { supabase } from "@/utils/supabase";
-import { doesFollowExist } from "./follow";
+import { CreateFollowRequest, FollowRequest } from '@/models/followRequest';
+import { supabase } from '@/utils/supabase';
+import { doesFollowExist } from './follow';
 
 const supabaseToFollowRequest = (data: any): FollowRequest => {
   return {
@@ -8,25 +8,28 @@ const supabaseToFollowRequest = (data: any): FollowRequest => {
     sender: {
       id: data.sender.id,
       username: data.sender.username,
-      firstName: data.sender.first_name,
-      lastName: data.sender.last_name,
       profileImageUrl: data.sender.profile_image_url,
     },
-    recipient:{
+    recipient: {
       id: data.recipient.id,
       username: data.recipient.username,
-      firstName: data.recipient.first_name,
-      lastName: data.recipient.last_name,
-      profileImageUrl: data.recipient.profile_image_url
+      profileImageUrl: data.recipient.profile_image_url,
     },
     createdAt: data.created_at,
   };
-}
+};
 
-export const createFollowRequest = async (request: CreateFollowRequest): Promise<FollowRequest> => {
-  
-  const reqExist = await doesFollowRequestExist(request.senderId, request.recipientId);
-  const followExist = await doesFollowExist(request.senderId, request.recipientId);
+export const createFollowRequest = async (
+  request: CreateFollowRequest
+): Promise<FollowRequest> => {
+  const reqExist = await doesFollowRequestExist(
+    request.senderId,
+    request.recipientId
+  );
+  const followExist = await doesFollowExist(
+    request.senderId,
+    request.recipientId
+  );
 
   if (reqExist || followExist) {
     throw new Error(
@@ -40,24 +43,22 @@ export const createFollowRequest = async (request: CreateFollowRequest): Promise
       sender_id: request.senderId,
       recipient_id: request.recipientId,
     })
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .single();
   if (error) {
     throw new Error(
@@ -66,29 +67,29 @@ export const createFollowRequest = async (request: CreateFollowRequest): Promise
   }
 
   return supabaseToFollowRequest(data);
-  }
+};
 
-export const getFollowRequest = async (requestId: Id): Promise<FollowRequest> => {
+export const getFollowRequest = async (
+  requestId: Id
+): Promise<FollowRequest> => {
   const { data, error } = await supabase
     .from('follow_request')
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .eq('id', requestId)
     .single();
 
@@ -103,29 +104,29 @@ export const getFollowRequest = async (requestId: Id): Promise<FollowRequest> =>
   }
 
   return supabaseToFollowRequest(data);
-}
+};
 
-export const getFollowRequestsByRecipient = async (recipientId: Id): Promise<FollowRequest[]> => {
+export const getFollowRequestsByRecipient = async (
+  recipientId: Id
+): Promise<FollowRequest[]> => {
   const { data, error } = await supabase
     .from('follow_request')
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .eq('recipient_id', recipientId);
 
   if (error) {
@@ -139,29 +140,30 @@ export const getFollowRequestsByRecipient = async (recipientId: Id): Promise<Fol
   }
 
   return data.map(supabaseToFollowRequest);
-}
+};
 
-export const getFollowRequestsBySender = async (senderId: Id): Promise<FollowRequest[]> => {
+export const getFollowRequestsBySender = async (
+  senderId: Id
+): Promise<FollowRequest[]> => {
   const { data, error } = await supabase
     .from('follow_request')
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
+
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .eq('sender_id', senderId);
 
   if (error) {
@@ -175,31 +177,31 @@ export const getFollowRequestsBySender = async (senderId: Id): Promise<FollowReq
   }
 
   return data.map(supabaseToFollowRequest);
-}
+};
 
-export const deleteFollowRequest = async (requestId: Id): Promise<FollowRequest> => {
+export const deleteFollowRequest = async (
+  requestId: Id
+): Promise<FollowRequest> => {
   const { data, error } = await supabase
     .from('follow_request')
     .delete()
     .eq('id', requestId)
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .single();
 
   if (error) {
@@ -209,32 +211,33 @@ export const deleteFollowRequest = async (requestId: Id): Promise<FollowRequest>
   }
 
   return supabaseToFollowRequest(data);
-}
+};
 
-export const deleteFollowRequestBySenderAndRecipient = async ({senderId, recipientId}: CreateFollowRequest): Promise<FollowRequest> => {
+export const deleteFollowRequestBySenderAndRecipient = async ({
+  senderId,
+  recipientId,
+}: CreateFollowRequest): Promise<FollowRequest> => {
   const { data, error } = await supabase
     .from('follow_request')
     .delete()
     .eq('sender_id', senderId)
     .eq('recipient_id', recipientId)
-    .select(`
+    .select(
+      `
       id,
       created_at,
       sender:user!sender_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       ),
       recipient:user!recipient_id(
         id,
         username,
-        first_name,
-        last_name,
         profile_image_url
       )
-      `)
+      `
+    )
     .single();
 
   if (error) {
@@ -244,9 +247,12 @@ export const deleteFollowRequestBySenderAndRecipient = async ({senderId, recipie
   }
 
   return supabaseToFollowRequest(data);
-}
+};
 
-export const doesFollowRequestExist = async (senderId: Id, recipientId: Id): Promise<boolean> => {
+export const doesFollowRequestExist = async (
+  senderId: Id,
+  recipientId: Id
+): Promise<boolean> => {
   const { count, error } = await supabase
     .from('follow_request')
     .select('*', { count: 'exact', head: true })
@@ -261,4 +267,4 @@ export const doesFollowRequestExist = async (senderId: Id, recipientId: Id): Pro
   }
 
   return count > 0;
-}
+};

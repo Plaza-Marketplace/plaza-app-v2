@@ -10,8 +10,6 @@ import PlazaButton from '@/components/Buttons/PlazaButton';
 
 interface NamesProps {
   formik: FormikProps<{
-    firstName: string;
-    lastName: string;
     username: string;
     displayName: string;
   }>;
@@ -23,49 +21,9 @@ const Names: FC<NamesProps> = ({ formik }) => {
       <HeadingText variant="h3-bold">Account Details</HeadingText>
 
       <BodyText variant="md" style={{ marginTop: Spacing.SPACING_2 }}>
-        You can change your name at any time, but your username is permanent and
-        unique to your account.
+        You can change your display name at any time, but your username is
+        permanent and unique to your account.
       </BodyText>
-
-      <View style={{ marginTop: Spacing.SPACING_3 }}>
-        <PlazaTextInput
-          label="First Name"
-          placeholder="Your first name"
-          style={styles.inputStyle}
-          value={formik.values.firstName}
-          onChangeText={formik.handleChange('firstName')}
-          onBlur={formik.handleBlur('firstName')}
-        />
-        {formik.errors.firstName && (
-          <BodyText
-            variant="sm"
-            color="red"
-            style={{ marginTop: Spacing.SPACING_1 }}
-          >
-            {formik.errors.firstName}
-          </BodyText>
-        )}
-      </View>
-
-      <View style={{ marginTop: Spacing.SPACING_3 }}>
-        <PlazaTextInput
-          label="Last Name"
-          placeholder="Your last name"
-          style={styles.inputStyle}
-          value={formik.values.lastName}
-          onChangeText={formik.handleChange('lastName')}
-          onBlur={formik.handleBlur('lastName')}
-        />
-        {formik.errors.lastName && (
-          <BodyText
-            variant="sm"
-            color="red"
-            style={{ marginTop: Spacing.SPACING_1 }}
-          >
-            {formik.errors.lastName}
-          </BodyText>
-        )}
-      </View>
 
       <View style={{ marginTop: Spacing.SPACING_3 }}>
         <PlazaTextInput

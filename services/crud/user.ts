@@ -8,8 +8,6 @@ export const formatUser = (user: Tables<'user'>): User => {
   return {
     id: user.id,
     authId: user.auth_id,
-    firstName: user.first_name,
-    lastName: user.last_name,
     username: user.username,
     displayName: user.display_name,
     email: user.email,
@@ -76,8 +74,6 @@ export const createUser = async (
   const { data, error } = await supabase
     .from('user')
     .insert({
-      first_name: user.firstName,
-      last_name: user.lastName,
       username: user.username,
       email: user.email,
       description: user.description,
@@ -95,8 +91,6 @@ export const createUser = async (
 
 export const updateUser = async (updates: UpdateUser): Promise<User> => {
   const supabaseUpdates = {
-    first_name: updates.firstName,
-    last_name: updates.lastName,
     username: updates.username,
     display_name: updates.displayName,
     description: updates.description,

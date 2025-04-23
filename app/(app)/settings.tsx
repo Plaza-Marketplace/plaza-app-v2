@@ -19,12 +19,9 @@ import { AuthContext } from '@/contexts/AuthContext';
 import { useUpdateUser } from '@/hooks/queries/useUser';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { supabase } from '@/utils/supabase';
-import { useQueryClient } from '@tanstack/react-query';
-import ProfileHeader from '@/screens/Profile/ProfileHeader';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { deleteAccount } from '@/services/supabase_functions/deleteUser';
 import { Ionicons } from '@expo/vector-icons';
-import KeyboardView from '@/components/KeyboardView';
 import ProfileIcon from '@/components/ProfileIcon';
 import Radius from '@/constants/Radius';
 import BodyText from '@/components/Texts/BodyText';
@@ -91,8 +88,6 @@ const Settings = () => {
       />
       <Formik
         initialValues={{
-          firstName: user.firstName,
-          lastName: user.lastName,
           username: user.username,
           description: user.description,
           displayName: user.displayName,
@@ -107,8 +102,6 @@ const Settings = () => {
 
           const updates: UpdateUser = {
             id: user.id,
-            firstName: values.firstName,
-            lastName: values.lastName,
             description: values.description,
             displayName: values.displayName,
             profileImageBase64: base64Image,
@@ -158,19 +151,6 @@ const Settings = () => {
                     </BodyText>
                   </PressableOpacity>
                 </View>
-
-                <PlazaTextInput
-                  label="First Name"
-                  onChangeText={handleChange('firstName')}
-                  placeholder="Your first name..."
-                  value={values.firstName}
-                />
-                <PlazaTextInput
-                  label="Last Name"
-                  onChangeText={handleChange('lastName')}
-                  placeholder="Your last name..."
-                  value={values.lastName}
-                />
                 <PlazaTextInput
                   label="Username"
                   value={values.username}
@@ -197,7 +177,7 @@ const Settings = () => {
                   onPress={() => {
                     supabase.auth.signOut();
                     // queryClient.clear();
-                    router.navigate('/login');
+                    router.navigate('/onboarding/login');
                   }}
                 />
 

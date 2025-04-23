@@ -56,7 +56,8 @@ const CustomHandle = () => (
 );
 
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
-  const { user } = useAuth();
+  const { user, session } = useAuth();
+  const isAnonymous = session?.user.is_anonymous;
   const {
     data: product,
     isLoading,
@@ -259,31 +260,33 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                 ))}
               </View>
             </BottomSheetScrollView>
-            <View style={{ paddingBottom: insets.bottom }}>
-              {user?.id === product?.seller.id ? (
-                <Footer
-                  leftTitle="Delete Product"
-                  rightTitle="Edit Product"
-                  leftOnPress={deleteProduct}
-                />
-              ) : (
-                <Footer
-                  leftTitle="Add to Cart"
-                  rightTitle="Buy Now"
-                  leftOnPress={() => {
-                    addToCart();
-                    setShowConfirmAdded(true);
-                    setTimeout(() => {
-                      setShowConfirmAdded(false);
-                    }, 2000);
-                  }}
-                  rightOnPress={() => {
-                    bottomSheetRef.current?.close();
-                    handleBuyNow();
-                  }}
-                />
-              )}
-            </View>
+            {!isAnonymous && (
+              <View style={{ paddingBottom: insets.bottom }}>
+                {user?.id === product?.seller.id ? (
+                  <Footer
+                    leftTitle="Delete Product"
+                    rightTitle="Edit Product"
+                    leftOnPress={deleteProduct}
+                  />
+                ) : (
+                  <Footer
+                    leftTitle="Add to Cart"
+                    rightTitle="Buy Now"
+                    leftOnPress={() => {
+                      addToCart();
+                      setShowConfirmAdded(true);
+                      setTimeout(() => {
+                        setShowConfirmAdded(false);
+                      }, 2000);
+                    }}
+                    rightOnPress={() => {
+                      bottomSheetRef.current?.close();
+                      handleBuyNow();
+                    }}
+                  />
+                )}
+              </View>
+            )}
 
             <View
               style={{

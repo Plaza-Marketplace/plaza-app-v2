@@ -1,5 +1,9 @@
 import { useAuth } from '@/contexts/AuthContext';
 import {
+  getAnonymousExploreTab,
+  getAnonymousNextVideos,
+} from '@/services/route/anonymous-explore';
+import {
   getExploreTab,
   getNextExploreTabVideos,
 } from '@/services/route/explore';
@@ -11,7 +15,9 @@ export const useGetExploreTab = () => {
 
   return useQuery({
     queryKey: ['exploreTab'],
-    queryFn: user?.id ? () => getExploreTab(user.id) : skipToken,
+    queryFn: user?.id
+      ? () => getExploreTab(user.id)
+      : () => getAnonymousExploreTab(),
     staleTime: 1000 * 60 * 5,
   });
 };
@@ -45,5 +51,29 @@ export const useGetNextExploreTabVideos = (videos?: ExploreTab['videos']) => {
     );
   };
 
-  return user?.id && videos ? () => paginate(user.id, videos) : () => {};
+  const anonymousPaginate = async (videos: ExploreTab['videos']) => {
+    if (!hasNextPage || isFetching) return;
+
+    setIsFetching(true);
+    const newVideos = await getAnonymousNextVideos(
+      videos[videos.length - 1].id
+    );
+    setIsFetching(false);
+
+    if (newVideos.length === 0) {
+      setHasNextPage(false);
+      return;
+    }
+
+    queryClient.setQueryData(
+      ['exploreTab'],
+      (prev: ExploreTab | undefined) => ({
+        videos: prev ? [...prev.videos, ...newVideos] : newVideos,
+      })
+    );
+  };
+
+  return user?.id && videos
+    ? () => paginate(user.id, videos)
+    : () => anonymousPaginate(videos);
 };

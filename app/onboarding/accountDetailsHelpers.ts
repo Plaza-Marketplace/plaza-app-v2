@@ -4,8 +4,6 @@ import { checkUsernameUnique } from '@/services/route/create-account';
 import * as Yup from 'yup';
 
 export const accountSchema = Yup.object().shape({
-  firstName: Yup.string().required('First name is required'),
-  lastName: Yup.string().required('Last name is required'),
   username: Yup.string()
     .required('Username is required')
     .min(3, 'Username must be at least 3 characters')
@@ -25,8 +23,6 @@ export const accountSchema = Yup.object().shape({
 });
 
 export const submitForm = async (values: {
-  firstName: string;
-  lastName: string;
   username: string;
   displayName: string;
 }) => {};

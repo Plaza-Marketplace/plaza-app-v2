@@ -21,8 +21,6 @@ const formatProfileHeaderData = (
   return {
     user: {
       id: profileUser.id,
-      firstName: profileUser.first_name,
-      lastName: profileUser.last_name,
       profileImageUrl: profileUser.profile_image_url,
       authId: profileUser.auth_id,
       email: profileUser.email,

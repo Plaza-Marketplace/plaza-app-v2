@@ -55,6 +55,39 @@ export const getHeader = async (
   };
 };
 
+export const getIsBlocked = async (
+  userId: Id,
+  targetUserId: Id
+): Promise<boolean> => {
+  const { count, error } = await supabase
+    .from('block')
+    .select('*', { count: 'exact', head: true })
+    .eq('blocker_id', userId)
+    .eq('blocked_id', targetUserId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  if (count == null) {
+    throw new Error("Count returned null, this shouldn't happen");
+  }
+  return count > 0;
+};
+
+export const deleteBlock = async (userId: Id, blockedId: Id) => {
+  console.log(userId, blockedId);
+  const { error } = await supabase
+    .from('block')
+    .delete()
+    .eq('blocker_id', userId)
+    .eq('blocked_id', blockedId);
+
+  if (error) {
+    console.error(error);
+    throw new Error(error.message);
+  }
+};
+
 export const createFollow = async (userId: Id, currentUserId: Id) => {
   const { error } = await supabase.from('follow').insert({
     source_id: currentUserId,

@@ -54,17 +54,8 @@ const AccountDetails = () => {
   const [selectedType, setSelectedType] = React.useState<number | null>(null);
   // const [categories, setCategories] = React.useState<string[]>([]);
 
-  // formik
-
-  const fullname = session?.user.user_metadata.name || '';
-  const [firstName, lastName] = fullname.split(' ');
-  const initialFirstName = firstName || '';
-  const initialLastName = lastName || '';
-
   const formik = useFormik({
     initialValues: {
-      firstName: initialFirstName,
-      lastName: initialLastName,
       username: '',
       displayName: '',
     },
@@ -121,8 +112,6 @@ const AccountDetails = () => {
       await supabase.auth.updateUser({
         data: {
           completed_onboarding: true,
-          first_name: formik.values.firstName,
-          last_name: formik.values.lastName,
           username: formik.values.username,
           display_name: formik.values.displayName,
         },
@@ -131,8 +120,6 @@ const AccountDetails = () => {
       // update user in supabase db
       await updateUser({
         id: user.id,
-        firstName: formik.values.firstName,
-        lastName: formik.values.lastName,
         username: formik.values.username,
         displayName: formik.values.displayName,
         stripeCustomerId: account,
@@ -164,12 +151,7 @@ const AccountDetails = () => {
     }
     // first slide
     if (currSlide == 0) {
-      if (
-        formik.errors.firstName ||
-        formik.errors.lastName ||
-        formik.errors.username ||
-        formik.errors.displayName
-      ) {
+      if (formik.errors.username || formik.errors.displayName) {
         setDone(false);
         return;
       }

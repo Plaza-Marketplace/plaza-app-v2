@@ -1,5 +1,6 @@
 import Feed from '@/components/Feed';
 import Loading from '@/components/Loading';
+import { useAuth } from '@/contexts/AuthContext';
 import {
   useGetExploreTab,
   useGetNextExploreTabVideos,
@@ -7,6 +8,8 @@ import {
 import { useState } from 'react';
 
 const ExploreTab = () => {
+  const { user } = useAuth();
+
   const { data, error, refetch, isLoading } = useGetExploreTab();
   const getNextExploreTabVideos = useGetNextExploreTabVideos(data?.videos);
   const [refreshing, setRefreshing] = useState(false);

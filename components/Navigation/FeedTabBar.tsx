@@ -10,11 +10,13 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Basket } from '../Icons';
+import { anonymousLogout } from '@/screens/Anonymous/services';
 
 const Tab = createMaterialTopTabNavigator();
 
 interface Props extends MaterialTopTabBarProps {
   showCart?: boolean;
+  showLoginPrompt?: boolean;
 }
 
 const FeedTabBar: FC<Props> = ({
@@ -22,6 +24,7 @@ const FeedTabBar: FC<Props> = ({
   descriptors,
   navigation,
   showCart,
+  showLoginPrompt,
 }) => {
   // const [menuVisible, setMenuVisible] = useState(false);
 
@@ -119,6 +122,20 @@ const FeedTabBar: FC<Props> = ({
             <Basket
               width={28}
               height={28}
+              color={
+                currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
+              }
+            />
+          </TouchableOpacity>
+        )}
+        {showLoginPrompt && (
+          <TouchableOpacity
+            onPress={async () => await anonymousLogout()}
+            style={[styles.cartButton, styles.shadow]}
+          >
+            <Ionicons
+              name="log-in-outline"
+              size={28}
               color={
                 currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
               }

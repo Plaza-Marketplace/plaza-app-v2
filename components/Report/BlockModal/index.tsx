@@ -18,7 +18,7 @@ const BlockModal: FC<BlockModalProps> = ({ userId, bottomSheetRef }) => {
 
   const handleSubmit = async () => {
     try {
-      await blockUser();
+      await blockUser(userId);
     } catch (e) {
       console.error(e);
       Alert.alert(
@@ -30,7 +30,7 @@ const BlockModal: FC<BlockModalProps> = ({ userId, bottomSheetRef }) => {
     bottomSheetRef.current?.close();
   };
 
-  const { mutateAsync: blockUser } = useBlockUser(userId);
+  const { mutateAsync: blockUser } = useBlockUser();
 
   return (
     <BottomSheetModal

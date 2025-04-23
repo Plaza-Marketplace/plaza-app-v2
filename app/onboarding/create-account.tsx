@@ -65,8 +65,6 @@ const CreateAccount = () => {
                 emailRedirectTo:
                   'https://www.plaza-app.com/supabase-auth/success',
                 data: {
-                  first_name: '',
-                  last_name: '',
                   username: '',
                   completed_onboarding: false, // Set to false to indicate onboarding is not complete
                 },

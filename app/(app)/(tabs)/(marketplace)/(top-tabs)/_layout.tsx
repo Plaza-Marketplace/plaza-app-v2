@@ -19,9 +19,12 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 import Color from '@/constants/Color';
 import FeedTabBar from '@/components/Navigation/FeedTabBar';
+import { useAuth } from '@/contexts/AuthContext';
 
 const FeedTopTabs = () => {
   const inset = useSafeAreaInsets();
+  const { session } = useAuth();
+  const isAnonymous = session?.user.is_anonymous;
   return (
     <View
       style={{
@@ -30,7 +33,13 @@ const FeedTopTabs = () => {
       }}
     >
       <MaterialTopTabs
-        tabBar={({ ...props }) => <FeedTabBar showCart {...props} />}
+        tabBar={({ ...props }) => (
+          <FeedTabBar
+            showCart={!isAnonymous}
+            showLoginPrompt={isAnonymous}
+            {...props}
+          />
+        )}
         screenOptions={{
           tabBarStyle: {
             width: '100%',

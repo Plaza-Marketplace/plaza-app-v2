@@ -32,6 +32,7 @@ const AppleSignInButton: FC<AppleSignInButtonProps> = ({ style }) => {
               ],
             });
             // Sign in via Supabase Auth.
+            console.log(credential);
             if (credential.identityToken) {
               const {
                 error,
@@ -40,6 +41,7 @@ const AppleSignInButton: FC<AppleSignInButtonProps> = ({ style }) => {
                 provider: 'apple',
                 token: credential.identityToken,
               });
+              console.log(user?.id);
               if (!error) {
                 // User is signed in.
               }

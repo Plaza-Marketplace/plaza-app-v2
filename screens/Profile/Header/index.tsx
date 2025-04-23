@@ -15,9 +15,10 @@ import Options from './Options';
 interface ProfileHeaderProps {
   userId: Id;
   name: string;
+  blocked: boolean;
 }
 
-const ProfileHeader: FC<ProfileHeaderProps> = ({ userId, name }) => {
+const ProfileHeader: FC<ProfileHeaderProps> = ({ userId, name, blocked }) => {
   const pathname = usePathname();
   const { user } = useAuth();
   const inset = useSafeAreaInsets();

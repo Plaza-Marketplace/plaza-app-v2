@@ -7,10 +7,6 @@ type User = {
 
   authId: UUID;
 
-  firstName: string;
-
-  lastName: string;
-
   /**
    * The user's username.
    * Policy: only the user can change this
@@ -34,10 +30,6 @@ type User = {
 
 type UpdateUser = {
   id: Id;
-
-  firstName?: string;
-
-  lastName?: string;
 
   username?: string;
 

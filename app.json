@@ -54,6 +54,16 @@
         "android": {
           "releaseStatus": "draft"
         }
+      },
+      "preview": {
+        "distribution": "internal",
+        "channel": "preview",
+        "android": {
+          "buildType": "apk"
+        },
+        "env": {
+          "EXPO_PUBLIC_APP_ENV": "production"
+        }
       }
     },
     "web": {

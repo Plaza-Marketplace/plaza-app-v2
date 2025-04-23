@@ -1,4 +1,4 @@
-import { Dimensions, StyleSheet, Text, View, Image } from 'react-native';
+import { Dimensions, StyleSheet, Text, View, Image, Alert } from 'react-native';
 import React, { useEffect } from 'react';
 import Carousel, {
   Pagination,
@@ -14,6 +14,7 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import BodyText from '@/components/Texts/BodyText';
 import Color from '@/constants/Color';
 import { router } from 'expo-router';
+import { supabase } from '@/utils/supabase';
 
 const width = Dimensions.get('window').width;
 
@@ -113,6 +114,40 @@ const Welcome = () => {
           title="Log In"
           onPress={() => {
             router.push('/onboarding/login');
+          }}
+          style={styles.loginButtonContainer}
+          fontColor={Color.BLACK}
+        />
+
+        <PlazaButton
+          title="Continue as Guest"
+          onPress={() => {
+            Alert.alert(
+              'Continue as Guest',
+              'You will not be able to access your account or save any data. Are you sure you want to continue as a guest?',
+              [
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                },
+                {
+                  text: 'Continue as Guest',
+                  onPress: async () => {
+                    console.log('ok, have it your way then');
+                    const { data, error } =
+                      await supabase.auth.signInAnonymously({
+                        options: {
+                          data: {
+                            guest: true,
+                            completed_onboarding: true,
+                          },
+                        },
+                      });
+                    router.push('/(app)/(tabs)/(marketplace)/(top-tabs)/feed');
+                  },
+                },
+              ]
+            );
           }}
           style={styles.loginButtonContainer}
           fontColor={Color.BLACK}

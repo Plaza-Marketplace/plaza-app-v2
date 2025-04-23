@@ -18,6 +18,7 @@ import LikeButton from './LikeButton';
 import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
 import VideoReportModal from '../Report/ReportModal/VideoReportModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FeedVideoProps {
   video: Video;
@@ -28,7 +29,9 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
   const reportVideoRef = useRef<BottomSheetModal>(null);
-  const reportProductRef = useRef<BottomSheetModal>(null);
+
+  const { session } = useAuth();
+  const isAnonymous = session?.user.is_anonymous;
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
@@ -67,12 +70,16 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
-                onPress={() =>
+                onPress={() => {
+                  if (isAnonymous) {
+                    router.push('/onboarding/login');
+                    return;
+                  }
                   router.push({
                     pathname: '/profile-modal',
                     params: { id: video.poster.id },
-                  })
-                }
+                  });
+                }}
                 style={styles.userInfoContainer}
               >
                 <View
@@ -109,33 +116,37 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             </View>
           </View>
           <View style={styles.buttonsContainer}>
-            <LikeButton
-              videoId={video.id}
-              isLiked={video.isLiked}
-              likeCount={video.likeCount}
-            />
-            <FeedVideoButton
-              name="comment"
-              count={video.commentCount}
-              onPress={() => {
-                track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
-                commentModalRef.current?.present();
-              }}
-            />
-            <FeedVideoButton
-              name="review"
-              count={video.reviewCount}
-              onPress={() => {
-                track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
-                reviewModalRef.current?.present();
-              }}
-            />
-            <FeedVideoButton
-              name="report"
-              onPress={() => {
-                reportVideoRef.current?.present();
-              }}
-            />
+            {!isAnonymous && (
+              <>
+                <LikeButton
+                  videoId={video.id}
+                  isLiked={video.isLiked}
+                  likeCount={video.likeCount}
+                />
+                <FeedVideoButton
+                  name="comment"
+                  count={video.commentCount}
+                  onPress={() => {
+                    track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
+                    commentModalRef.current?.present();
+                  }}
+                />
+                <FeedVideoButton
+                  name="review"
+                  count={video.reviewCount}
+                  onPress={() => {
+                    track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
+                    reviewModalRef.current?.present();
+                  }}
+                />
+                <FeedVideoButton
+                  name="report"
+                  onPress={() => {
+                    reportVideoRef.current?.present();
+                  }}
+                />
+              </>
+            )}
           </View>
         </View>
       </VideoView>
