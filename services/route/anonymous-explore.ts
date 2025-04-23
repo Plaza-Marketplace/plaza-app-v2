@@ -88,8 +88,6 @@ export const getAnonymousExploreTab = async (): Promise<ExploreTab> => {
     .limit(5)
     .limit(1, { referencedTable: 'video_product.product.product_variant' });
 
-  if (error) throw new Error(error.message);
-
   return {
     videos: data.map((video) =>
       formatExploreTabVideo(

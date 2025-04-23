@@ -14,8 +14,6 @@ export const useBlockUser = () => {
       ? async (blockedId: Id) => createBlock(user.id, blockedId)
       : async (blockedId: Id) => Promise.resolve({} as UserBlock),
     onMutate: async (blockId) => {
-      console.log(blockId);
-      console.log(user?.id);
       queryClient.setQueryData(['blocked', user?.id, blockId], true);
       queryClient.setQueryData<LandingPage>(['inbox', user?.id], (oldData) => {
         if (!oldData) return oldData;
@@ -43,6 +41,9 @@ export const useBlockUser = () => {
           return newData;
         }
       );
+      queryClient.invalidateQueries({
+        queryKey: ['exploreTab'],
+      });
     },
   });
 };

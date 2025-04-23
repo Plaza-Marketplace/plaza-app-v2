@@ -180,29 +180,31 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                           )}
                     </BodyText>
                   </View>
-                  <View
-                    style={{ flexDirection: 'row', gap: Spacing.SPACING_3 }}
-                  >
-                    <PressableOpacity
-                      onPress={() => {
-                        reportProductRef.current?.present();
-                      }}
+                  {!isAnonymous && (
+                    <View
+                      style={{ flexDirection: 'row', gap: Spacing.SPACING_3 }}
                     >
-                      <Ionicons
-                        name="flag-outline"
-                        color={Color.BLACK}
-                        size={32}
-                      />
-                    </PressableOpacity>
+                      <PressableOpacity
+                        onPress={() => {
+                          reportProductRef.current?.present();
+                        }}
+                      >
+                        <Ionicons
+                          name="flag-outline"
+                          color={Color.BLACK}
+                          size={32}
+                        />
+                      </PressableOpacity>
 
-                    <PressableOpacity
-                      onPress={() => {
-                        addToGroupRef.current?.present();
-                      }}
-                    >
-                      <Bookmark color={Color.BLACK} />
-                    </PressableOpacity>
-                  </View>
+                      <PressableOpacity
+                        onPress={() => {
+                          addToGroupRef.current?.present();
+                        }}
+                      >
+                        <Bookmark color={Color.BLACK} />
+                      </PressableOpacity>
+                    </View>
+                  )}
                 </View>
                 <View style={styles.infoContainer}>
                   <ProfileIcon variant="user" size={32} url={undefined} />

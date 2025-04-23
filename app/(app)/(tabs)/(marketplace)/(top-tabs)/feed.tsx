@@ -5,10 +5,10 @@ import {
   useGetExploreTab,
   useGetNextExploreTabVideos,
 } from '@/hooks/routes/explore';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ExploreTab = () => {
-  const { user } = useAuth();
+  const { session } = useAuth();
 
   const { data, error, refetch, isLoading } = useGetExploreTab();
   const getNextExploreTabVideos = useGetNextExploreTabVideos(data?.videos);
@@ -24,6 +24,10 @@ const ExploreTab = () => {
 
     setRefreshing(false);
   };
+
+  useEffect(() => {
+    refetch();
+  }, [session]);
 
   return (
     <Feed

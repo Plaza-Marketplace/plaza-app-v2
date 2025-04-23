@@ -1,19 +1,11 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { FC, useRef } from 'react';
-import ProductCard from '@/components/Product/ProductCard';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import useGetCollectionProducts from './useGetCollectionProducts';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import SelectProductModal from '@/components/Community/SelectProductModal';
 import { useAddProductsToCollection } from '@/components/Community/SelectProductModal/hooks';
-import MenuModal from '@/components/Menu';
-import MenuButton from '@/components/Menu/MenuButton';
-import { Ionicons } from '@expo/vector-icons';
-import Color from '@/constants/Color';
-import CollectionReportModal from '@/components/Report/CommunityReportModal/CollectionReportModal';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import Spacing from '@/constants/Spacing';
 import CollectionCard from '@/components/Community/CollectionCard';
 
 interface CollectionProps {
@@ -28,6 +20,8 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
     useAddProductsToCollection(communityId);
 
   if (error) return <Text>{error.message}</Text>;
+
+  console.log(communityCollectionItems);
 
   if (!communityCollectionItems) return <Text>Loading...</Text>;
 
