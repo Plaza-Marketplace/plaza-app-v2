@@ -19,7 +19,7 @@ export type SearchGroup = {
 };
 
 export type ExploreTab = {
-  mostPopularGroups: {
+  featuredGroups: {
     id: Id;
 
     name: string;
@@ -29,7 +29,7 @@ export type ExploreTab = {
     bannerUrl: Url | null;
   }[];
 
-  featuredGroups: {
+  allGroups: {
     id: Id;
 
     name: string;

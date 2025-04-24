@@ -16,6 +16,7 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { Ionicons } from '@expo/vector-icons';
 import Spacing from '@/constants/Spacing';
+import { ScrollView } from 'react-native';
 
 const Explore = () => {
   const { data: exploreTab, error: exploreTabError } = useGetExploreTab();
@@ -25,9 +26,11 @@ const Explore = () => {
   const { debouncedValue } = useDebounce(localSearchTerm, 500);
   const { data: searchGroups, error } = useSearchGroups(debouncedValue);
 
-  const mostPopularGroups = exploreTab?.mostPopularGroups ?? [];
-  const featuredGroups = exploreTab?.featuredGroups ?? [];
+  const mostPopularGroups = exploreTab?.featuredGroups ?? [];
+  const allGroups = exploreTab?.allGroups ?? [];
   const reportRef = useRef<BottomSheetModal>(null);
+
+  console.log(exploreTab);
 
   return (
     <View style={styles.container}>
@@ -46,9 +49,11 @@ const Explore = () => {
       {isSearchFocused ? (
         <SearchResults searchGroups={searchGroups ?? []} />
       ) : (
-        <>
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: Spacing.SPACING_4 }}
+        >
           <View style={styles.section}>
-            <HeadingText variant="h5-bold">Most Popular Groups</HeadingText>
+            <HeadingText variant="h5-bold">Featured Groups</HeadingText>
             <View style={styles.carouselContainer}>
               <View style={{ height: 200 }}>
                 <Carousel
@@ -75,12 +80,13 @@ const Explore = () => {
               />
             </View>
           </View>
-          {featuredGroups.length > 0 && (
+          {allGroups.length > 0 && (
             <View style={styles.section}>
-              <HeadingText variant="h5-bold">Featured Groups</HeadingText>
+              <HeadingText variant="h5-bold">All Groups</HeadingText>
               <FlatList
                 numColumns={2}
-                data={exploreTab?.featuredGroups}
+                data={exploreTab?.allGroups}
+                scrollEnabled={false}
                 renderItem={({ item }) => (
                   <>
                     <CommunityReportModal
@@ -116,7 +122,7 @@ const Explore = () => {
               />
             </View>
           )}
-        </>
+        </ScrollView>
       )}
     </View>
   );
