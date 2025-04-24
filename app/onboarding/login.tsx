@@ -57,7 +57,7 @@ const Login = () => {
               email: values.email,
               password: values.password,
             });
-
+            console.log(error, values);
             if (error) Alert.alert(error.message);
           }}
         >
