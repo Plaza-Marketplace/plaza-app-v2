@@ -22,6 +22,7 @@ import LinkText from '@/components/Texts/LinkText';
 const CreateAccount = () => {
   const { isLoading, session } = useAuth();
 
+  console.log('THIS IS SESSION:', session);
   if (!isLoading && session) {
     return <Redirect href="/" />;
   }

@@ -23,6 +23,7 @@ const Login = () => {
   if (!isLoading && session) {
     return <Redirect href="/" />;
   }
+
   return (
     <SafeAreaView
       style={{

@@ -9,6 +9,7 @@ export default function AppLayout() {
   if (!isLoading && !session) {
     // On web, static rendering will stop here as the user is not authenticated
     // in the headless Node process that the pages are rendered in.
+    console.log('session: ', session);
     return <Redirect href="/onboarding/welcome" />;
   }
   // the user created an account but hasn't filled out their account details yet

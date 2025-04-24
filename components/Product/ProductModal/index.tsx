@@ -210,12 +210,14 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                   <ProfileIcon variant="user" size={32} url={undefined} />
                   <View style={styles.sellerInfo}>
                     <PressableOpacity
-                      onPress={() =>
-                        router.push({
-                          pathname: '/profile-modal',
-                          params: { id: product?.seller.id },
-                        })
-                      }
+                      onPress={() => {
+                        if (!isAnonymous) {
+                          router.push({
+                            pathname: '/profile-modal',
+                            params: { id: product?.seller.id },
+                          });
+                        }
+                      }}
                     >
                       <BodyText variant="md">
                         {product?.seller.username}

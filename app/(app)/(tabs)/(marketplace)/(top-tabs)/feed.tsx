@@ -5,7 +5,8 @@ import {
   useGetExploreTab,
   useGetNextExploreTabVideos,
 } from '@/hooks/routes/explore';
-import { useEffect, useState } from 'react';
+import { useFocusEffect } from 'expo-router';
+import { useCallback, useEffect, useState } from 'react';
 
 const ExploreTab = () => {
   const { session } = useAuth();
@@ -13,6 +14,14 @@ const ExploreTab = () => {
   const { data, error, refetch, isLoading } = useGetExploreTab();
   const getNextExploreTabVideos = useGetNextExploreTabVideos(data?.videos);
   const [refreshing, setRefreshing] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      // Do something when the screen is focused
+      refetch();
+    }, [])
+  );
+
   if (isLoading) return <Loading />;
 
   if (!data || error) return null;
@@ -24,11 +33,6 @@ const ExploreTab = () => {
 
     setRefreshing(false);
   };
-
-  useEffect(() => {
-    refetch();
-  }, [session]);
-
   return (
     <Feed
       videos={data.videos}

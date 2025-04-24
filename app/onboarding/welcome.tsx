@@ -124,7 +124,7 @@ const Welcome = () => {
           onPress={() => {
             Alert.alert(
               'Continue as Guest',
-              'You will not be able to access your account or save any data. Are you sure you want to continue as a guest?',
+              'You will not be able to save any data or access any communities in Plaza. Are you sure you want to continue as a guest?',
               [
                 {
                   text: 'Cancel',
@@ -133,7 +133,6 @@ const Welcome = () => {
                 {
                   text: 'Continue as Guest',
                   onPress: async () => {
-                    console.log('ok, have it your way then');
                     const { data, error } =
                       await supabase.auth.signInAnonymously({
                         options: {
