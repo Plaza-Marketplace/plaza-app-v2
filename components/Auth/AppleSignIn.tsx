@@ -3,12 +3,16 @@ import * as AppleAuthentication from 'expo-apple-authentication';
 import { supabase } from '@/utils/supabase';
 import Radius from '@/constants/Radius';
 import { FC } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
+import { router } from 'expo-router';
 
 interface AppleSignInButtonProps {
   style?: ViewStyle;
 }
 
 const AppleSignInButton: FC<AppleSignInButtonProps> = ({ style }) => {
+  const { session, setSession } = useAuth();
+
   if (Platform.OS === 'ios')
     return (
       <AppleAuthentication.AppleAuthenticationButton
@@ -36,14 +40,19 @@ const AppleSignInButton: FC<AppleSignInButtonProps> = ({ style }) => {
             if (credential.identityToken) {
               const {
                 error,
-                data: { user },
+                data: { user, session },
               } = await supabase.auth.signInWithIdToken({
                 provider: 'apple',
                 token: credential.identityToken,
               });
               console.log(user?.id);
-              if (!error) {
+              if (!error && session) {
                 // User is signed in.
+                await supabase.auth.updateUser({
+                  data: {
+                    completed_onboarding: true,
+                  },
+                });
               }
             } else {
               throw new Error('No identityToken.');
