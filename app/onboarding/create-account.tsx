@@ -72,15 +72,16 @@ const CreateAccount = () => {
             });
 
             if (error) {
+              console.log(error);
               Alert.alert(error.message);
               return;
             }
             if (!session) {
-              Alert.alert('Please check your inbox for email verification!');
+              Alert.alert(
+                'If you are a new user, please check your email for a confirmation link. If you already have an account, please log in.'
+              );
               return;
             }
-
-            const user = await getUserByAuthId(session.user.id);
 
             router.push({
               pathname: '/onboarding/account-details',
