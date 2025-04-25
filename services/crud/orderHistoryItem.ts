@@ -37,7 +37,7 @@ const formatOrderHistoryData = (
     deliveredDate: orderHistoryItem.delivered_date,
     trackingNumber: orderHistoryItem.tracking_number,
     shippingProvider: orderHistoryItem.shipping_provider,
-    shippingAddress: orderHistoryItem.shipping_address,
+    shippingAddress: orderHistoryItem.shipping_address_id,
   };
 };
 
@@ -90,7 +90,8 @@ export const createOrderHistoryItem = async (
       seller_id: item.sellerId,
       final_price: item.finalPrice,
       product_id: item.productId,
-      shipping_address: item.shippingAddress,
+      variant_id: item.variantId,
+      shipping_address_id: item.shippingAddress,
     })
     .select(queryString)
     .single();
@@ -122,6 +123,7 @@ export const createOrderHistoryItems = async (
         seller_id: item.sellerId,
         final_price: item.finalPrice,
         product_id: item.productId,
+        variant_id: item.variantId,
         shipping_address_id: item.shippingAddress,
         quantity: item.quantity,
       }))

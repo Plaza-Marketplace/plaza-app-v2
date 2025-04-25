@@ -62,7 +62,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
       <View style={[styles.contentContainer, { paddingTop: insets.top }]}>
         <View style={styles.headerButtons}>
           <BackButton />
-          <UploadButton />
+          {/* <UploadButton /> */}
         </View>
         <View style={styles.content}>
           <View style={styles.nameContainer}>

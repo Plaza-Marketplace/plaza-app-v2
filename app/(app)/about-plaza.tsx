@@ -20,7 +20,7 @@ const AboutPlaza = () => {
           }}
         >
           <BackButton />
-          <HeadingText variant="h5-bold">About Plaza</HeadingText>
+          <HeadingText variant="h5-bold">A message from the team</HeadingText>
         </View>
 
         <BodyText variant="lg" color="neutral-default" style={styles.textStyle}>
@@ -43,13 +43,13 @@ const AboutPlaza = () => {
             marginTop: Spacing.SPACING_5,
           }}
         >
-          <PlazaLogo width={100} height={100} color={Color.PRIMARY_DEFAULT} />
           <HeartActive
             width={60}
             height={60}
             color={Color.PRIMARY_DEFAULT}
             style={{ marginBottom: Spacing.SPACING_2 }}
           />
+          <PlazaLogo width={100} height={100} color={Color.PRIMARY_DEFAULT} />
         </View>
       </ScrollView>
     </SafeAreaView>

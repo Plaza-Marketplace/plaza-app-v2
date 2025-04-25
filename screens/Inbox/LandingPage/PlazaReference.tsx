@@ -18,9 +18,9 @@ const PlazaReference = () => {
         <PlazaLogo width={32} height={32} color={Color.WHITE} />
       </View>
       <View style={styles.content}>
-        <HeadingText variant="h6">{'Plaza Team'}</HeadingText>
+        <HeadingText variant="h6">{'Plaza'}</HeadingText>
         <BodyText variant="md" numberOfLines={1} color={Color.NEUTRALS_DEFAULT}>
-          {'About Plaza!'}
+          {'A message from the team'}
         </BodyText>
       </View>
     </PressableOpacity>

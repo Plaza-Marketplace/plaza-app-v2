@@ -104,10 +104,11 @@ const createPayment = async (transfer_group: UUID) => {
   return data;
 };
 
-const createBuyNow = async (productId: Id) => {
+const createBuyNow = async (productId: Id, variantId: Id | null) => {
   const { data, error } = await supabase.functions.invoke('create-buy-now', {
     body: {
       productId: productId,
+      variantId: variantId,
     },
   });
 

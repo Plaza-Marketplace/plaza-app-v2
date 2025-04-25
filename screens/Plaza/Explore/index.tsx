@@ -81,7 +81,7 @@ const Explore = () => {
             </View>
           </View>
           {allGroups.length > 0 && (
-            <View style={styles.section}>
+            <View style={[styles.section, { marginTop: Spacing.SPACING_3 }]}>
               <HeadingText variant="h5-bold">All Groups</HeadingText>
               <FlatList
                 numColumns={2}

@@ -95,9 +95,9 @@ const LandingPage = () => {
           <BodyText
             variant="sm"
             color={Color.NEUTRALS_DEFAULT}
-            style={{ marginTop: Spacing.SPACING_2, textAlign: 'center' }}
+            style={{ marginTop: Spacing.SPACING_2 }}
           >
-            Create a Stripe account to receive payments for your products.
+            Create a Stripe account to receive payments for completed sales.
           </BodyText>
         </>
       )}

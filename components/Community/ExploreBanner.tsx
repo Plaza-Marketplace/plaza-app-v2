@@ -3,6 +3,7 @@ import BodyText from '../Texts/BodyText';
 import Color from '@/constants/Color';
 import { router } from 'expo-router';
 import Banner from '../Banner';
+import { StyleSheet } from 'react-native';
 
 interface ExploreBannerProps {
   id: Id;
@@ -34,3 +35,11 @@ const ExploreBanner: FC<ExploreBannerProps> = ({
 };
 
 export default ExploreBanner;
+
+const styles = StyleSheet.create({
+  textShadowStyle: {
+    textShadowColor: Color.BLACK,
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 2,
+  },
+});

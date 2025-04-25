@@ -71,8 +71,9 @@ const Activity = () => {
               style={{ textAlign: 'center', marginTop: Spacing.SPACING_2 }}
               color={Color.NEUTRALS_DEFAULT}
             >
-              Start by joining a group in the Explore tab. You'll be able to see
-              all the posts from the communities you join here!
+              Start by joining a group from the Explore tab or creating your
+              own. You'll be able to see all the posts from the communities you
+              join here!
             </BodyText>
           </View>
         )}

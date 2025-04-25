@@ -8,6 +8,7 @@ import { router } from 'expo-router';
 import { Box, Sales } from '@/components/Icons';
 import Color from '@/constants/Color';
 import PlazaReference from './PlazaReference';
+import Spacing from '@/constants/Spacing';
 
 export const LandingPage = () => {
   const { data, error } = useGetLandingPage();
@@ -42,7 +43,7 @@ export const LandingPage = () => {
           </PressableOpacity>
         </View>
 
-        <View style={{ gap: 16 }}>
+        <View style={{ gap: 16, marginTop: Spacing.SPACING_3 }}>
           <HeadingText variant="h5-bold">Messages</HeadingText>
           {messages.map((message) => (
             <ChatPreview

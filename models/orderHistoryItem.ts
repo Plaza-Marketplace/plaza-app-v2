@@ -43,6 +43,8 @@ export type CreateOrderHistoryItem = {
 
   productId: Id;
 
+  variantId: Id | null;
+
   quantity: number;
   shippingAddress: Id;
 };

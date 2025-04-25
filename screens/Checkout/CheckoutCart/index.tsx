@@ -58,6 +58,7 @@ const ConfirmCartScreen = () => {
           productId: cartItem.product.id,
           shippingAddress: selectedAddress?.id || -1,
           quantity: cartItem.quantity,
+          variantId: cartItem.variant ? cartItem.variant.id : null,
         }))
       : []
   );
