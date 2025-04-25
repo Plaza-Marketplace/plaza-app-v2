@@ -23,10 +23,21 @@ import Radius from '@/constants/Radius';
 import Color from '@/constants/Color';
 import { Exit } from '@/components/Icons';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import * as Yup from 'yup';
 
 interface CreatePostProps {
   groupId: Id;
 }
+
+const createPostSchema = Yup.object().shape({
+  title: Yup.string()
+    .required('Title is required')
+    .min(2, 'Title must be at least 2 characters'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(10, 'Description must be at least 10 characters'),
+  productId: Yup.number().nullable(),
+});
 
 const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
   const { data, error } = useGetGroupInfo(groupId);
@@ -38,6 +49,7 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
   return (
     <Formik
       initialValues={{ title: '', description: '', productId: null }}
+      validationSchema={createPostSchema}
       onSubmit={(values) => {
         if (values.description === '' || values.title === '') {
           return;
@@ -55,7 +67,7 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
         });
       }}
     >
-      {({ handleChange, handleSubmit }) => (
+      {({ handleChange, handleSubmit, errors }) => (
         <>
           <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
             <View style={[styles.header, { paddingTop: insets.top }]}>
@@ -79,6 +91,7 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
                   placeholder="Enter title"
                   multiline={false}
                   onChangeText={handleChange('title')}
+                  error={errors.title}
                 />
                 <PlazaTextInput
                   label="Body Text"
@@ -86,6 +99,7 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
                   multiline
                   style={{ height: 128 }}
                   onChangeText={handleChange('description')}
+                  error={errors.description}
                 />
                 <HeadingText variant="h6-bold">Attach a Product</HeadingText>
                 <View style={styles.products}>
@@ -117,6 +131,9 @@ const CreatePost: FC<CreatePostProps> = ({ groupId }) => {
                     </View>
                   )}
                 </View>
+                <BodyText variant="sm" color={Color.RED_400}>
+                  {errors.productId}
+                </BodyText>
               </View>
             </ScrollView>
             <View style={{ paddingBottom: insets.bottom }}>

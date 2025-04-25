@@ -13,12 +13,22 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { Ionicons } from '@expo/vector-icons';
 import BodyText from '@/components/Texts/BodyText';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import * as Yup from 'yup';
 
 interface VariantOptionAddModalProps {
   innerRef: React.RefObject<BottomSheetModal>;
   variantOptions: VariantOption[];
   setVariantOptions: React.Dispatch<React.SetStateAction<VariantOption[]>>;
 }
+
+const variantOptionSchema = Yup.object().shape({
+  optionName: Yup.string()
+    .required('Option name is required')
+    .min(2, 'Option name must be at least 2 characters'),
+  optionValues: Yup.array()
+    .of(Yup.string().required('Value is required'))
+    .min(1, 'At least one value is required'),
+});
 
 const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
   innerRef,
@@ -55,6 +65,7 @@ const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
             optionName: '',
             optionValues: [] as string[],
           }}
+          validationSchema={variantOptionSchema}
           onSubmit={(values, { resetForm }) => {
             const newVariant: VariantOption = {
               id: `${values.optionName}-option`,
@@ -66,7 +77,7 @@ const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
             innerRef.current?.close();
           }}
         >
-          {({ handleChange, handleSubmit, values }) => (
+          {({ handleChange, handleSubmit, values, errors }) => (
             <View style={styles.formContainer}>
               <PlazaTextInput
                 label="Option Name"
@@ -74,6 +85,7 @@ const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
                 value={values.optionName}
                 onChangeText={handleChange('optionName')}
                 style={{ padding: Spacing.SPACING_2 }}
+                error={errors.optionName}
               />
 
               <HeadingText
@@ -135,6 +147,11 @@ const VariantOptionAddModal: FC<VariantOptionAddModalProps> = ({
                   </View>
                 )}
               />
+              {errors.optionValues && (
+                <BodyText variant="sm" color={Color.RED_400}>
+                  {errors.optionValues}
+                </BodyText>
+              )}
               <View
                 style={{
                   flexDirection: 'row',

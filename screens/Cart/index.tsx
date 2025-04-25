@@ -17,7 +17,7 @@ import {
   useRemoveCartItem,
   useRemoveQuantity,
 } from '@/hooks/routes/cart';
-import { stripe } from '@/supabase/functions/_utils/stripe';
+import { calculatePriceBreakdown } from '@/services/crud/cartItem';
 import { formatPrice } from '@/utils/currency';
 import BottomSheet, {
   BottomSheetFooter,
@@ -53,22 +53,10 @@ const CartScreen = () => {
   const { mutate: decrementCartItem } = useRemoveQuantity(user.id);
   const { mutate: removeCartItem } = useRemoveCartItem(user.id);
 
-  if (!user) return <Loading />;
+  if (!user || !cartItems) return <Loading />;
 
-  const subtotal =
-    cartItems?.reduce(
-      (acc, curr) => acc + curr.product.price * curr.quantity,
-      0
-    ) || 0;
-
-  const shipping =
-    cartItems?.reduce(
-      (acc, curr) => acc + curr.product.shippingPrice * curr.quantity,
-      0
-    ) || 0;
-
-  const stripeProcessingFee =
-    cartItems?.length === 0 ? 0 : (subtotal + shipping) * 0.029 + 0.3;
+  const { subtotal, shipping, stripeProcessingFee } =
+    calculatePriceBreakdown(cartItems);
 
   const handleAddPress = (cartItem: CartItem) => {
     // Logic to add item to cart
@@ -97,7 +85,7 @@ const CartScreen = () => {
         setHeight(height);
       }}
     >
-      <PlazaHeader name="Your Cart Things" />
+      <PlazaHeader name="Cart" />
       <FlatList
         style={styles.content}
         data={cartItems}
@@ -105,8 +93,7 @@ const CartScreen = () => {
         renderItem={({ item: cartItem }) => (
           <ShoppingCartProductCard
             key={cartItem.id}
-            product={cartItem.product}
-            amount={cartItem.quantity}
+            cartItem={cartItem}
             onAddPress={() => handleAddPress(cartItem)}
             onRemovePress={() => handleRemovePress(cartItem)}
             styles={{ marginBottom: Spacing.SPACING_3 }}

@@ -2,7 +2,7 @@ import {
   VariantOption,
   VariantsDisplay,
 } from '@/screens/Upload/List-Product/schema';
-import { createProduct } from './crud/product';
+import { createProduct, createProducts } from './crud/product';
 import {
   bulkCreateProductVariants,
   bulkCreateVariantOptions,
@@ -15,10 +15,13 @@ export const uploadProductsAndVariants = async (
   options: VariantOption[],
   values: VariantsDisplay[]
 ) => {
-  const product = await createProduct({
-    ...productSpecs,
-    hasVariants: true,
-  });
+  console.log('Specs: ', productSpecs);
+  const [product] = await createProducts([
+    {
+      ...productSpecs,
+      hasVariants: true,
+    },
+  ]);
 
   // create variants first, mapping value names to their IDs
   const variantMap = new Map<string, Id>();

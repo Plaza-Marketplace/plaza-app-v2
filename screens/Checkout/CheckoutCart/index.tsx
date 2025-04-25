@@ -34,6 +34,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { v4 as uuidv4 } from 'uuid';
 import { FormType } from '../models';
+import { calculatePriceBreakdown } from '@/services/crud/cartItem';
 
 const ConfirmCartScreen = () => {
   const [currForm, setCurrForm] = useState(FormType.SHIPPING);
@@ -51,30 +52,15 @@ const ConfirmCartScreen = () => {
       ? cartItems.map((cartItem) => ({
           userId: user.id,
           sellerId: cartItem.product.sellerId,
-          finalPrice: cartItem.product.price,
+          finalPrice: cartItem.variant
+            ? cartItem.variant.price
+            : cartItem.product.price || 0,
           productId: cartItem.product.id,
           shippingAddress: selectedAddress?.id || -1,
           quantity: cartItem.quantity,
         }))
       : []
   );
-
-  const subtotalPrice =
-    cartItems?.reduce(
-      (acc, curr) => acc + curr.product.price * curr.quantity,
-      0
-    ) || 0;
-
-  const shippingPrice =
-    cartItems?.reduce(
-      (acc, curr) => acc + curr.product.shippingPrice * curr.quantity,
-      0
-    ) || 0;
-
-  const totalCount =
-    cartItems?.reduce((acc, curr) => acc + curr.quantity, 0) || 0;
-
-  const stripeProcessingPrice = (subtotalPrice + shippingPrice) * 0.029 + 0.3;
 
   const stripe = useStripe();
 
@@ -112,6 +98,15 @@ const ConfirmCartScreen = () => {
   };
 
   if (!cartItems || !userAddresses || !user) return <Loading />;
+
+  const {
+    subtotal: subtotalPrice,
+    shipping: shippingPrice,
+    stripeProcessingFee,
+  } = calculatePriceBreakdown(cartItems);
+
+  const totalCount =
+    cartItems?.reduce((acc, curr) => acc + curr.quantity, 0) || 0;
 
   return (
     <View style={styles.container}>
@@ -154,8 +149,7 @@ const ConfirmCartScreen = () => {
           {cartItems.map((cartItem) => (
             <ShoppingCartProductCard
               key={cartItem.id}
-              product={cartItem.product}
-              amount={cartItem.quantity}
+              cartItem={cartItem}
               interactable={false}
             />
           ))}
@@ -185,7 +179,7 @@ const ConfirmCartScreen = () => {
                 Processing Fee:
               </BoldStandardText>
               <StandardText style={styles.text}>
-                {formatPrice(stripeProcessingPrice)}
+                {formatPrice(stripeProcessingFee)}
               </StandardText>
             </View>
 
@@ -194,7 +188,7 @@ const ConfirmCartScreen = () => {
 
               <HeaderText>
                 {formatPrice(
-                  subtotalPrice + shippingPrice + stripeProcessingPrice
+                  subtotalPrice + shippingPrice + stripeProcessingFee
                 )}
               </HeaderText>
             </View>

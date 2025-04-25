@@ -13,6 +13,7 @@ import { router } from 'expo-router';
 import IconButton from '@/components/Buttons/IconButton';
 import { styles } from '../styles';
 import Loading from '@/components/Loading';
+import BodyText from '@/components/Texts/BodyText';
 
 interface UploadPhotosProps {}
 
@@ -93,6 +94,13 @@ const Photos: FC<UploadPhotosProps> = () => {
           />
         </ScrollView>
       )}
+      <BodyText
+        variant="sm"
+        color={Color.RED_400}
+        style={{ paddingHorizontal: Spacing.SPACING_3 }}
+      >
+        {formik.errors.imageUris}
+      </BodyText>
     </>
   );
 };

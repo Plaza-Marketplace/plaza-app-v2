@@ -25,6 +25,26 @@ import VariantValueModal from '@/screens/Upload/List-Product/components/VariantV
 import VariantOptionAddModal from '@/screens/Upload/List-Product/components/VariantOptionAddModal';
 import VariantOptionEditModal from '@/screens/Upload/List-Product/components/VariantOptionEditModal';
 import { uploadProductsAndVariants } from '@/services/variants';
+import * as Yup from 'yup';
+
+const CreateListingSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  description: Yup.string().required('Description is required'),
+  quantity: Yup.number()
+    .min(1, 'Quantity must be at least 1')
+    .required('Quantity is required'),
+  price: Yup.number()
+    .min(0, 'Price must be at least 0')
+    .required('Price is required'),
+  shippingPrice: Yup.number()
+    .min(0, 'Shipping price must be at least 0')
+    .required('Shipping price is required'),
+  location: Yup.string().required('Location is required'),
+  imageUris: Yup.array()
+    .of(Yup.string())
+    .min(1, 'At least one image is required')
+    .required('At least one image is required'),
+});
 
 const CreateListingScreen = () => {
   const { session } = useAuth();
@@ -82,7 +102,7 @@ const CreateListingScreen = () => {
     quantity: 1,
     price: 0,
     shippingPrice: 0,
-    location: null,
+    location: '',
     imageUris: [],
   };
 
@@ -93,6 +113,7 @@ const CreateListingScreen = () => {
       <Formik
         initialValues={initialValues}
         innerRef={formRef}
+        validationSchema={CreateListingSchema}
         onSubmit={async (values) => {
           const base64Images = await Promise.all(
             values.imageUris.map(

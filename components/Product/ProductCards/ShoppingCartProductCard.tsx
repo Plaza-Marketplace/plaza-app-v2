@@ -13,22 +13,23 @@ import BoldStandardText from '@/components/Texts/BoldStandardText';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 
 interface ShoppingCartProductCardProps {
-  product: Product;
-  interactable?: boolean;
-  amount: number | null;
+  cartItem: CartItem;
   onAddPress?: () => void;
   onRemovePress?: () => void;
   styles?: ViewStyle;
+  interactable?: boolean;
 }
 
 const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
-  product,
-  interactable = true,
-  amount,
+  cartItem,
   onAddPress,
   onRemovePress,
   styles: passedStyles,
+  interactable = true,
 }) => {
+  const product = cartItem.product;
+  const variant = cartItem.variant;
+  const amount = cartItem.quantity;
   return (
     <View style={[passedStyles, styles.container]}>
       <View style={styles.infoContainer}>
@@ -51,7 +52,7 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
         <View style={styles.productInfo}>
           <HeaderText>{product.name}</HeaderText>
           <BoldCaptionText style={{ marginTop: Spacing.SPACING_1 }}>
-            {formatPrice(product.price)}
+            {variant ? formatPrice(variant.price) : formatPrice(product.price)}
           </BoldCaptionText>
           <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
             {product.category}

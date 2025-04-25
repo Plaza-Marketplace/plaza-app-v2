@@ -10,6 +10,7 @@ interface PlazaTextInputProps extends TextInputProps {
   label?: string;
   limit?: number;
   rightButton?: React.ReactNode;
+  error?: string;
 }
 
 const PlazaTextInput: FC<PlazaTextInputProps> = ({
@@ -19,6 +20,7 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
   rightButton,
   style,
   onChangeText,
+  error,
   ...rest
 }) => {
   const [numChars, setNumChars] = useState(0);
@@ -49,6 +51,11 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
           <View style={{ alignSelf: 'flex-end' }}>{rightButton}</View>
         )}
       </View>
+      {error && (
+        <BodyText variant="sm" style={{ color: Color.RED_500 }}>
+          {error}
+        </BodyText>
+      )}
     </View>
   );
 };

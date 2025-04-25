@@ -174,6 +174,7 @@ export const testUploadArrayBuffers = async (
 export const createProducts = async (
   products: CreateProduct[]
 ): Promise<Product[]> => {
+  console.log(products);
   const keys = await Promise.all(
     products.map(async (product) => {
       if (product.arrayBufferImages) {
@@ -182,9 +183,18 @@ export const createProducts = async (
             const key = uuidv4();
             const path = `private/${key}`;
 
-            await supabase.storage.from('images').upload(path, arrayBuffer, {
-              contentType: 'image/jpeg',
-            });
+            const { data, error } = await supabase.storage
+              .from('images')
+              .upload(path, arrayBuffer, {
+                contentType: 'image/jpeg',
+              });
+
+            if (error) {
+              console.error(error);
+              throw new Error(
+                `The create product image query failed with exception ${error}`
+              );
+            }
 
             return key;
           })
@@ -228,6 +238,7 @@ export const createProducts = async (
           price: product.price,
           shipping_price: product.shippingPrice,
           quantity: product.quantity ?? null,
+          has_variants: product.hasVariants ?? false,
         };
       })
     )

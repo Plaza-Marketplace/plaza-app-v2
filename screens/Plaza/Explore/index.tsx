@@ -93,7 +93,13 @@ const Explore = () => {
                       communityId={item.id}
                       bottomSheetRef={reportRef}
                     />
-                    <View style={{ paddingHorizontal: 4, flex: 1 / 2 }}>
+                    <View
+                      style={{
+                        paddingHorizontal: 4,
+                        flex: 1 / 2,
+                        paddingVertical: Spacing.SPACING_1,
+                      }}
+                    >
                       <PressableOpacity
                         style={{
                           position: 'absolute',

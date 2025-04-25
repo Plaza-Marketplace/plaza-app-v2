@@ -30,6 +30,15 @@ import * as FileSystem from 'expo-file-system';
 import { Check } from '@/components/Icons';
 import HeadingText from '@/components/Texts/HeadingText';
 import PlazaHeader from '@/components/PlazaHeader';
+import * as Yup from 'yup';
+
+const settingsSchema = Yup.object().shape({
+  displayName: Yup.string()
+    .max(50, 'Display name must be 50 characters or less')
+    .required('Display name is required'),
+  description: Yup.string().optional(),
+  imageUri: Yup.string().optional(),
+});
 
 const Settings = () => {
   const { user } = useContext(AuthContext);
@@ -93,12 +102,18 @@ const Settings = () => {
           displayName: user.displayName,
           imageUri: user.profileImageUrl,
         }}
+        validationSchema={settingsSchema}
+        validateOnMount
         onSubmit={async (values) => {
-          const base64Image = values.imageUri
-            ? await FileSystem.readAsStringAsync(values.imageUri, {
-                encoding: 'base64',
-              })
-            : null;
+          // detect if image has changed
+          let base64Image = null;
+          if (values.imageUri && values.imageUri !== user.profileImageUrl) {
+            base64Image = values.imageUri
+              ? await FileSystem.readAsStringAsync(values.imageUri, {
+                  encoding: 'base64',
+                })
+              : null;
+          }
 
           const updates: UpdateUser = {
             id: user.id,
@@ -109,7 +124,7 @@ const Settings = () => {
           mutate(updates);
         }}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => {
+        {({ handleChange, handleSubmit, values, setFieldValue, errors }) => {
           const handleAddImage = async () => {
             const result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ['images'],
@@ -150,6 +165,13 @@ const Settings = () => {
                       Edit Photo
                     </BodyText>
                   </PressableOpacity>
+                  <BodyText
+                    variant="sm"
+                    color={Color.TEXT_SECONDARY}
+                    style={{ marginTop: Spacing.SPACING_1 }}
+                  >
+                    {errors.imageUri}
+                  </BodyText>
                 </View>
                 <PlazaTextInput
                   label="Username"
@@ -162,6 +184,7 @@ const Settings = () => {
                   onChangeText={handleChange('displayName')}
                   placeholder="Your display name..."
                   value={values.displayName || ''}
+                  error={errors.displayName}
                 />
                 <PlazaTextInput
                   label="Description"
@@ -170,6 +193,7 @@ const Settings = () => {
                   placeholder="Example: i am cool"
                   style={{ height: 100 }}
                   value={values.description || ''}
+                  error={errors.description}
                 />
 
                 <PlazaButton

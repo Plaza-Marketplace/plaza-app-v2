@@ -10,6 +10,7 @@ import Radius from '@/constants/Radius';
 import BoldStandardText from '../Texts/BoldStandardText';
 import StandardText from '../Texts/StandardText';
 import PressableOpacity from '../Buttons/PressableOpacity';
+import { formatPrice } from '@/utils/currency';
 
 interface ProductProps {
   videoId: Id;
@@ -47,7 +48,7 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
             numberOfLines={1}
             ellipsizeMode="tail"
           >
-            ${product.price}
+            {formatPrice(product.price || 0)}
           </StandardText>
         </View>
       </PressableOpacity>

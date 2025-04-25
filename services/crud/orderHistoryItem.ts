@@ -123,6 +123,7 @@ export const createOrderHistoryItems = async (
         final_price: item.finalPrice,
         product_id: item.productId,
         shipping_address_id: item.shippingAddress,
+        quantity: item.quantity,
       }))
     )
     .select(queryString);

@@ -13,6 +13,7 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { Ionicons } from '@expo/vector-icons';
 import BodyText from '@/components/Texts/BodyText';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import * as Yup from 'yup';
 
 interface VariantOptionEditModalProps {
   innerRef: React.RefObject<BottomSheetModal>;
@@ -21,6 +22,15 @@ interface VariantOptionEditModalProps {
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 }
+
+const variantOptionSchema = Yup.object().shape({
+  optionName: Yup.string()
+    .required('Option name is required')
+    .min(2, 'Option name must be at least 2 characters'),
+  optionValues: Yup.array()
+    .of(Yup.string().required('Value is required'))
+    .min(1, 'At least one value is required'),
+});
 
 const VariantOptionEditModal: FC<VariantOptionEditModalProps> = ({
   innerRef,
@@ -59,6 +69,7 @@ const VariantOptionEditModal: FC<VariantOptionEditModalProps> = ({
               optionValues: variantOptions[selectedIndex].values,
               deleting: false,
             }}
+            validationSchema={variantOptionSchema}
             onSubmit={(values, { resetForm }) => {
               if (values.deleting) {
                 const updatedOptions = [...variantOptions];
@@ -78,7 +89,7 @@ const VariantOptionEditModal: FC<VariantOptionEditModalProps> = ({
               }
             }}
           >
-            {({ handleChange, handleSubmit, values }) => (
+            {({ handleChange, handleSubmit, values, errors }) => (
               <View style={styles.formContainer}>
                 <PlazaTextInput
                   label="Option Name"
@@ -146,6 +157,13 @@ const VariantOptionEditModal: FC<VariantOptionEditModalProps> = ({
                     </View>
                   )}
                 />
+                <BodyText
+                  variant="sm"
+                  style={{ marginTop: Spacing.SPACING_2 }}
+                  color={Color.RED_400}
+                >
+                  {errors.optionValues}
+                </BodyText>
                 <View
                   style={{
                     flexDirection: 'row',

@@ -18,6 +18,16 @@ import GoogleOAuth from '@/components/Auth/GoogleOAuth';
 import AppleOAuth from '@/components/Auth/AppleSignIn';
 import { useAuth } from '@/contexts/AuthContext';
 import LinkText from '@/components/Texts/LinkText';
+import * as Yup from 'yup';
+
+const createAccountSchema = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string()
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
+});
 
 const CreateAccount = () => {
   const { isLoading, session } = useAuth();
@@ -55,6 +65,7 @@ const CreateAccount = () => {
             email: '',
             password: '',
           }}
+          validationSchema={createAccountSchema}
           onSubmit={async (values) => {
             const {
               data: { session },
@@ -89,7 +100,7 @@ const CreateAccount = () => {
             });
           }}
         >
-          {({ handleChange, handleSubmit }) => (
+          {({ handleChange, handleSubmit, errors }) => (
             <>
               <View style={{ marginTop: Spacing.SPACING_3 }}>
                 <PlazaTextInput
@@ -99,6 +110,7 @@ const CreateAccount = () => {
                   onChangeText={handleChange('email')}
                   style={styles.inputStyle}
                   autoCapitalize="none"
+                  error={errors.email}
                 />
               </View>
 
@@ -110,6 +122,7 @@ const CreateAccount = () => {
                   onChangeText={handleChange('password')}
                   style={styles.inputStyle}
                   autoCapitalize="none"
+                  error={errors.password}
                 />
               </View>
 

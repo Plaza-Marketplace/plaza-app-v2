@@ -16,6 +16,7 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           label="Product Name"
           onChangeText={formik.handleChange('title')}
           placeholder="example: Cat Mug"
+          error={formik.errors.title}
         />
       </View>
 
@@ -25,6 +26,7 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           onChangeText={formik.handleChange('description')}
           placeholder="example: handmade clay cat mug"
           style={{ height: 100 }}
+          error={formik.errors.description}
         />
       </View>
       <View style={styles.inputContainer}>
@@ -34,6 +36,8 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           placeholder="example: 10.00"
           keyboardType="numeric"
           style={{ flex: 1 }}
+          error={formik.errors.price}
+          value={formik.values.price.toString()} // Ensure price is a string for input
         />
         <PlazaTextInput
           label="Shipping Price"
@@ -41,12 +45,15 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           placeholder="example: 5.00"
           keyboardType="numeric"
           style={{ flex: 1 }}
+          error={formik.errors.shippingPrice}
+          value={formik.values.shippingPrice.toString()} // Ensure shippingPrice is a string for input
         />
         <PlazaTextInput
           label="Location"
           onChangeText={formik.handleChange('location')}
           placeholder="example: San Francisco, CA"
           style={{ flex: 1 }}
+          error={formik.errors.location}
         />
       </View>
     </>

@@ -41,11 +41,18 @@ import LinkItemsProduct from '@/components/LinkItemsProduct';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { useRecordedVideo } from '@/contexts/RecordedVideoProvider';
 import KeyboardView from '@/components/KeyboardView';
+import * as Yup from 'yup';
+import BodyText from '@/components/Texts/BodyText';
 
 type VideoUploadForm = {
   videoUri: string | null;
   description: string;
 };
+
+const videoUploadSchema = Yup.object().shape({
+  videoUri: Yup.string().nullable().required('Video is required'),
+  description: Yup.string().required('Description is required'),
+});
 
 const LandingPage = () => {
   const { session } = useAuth();
@@ -108,6 +115,8 @@ const LandingPage = () => {
         <Formik
           innerRef={formRef}
           initialValues={initialValues}
+          validationSchema={videoUploadSchema}
+          validateOnMount={true}
           onSubmit={async (values) => {
             if (!values.videoUri) return;
 
@@ -133,7 +142,7 @@ const LandingPage = () => {
             }
           }}
         >
-          {({ handleChange, handleSubmit, values }) => {
+          {({ handleChange, handleSubmit, values, errors }) => {
             const handleSelect = async () => {
               const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ['videos'],
@@ -206,6 +215,9 @@ const LandingPage = () => {
                       />
                     </>
                   )}
+                  <BodyText variant="sm" color={Color.RED_400}>
+                    {errors.videoUri}
+                  </BodyText>
                   <View style={{ gap: Spacing.SPACING_3 }}>
                     <BoldStandardText>Description</BoldStandardText>
                     <PlazaTextInput
@@ -213,12 +225,13 @@ const LandingPage = () => {
                       placeholder="write a caption for your post"
                       multiline
                       style={{ height: 100 }}
+                      error={errors.description}
                     />
                   </View>
                   <View style={styles.linkItemsContainer}>
                     <BoldStandardText>Link Items</BoldStandardText>
                     <CaptionText>
-                      Add at least 1 item from your store to your post.
+                      Attach your products from your store to your post.
                     </CaptionText>
                     <View style={styles.iconsContainer}>
                       {selectedProducts.map((product) => (

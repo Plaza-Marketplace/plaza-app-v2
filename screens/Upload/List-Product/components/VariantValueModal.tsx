@@ -18,6 +18,7 @@ import { Formik } from 'formik';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import Chip from '@/components/Chip';
 import PlazaTextInput from '@/components/PlazaTextInput';
+import * as Yup from 'yup';
 
 interface VariantValueModalProps {
   innerRef: React.RefObject<BottomSheetModal>;
@@ -25,6 +26,15 @@ interface VariantValueModalProps {
   variantValues: VariantsDisplay[];
   setVariantValues: React.Dispatch<React.SetStateAction<VariantsDisplay[]>>;
 }
+
+const variantValueSchema = Yup.object().shape({
+  price: Yup.number()
+    .required('Price is required')
+    .min(0, 'Price must be a positive number'),
+  quantity: Yup.number()
+    .required('Quantity is required')
+    .min(0, 'Quantity must be a positive number'),
+});
 
 const VariantValueModal: FC<VariantValueModalProps> = ({
   innerRef,
@@ -116,6 +126,7 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
               price: selectedVariant?.value.price.toString() || '0',
               quantity: selectedVariant?.value.quantity.toString() || '0',
             }}
+            validationSchema={variantValueSchema}
             onSubmit={(values) => {
               if (selectedIndex !== null) {
                 const updatedVariantValues = [...variantValues];
@@ -132,7 +143,7 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
               setSelectedIndex(null);
             }}
           >
-            {({ handleChange, handleSubmit, values }) => (
+            {({ handleChange, handleSubmit, values, errors }) => (
               <View
                 style={{
                   flex: 1,
@@ -195,6 +206,7 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
                     keyboardType="numeric"
                     value={values.price.toString()}
                     onChangeText={handleChange('price')}
+                    error={errors.price}
                   />
                 </View>
 
@@ -208,6 +220,7 @@ const VariantValueModal: FC<VariantValueModalProps> = ({
                     keyboardType="numeric"
                     value={values.quantity.toString()}
                     onChangeText={handleChange('quantity')}
+                    error={errors.quantity}
                   />
                 </View>
               </View>

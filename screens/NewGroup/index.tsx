@@ -15,6 +15,19 @@ import { Image } from 'expo-image';
 import Radius from '@/constants/Radius';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import * as FileSystem from 'expo-file-system';
+import * as Yup from 'yup';
+import BodyText from '@/components/Texts/BodyText';
+
+const newGroupSchema = Yup.object().shape({
+  name: Yup.string()
+    .required('Group name is required')
+    .min(2, 'Group name must be at least 2 characters'),
+  description: Yup.string()
+    .required('Group description is required')
+    .max(150, 'Description cannot exceed 150 characters'),
+  iconUrl: Yup.string().required('Group icon is required'),
+  bannerUrl: Yup.string().required('Group banner is required'),
+});
 
 const NewGroup = () => {
   const { mutateAsync: createGroup } = useCreateGroup();
@@ -28,6 +41,7 @@ const NewGroup = () => {
           iconUrl: '',
           bannerUrl: '',
         }}
+        validationSchema={newGroupSchema}
         onSubmit={async (values) => {
           const base64Icon = values.iconUrl
             ? await FileSystem.readAsStringAsync(values.iconUrl, {
@@ -53,7 +67,7 @@ const NewGroup = () => {
           });
         }}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue }) => {
+        {({ handleChange, handleSubmit, values, setFieldValue, errors }) => {
           const handleAddIcon = async () => {
             const result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ['images'],
@@ -139,11 +153,27 @@ const NewGroup = () => {
                 )}
               </View>
 
+              <BodyText
+                variant="sm"
+                style={{ marginTop: Spacing.SPACING_2 }}
+                color={Color.RED_400}
+              >
+                {errors.iconUrl}
+              </BodyText>
+              <BodyText
+                variant="sm"
+                style={{ marginTop: Spacing.SPACING_2 }}
+                color={Color.RED_400}
+              >
+                {errors.bannerUrl}
+              </BodyText>
+
               <View style={styles.inputMargin}>
                 <PlazaTextInput
                   label="Group Name"
                   placeholder="Ex. Jewelry Jammers"
                   onChangeText={handleChange('name')}
+                  error={errors.name}
                 />
               </View>
               <View style={styles.inputMargin}>
@@ -152,6 +182,7 @@ const NewGroup = () => {
                   placeholder="Ex. Jewelry Jammers"
                   limit={150}
                   onChangeText={handleChange('description')}
+                  error={errors.description}
                 />
               </View>
               <PlazaButton

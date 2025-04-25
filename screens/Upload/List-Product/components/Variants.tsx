@@ -146,9 +146,11 @@ const Variants: FC<ProductUploadVariantsProps> = ({
               onPress={openVariantValueForm}
             >
               <BodyText variant="lg">
-                {variantOptions.reduce((acc, current) => {
-                  return acc * current.values.length;
-                }, 1)}{' '}
+                {variantOptions.length > 0
+                  ? variantOptions.reduce((acc, current) => {
+                      return acc * current.values.length;
+                    }, 1)
+                  : 0}{' '}
                 Variants
               </BodyText>
               <Ionicons

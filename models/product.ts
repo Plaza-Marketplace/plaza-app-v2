@@ -13,7 +13,7 @@ type Product = {
   // Change to enum?
   condition: string;
 
-  price: number;
+  price: number | null;
 
   shippingPrice: number;
 

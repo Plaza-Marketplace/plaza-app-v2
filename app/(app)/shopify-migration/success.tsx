@@ -105,7 +105,7 @@ const ShopifySuccess = () => {
           return uploadProductsAndVariants(productUpload, options, values);
         }
 
-        return createProduct(productUpload);
+        return createProducts([productUpload]);
       })
     );
 
