@@ -37,7 +37,6 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      console.log(session?.user.app_metadata.provider);
       const newSession =
         session && session.user.app_metadata.provider === 'apple'
           ? {

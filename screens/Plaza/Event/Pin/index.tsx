@@ -3,19 +3,20 @@ import { FC, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useGetEventPin } from './hooks';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import HeadingText from '@/components/Texts/HeadingText';
 import ProductCollection from '@/components/Product/ProductCollection';
 import Color from '@/constants/Color';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Radius from '@/constants/Radius';
+import BodyText from '@/components/Texts/BodyText';
 
 interface PinProps {
   id: Id;
   name: string;
   coordinates: [number, number];
+  scale: number;
 }
 
-const Pin: FC<PinProps> = ({ id, name, coordinates }) => {
+const Pin: FC<PinProps> = ({ id, name, scale, coordinates }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, error } = useGetEventPin(id, isOpen);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
@@ -24,10 +25,15 @@ const Pin: FC<PinProps> = ({ id, name, coordinates }) => {
     <>
       <MarkerView id={id.toString()} coordinate={coordinates} allowOverlap>
         <PressableOpacity
-          style={styles.container}
-          onPress={() => bottomSheetRef.current?.present()}
+          style={[styles.container, { transform: [{ scale }] }]}
+          onPress={() => {
+            bottomSheetRef.current?.present();
+            console.log(id);
+          }}
         >
-          <HeadingText variant="h6-bold">{name}</HeadingText>
+          <BodyText variant="sm-bold" style={{ fontSize: 10 }}>
+            {name}
+          </BodyText>
         </PressableOpacity>
       </MarkerView>
       <BottomSheetModal
@@ -60,7 +66,7 @@ export default Pin;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Color.WHITE,
-    padding: 8,
+    padding: 4,
     borderRadius: Radius.ROUNDED,
   },
   content: {

@@ -12,7 +12,6 @@ import {
   useSafeAreaInsets,
 } from 'react-native-safe-area-context';
 import BackButton from '@/components/Buttons/BackButton';
-import GroupIcon from '@/components/Community/GroupIcon';
 import Pin from './Pin';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { Image } from 'expo-image';
@@ -22,6 +21,7 @@ import PlazaTextInput from '@/components/PlazaTextInput';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 
 const Event = () => {
+  const [zoom, setZoom] = useState(18);
   const [showMap, setShowMap] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinName, setPinName] = useState('');
@@ -37,6 +37,12 @@ const Event = () => {
 
   const snapPoints = useMemo(() => [80, '80%'], []);
   const insets = useSafeAreaInsets();
+
+  const scale = useMemo(() => {
+    if (zoom < 17.5) return 0;
+
+    return zoom - 17;
+  }, [zoom]);
 
   const handleLongPress = (feature: GeoJSON.Feature) => {
     if (feature.geometry.type === 'Point') {
@@ -54,6 +60,7 @@ const Event = () => {
       });
       setShowPinModal(false);
       setPinCoordinates(null);
+      setPinName('');
     }
   };
 
@@ -68,6 +75,9 @@ const Event = () => {
           scaleBarEnabled={false}
           compassEnabled
           onLongPress={handleLongPress}
+          onCameraChanged={(a) => {
+            setZoom(a.properties.zoom);
+          }}
         >
           <PressableOpacity
             style={{
@@ -80,8 +90,9 @@ const Event = () => {
           >
             <HeadingText variant="h6">Show map</HeadingText>
           </PressableOpacity>
+
           <Camera
-            zoomLevel={15}
+            zoomLevel={18}
             centerCoordinate={data?.coordinates}
             animationMode="none"
             animationDuration={0}
@@ -92,6 +103,7 @@ const Event = () => {
               id={pin.id}
               name={pin.name}
               coordinates={pin.coordinates}
+              scale={scale}
             />
           ))}
           {data?.coordinates && (
@@ -108,6 +120,15 @@ const Event = () => {
                 <HeadingText variant="h6-bold">{data.name}</HeadingText>
               </PressableOpacity>
             </MarkerView>
+          )}
+
+          {pinCoordinates && (
+            <Pin
+              id={Math.random() * 1000000}
+              name={pinName}
+              coordinates={pinCoordinates}
+              scale={scale}
+            />
           )}
 
           <UserLocation />
