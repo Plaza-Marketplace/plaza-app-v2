@@ -284,8 +284,8 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                       }, 2000);
                     }}
                     rightOnPress={() => {
-                      bottomSheetRef.current?.close();
-                      handleBuyNow();
+                      // bottomSheetRef.current?.close();
+                      // handleBuyNow();
                     }}
                   />
                 )}
