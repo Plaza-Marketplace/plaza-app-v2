@@ -55,10 +55,9 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
             {variant ? formatPrice(variant.price) : formatPrice(product.price)}
           </BoldCaptionText>
           <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
-            {product.category}
-          </CaptionText>
-          <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
-            {product.condition}
+            {variant
+              ? variant.options.map((option) => option.value.name).join(', ')
+              : 'Standard'}
           </CaptionText>
         </View>
       </View>
