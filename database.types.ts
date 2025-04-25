@@ -445,6 +445,7 @@ export type Database = {
           end_date: string
           icon_key: string | null
           id: number
+          map_key: string | null
           name: string
           start_date: string
           state: string
@@ -459,6 +460,7 @@ export type Database = {
           end_date: string
           icon_key?: string | null
           id?: number
+          map_key?: string | null
           name: string
           start_date: string
           state: string
@@ -473,6 +475,7 @@ export type Database = {
           end_date?: string
           icon_key?: string | null
           id?: number
+          map_key?: string | null
           name?: string
           start_date?: string
           state?: string
@@ -483,6 +486,87 @@ export type Database = {
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_pin: {
+        Row: {
+          coordinates: unknown
+          created_at: string
+          event_id: number
+          icon_key: string | null
+          id: number
+          name: string
+        }
+        Insert: {
+          coordinates: unknown
+          created_at?: string
+          event_id: number
+          icon_key?: string | null
+          id?: number
+          name: string
+        }
+        Update: {
+          coordinates?: unknown
+          created_at?: string
+          event_id?: number
+          icon_key?: string | null
+          id?: number
+          name?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_pin_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_product: {
+        Row: {
+          created_at: string
+          event_id: number
+          id: number
+          pin_id: number
+          product_id: number
+        }
+        Insert: {
+          created_at?: string
+          event_id: number
+          id?: number
+          pin_id: number
+          product_id: number
+        }
+        Update: {
+          created_at?: string
+          event_id?: number
+          id?: number
+          pin_id?: number
+          product_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_product_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_product_pin_id_fkey"
+            columns: ["pin_id"]
+            isOneToOne: false
+            referencedRelation: "event_pin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_product_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "product"
             referencedColumns: ["id"]
           },
         ]
@@ -1384,9 +1468,7 @@ export type Database = {
           description: string | null
           display_name: string | null
           email: string
-          first_name: string | null
           id: number
-          last_name: string | null
           location: unknown | null
           profile_image_key: string | null
           stripe_account_id: string | null
@@ -1400,9 +1482,7 @@ export type Database = {
           description?: string | null
           display_name?: string | null
           email: string
-          first_name?: string | null
           id?: number
-          last_name?: string | null
           location?: unknown | null
           profile_image_key?: string | null
           stripe_account_id?: string | null
@@ -1416,9 +1496,7 @@ export type Database = {
           description?: string | null
           display_name?: string | null
           email?: string
-          first_name?: string | null
           id?: number
-          last_name?: string | null
           location?: unknown | null
           profile_image_key?: string | null
           stripe_account_id?: string | null
@@ -1612,13 +1690,24 @@ export type Database = {
         Returns: {
           id: number
           name: string
+          map_key: string
           longitude: number
           latitude: number
+          pins: Json
+          products: Json
         }[]
       }
       increment_cart_quantity: {
         Args: { item_id: number; increment_by: number }
         Returns: number
+      }
+      is_anonymous: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
+      is_blocked: {
+        Args: { user_id: number }
+        Returns: boolean
       }
       is_current_user: {
         Args: { entity_id: number }

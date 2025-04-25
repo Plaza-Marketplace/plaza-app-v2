@@ -8,9 +8,13 @@ import { FC } from 'react';
 
 interface BackButtonProps {
   alternativeColor?: boolean;
+  onPress?: () => void;
 }
 
-const BackButton: FC<BackButtonProps> = ({ alternativeColor = false }) => {
+const BackButton: FC<BackButtonProps> = ({
+  alternativeColor = false,
+  onPress,
+}) => {
   return (
     <PressableOpacity
       style={[
@@ -21,7 +25,7 @@ const BackButton: FC<BackButtonProps> = ({ alternativeColor = false }) => {
             : Color.NEUTRALS_100,
         },
       ]}
-      onPress={router.back}
+      onPress={onPress ?? router.back}
     >
       <ChevronLeft color={alternativeColor ? Color.NEUTRALS_WHITE : '#000'} />
     </PressableOpacity>

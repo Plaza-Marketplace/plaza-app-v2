@@ -1,19 +1,7 @@
-export type Event = {
+export type Pin = {
   id: Id;
 
   name: string;
-
-  coordinates: [number, number];
-
-  mapUrl: Url | null;
-
-  pins: {
-    id: Id;
-
-    name: string;
-
-    coordinates: [number, number];
-  }[];
 
   products: {
     id: Id;
@@ -27,7 +15,7 @@ export type Event = {
     seller: {
       id: Id;
 
-      username: string;
+      username: string | null;
 
       averageRating: number;
 
