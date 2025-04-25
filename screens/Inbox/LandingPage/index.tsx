@@ -7,6 +7,7 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { Box, Sales } from '@/components/Icons';
 import Color from '@/constants/Color';
+import PlazaReference from './PlazaReference';
 
 export const LandingPage = () => {
   const { data, error } = useGetLandingPage();
@@ -53,6 +54,7 @@ export const LandingPage = () => {
               latestMessage={message.latestMessage}
             />
           ))}
+          <PlazaReference />
         </View>
       </ScrollView>
     </View>

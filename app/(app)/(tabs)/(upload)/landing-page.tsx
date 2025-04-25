@@ -78,19 +78,28 @@ const LandingPage = () => {
       />
 
       {!user.stripeAccountId && (
-        <PressableOpacity
-          style={styles.stripeButton}
-          onPress={handleCreateAccount}
-        >
-          <StripeLogo />
-          <BodyText
-            variant="md"
-            color={Color.WHITE}
-            style={{ marginLeft: Spacing.SPACING_2 }}
+        <>
+          <PressableOpacity
+            style={styles.stripeButton}
+            onPress={handleCreateAccount}
           >
-            Create a Stripe Account
+            <StripeLogo />
+            <BodyText
+              variant="md"
+              color={Color.WHITE}
+              style={{ marginLeft: Spacing.SPACING_2 }}
+            >
+              Create a Stripe Account
+            </BodyText>
+          </PressableOpacity>
+          <BodyText
+            variant="sm"
+            color={Color.NEUTRALS_DEFAULT}
+            style={{ marginTop: Spacing.SPACING_2, textAlign: 'center' }}
+          >
+            Create a Stripe account to receive payments for your products.
           </BodyText>
-        </PressableOpacity>
+        </>
       )}
     </SafeAreaView>
   );

@@ -5,6 +5,9 @@ import { router } from 'expo-router';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import useGetActivityTab from './useGetActivityTab';
 import Post from '@/components/Community/Post';
+import Color from '@/constants/Color';
+import BodyText from '@/components/Texts/BodyText';
+import Spacing from '@/constants/Spacing';
 
 const Activity = () => {
   const { data, error } = useGetActivityTab();
@@ -51,6 +54,28 @@ const Activity = () => {
             isOnCommunityPage={false}
           />
         ))}
+        {data?.groupPostings.length === 0 && (
+          <View
+            style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}
+          >
+            <HeadingText
+              variant="h6-bold"
+              style={{ textAlign: 'center', marginTop: Spacing.SPACING_5 }}
+              color={Color.NEUTRALS_DEFAULT}
+            >
+              Your activity is empty!
+            </HeadingText>
+
+            <BodyText
+              variant="lg"
+              style={{ textAlign: 'center', marginTop: Spacing.SPACING_2 }}
+              color={Color.NEUTRALS_DEFAULT}
+            >
+              Start by joining a group in the Explore tab. You'll be able to see
+              all the posts from the communities you join here!
+            </BodyText>
+          </View>
+        )}
       </View>
     </ScrollView>
   );
