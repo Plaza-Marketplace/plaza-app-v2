@@ -35,6 +35,7 @@ export const getEventPage = async (eventId: Id): Promise<Event> => {
     sellers: sellers.map((seller: any) => ({
       id: seller.id,
       username: seller.username,
+      displayName: seller.display_name,
       boothName: seller.booth_name,
       profileImageUrl: seller.profile_image_key
         ? getImagePublicUrl(seller.profile_image_key)
@@ -67,6 +68,7 @@ export const getNextEventSellers = async (
       user (
         id,
         username,
+        display_name,
         profile_image_key,
         event_product (
           product (
@@ -95,6 +97,7 @@ export const getNextEventSellers = async (
     id: seller.id,
     boothName: seller.booth_name,
     username: seller.user.username,
+    displayName: seller.user.display_name,
     profileImageUrl: seller.user.profile_image_key
       ? getImagePublicUrl(seller.user.profile_image_key)
       : null,
