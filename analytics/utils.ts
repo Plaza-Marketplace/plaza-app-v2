@@ -21,6 +21,8 @@ export const track = (event: Event, properties?: Record<string, any>) => {
   mixpanel.track(event, properties);
 };
 
-export const identify = (userId: string) => {
+export const identify = (userId: string, username?: string, email?: string) => {
   mixpanel.identify(userId);
+  mixpanel.getPeople().set('$username', username);
+  mixpanel.getPeople().set('$email', email);
 };

@@ -33,15 +33,17 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: user } = useGetUserByAuthId(session?.user.id);
 
   useEffect(() => {
+    if (!session?.user.id) return;
+
+    identify(session.user.id, user?.username, session.user.email);
+  }, [user]);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      if (session?.user.id) {
-        identify(session.user.id);
-      }
-
       const newSession =
         session && session.user.app_metadata.provider === 'apple'
           ? {
