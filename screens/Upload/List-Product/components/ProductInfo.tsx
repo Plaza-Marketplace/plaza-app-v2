@@ -27,6 +27,7 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           placeholder="example: handmade clay cat mug"
           style={{ height: 100 }}
           error={formik.errors.description}
+          multiline
         />
       </View>
       <View style={styles.inputContainer}>
