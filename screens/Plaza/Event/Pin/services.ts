@@ -14,6 +14,7 @@ export const getEventPin = async (id: Id): Promise<Pin> => {
           user (
             id,
             username,
+            display_name,
             profile_image_key,
             event_product (
               product (
@@ -44,6 +45,7 @@ export const getEventPin = async (id: Id): Promise<Pin> => {
       id: seller.user.id,
       boothName: seller.booth_name,
       username: seller.user.username,
+      displayName: seller.user.display_name,
       profileImageUrl: seller.user.profile_image_key
         ? getImagePublicUrl(seller.user.profile_image_key)
         : null,

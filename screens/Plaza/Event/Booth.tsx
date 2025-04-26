@@ -33,7 +33,7 @@ const Booth: FC<BoothProps> = ({ seller }) => {
             Booth {seller.boothName}
           </BodyText>
           <BodyText variant="lg" numberOfLines={1}>
-            {seller.username}
+            {seller.displayName}
           </BodyText>
         </View>
       </View>

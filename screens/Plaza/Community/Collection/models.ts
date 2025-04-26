@@ -14,6 +14,8 @@ export type CollectionProduct = {
 
     username: string;
 
+    displayName: string | null;
+
     profilePictureUrl: Url | null;
 
     averageRating: number;

@@ -11,6 +11,7 @@ const EXPLORE_TAB_VIDEO_QUERY = `
 poster: user(
   id,
   username,
+  display_name,
   profile_image_key
 ),
 products: video_product(
@@ -39,7 +40,10 @@ seller_review_count: user(
 
 export const formatExploreTabVideo = (
   video: Tables<'video'>,
-  poster: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_key'>,
+  poster: Pick<
+    Tables<'user'>,
+    'id' | 'username' | 'display_name' | 'profile_image_key'
+  >,
   products: Tables<'product'>[],
   productImageKeys: Tables<'product_image'>['image_key'][][],
   isLiked: boolean,
@@ -53,6 +57,7 @@ export const formatExploreTabVideo = (
     poster: {
       id: poster.id,
       username: poster.username,
+      displayName: poster.display_name,
       profileImageUrl: poster.profile_image_key
         ? getImagePublicUrl(poster.profile_image_key)
         : null,

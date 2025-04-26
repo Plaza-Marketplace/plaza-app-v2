@@ -12,6 +12,8 @@ export type CatalogProduct = {
 
     username: string;
 
+    displayName: string | null;
+
     averageRating: number;
   };
 };

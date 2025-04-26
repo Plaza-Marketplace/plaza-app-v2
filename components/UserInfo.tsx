@@ -5,14 +5,19 @@ import BodyText from './Texts/BodyText';
 
 interface UserInfoProps {
   username: string;
+  displayName?: string;
   profilePictureUrl: Url | null;
 }
 
-const UserInfo: FC<UserInfoProps> = ({ username, profilePictureUrl }) => {
+const UserInfo: FC<UserInfoProps> = ({
+  username,
+  displayName,
+  profilePictureUrl,
+}) => {
   return (
     <View style={styles.container}>
       <ProfileIcon variant="user" url={profilePictureUrl ?? undefined} />
-      <BodyText variant="md-medium">{username}</BodyText>
+      <BodyText variant="md-medium">{displayName ?? username}</BodyText>
     </View>
   );
 };

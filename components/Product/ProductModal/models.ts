@@ -27,7 +27,9 @@ export type ProductModalProduct = {
   seller: {
     id: Id;
 
-    username: string;
+    username: string | null;
+
+    displayName: string | null;
 
     averageRating: number;
 
@@ -43,7 +45,7 @@ export type ProductModalProduct = {
       poster: {
         id: Id;
 
-        username: string;
+        username: string | null;
 
         profileImageUrl: Url | null;
       };

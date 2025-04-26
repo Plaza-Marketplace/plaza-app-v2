@@ -20,6 +20,7 @@ export const getCollectionProducts = async (
           seller: user (
             id,
             username,
+            display_name,
             average_rating,
             profile_image_key
           )
@@ -44,6 +45,7 @@ export const getCollectionProducts = async (
     seller: {
       id: item.product.seller.id,
       username: item.product.seller.username,
+      displayName: item.product.seller.display_name,
       profilePictureUrl: item.product.seller.profile_image_key
         ? getImagePublicUrl(item.product.seller.profile_image_key)
         : null,

@@ -18,7 +18,9 @@ interface ProductCardProps {
 
   profileImageUrl?: Url | null;
 
-  username?: string;
+  username: string | null;
+
+  displayName: string | null;
 
   thumbnailUrl: Url | null;
 
@@ -36,6 +38,7 @@ const ProductCard: FC<ProductCardProps> = ({
   name,
   profileImageUrl,
   username,
+  displayName,
   thumbnailUrl,
   rating,
   price,
@@ -47,6 +50,8 @@ const ProductCard: FC<ProductCardProps> = ({
   const handlePress = () => {
     bottomSheetRef.current?.present();
   };
+
+  console.log('displayName', displayName);
 
   return (
     <>
@@ -76,7 +81,7 @@ const ProductCard: FC<ProductCardProps> = ({
                   numberOfLines={1}
                   style={{ flexShrink: 1 }}
                 >
-                  {username}
+                  {displayName ? displayName : username}
                 </BodyText>
               </View>
               <Rating rating={rating} />

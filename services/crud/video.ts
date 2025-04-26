@@ -9,6 +9,7 @@ const query = `
   poster: user!poster_id(
     id,
     username,
+    display_name,
     profile_image_key
   ),
   products: video_product(
@@ -44,6 +45,7 @@ const supabaseToVideo = (video: any): Video => {
     poster: {
       id: video.poster.id,
       username: video.poster.username,
+      displayName: video.poster.display_name,
       profileImageUrl: video.poster.profile_image_url,
     },
     videoUrl: getVideoPublicUrl(video.video_key),

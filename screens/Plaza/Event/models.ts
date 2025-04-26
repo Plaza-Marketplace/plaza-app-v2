@@ -22,6 +22,8 @@ export type Event = {
 
     username: string | null;
 
+    displayName: string | null;
+
     profileImageUrl: Url | null;
 
     products: {

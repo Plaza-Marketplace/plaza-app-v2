@@ -40,7 +40,9 @@ const Info: FC<InfoProps> = ({ userId, header }) => {
           size={2 * Radius.XL}
         />
         <View style={styles.userInfo}>
-          <HeadingText variant="h5-bold">{header.username}</HeadingText>
+          <HeadingText variant="h5-bold">
+            {header.displayName ?? header.username}
+          </HeadingText>
           <Rating rating={header.averageRating ?? 0} />
         </View>
       </View>

@@ -12,6 +12,8 @@ import UserInfo from './UserInfo';
 interface ReviewProps {
   username: string;
 
+  displayName?: string;
+
   profileImageUrl: Url | null;
 
   rating: number;
@@ -21,6 +23,7 @@ interface ReviewProps {
 
 const ReviewCard: FC<ReviewProps> = ({
   username,
+  displayName,
   profileImageUrl,
   rating,
   description,

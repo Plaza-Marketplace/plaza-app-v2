@@ -1,12 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { Menu, Divider, Provider } from 'react-native-paper';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Basket } from '../Icons';
@@ -74,6 +71,45 @@ const FeedTabBar: FC<Props> = ({
           //     </Menu>
           //   );
           // }
+          console.log(route.name);
+          if (route.name === 'events') {
+            return (
+              <View
+                key={route.key}
+                style={{
+                  gap: 4,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                }}
+              >
+                <View
+                  style={{
+                    position: 'absolute',
+                    right: -12,
+                    width: 8,
+                    height: 8,
+                    borderRadius: 4,
+                    backgroundColor: Color.LIVES_500,
+                  }}
+                />
+                <TouchableOpacity
+                  onPress={() => navigation.navigate(route.name)}
+                  style={[
+                    styles.tabButton,
+                    styles.shadow,
+                    isFocused && styles.activeTab,
+                    index === 0 && { marginLeft: 0 },
+                  ]}
+                >
+                  <Text
+                    style={[styles.tabText, isFocused && styles.activeText]}
+                  >
+                    {descriptors[route.key].options.title || route.name}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            );
+          }
 
           if (route.name === 'feed') {
             return (

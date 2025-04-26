@@ -35,6 +35,7 @@ const Catalog: FC<CatalogProps> = ({
             name={item.name}
             profileImageUrl={item.seller.profileImageUrl}
             username={item.seller.username}
+            displayName={item.seller.displayName}
             thumbnailUrl={item.thumbnailUrl}
             rating={item.seller.averageRating}
             price={item.price}

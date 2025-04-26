@@ -10,6 +10,8 @@ export type Pin = {
 
     username: string | null;
 
+    displayName: string | null;
+
     profileImageUrl: Url | null;
 
     products: {

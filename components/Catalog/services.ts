@@ -17,6 +17,7 @@ export const getCatalogProducts = async (): Promise<CatalogProduct[]> => {
           id,
           profile_image_key,
           username,
+          display_name,
           average_rating
         )  
       `
@@ -39,6 +40,7 @@ export const getCatalogProducts = async (): Promise<CatalogProduct[]> => {
     seller: {
       id: product.seller.id,
       username: product.seller.username,
+      displayName: product.seller.display_name,
       profileImageUrl: product.seller.profile_image_key
         ? getImagePublicUrl(product.seller.profile_image_key)
         : null,
@@ -64,6 +66,7 @@ export const getNextCatalogProducts = async (
       id,
       profile_image_key,
       username,
+      display_name,
       average_rating
     )  
   `
@@ -86,6 +89,7 @@ export const getNextCatalogProducts = async (
     seller: {
       id: product.seller.id,
       username: product.seller.username,
+      displayName: product.seller.display_name,
       profileImageUrl: product.seller.profile_image_key
         ? getImagePublicUrl(product.seller.profile_image_key)
         : null,

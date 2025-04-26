@@ -103,7 +103,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                     textShadowRadius: 2,
                   }}
                 >
-                  {video.poster.username}
+                  {video.poster.displayName ?? video.poster.username}
                 </BoldSubheaderText>
               </PressableOpacity>
               {video.description && (

@@ -41,6 +41,7 @@ const CollectionCard: FC<CollectionCardProps> = ({ item, communityId }) => {
           id={item.id}
           name={item.name}
           username={item.seller.username}
+          displayName={item.seller.displayName}
           thumbnailUrl={item.thumbnailUrl ?? ''}
           rating={item.seller.averageRating}
           price={item.price}

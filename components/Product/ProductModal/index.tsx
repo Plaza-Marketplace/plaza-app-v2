@@ -224,7 +224,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                       }}
                     >
                       <BodyText variant="md">
-                        {product?.seller.username}
+                        {product?.seller.displayName}
                       </BodyText>
                     </PressableOpacity>
                     <Rating rating={product?.seller.averageRating ?? 0} />
