@@ -4,13 +4,11 @@ import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import ProductModal from '../Product/ProductModal';
 import { StyleSheet, View } from 'react-native';
 import { Event, track } from '@/analytics/utils';
-import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
-import BoldStandardText from '../Texts/BoldStandardText';
-import StandardText from '../Texts/StandardText';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { formatPrice } from '@/utils/currency';
+import BodyText from '../Texts/BodyText';
 
 interface ProductProps {
   videoId: Id;
@@ -37,19 +35,17 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
           imageUrl={
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
           }
+          size={48}
         />
-        <View style={styles.textContainer}>
-          <BoldStandardText style={styles.text}>
-            {product.name}
-          </BoldStandardText>
 
-          <StandardText
-            style={styles.text}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
+        <View style={styles.textContainer}>
+          <BodyText variant="sm-bold" color={Color.WHITE} numberOfLines={2}>
+            {product.name}
+          </BodyText>
+
+          <BodyText variant="sm" numberOfLines={1} color={Color.WHITE}>
             {formatPrice(product.price || 0)}
-          </StandardText>
+          </BodyText>
         </View>
       </PressableOpacity>
       <ProductModal bottomSheetRef={bottomSheetRef} id={product.id} />
@@ -60,31 +56,17 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
 export default FeedProduct;
 
 const styles = StyleSheet.create({
-  shadowContainer: {
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
   container: {
-    padding: Spacing.SPACING_2,
+    gap: 8,
+    padding: 12,
     backgroundColor: Color.NEUTRALS_750,
     borderRadius: Radius.ROUNDED,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  text: {
-    color: Color.NEUTRALS_WHITE,
+    maxWidth: 160,
   },
   textContainer: {
-    marginLeft: Spacing.SPACING_2,
-    flexGrow: 1,
-    maxWidth: 100,
-    justifyContent: 'space-between',
-    flexDirection: 'column',
+    flexShrink: 1,
+    gap: 2,
   },
 });

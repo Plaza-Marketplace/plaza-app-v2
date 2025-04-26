@@ -36,8 +36,8 @@ const settingsSchema = Yup.object().shape({
   displayName: Yup.string()
     .max(50, 'Display name must be 50 characters or less')
     .required('Display name is required'),
-  description: Yup.string().optional(),
-  imageUri: Yup.string().optional(),
+  description: Yup.string().nullable(),
+  imageUri: Yup.string().nullable(),
 });
 
 const Settings = () => {
@@ -103,8 +103,9 @@ const Settings = () => {
           imageUri: user.profileImageUrl,
         }}
         validationSchema={settingsSchema}
-        validateOnMount
+        // validateOnMount
         onSubmit={async (values) => {
+          console.log(values);
           // detect if image has changed
           let base64Image = null;
           if (values.imageUri && values.imageUri !== user.profileImageUrl) {

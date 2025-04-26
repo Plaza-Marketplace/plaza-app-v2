@@ -20,3 +20,7 @@ export enum Event {
 export const track = (event: Event, properties?: Record<string, any>) => {
   mixpanel.track(event, properties);
 };
+
+export const identify = (userId: string) => {
+  mixpanel.identify(userId);
+};

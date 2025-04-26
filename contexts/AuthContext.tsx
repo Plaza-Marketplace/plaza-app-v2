@@ -1,3 +1,4 @@
+import { identify } from '@/analytics/utils';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
@@ -37,6 +38,10 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user.id) {
+        identify(session.user.id);
+      }
+
       const newSession =
         session && session.user.app_metadata.provider === 'apple'
           ? {
