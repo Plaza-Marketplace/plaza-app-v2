@@ -7,14 +7,14 @@ import {
   getExploreTab,
   getNextExploreTabVideos,
 } from '@/services/route/explore';
-import { skipToken, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
 export const useGetExploreTab = () => {
   const { user } = useAuth();
 
   return useQuery({
-    queryKey: ['exploreTab'],
+    queryKey: ['exploreTab', user?.id],
     queryFn: user?.id
       ? () => getExploreTab(user.id)
       : () => getAnonymousExploreTab(),
@@ -44,7 +44,7 @@ export const useGetNextExploreTabVideos = (videos?: ExploreTab['videos']) => {
     }
 
     queryClient.setQueryData(
-      ['exploreTab'],
+      ['exploreTab', userId],
       (prev: ExploreTab | undefined) => ({
         videos: prev ? [...prev.videos, ...newVideos] : newVideos,
       })

@@ -571,6 +571,55 @@ export type Database = {
           },
         ]
       }
+      event_seller: {
+        Row: {
+          booth_name: string
+          created_at: string
+          event_id: number
+          id: number
+          pin_id: number
+          seller_id: number
+        }
+        Insert: {
+          booth_name: string
+          created_at?: string
+          event_id: number
+          id?: number
+          pin_id: number
+          seller_id: number
+        }
+        Update: {
+          booth_name?: string
+          created_at?: string
+          event_id?: number
+          id?: number
+          pin_id?: number
+          seller_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_seller_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_seller_pin_id_fkey"
+            columns: ["pin_id"]
+            isOneToOne: false
+            referencedRelation: "event_pin"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "event_seller_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       featured_community: {
         Row: {
           community_id: number
