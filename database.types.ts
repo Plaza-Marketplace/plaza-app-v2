@@ -532,6 +532,7 @@ export type Database = {
           id: number
           pin_id: number
           product_id: number
+          seller_id: number
         }
         Insert: {
           created_at?: string
@@ -539,6 +540,7 @@ export type Database = {
           id?: number
           pin_id: number
           product_id: number
+          seller_id: number
         }
         Update: {
           created_at?: string
@@ -546,6 +548,7 @@ export type Database = {
           id?: number
           pin_id?: number
           product_id?: number
+          seller_id?: number
         }
         Relationships: [
           {
@@ -569,6 +572,13 @@ export type Database = {
             referencedRelation: "product"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "event_product_seller_id_fkey"
+            columns: ["seller_id"]
+            isOneToOne: false
+            referencedRelation: "user"
+            referencedColumns: ["id"]
+          },
         ]
       }
       event_seller: {
@@ -578,7 +588,7 @@ export type Database = {
           event_id: number
           id: number
           pin_id: number
-          seller_id: number
+          user_id: number
         }
         Insert: {
           booth_name: string
@@ -586,7 +596,7 @@ export type Database = {
           event_id: number
           id?: number
           pin_id: number
-          seller_id: number
+          user_id: number
         }
         Update: {
           booth_name?: string
@@ -594,7 +604,7 @@ export type Database = {
           event_id?: number
           id?: number
           pin_id?: number
-          seller_id?: number
+          user_id?: number
         }
         Relationships: [
           {
@@ -612,8 +622,8 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "event_seller_seller_id_fkey"
-            columns: ["seller_id"]
+            foreignKeyName: "event_seller_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "user"
             referencedColumns: ["id"]
@@ -1744,6 +1754,18 @@ export type Database = {
           latitude: number
           pins: Json
           products: Json
+        }[]
+      }
+      get_event_page: {
+        Args: { event_id: number }
+        Returns: {
+          id: number
+          name: string
+          map_key: string
+          longitude: number
+          latitude: number
+          pins: Json
+          sellers: Json
         }[]
       }
       increment_cart_quantity: {

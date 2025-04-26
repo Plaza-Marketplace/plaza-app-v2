@@ -3,23 +3,23 @@ export type Pin = {
 
   name: string;
 
-  products: {
+  sellers: {
     id: Id;
 
-    name: string;
+    boothName: string;
 
-    price: number;
+    username: string | null;
 
-    thumbnailUrl: Url | null;
+    profileImageUrl: Url | null;
 
-    seller: {
+    products: {
       id: Id;
 
-      username: string | null;
+      name: string;
 
-      averageRating: number;
+      price: number | null;
 
-      profileImageUrl: Url | null;
-    };
+      thumbnailUrl: Url | null;
+    }[];
   }[];
 };

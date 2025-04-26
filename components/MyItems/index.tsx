@@ -4,7 +4,6 @@ import { FlatList } from 'react-native-gesture-handler';
 import ProductCard from '../Product/ProductCard';
 import { FC } from 'react';
 import HeadingText from '../Texts/HeadingText';
-import { useAuth } from '@/contexts/AuthContext';
 
 interface MyItemsProps {
   enabled?: boolean;
@@ -17,9 +16,8 @@ const MyItems: FC<MyItemsProps> = ({
   onPress,
   selectedProductIds,
 }) => {
-  const { user } = useAuth();
   const { data, error } = useGetMyItemsProducts(enabled);
-  const getNextMyItemsProducts = useGetNextMyItemsProducts();
+  const getNextMyItemsProducts = useGetNextMyItemsProducts(data);
 
   return (
     <FlatList

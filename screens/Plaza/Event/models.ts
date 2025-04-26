@@ -15,23 +15,23 @@ export type Event = {
     coordinates: [number, number];
   }[];
 
-  products: {
+  sellers: {
     id: Id;
 
-    name: string;
+    boothName: string;
 
-    price: number;
+    username: string | null;
 
-    thumbnailUrl: Url | null;
+    profileImageUrl: Url | null;
 
-    seller: {
+    products: {
       id: Id;
 
-      username: string;
+      name: string;
 
-      averageRating: number;
+      price: number | null;
 
-      profileImageUrl: Url | null;
-    };
+      thumbnailUrl: Url | null;
+    }[];
   }[];
 };

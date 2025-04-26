@@ -7,25 +7,28 @@ export const getEventPin = async (id: Id): Promise<Pin> => {
     .from('event_pin')
     .select(
       `
-    id,
-    name,
-    event_product (
-      product (
         id,
         name,
-        price,
-        image_keys: product_image (
-          image_key
-        ),
-        seller: user (
-          id,
-          username,
-          average_rating,
-          profile_image_key
+        event_seller (
+          booth_name,
+          user (
+            id,
+            username,
+            profile_image_key,
+            event_product (
+              product (
+                id, 
+                name,
+                price,
+                image_keys: product_image (
+                  image_key
+                )
+              )
+            )
+          )
+
         )
-      )
-    )
-  `
+      `
     )
     .eq('id', id)
     .single();
@@ -37,22 +40,22 @@ export const getEventPin = async (id: Id): Promise<Pin> => {
   return {
     id: data.id,
     name: data.name,
-    products: data.event_product.map((product) => ({
-      id: product.product.id,
-      name: product.product.name,
-      price: product.product.price ?? NaN,
-      thumbnailUrl:
-        product.product.image_keys.length > 0
-          ? getImagePublicUrl(product.product.image_keys[0].image_key)
-          : null,
-      seller: {
-        id: product.product.seller.id,
-        username: product.product.seller.username,
-        averageRating: product.product.seller.average_rating,
-        profileImageUrl: product.product.seller.profile_image_key
-          ? getImagePublicUrl(product.product.seller.profile_image_key)
-          : null,
-      },
+    sellers: data.event_seller.map((seller) => ({
+      id: seller.user.id,
+      boothName: seller.booth_name,
+      username: seller.user.username,
+      profileImageUrl: seller.user.profile_image_key
+        ? getImagePublicUrl(seller.user.profile_image_key)
+        : null,
+      products: seller.user.event_product.map((product) => ({
+        id: product.product.id,
+        name: product.product.name,
+        price: product.product.price,
+        thumbnailUrl:
+          product.product.image_keys?.length > 0
+            ? getImagePublicUrl(product.product.image_keys[0].image_key)
+            : null,
+      })),
     })),
   };
 };

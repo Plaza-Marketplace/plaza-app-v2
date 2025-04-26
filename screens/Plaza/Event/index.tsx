@@ -1,12 +1,15 @@
-import ProductCollection from '@/components/Product/ProductCollection';
 import HeadingText from '@/components/Texts/HeadingText';
-import BottomSheet, { BottomSheetModal } from '@gorhom/bottom-sheet';
+import BottomSheet from '@gorhom/bottom-sheet';
 import { Camera, MapView, MarkerView, UserLocation } from '@rnmapbox/maps';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { Modal, StyleSheet } from 'react-native';
 import { View } from 'react-native';
-import { useGetEvent, useAddEventPin } from './hooks';
+import {
+  useAddEventPin,
+  useGetEventPage,
+  useGetNextEventSellers,
+} from './hooks';
 import {
   SafeAreaView,
   useSafeAreaInsets,
@@ -19,6 +22,7 @@ import { Zoomable } from '@likashefqet/react-native-image-zoom';
 import ExitButton from '@/components/Buttons/ExitButton';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import ExploreProducts from './ExploreProducts';
 
 const Event = () => {
   const [zoom, setZoom] = useState(18);
@@ -29,13 +33,14 @@ const Event = () => {
     null
   );
   const { id } = useLocalSearchParams<{ id: string }>();
-  const bottomSheetRef = useRef<BottomSheetModal>(null);
+  const bottomSheetRef = useRef<BottomSheet>(null);
 
   const eventId = parseInt(id);
-  const { data, error } = useGetEvent(eventId);
+  const { data, error } = useGetEventPage(eventId);
+  const getNextEventSellers = useGetNextEventSellers(eventId, data?.sellers);
+
   const { mutate: addPin } = useAddEventPin(eventId);
 
-  const snapPoints = useMemo(() => [80, '80%'], []);
   const insets = useSafeAreaInsets();
 
   const scale = useMemo(() => {
@@ -79,7 +84,8 @@ const Event = () => {
             setZoom(a.properties.zoom);
           }}
         >
-          <PressableOpacity
+          <PlazaButton
+            title="More info"
             style={{
               position: 'absolute',
               zIndex: 99,
@@ -87,10 +93,7 @@ const Event = () => {
               top: insets.top + 64,
             }}
             onPress={() => setShowMap(true)}
-          >
-            <HeadingText variant="h6">Show map</HeadingText>
-          </PressableOpacity>
-
+          />
           <Camera
             zoomLevel={18}
             centerCoordinate={data?.coordinates}
@@ -133,17 +136,11 @@ const Event = () => {
 
           <UserLocation />
         </MapView>
-        <BottomSheet
-          ref={bottomSheetRef}
-          snapPoints={snapPoints}
-          enableDynamicSizing={false}
-        >
-          <ProductCollection
-            title="Explore Products"
-            description="Nearby Items"
-            products={data?.products ?? []}
-          />
-        </BottomSheet>
+        <ExploreProducts
+          bottomSheetRef={bottomSheetRef}
+          sellers={data?.sellers ?? []}
+          fetchNextPage={getNextEventSellers}
+        />
       </View>
       <Modal visible={showMap} animationType="slide">
         <View

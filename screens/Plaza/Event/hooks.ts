@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createPin, getEvent } from './services';
+import { createPin, getEventPage, getNextEventSellers } from './services';
 import { Event } from './models';
+import { useState } from 'react';
 
-export const useGetEvent = (id: Id) =>
+export const useGetEventPage = (id: Id) =>
   useQuery({
     queryKey: ['event', id],
-    queryFn: () => getEvent(id),
+    queryFn: () => getEventPage(id),
     staleTime: 1000 * 60 * 5,
   });
 
@@ -39,4 +40,43 @@ export const useAddEventPin = (id: Id) => {
       });
     },
   });
+};
+
+export const useGetNextEventSellers = (
+  eventId: Id,
+  sellers?: Event['sellers']
+) => {
+  const [isFetching, setIsFetching] = useState(false);
+  const [hasNextPage, setHasNextPage] = useState(true);
+
+  const queryClient = useQueryClient();
+
+  const paginate = async (sellers: Event['sellers']) => {
+    if (!hasNextPage || isFetching) return;
+
+    setIsFetching(true);
+    const newSellers = await getNextEventSellers(
+      eventId,
+      sellers[sellers.length - 1].id
+    );
+
+    setIsFetching(false);
+
+    if (newSellers.length === 0) {
+      setHasNextPage(false);
+      return;
+    }
+
+    queryClient.setQueryData<Event>(['event', eventId], (oldData) => {
+      if (oldData) {
+        return {
+          ...oldData,
+          sellers: [...oldData.sellers, ...newSellers],
+        };
+      }
+      return oldData;
+    });
+  };
+
+  return sellers ? () => paginate(sellers) : () => {};
 };

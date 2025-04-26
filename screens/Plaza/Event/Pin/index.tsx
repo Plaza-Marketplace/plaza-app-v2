@@ -1,13 +1,13 @@
 import { MarkerView } from '@rnmapbox/maps';
-import { FC, useRef, useState } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import { useGetEventPin } from './hooks';
 import { BottomSheetBackdrop, BottomSheetModal } from '@gorhom/bottom-sheet';
-import ProductCollection from '@/components/Product/ProductCollection';
 import Color from '@/constants/Color';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Radius from '@/constants/Radius';
 import BodyText from '@/components/Texts/BodyText';
+import { BoothContainer } from '../BoothContainer';
 
 interface PinProps {
   id: Id;
@@ -20,6 +20,8 @@ const Pin: FC<PinProps> = ({ id, name, scale, coordinates }) => {
   const [isOpen, setIsOpen] = useState(false);
   const { data, error } = useGetEventPin(id, isOpen);
   const bottomSheetRef = useRef<BottomSheetModal>(null);
+
+  const snapPoints = useMemo(() => ['80%'], []);
 
   return (
     <>
@@ -38,7 +40,7 @@ const Pin: FC<PinProps> = ({ id, name, scale, coordinates }) => {
       </MarkerView>
       <BottomSheetModal
         ref={bottomSheetRef}
-        snapPoints={['50%']}
+        snapPoints={snapPoints}
         enableDynamicSizing={false}
         onChange={(index) => {
           if (index === -1) {
@@ -51,11 +53,7 @@ const Pin: FC<PinProps> = ({ id, name, scale, coordinates }) => {
           <BottomSheetBackdrop {...props} disappearsOnIndex={-1} />
         )}
       >
-        <ProductCollection
-          title={name}
-          description="Nearby Products"
-          products={data?.products ?? []}
-        />
+        <BoothContainer name={name} sellers={data?.sellers ?? []} />
       </BottomSheetModal>
     </>
   );
