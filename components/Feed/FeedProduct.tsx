@@ -35,11 +35,10 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
           imageUrl={
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
           }
-          size={48}
         />
 
         <View style={styles.textContainer}>
-          <BodyText variant="sm-bold" color={Color.WHITE} numberOfLines={2}>
+          <BodyText variant="md-bold" color={Color.WHITE} numberOfLines={2}>
             {product.name}
           </BodyText>
 
@@ -58,7 +57,7 @@ export default FeedProduct;
 const styles = StyleSheet.create({
   container: {
     gap: 8,
-    padding: 12,
+    padding: 8,
     backgroundColor: Color.NEUTRALS_750,
     borderRadius: Radius.ROUNDED,
     flexDirection: 'row',
