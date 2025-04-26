@@ -2,7 +2,6 @@ import Footer from '@/components/Footer';
 import Spacing from '@/constants/Spacing';
 import { Alert, SafeAreaView, View } from 'react-native';
 import { Formik, FormikProps } from 'formik';
-import { createProduct } from '@/services/crud/product';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
 import * as FileSystem from 'expo-file-system';
@@ -24,8 +23,12 @@ import Variants from '@/screens/Upload/List-Product/components/Variants';
 import VariantValueModal from '@/screens/Upload/List-Product/components/VariantValueModal';
 import VariantOptionAddModal from '@/screens/Upload/List-Product/components/VariantOptionAddModal';
 import VariantOptionEditModal from '@/screens/Upload/List-Product/components/VariantOptionEditModal';
-import { uploadProductsAndVariants } from '@/services/variants';
 import * as Yup from 'yup';
+import {
+  useUploadProduct,
+  useUploadProductsWithVariants,
+} from '@/hooks/routes/list-item';
+import Loading from '@/components/Loading';
 
 const CreateListingSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
@@ -48,7 +51,7 @@ const CreateListingSchema = Yup.object().shape({
 
 const CreateListingScreen = () => {
   const { session } = useAuth();
-  const { data: user, isLoading, error } = useGetUserByAuthId(session?.user.id);
+  const { data: user } = useGetUserByAuthId(session?.user.id);
 
   const { takenPhoto } = useTakenPhoto();
 
@@ -79,6 +82,13 @@ const CreateListingScreen = () => {
 
   const [variantOptions, setVariantOptions] = useState<VariantOption[]>([]);
   const [variantValues, setVariantValues] = useState<VariantsDisplay[]>([]);
+
+  const { mutate: createProduct, isPending: isUploadProductPending } =
+    useUploadProduct();
+  const {
+    mutate: createProductWithVariants,
+    isPending: isUploadProductVariantsPending,
+  } = useUploadProductsWithVariants();
 
   useEffect(() => {
     if (formRef.current) {
@@ -137,11 +147,11 @@ const CreateListingScreen = () => {
             };
 
             if (isVariantsEnabled) {
-              await uploadProductsAndVariants(
-                productSpec,
-                variantOptions,
-                variantValues
-              );
+              await createProductWithVariants({
+                spec: productSpec,
+                options: variantOptions,
+                values: variantValues,
+              });
             } else {
               await createProduct(productSpec);
             }
@@ -153,7 +163,11 @@ const CreateListingScreen = () => {
           }
         }}
       >
-        {({ handleChange, handleSubmit, setFieldValue, values }) => {
+        {({ handleSubmit }) => {
+          if (isUploadProductPending || isUploadProductVariantsPending) {
+            return <Loading />;
+          }
+
           return (
             <View style={{ flex: 1 }}>
               <KeyboardAwareScrollView contentContainerStyle={styles.container}>

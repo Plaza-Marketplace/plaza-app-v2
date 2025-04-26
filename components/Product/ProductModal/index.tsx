@@ -165,8 +165,12 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     justifyContent: 'space-between',
                   }}
                 >
-                  <View>
-                    <HeadingText variant="h5-bold">{product?.name}</HeadingText>
+                  <View
+                    style={{
+                      maxWidth: '60%',
+                    }}
+                  >
+                    <HeadingText variant="h5-bold">{product.name}</HeadingText>
                     <BodyText variant="lg-medium">
                       {!product.hasVariants
                         ? formatPrice(product.price ?? NaN)

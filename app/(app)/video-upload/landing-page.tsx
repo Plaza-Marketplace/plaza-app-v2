@@ -10,18 +10,9 @@ import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
 import { router } from 'expo-router';
 import { Image } from 'expo-image';
-import {
-  Alert,
-  FlatList,
-  Keyboard,
-  KeyboardAvoidingView,
-  Pressable,
-  StyleSheet,
-  View,
-} from 'react-native';
+import { Alert, FlatList, StyleSheet, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
-import { createVideo } from '@/services/crud/video';
 import { useAuth } from '@/contexts/AuthContext';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { Formik, FormikProps } from 'formik';
@@ -43,6 +34,8 @@ import { useRecordedVideo } from '@/contexts/RecordedVideoProvider';
 import KeyboardView from '@/components/KeyboardView';
 import * as Yup from 'yup';
 import BodyText from '@/components/Texts/BodyText';
+import { useVideoUpload } from '@/hooks/routes/video-upload';
+import Loading from '@/components/Loading';
 
 type VideoUploadForm = {
   videoUri: string | null;
@@ -62,7 +55,9 @@ const LandingPage = () => {
   const [tempSelectedProducts, setTempSelectedProducts] = useState<Product[]>(
     []
   );
+  const { mutate: createVideo, isPending: isVideoPending } = useVideoUpload();
   const { data: products, error } = useGetProductsBySellerId(user?.id);
+  const [processing, setProcessing] = useState(false);
   const formRef = useRef<FormikProps<VideoUploadForm>>(
     {} as FormikProps<VideoUploadForm>
   );
@@ -120,12 +115,14 @@ const LandingPage = () => {
           onSubmit={async (values) => {
             if (!values.videoUri) return;
 
+            setProcessing(true);
             const base64Video = await FileSystem.readAsStringAsync(
               values.videoUri,
               {
                 encoding: 'base64',
               }
             );
+            setProcessing(false);
 
             try {
               await createVideo({
@@ -143,6 +140,10 @@ const LandingPage = () => {
           }}
         >
           {({ handleChange, handleSubmit, values, errors }) => {
+            if (isVideoPending || processing) {
+              return <Loading />;
+            }
+
             const handleSelect = async () => {
               const result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ['videos'],
