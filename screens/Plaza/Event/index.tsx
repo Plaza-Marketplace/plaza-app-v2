@@ -100,6 +100,7 @@ const Event = () => {
             animationMode="none"
             animationDuration={0}
           />
+
           {data?.pins.map((pin) => (
             <Pin
               key={pin.id}

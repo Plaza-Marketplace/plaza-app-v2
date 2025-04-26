@@ -28,7 +28,7 @@ const useCreateVideoComment = (videoId: Id) => {
       };
 
       queryClient.setQueryData(
-        ['exploreTab'],
+        ['exploreTab', user.id],
         (old: ExploreTab | undefined) => {
           if (old) {
             return {
@@ -41,11 +41,11 @@ const useCreateVideoComment = (videoId: Id) => {
                   };
                 }
                 return video;
-              })
-            }
+              }),
+            };
           }
         }
-      )
+      );
 
       queryClient.setQueryData(
         ['comments', videoId],
