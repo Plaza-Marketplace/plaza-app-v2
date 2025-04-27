@@ -1,9 +1,14 @@
 import ProductIcon from '../Product/ProductIcon';
 import { FC, useRef } from 'react';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import ProductModal from './ProductModal';
+import ProductModal from '../Product/ProductModal';
 import { StyleSheet, View } from 'react-native';
 import { Event, track } from '@/analytics/utils';
+import Color from '@/constants/Color';
+import Radius from '@/constants/Radius';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { formatPrice } from '@/utils/currency';
+import BodyText from '../Texts/BodyText';
 
 interface ProductProps {
   videoId: Id;
@@ -16,25 +21,33 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
 
   return (
     <>
-      <View style={styles.shadowContainer}>
+      <PressableOpacity
+        style={styles.container}
+        onPress={() => {
+          track(Event.CLICKED_PRODUCT_ICON, {
+            productId: product.id,
+            videoId: videoId,
+          });
+          bottomSheetRef.current?.present();
+        }}
+      >
         <ProductIcon
           imageUrl={
             product.imageUrls.length > 0 ? product.imageUrls[0] : undefined
           }
-          onPress={() => {
-            track(Event.CLICKED_PRODUCT_ICON, {
-              productId: product.id,
-              videoId: videoId,
-            });
-            bottomSheetRef.current?.present();
-          }}
         />
-      </View>
-      <ProductModal
-        bottomSheetRef={bottomSheetRef}
-        sellerId={sellerId}
-        product={product}
-      />
+
+        <View style={styles.textContainer}>
+          <BodyText variant="md-bold" color={Color.WHITE} numberOfLines={2}>
+            {product.name}
+          </BodyText>
+
+          <BodyText variant="sm" numberOfLines={1} color={Color.WHITE}>
+            {formatPrice(product.price || 0)}
+          </BodyText>
+        </View>
+      </PressableOpacity>
+      <ProductModal bottomSheetRef={bottomSheetRef} id={product.id} />
     </>
   );
 };
@@ -42,14 +55,17 @@ const FeedProduct: FC<ProductProps> = ({ videoId, sellerId, product }) => {
 export default FeedProduct;
 
 const styles = StyleSheet.create({
-  shadowContainer: {
-    shadowColor: 'black',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
+  container: {
+    gap: 8,
+    padding: 8,
+    backgroundColor: Color.NEUTRALS_750,
+    borderRadius: Radius.ROUNDED,
+    flexDirection: 'row',
+    alignItems: 'center',
+    maxWidth: 160,
+  },
+  textContainer: {
+    flexShrink: 1,
+    gap: 2,
   },
 });

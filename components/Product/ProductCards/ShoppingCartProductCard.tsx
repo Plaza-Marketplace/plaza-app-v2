@@ -1,34 +1,38 @@
 import CaptionText from '@/components/Texts/CaptionText';
-import StandardText from '@/components/Texts/StandardText';
 import Spacing from '@/constants/Spacing';
 import { FC } from 'react';
 import { Image } from 'expo-image';
-import { StyleSheet, View } from 'react-native';
-import Checkbox from 'expo-checkbox';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
+import { StyleSheet, View, ViewStyle } from 'react-native';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import { formatPrice } from '@/utils/currency';
-import productCardStyles from '@/components/PostCards/ProductCards/styles';
+import HeaderText from '@/components/Texts/HeaderText';
+import BoldCaptionText from '@/components/Texts/BoldCaptionText';
+import { Ionicons } from '@expo/vector-icons';
+import BoldStandardText from '@/components/Texts/BoldStandardText';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
 
 interface ShoppingCartProductCardProps {
-  product: Product;
-  isChecked?: boolean;
-  showCheckbox: boolean;
-  onPress?: () => void;
-  orderStatus?: OrderStatus;
+  cartItem: CartItem;
+  onAddPress?: () => void;
+  onRemovePress?: () => void;
+  styles?: ViewStyle;
+  interactable?: boolean;
 }
 
 const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
-  product,
-  isChecked = false,
-  showCheckbox,
-  onPress,
-  orderStatus,
+  cartItem,
+  onAddPress,
+  onRemovePress,
+  styles: passedStyles,
+  interactable = true,
 }) => {
+  const product = cartItem.product;
+  const variant = cartItem.variant;
+  const amount = cartItem.quantity;
   return (
-    <View style={productCardStyles.shadow}>
-      <View style={styles.container}>
+    <View style={[passedStyles, styles.container]}>
+      <View style={styles.infoContainer}>
         {product.imageUrls.length > 0 ? (
           <Image
             source={{
@@ -44,17 +48,59 @@ const ShoppingCartProductCard: FC<ShoppingCartProductCardProps> = ({
             style={[styles.image, { backgroundColor: Color.SURFACE_SECONDARY }]}
           />
         )}
+
         <View style={styles.productInfo}>
-          <StandardText>{product.name}</StandardText>
-          <CaptionText>{formatPrice(product.price)}</CaptionText>
-          <CaptionText>{orderStatus}</CaptionText>
+          <HeaderText>{product.name}</HeaderText>
+          <BoldCaptionText style={{ marginTop: Spacing.SPACING_1 }}>
+            {variant ? formatPrice(variant.price) : formatPrice(product.price)}
+          </BoldCaptionText>
+          <CaptionText style={{ marginTop: Spacing.SPACING_1 }}>
+            {variant
+              ? variant.options.map((option) => option.value.name).join(', ')
+              : 'Standard'}
+          </CaptionText>
         </View>
-        {showCheckbox && (
-          <PressableOpacity onPress={onPress}>
-            <Checkbox value={isChecked} style={{ pointerEvents: 'none' }} />
-          </PressableOpacity>
-        )}
       </View>
+
+      {interactable && (
+        <View style={[styles.rightContainer, styles.shadow]}>
+          <View style={styles.amountContainer}>
+            <PressableOpacity onPress={onRemovePress}>
+              {amount && amount > 1 ? (
+                <Ionicons
+                  name="remove-outline"
+                  size={20}
+                  color={Color.PRIMARY_DEFAULT}
+                />
+              ) : (
+                <Ionicons
+                  name="trash-outline"
+                  size={20}
+                  color={Color.PRIMARY_DEFAULT}
+                />
+              )}
+            </PressableOpacity>
+            <BoldStandardText style={{ marginHorizontal: Spacing.SPACING_3 }}>
+              {amount}
+            </BoldStandardText>
+            <PressableOpacity onPress={onAddPress}>
+              <Ionicons
+                name="add-outline"
+                size={20}
+                color={Color.PRIMARY_DEFAULT}
+              />
+            </PressableOpacity>
+          </View>
+        </View>
+      )}
+
+      {!interactable && (
+        <View style={[styles.rightContainer, styles.shadow]}>
+          <View style={styles.amountDisplay}>
+            <BoldStandardText>{amount}</BoldStandardText>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
@@ -66,19 +112,55 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingRight: Spacing.SPACING_3,
-    backgroundColor: Color.SURFACE_PRIMARY,
-    borderRadius: Radius.ROUNDED,
     overflow: 'hidden',
   },
   productInfo: {
     flex: 1,
-    height: '100%',
-    padding: Spacing.SPACING_3,
-    gap: Spacing.SPACING_2,
+    marginLeft: Spacing.SPACING_3,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
+    borderRadius: Radius.LG,
+    flex: 0,
+  },
+  infoContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    flexGrow: 1,
+  },
+  rightContainer: {
+    flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  amountContainer: {
+    backgroundColor: Color.WHITE,
+    borderRadius: 9999,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    padding: Spacing.SPACING_2,
+  },
+  amountDisplay: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 9999,
+    width: 30,
+    height: 30,
+    backgroundColor: Color.WHITE,
+  },
+  shadow: {
+    shadowColor: Color.BLACK,
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+
+    elevation: 1,
   },
 });

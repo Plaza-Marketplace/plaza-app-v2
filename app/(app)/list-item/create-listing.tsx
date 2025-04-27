@@ -1,55 +1,129 @@
-import AddImage from '@/components/AddImage';
 import Footer from '@/components/Footer';
-import InfoSection from '@/components/InfoSection';
-import PlazaTextInput from '@/components/PlazaTextInput';
-import BoldStandardText from '@/components/Texts/BoldStandardText';
-import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
-import { SafeAreaView, ScrollView, StyleSheet, View } from 'react-native';
-import { Formik } from 'formik';
-import { createProduct } from '@/services/crud/product';
+import { Alert, SafeAreaView, View } from 'react-native';
+import { Formik, FormikProps } from 'formik';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { useAuth } from '@/contexts/AuthContext';
-import * as ImagePicker from 'expo-image-picker';
 import * as FileSystem from 'expo-file-system';
 import PlazaHeader from '@/components/PlazaHeader';
+import { useEffect, useRef, useState } from 'react';
+import { useTakenPhoto } from '@/contexts/TakenPhotoProvider';
+import { router } from 'expo-router';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { BottomSheetModal } from '@gorhom/bottom-sheet';
+import {
+  CreateListingForm,
+  VariantOption,
+  VariantsDisplay,
+} from '@/screens/Upload/List-Product/schema';
+import { styles } from '@/screens/Upload/List-Product/styles';
+import Photos from '@/screens/Upload/List-Product/components/Photos';
+import ProductInfo from '@/screens/Upload/List-Product/components/ProductInfo';
+import Variants from '@/screens/Upload/List-Product/components/Variants';
+import VariantValueModal from '@/screens/Upload/List-Product/components/VariantValueModal';
+import VariantOptionAddModal from '@/screens/Upload/List-Product/components/VariantOptionAddModal';
+import VariantOptionEditModal from '@/screens/Upload/List-Product/components/VariantOptionEditModal';
+import * as Yup from 'yup';
+import {
+  useUploadProduct,
+  useUploadProductsWithVariants,
+} from '@/hooks/routes/list-item';
+import Loading from '@/components/Loading';
 
-type CreateListingForm = {
-  title: string;
-  category: string;
-  condition: string;
-  description: string;
-  quantity: number;
-  price: number;
-  shippingPrice: number;
-  location: string | null;
-  imageUris: string[];
-};
+const CreateListingSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  description: Yup.string().required('Description is required'),
+  quantity: Yup.number()
+    .min(1, 'Quantity must be at least 1')
+    .required('Quantity is required'),
+  price: Yup.number()
+    .min(0, 'Price must be at least 0')
+    .required('Price is required'),
+  shippingPrice: Yup.number()
+    .min(0, 'Shipping price must be at least 0')
+    .required('Shipping price is required'),
+  location: Yup.string().required('Location is required'),
+  imageUris: Yup.array()
+    .of(Yup.string())
+    .min(1, 'At least one image is required')
+    .required('At least one image is required'),
+});
 
 const CreateListingScreen = () => {
   const { session } = useAuth();
-  const { data: user, isLoading, error } = useGetUserByAuthId(session?.user.id);
+  const { data: user } = useGetUserByAuthId(session?.user.id);
+
+  const { takenPhoto } = useTakenPhoto();
+
+  const formRef = useRef<FormikProps<CreateListingForm>>(
+    {} as FormikProps<CreateListingForm>
+  );
+
+  const optionForm = useRef<BottomSheetModal>(null);
+  const optionEditForm = useRef<BottomSheetModal>(null);
+  const variantValueForm = useRef<BottomSheetModal>(null);
+
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+
+  const openOptionForm = () => {
+    optionForm.current?.present();
+  };
+
+  const openVariantValueForm = () => {
+    variantValueForm.current?.present();
+  };
+
+  const openEditOptionForm = (index: number) => {
+    setSelectedIndex(index);
+    optionEditForm.current?.present();
+  };
+
+  const [isVariantsEnabled, setIsVariantsEnabled] = useState(false);
+
+  const [variantOptions, setVariantOptions] = useState<VariantOption[]>([]);
+  const [variantValues, setVariantValues] = useState<VariantsDisplay[]>([]);
+
+  const { mutate: createProduct, isPending: isUploadProductPending } =
+    useUploadProduct();
+  const {
+    mutate: createProductWithVariants,
+    isPending: isUploadProductVariantsPending,
+  } = useUploadProductsWithVariants();
+
+  useEffect(() => {
+    if (formRef.current) {
+      // If we have a recorded video, set the videoUri in the form
+      if (takenPhoto) {
+        formRef.current.setFieldValue('imageUris', [
+          `file://${takenPhoto.path}`,
+          ...formRef.current.values.imageUris,
+        ]);
+      }
+    }
+  }, [takenPhoto]);
 
   if (!user) return null;
 
   const initialValues: CreateListingForm = {
     title: '',
-    category: '',
-    condition: '',
+    // category: '',
+    // condition: '',
     description: '',
     quantity: 1,
     price: 0,
     shippingPrice: 0,
-    location: null,
+    location: '',
     imageUris: [],
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <PlazaHeader name="List an Item" accountForSafeArea={false} />
+      <PlazaHeader name="List a Product" accountForSafeArea={false} />
 
       <Formik
         initialValues={initialValues}
+        innerRef={formRef}
+        validationSchema={CreateListingSchema}
         onSubmit={async (values) => {
           const base64Images = await Promise.all(
             values.imageUris.map(
@@ -60,84 +134,61 @@ const CreateListingScreen = () => {
             )
           );
 
-          createProduct({
-            sellerId: user.id,
-            name: values.title,
-            description: values.description,
-            category: 'Shirt',
-            condition: 'Like New',
-            quantity: values.quantity,
-            price: values.price,
-            shippingPrice: values.price,
-            base64Images: base64Images,
-          });
+          try {
+            const productSpec = {
+              sellerId: user.id,
+              name: values.title,
+              description: values.description,
+              quantity: values.quantity,
+              price: values.price,
+              shippingPrice: values.price,
+              base64Images: base64Images,
+              hasVariants: isVariantsEnabled,
+            };
+
+            if (isVariantsEnabled) {
+              await createProductWithVariants({
+                spec: productSpec,
+                options: variantOptions,
+                values: variantValues,
+              });
+            } else {
+              await createProduct(productSpec);
+            }
+
+            router.push('/list-item/confirmed');
+          } catch (e) {
+            Alert.alert('Error', 'Failed to create listing. Please try again.');
+            console.error(e);
+          }
         }}
       >
-        {({ handleChange, handleSubmit, setFieldValue, values }) => {
-          const handleAddImage = async () => {
-            const result = await ImagePicker.launchImageLibraryAsync({
-              mediaTypes: ['images'],
-              allowsMultipleSelection: true,
-              selectionLimit: 4,
-            });
-
-            if (result.canceled) return;
-
-            const uris = result.assets.map((asset) => asset.uri);
-            setFieldValue('imageUris', uris);
-          };
+        {({ handleSubmit }) => {
+          if (isUploadProductPending || isUploadProductVariantsPending) {
+            return <Loading />;
+          }
 
           return (
             <View style={{ flex: 1 }}>
-              <ScrollView contentContainerStyle={styles.container}>
-                <View style={{ gap: Spacing.SPACING_3, flexDirection: 'row' }}>
-                  <AddImage
-                    onPress={handleAddImage}
-                    imageUri={values.imageUris.at(0)}
-                  />
-                  <AddImage
-                    onPress={handleAddImage}
-                    imageUri={values.imageUris.at(1)}
-                  />
-                  <AddImage
-                    onPress={handleAddImage}
-                    imageUri={values.imageUris.at(2)}
-                  />
-                  <AddImage
-                    onPress={handleAddImage}
-                    imageUri={values.imageUris.at(3)}
-                  />
+              <KeyboardAwareScrollView contentContainerStyle={styles.container}>
+                <View style={{ paddingVertical: Spacing.SPACING_3 }}>
+                  <Photos />
                 </View>
 
-                <View style={{ gap: Spacing.SPACING_3 }}>
-                  <BoldStandardText>Title</BoldStandardText>
-                  <PlazaTextInput
-                    onChangeText={handleChange('title')}
-                    placeholder="example: Cat Mug"
-                  />
-                </View>
+                <View style={styles.infoContainer}>
+                  <ProductInfo />
 
-                <View style={{ gap: Spacing.SPACING_3 }}>
-                  <BoldStandardText>Description</BoldStandardText>
-                  <PlazaTextInput
-                    onChangeText={handleChange('description')}
-                    placeholder="example: handmade clay cat mug"
-                    style={{ height: 100 }}
+                  <Variants
+                    isVariantsEnabled={isVariantsEnabled}
+                    variantOptions={variantOptions}
+                    openOptionForm={openOptionForm}
+                    openVariantValueForm={openVariantValueForm}
+                    openEditOptionForm={openEditOptionForm}
+                    setIsVariantsEnabled={setIsVariantsEnabled}
+                    setVariantOptions={setVariantOptions}
                   />
                 </View>
-                <View style={{ gap: Spacing.SPACING_3 }}>
-                  <BoldStandardText>Information</BoldStandardText>
-                  <InfoSection title="Category" />
-                  <InfoSection title="Condition" />
-                  <InfoSection title="Quantity" description="1" />
-                  <InfoSection title="Price" description="$0.00" />
-                </View>
-                <View style={{ gap: Spacing.SPACING_3 }}>
-                  <BoldStandardText>Shipping</BoldStandardText>
-                  <InfoSection title="Shipping Price" description="$0.00" />
-                  <InfoSection title="Location" />
-                </View>
-              </ScrollView>
+              </KeyboardAwareScrollView>
 
               <Footer
                 leftTitle="Save to Drafts"
@@ -149,26 +200,29 @@ const CreateListingScreen = () => {
           );
         }}
       </Formik>
+
+      <VariantOptionAddModal
+        innerRef={optionForm}
+        variantOptions={variantOptions}
+        setVariantOptions={setVariantOptions}
+      />
+
+      <VariantOptionEditModal
+        innerRef={optionEditForm}
+        variantOptions={variantOptions}
+        setVariantOptions={setVariantOptions}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+      />
+
+      <VariantValueModal
+        innerRef={variantValueForm}
+        variantOptions={variantOptions}
+        variantValues={variantValues}
+        setVariantValues={setVariantValues}
+      />
     </SafeAreaView>
   );
 };
 
 export default CreateListingScreen;
-
-const styles = StyleSheet.create({
-  container: {
-    flexGrow: 1,
-    gap: Spacing.SPACING_4,
-    paddingHorizontal: Spacing.SPACING_3,
-    backgroundColor: Color.GREY_100,
-  },
-  buttonsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderTopWidth: 1,
-    borderColor: Color.BORDER_SECONDARY,
-    gap: Spacing.SPACING_2,
-    paddingHorizontal: Spacing.SPACING_2,
-    paddingTop: Spacing.SPACING_3,
-  },
-});

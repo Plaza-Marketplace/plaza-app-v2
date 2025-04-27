@@ -18,6 +18,11 @@ export enum Event {
 }
 
 export const track = (event: Event, properties?: Record<string, any>) => {
-  console.log('Tracking event', event, properties);
   mixpanel.track(event, properties);
+};
+
+export const identify = (userId: string, username?: string, email?: string) => {
+  mixpanel.identify(userId);
+  mixpanel.getPeople().set('$username', username);
+  mixpanel.getPeople().set('$email', email);
 };

@@ -1,8 +1,8 @@
 {
   "expo": {
-    "name": "Plaza Marketplace",
+    "name": "Plaza",
     "slug": "plaza",
-    "version": "1.0.0",
+    "version": "1.0.4",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "plazamarketplace",
@@ -13,15 +13,58 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.plaza.app"
+      "supportsTablet": false,
+      "usesAppleSignIn": true,
+      "bundleIdentifier": "com.plaza.app",
+      "associatedDomains": ["applinks:www.plaza-app.com"],
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false,
+        "NSCameraUsageDescription": "Plaza uses the camera for product photo taking and video recording for uploading to the marketplace. The photos and videos you take are stored in our database and are not shared with any third party.",
+        "NSMicrophoneUsageDescription": "Plaza uses the microphone for video recording for content in the marketplace. The videos you record are stored in our database and are not shared with any third party.",
+        "NSPhotoLibraryUsageDescription": "Plaza uses the photo library for product photo taking and video recording for uploading to the marketplace. The photos and videos you take are stored in our database and are not shared with any third party.",
+        "NSLocationWhenInUseUsageDescription": "Plaza uses your location to show your current location on the craft fair map and to refer you to craft fair stands near your location. Your location history is NOT stored in our database.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Plaza uses your location to show your current location on the craft fair map and to refer you to craft fair stands near your location. Your location history is NOT stored in our database."
+      }
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.plaza.app"
+      "package": "com.plaza.app",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ],
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "autoVerify": true,
+          "data": [
+            {
+              "scheme": "https",
+              "host": "www.plaza-app.com",
+              "pathPrefix": "/"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ],
+      "production": {
+        "android": {
+          "releaseStatus": "draft"
+        }
+      },
+      "preview": {
+        "distribution": "internal",
+        "channel": "preview",
+        "android": {
+          "buildType": "apk"
+        },
+        "env": {
+          "EXPO_PUBLIC_APP_ENV": "production"
+        }
+      }
     },
     "web": {
       "bundler": "metro",
@@ -30,9 +73,28 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
       "expo-font",
       "expo-splash-screen",
-      "expo-video"
+      "expo-video",
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsDownloadToken": "sk.eyJ1Ijoiai1hY2tpZSIsImEiOiJjbHIycWo0ZTAxNmNkMm1xYnkyYXY4N3hsIn0.5jlxFDTm3eLFP_j1SZ8e7Q"
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationWhenInUsePermission": "Show current location on map."
+        }
+      ],
+      [
+        "@react-native-google-signin/google-signin",
+        {
+          "iosUrlScheme": "com.googleusercontent.apps.1039660036666-0vh7t5g63rqfo08m3ai7kmfiab08a2ho"
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
@@ -42,6 +104,12 @@
         "projectId": "28a11564-602c-48fa-887b-f35be96b95c6"
       }
     },
-    "owner": "plazamarketplace"
+    "owner": "plazamarketplace",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/28a11564-602c-48fa-887b-f35be96b95c6"
+    }
   }
 }

@@ -13,7 +13,7 @@ const useDeleteVideoLike = (videoId: Id) => {
       : undefined,
     onMutate: () => {
       queryClient.setQueryData(
-        ['exploreTab'],
+        ['exploreTab', user?.id],
         (old: ExploreTab | undefined) => {
           if (!old) return;
 

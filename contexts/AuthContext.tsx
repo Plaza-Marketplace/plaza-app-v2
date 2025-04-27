@@ -1,3 +1,4 @@
+import { identify } from '@/analytics/utils';
 import useGetUserByAuthId from '@/hooks/queries/useGetUserByAuthId';
 import { supabase } from '@/utils/supabase';
 import { Session } from '@supabase/supabase-js';
@@ -32,12 +33,32 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const { data: user } = useGetUserByAuthId(session?.user.id);
 
   useEffect(() => {
+    if (!session?.user.id) return;
+
+    identify(session.user.id, user?.username, session.user.email);
+  }, [user]);
+
+  useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
     });
 
     supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
+      const newSession =
+        session && session.user.app_metadata.provider === 'apple'
+          ? {
+              ...session,
+              user: {
+                ...session.user,
+                user_metadata: {
+                  ...session.user.user_metadata,
+                  completed_onboarding: true,
+                },
+              },
+            }
+          : session;
+
+      setSession(newSession);
       setIsLoading(false);
     });
   }, []);

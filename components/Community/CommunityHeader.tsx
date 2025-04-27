@@ -1,97 +1,142 @@
-import { Pressable, View } from 'react-native';
+import { Dimensions, View } from 'react-native';
 import { Image } from 'expo-image';
 import React, { FC, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import Color from '@/constants/Color';
-import HeaderText from '../Texts/HeaderText';
-import StandardText from '../Texts/StandardText';
-import CommunityIcon from '../ProfileIcons/CommunityIcon';
-import PressableOpacity from '../Buttons/PressableOpacity';
-import { BackButton } from '../PlazaIcons/ActionIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Spacing from '@/constants/Spacing';
-import { router } from 'expo-router';
+import OngoingEvent from './OngoingEvent';
+import Radius from '@/constants/Radius';
+import HeadingText from '../Texts/HeadingText';
+import BodyText from '../Texts/BodyText';
+import MemberCount from './MemberCount';
+import ProfileIcon from '../ProfileIcon';
+import PlazaButton from '../Buttons/PlazaButton';
+import BackButton from '../Buttons/BackButton';
+import UploadButton from '../Buttons/UploadButton';
+import PressableOpacity from '../Buttons/PressableOpacity';
+import { useJoinCommunity, useLeaveCommunity } from '@/hooks/routes/community';
 
-interface CommunityHeaderProps {
-  community: Community;
+export interface CommunityHeaderProps {
+  id: Id;
+  name: string;
+  memberCount: number;
+  isMember: boolean;
+  description: string;
+  iconUrl: string | null;
+  bannerUrl: string | null;
+  ongoingEvent: {
+    id: Id;
+    name: string;
+    city: string;
+    state: string;
+    iconUrl: Url | null;
+  } | null;
 }
 
-const CommunityHeader: FC<CommunityHeaderProps> = ({ community }) => {
+const CommunityHeader: FC<CommunityHeaderProps> = ({
+  id,
+  name,
+  memberCount,
+  isMember,
+  description,
+  iconUrl,
+  bannerUrl,
+  ongoingEvent,
+}) => {
   const [expanded, setExpanded] = useState(false);
-  const { name, memberCount, description, iconUrl, backgroundUrl } = community;
-  const inset = useSafeAreaInsets();
+  const { mutate: joinCommunity } = useJoinCommunity(id);
+  const { mutate: leaveCommunity } = useLeaveCommunity(id);
+  const insets = useSafeAreaInsets();
+
+  const handlePress = () => {
+    if (isMember) {
+      leaveCommunity();
+    } else {
+      joinCommunity();
+    }
+  };
+
   return (
-    <View style={styles.headerContainer}>
-      <PressableOpacity
-        style={[styles.backButton, { top: inset.top }]}
-        onPress={() => router.back()}
-      >
-        <BackButton color={Color.GREY_100} size={20} />
-        {/* <Text>Back</Text> */}
-      </PressableOpacity>
-      <Image style={styles.banner} source={{ uri: backgroundUrl }} />
-      <View style={styles.content}>
-        <View
-          style={{
-            flexDirection: 'row',
-          }}
-        >
-          <View style={styles.iconContainer}>
-            <CommunityIcon
-              size={64}
-              url={iconUrl}
-              borderStyle={styles.iconBorder}
-            />
-          </View>
-
-          <View style={{ marginLeft: 70, padding: Spacing.SPACING_1 }}>
-            <HeaderText>{name}</HeaderText>
-            <StandardText color={Color.TEXT_SUB_PRIMARY}>
-              {memberCount} members
-            </StandardText>
-          </View>
+    <View style={{ marginTop: -insets.top }}>
+      <Image style={styles.banner} source={{ uri: bannerUrl }} />
+      <View style={[styles.contentContainer, { paddingTop: insets.top }]}>
+        <View style={styles.headerButtons}>
+          <BackButton />
+          {/* <UploadButton /> */}
         </View>
+        <View style={styles.content}>
+          <View style={styles.nameContainer}>
+            <ProfileIcon
+              variant="community"
+              size={64}
+              url={iconUrl ?? undefined}
+            />
+            <View style={styles.memberContainer}>
+              <HeadingText variant="h5">{name}</HeadingText>
+              <MemberCount count={memberCount} />
+            </View>
+          </View>
 
-        <Pressable onPress={() => setExpanded(!expanded)}>
-          <StandardText numberOfLines={expanded ? undefined : 2}>
-            {description}
-          </StandardText>
-        </Pressable>
+          <PressableOpacity onPress={() => setExpanded(!expanded)}>
+            <BodyText
+              variant="md-medium"
+              numberOfLines={expanded ? undefined : 2}
+            >
+              {description}
+            </BodyText>
+          </PressableOpacity>
+          {ongoingEvent && (
+            <OngoingEvent
+              id={ongoingEvent.id}
+              name={ongoingEvent.name}
+              city={ongoingEvent.city}
+              state={ongoingEvent.state}
+              iconUrl={ongoingEvent.iconUrl}
+            />
+          )}
+
+          <PlazaButton
+            title={isMember ? 'Joined' : 'Join'}
+            onPress={handlePress}
+          />
+        </View>
       </View>
     </View>
   );
 };
 
+const BANNER_HEIGHT = Dimensions.get('window').height * 0.25;
+
 const styles = StyleSheet.create({
-  headerContainer: {
-    backgroundColor: Color.SURFACE_PRIMARY,
-    position: 'relative',
+  headerButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  contentContainer: {
+    padding: 8,
+    gap: 24,
+  },
+  nameContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
+  memberContainer: {
+    gap: 4,
   },
   banner: {
+    position: 'absolute',
     width: '100%',
-    height: 130,
+    height: BANNER_HEIGHT,
     backgroundColor: Color.SURFACE_SECONDARY,
   },
   content: {
+    backgroundColor: Color.NEUTRALS_WHITE,
+    borderRadius: Radius.LG,
+    borderColor: Color.NEUTRALS_150,
+    borderWidth: 1,
+    padding: 16,
     gap: 8,
-    paddingHorizontal: Spacing.SPACING_3,
-  },
-  iconContainer: {
-    position: 'absolute',
-    bottom: -5,
-  },
-  iconBorder: {
-    borderWidth: 4,
-    borderRadius: 8,
-    borderColor: Color.BORDER_TERTIARY,
-  },
-  backButton: {
-    position: 'absolute',
-    padding: Spacing.SPACING_2,
-    left: Spacing.SPACING_3,
-    backgroundColor: '#00000088',
-    borderRadius: 99,
-    zIndex: 99,
   },
 });
 

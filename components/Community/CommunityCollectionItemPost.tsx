@@ -7,6 +7,10 @@ import PressableOpacity from '../Buttons/PressableOpacity';
 import ProductModal from '../Feed/ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Event, track } from '@/analytics/utils';
+import Spacing from '@/constants/Spacing';
+import HeaderText from '../Texts/HeaderText';
+import ProfileIcon from '../ProfileIcon';
+import { StarRatingDisplay } from 'react-native-star-rating-widget';
 
 interface CommunityCollectionItemPostProps {
   communityCollectionItem: CommunityCollectionItem;
@@ -38,16 +42,22 @@ const CommunityCollectionItemPost: FC<CommunityCollectionItemPostProps> = ({
 
   return (
     <>
-      <PressableOpacity style={{ gap: 4 }} onPress={handleOnPress}>
+      <PressableOpacity style={styles.container} onPress={handleOnPress}>
         <ExpoImage
           source={{ uri: communityCollectionItem.product.imageUrls[0] }}
           style={[styles.image, { aspectRatio }]}
         />
-        {communityCollectionItem.description && (
-          <View style={styles.caption}>
-            <CaptionText>{communityCollectionItem.description}</CaptionText>
+
+        <View style={styles.caption}>
+          <HeaderText fontSize={16}>
+            {communityCollectionItem.product.name}
+          </HeaderText>
+          <StarRatingDisplay rating={5} starSize={16} />
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+            <ProfileIcon variant="user" size={20} />
+            <CaptionText>by Jane Doe</CaptionText>
           </View>
-        )}
+        </View>
       </PressableOpacity>
       <ProductModal
         product={communityCollectionItem.product}
@@ -61,6 +71,11 @@ const CommunityCollectionItemPost: FC<CommunityCollectionItemPostProps> = ({
 export default CommunityCollectionItemPost;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: Color.SURFACE_PRIMARY,
+    gap: 4,
+    borderRadius: Spacing.SPACING_2,
+  },
   image: {
     width: '100%',
     height: null,
@@ -68,6 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 8,
   },
   caption: {
-    paddingHorizontal: 4,
+    padding: 8,
+    gap: 4,
   },
 });

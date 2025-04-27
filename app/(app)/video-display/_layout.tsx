@@ -83,7 +83,7 @@ const VideoDisplay = () => {
                       textShadowRadius: 2,
                     }}
                   >
-                    {video.poster.username}
+                    {video.poster.displayName}
                   </BoldSubheaderText>
                 </PressableOpacity>
                 {video.description && (

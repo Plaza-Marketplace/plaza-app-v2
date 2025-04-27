@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
-import StandardText from './Texts/StandardText';
 import PressableOpacity from './Buttons/PressableOpacity';
 import { StyleSheet } from 'react-native';
+import BodyText from './Texts/BodyText';
 
 interface ExpandableDescriptionProps {
   description: string;
@@ -20,13 +20,14 @@ const ExpandableDescription: FC<ExpandableDescriptionProps> = ({
 
   return (
     <PressableOpacity onPress={() => setExpanded(!expanded)}>
-      <StandardText
+      <BodyText
+        variant="md"
         numberOfLines={expanded ? undefined : initialNumberOfLines}
         color={textColor}
         style={shadow ? styles.shdaowContainer : {}}
       >
         {description}
-      </StandardText>
+      </BodyText>
     </PressableOpacity>
   );
 };

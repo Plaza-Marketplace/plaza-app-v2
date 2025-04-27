@@ -13,7 +13,7 @@ type Product = {
   // Change to enum?
   condition: string;
 
-  price: number;
+  price: number | null;
 
   shippingPrice: number;
 
@@ -49,15 +49,15 @@ type CreateProduct = {
 
   description: string;
 
-  category: string;
-
-  condition: string;
-
   price: number;
 
   shippingPrice: number;
 
   base64Images: Base64[];
 
+  arrayBufferImages?: ArrayBuffer[];
+
   quantity?: number;
+
+  hasVariants: boolean;
 };

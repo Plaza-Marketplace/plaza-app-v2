@@ -21,8 +21,6 @@ const formatProfileHeaderData = (
   return {
     user: {
       id: profileUser.id,
-      firstName: profileUser.first_name,
-      lastName: profileUser.last_name,
       profileImageUrl: profileUser.profile_image_url,
       authId: profileUser.auth_id,
       email: profileUser.email,
@@ -71,7 +69,7 @@ export const getProfileHeaderData = async (
     .single();
 
   if (error) {
-    console.log(error);
+    console.error(error);
     throw new Error(
       `The get profile header data query for ${profileUserId} failed with exception ${error}`
     );

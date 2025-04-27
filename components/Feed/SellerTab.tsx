@@ -7,18 +7,11 @@ interface SellerTabProps {
 }
 
 const SellerTab: FC<SellerTabProps> = ({ seller }) => {
-  const { data } = useGetSellerReviews(seller.id);
+  const { data, error } = useGetSellerReviews(seller.id);
 
   const reviews = data ?? [];
 
-  return (
-    <ReviewModalTab
-      isSeller
-      name={seller.username}
-      imageUrl={seller.profileImageUrl ?? undefined}
-      reviews={reviews}
-    />
-  );
+  return <ReviewModalTab reviews={reviews} />;
 };
 
 export default SellerTab;

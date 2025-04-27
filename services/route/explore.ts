@@ -1,13 +1,18 @@
 import { Tables } from '@/database.types';
 import { supabase } from '@/utils/supabase';
-import { getImagePublicUrls, getVideoPublicUrl } from '../crud/storage';
+import {
+  getImagePublicUrl,
+  getImagePublicUrls,
+  getVideoPublicUrl,
+} from '../crud/storage';
 
 const EXPLORE_TAB_VIDEO_QUERY = `
 *,
 poster: user(
   id,
   username,
-  profile_image_url
+  display_name,
+  profile_image_key
 ),
 products: video_product(
   product(
@@ -17,6 +22,9 @@ products: video_product(
     ),
     product_review_count: product_review(
       count
+    ),
+    product_variant(
+      price
     )
   )
 ),
@@ -32,20 +40,27 @@ seller_review_count: user(
 
 export const formatExploreTabVideo = (
   video: Tables<'video'>,
-  poster: Pick<Tables<'user'>, 'id' | 'username' | 'profile_image_url'>,
+  poster: Pick<
+    Tables<'user'>,
+    'id' | 'username' | 'display_name' | 'profile_image_key'
+  >,
   products: Tables<'product'>[],
   productImageKeys: Tables<'product_image'>['image_key'][][],
   isLiked: boolean,
   likeCount: number,
   commentCount: number,
-  reviewCount: number
+  reviewCount: number,
+  variantPrices: (number | null)[]
 ): ExploreTab['videos'][0] => {
   return {
     id: video.id,
     poster: {
       id: poster.id,
       username: poster.username,
-      profileImageUrl: poster.profile_image_url,
+      displayName: poster.display_name,
+      profileImageUrl: poster.profile_image_key
+        ? getImagePublicUrl(poster.profile_image_key)
+        : null,
     },
     videoUrl: getVideoPublicUrl(video.video_key),
     products: products.map((product, index) => ({
@@ -55,7 +70,9 @@ export const formatExploreTabVideo = (
       description: product.description,
       category: product.category,
       condition: product.condition,
-      price: product.price,
+      price: !product.has_variants
+        ? product.price ?? NaN
+        : variantPrices[index] ?? NaN,
       shippingPrice: product.shipping_price,
       imageUrls: getImagePublicUrls(productImageKeys[index]),
       createdAt: product.created_at,
@@ -76,7 +93,8 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
     .select(EXPLORE_TAB_VIDEO_QUERY)
     .eq('isLiked.liker_id', userId)
     .order('created_at', { ascending: false })
-    .limit(5);
+    .limit(5)
+    .limit(1, { referencedTable: 'video_product.product.product_variant' });
 
   if (error) throw new Error(error.message);
 
@@ -97,7 +115,12 @@ export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
             (acc, product) =>
               acc + product.product.product_review_count[0].count,
             0
-          )
+          ),
+        video.products.map((videoProduct) =>
+          videoProduct.product.product_variant.length > 0
+            ? videoProduct.product.product_variant[0].price
+            : null
+        )
       )
     ),
   };
@@ -132,7 +155,12 @@ export const getNextExploreTabVideos = async (
         video.products.reduce(
           (acc, product) => acc + product.product.product_review_count[0].count,
           0
-        )
+        ),
+      video.products.map((videoProduct) =>
+        videoProduct.product.product_variant.length > 0
+          ? videoProduct.product.product_variant[0].price
+          : null
+      )
     )
   );
 };

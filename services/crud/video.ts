@@ -9,7 +9,8 @@ const query = `
   poster: user!poster_id(
     id,
     username,
-    profile_image_url
+    display_name,
+    profile_image_key
   ),
   products: video_product(
     product(
@@ -44,6 +45,7 @@ const supabaseToVideo = (video: any): Video => {
     poster: {
       id: video.poster.id,
       username: video.poster.username,
+      displayName: video.poster.display_name,
       profileImageUrl: video.poster.profile_image_url,
     },
     videoUrl: getVideoPublicUrl(video.video_key),
@@ -89,7 +91,7 @@ export const getVideos = async (lastVideoId: Id | null): Promise<Video[]> => {
         .select(query)
         .limit(5)
         .order('created_at', { ascending: false });
-
+  console.error(error);
   if (error) throw new Error('Failed');
 
   if (!data) return [];
@@ -202,7 +204,10 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       contentType: 'video/quicktime',
     });
 
-  if (error) throw new Error('Failed');
+  if (error) {
+    console.error(error);
+    throw new Error('Failed');
+  }
 
   const { data: uploadedVideo, error: uploadedVideoError } = await supabase
     .from('video')
@@ -213,7 +218,10 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
     })
     .select(query);
 
-  if (uploadedVideoError) throw new Error('Failed');
+  if (uploadedVideoError) {
+    console.error(uploadedVideoError);
+    throw new Error('Failed');
+  }
 
   const { error: createVideoProductError } = await supabase
     .from('video_product')
@@ -224,14 +232,17 @@ export const createVideo = async (video: CreateVideo): Promise<Video> => {
       }))
     );
 
-  if (createVideoProductError) throw new Error('Failed');
+  if (createVideoProductError) {
+    console.error(createVideoProductError);
+    throw new Error('Failed');
+  }
 
   return {
     id: uploadedVideo[0].id,
     poster: {
       id: uploadedVideo[0].poster.id,
       username: uploadedVideo[0].poster.username,
-      profileImageUrl: uploadedVideo[0].poster.profile_image_url,
+      profileImageUrl: uploadedVideo[0].poster.profile_image_key,
     },
     videoUrl: getVideoPublicUrl(key),
     description: uploadedVideo[0].description,

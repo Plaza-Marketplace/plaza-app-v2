@@ -1,4 +1,3 @@
-import FocusHeader from '@/components/FocusHeader';
 import Footer from '@/components/Footer';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import BoldStandardText from '@/components/Texts/BoldStandardText';
@@ -6,7 +5,6 @@ import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import {
   KeyboardAvoidingView,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   View,
@@ -18,6 +16,14 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useCreateCommunityPost } from '@/hooks/queries/useCommunityPosts';
 import { CreateCommunityPost, PostType } from '@/models/communityPost';
 import PlazaHeader from '@/components/PlazaHeader';
+import * as Yup from 'yup';
+
+const yupSchema = Yup.object().shape({
+  title: Yup.string().required('Title is required'),
+  description: Yup.string()
+    .required('Description is required')
+    .min(10, 'Description must be at least 10 characters'),
+});
 
 const AddPostModal = () => {
   const auth = useAuth();
@@ -38,6 +44,7 @@ const AddPostModal = () => {
           title: '',
           description: '',
         }}
+        validationSchema={yupSchema}
         onSubmit={(values) => {
           const post: CreateCommunityPost = {
             communityId: parseInt(communityId),
@@ -50,7 +57,7 @@ const AddPostModal = () => {
           router.back();
         }}
       >
-        {({ handleChange, handleBlur, handleSubmit, values }) => (
+        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
           <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
             <ScrollView contentContainerStyle={styles.container}>
               <View style={{ gap: Spacing.SPACING_3 }}>
@@ -58,6 +65,7 @@ const AddPostModal = () => {
                 <PlazaTextInput
                   onChangeText={handleChange('title')}
                   placeholder="example: handmade clay cat mug"
+                  error={errors.title}
                 />
               </View>
               <View style={{ gap: Spacing.SPACING_3 }}>
@@ -66,6 +74,7 @@ const AddPostModal = () => {
                   onChangeText={handleChange('description')}
                   placeholder="example: handmade clay cat mug"
                   style={{ height: 100 }}
+                  error={errors.description}
                 />
               </View>
             </ScrollView>

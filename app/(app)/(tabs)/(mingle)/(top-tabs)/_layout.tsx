@@ -5,10 +5,12 @@ import {
 } from '@react-navigation/material-top-tabs';
 import { withLayoutContext } from 'expo-router';
 import { ParamListBase, TabNavigationState } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 import { View } from 'react-native';
-import PlazaTabBar from '@/components/Navigation/PlazaTabBar';
-import Color from '@/constants/Color';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const { Navigator } = createMaterialTopTabNavigator();
 
@@ -20,33 +22,26 @@ export const MaterialTopTabs = withLayoutContext<
 >(Navigator);
 
 export default function TabLayout() {
+  const insets = useSafeAreaInsets();
+
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.SURFACE_PRIMARY }}>
-      <MaterialTopTabs
-        tabBar={({ ...props }) => (
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <PlazaTabBar {...props} />
-          </View>
-        )}
-        screenOptions={{
-          tabBarStyle: {
-            width: '100%',
-            alignSelf: 'center',
-            backgroundColor: 'transparent',
-          },
-        }}
-      >
-        <MaterialTopTabs.Screen name="chatter" options={{ title: 'Chatter' }} />
-        <MaterialTopTabs.Screen
-          name="communities"
-          options={{ title: 'Communities' }}
-        />
-      </MaterialTopTabs>
-    </SafeAreaView>
+    <MaterialTopTabs
+      tabBar={({ ...props }) => (
+        <View style={{ paddingTop: insets.top }}>
+          <FeedTabBar {...props} />
+        </View>
+      )}
+      screenOptions={{
+        tabBarStyle: {
+          width: '100%',
+          alignSelf: 'center',
+          backgroundColor: 'transparent',
+        },
+      }}
+    >
+      <MaterialTopTabs.Screen name="activity" options={{ title: 'Activity' }} />
+      <MaterialTopTabs.Screen name="explore" options={{ title: 'Explore' }} />
+      <MaterialTopTabs.Screen name="events" options={{ title: 'Events' }} />
+    </MaterialTopTabs>
   );
 }

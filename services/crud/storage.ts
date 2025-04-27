@@ -5,9 +5,7 @@ export const getImagePublicUrls = (keys: UUID[]): Url[] => {
 };
 
 export const getImagePublicUrl = (key: UUID): Url => {
-  return supabase.storage
-    .from('images')
-    .getPublicUrl(`private/${key}`, { transform: { quality: 20 } }).data
+  return supabase.storage.from('images').getPublicUrl(`private/${key}`).data
     .publicUrl;
 };
 

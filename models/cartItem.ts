@@ -5,9 +5,31 @@ type CartItem = {
 
   product: Product;
 
-  quantity: number | null;
+  quantity: number;
 
   createdAt: Timestamp;
+
+  variant: {
+    id: Id;
+
+    price: number;
+
+    options: {
+      id: Id;
+
+      value: {
+        id: Id;
+
+        name: string;
+
+        type: {
+          id: Id;
+
+          name: string;
+        };
+      };
+    }[];
+  } | null;
 };
 
 type CreateCartItem = {

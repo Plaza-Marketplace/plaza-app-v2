@@ -4,6 +4,7 @@ import PlazaText from './Texts/PlazaText';
 import Color from '@/constants/Color';
 import PressableOpacity from './Buttons/PressableOpacity';
 import { FC } from 'react';
+import BodyText from './Texts/BodyText';
 
 interface AddImageProps {
   imageUri?: string;
@@ -19,7 +20,9 @@ const AddImage: FC<AddImageProps> = ({ imageUri, onPress }) => {
       {imageUri ? (
         <Image source={{ uri: imageUri }} style={styles.image} />
       ) : (
-        <PlazaText>Icon</PlazaText>
+        <BodyText variant="lg" color={Color.BORDER_SECONDARY}>
+          ...
+        </BodyText>
       )}
     </PressableOpacity>
   );
@@ -31,8 +34,8 @@ const styles = StyleSheet.create({
   container: {
     borderColor: Color.BORDER_SECONDARY,
     borderStyle: 'dashed',
-    flex: 1,
-    aspectRatio: 1,
+    width: 100,
+    height: 100,
     justifyContent: 'center',
     alignItems: 'center',
   },

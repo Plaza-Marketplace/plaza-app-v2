@@ -1,4 +1,3 @@
-import community_collections from '@/app/(app)/(tabs)/(mingle)/community/community_collections';
 import { CommunityPost, CreateCommunityPost } from '@/models/communityPost';
 import {
   createCommunityPost,
@@ -21,7 +20,7 @@ export const useGetChatterPostsByCommunity = (communityId: Id) =>
     queryKey: ['chatter', communityId],
     queryFn: () => getChatterPostsByCommunity(communityId),
     staleTime: Infinity,
-  })
+  });
 
 export const useGetCommunityPost = (postId: Id) =>
   useQuery({

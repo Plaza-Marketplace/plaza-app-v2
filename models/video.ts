@@ -1,7 +1,7 @@
 type Video = {
   id: Id;
 
-  poster: Pick<User, 'id' | 'username' | 'profileImageUrl'>;
+  poster: Pick<User, 'id' | 'username' | 'displayName' | 'profileImageUrl'>;
 
   videoUrl: Url;
 

@@ -15,9 +15,10 @@ import ExpandableDescription from '../ExpandableDescription';
 import Products from './Products';
 import CommentModal from './CommentModal';
 import LikeButton from './LikeButton';
-import AddToCommunityCollectionModal from './AddToCommunityCollectionModal';
 import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
+import VideoReportModal from '../Report/ReportModal/VideoReportModal';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface FeedVideoProps {
   video: Video;
@@ -27,11 +28,13 @@ interface FeedVideoProps {
 const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
-  const addToCommunityCollectionModalRef = useRef<BottomSheetModal>(null);
+  const reportVideoRef = useRef<BottomSheetModal>(null);
+
+  const { session } = useAuth();
+  const isAnonymous = session?.user.is_anonymous;
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
-    player.volume = 0.5;
     player.pause();
   });
 
@@ -67,12 +70,16 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             />
             <View style={styles.infoTextContainer}>
               <PressableOpacity
-                onPress={() =>
+                onPress={() => {
+                  if (isAnonymous) {
+                    router.push('/onboarding/login');
+                    return;
+                  }
                   router.push({
                     pathname: '/profile-modal',
                     params: { id: video.poster.id },
-                  })
-                }
+                  });
+                }}
                 style={styles.userInfoContainer}
               >
                 <View
@@ -82,7 +89,10 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                     shadowOffset: { width: 0.5, height: 0.5 },
                   }}
                 >
-                  <ProfileIcon variant="user" />
+                  <ProfileIcon
+                    variant="user"
+                    url={video.poster.profileImageUrl ?? undefined}
+                  />
                 </View>
                 <BoldSubheaderText
                   color={'white'}
@@ -93,7 +103,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                     textShadowRadius: 2,
                   }}
                 >
-                  {video.poster.username}
+                  {video.poster.displayName ?? video.poster.username}
                 </BoldSubheaderText>
               </PressableOpacity>
               {video.description && (
@@ -106,33 +116,37 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             </View>
           </View>
           <View style={styles.buttonsContainer}>
-            <LikeButton
-              videoId={video.id}
-              isLiked={video.isLiked}
-              likeCount={video.likeCount}
-            />
-            <FeedVideoButton
-              name="review"
-              count={video.reviewCount}
-              onPress={() => {
-                track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
-                reviewModalRef.current?.present();
-              }}
-            />
-            <FeedVideoButton
-              name="comment"
-              count={video.commentCount}
-              onPress={() => {
-                track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
-                commentModalRef.current?.present();
-              }}
-            />
-            <FeedVideoButton
-              name="share"
-              onPress={() =>
-                addToCommunityCollectionModalRef.current?.present()
-              }
-            />
+            {!isAnonymous && (
+              <>
+                <LikeButton
+                  videoId={video.id}
+                  isLiked={video.isLiked}
+                  likeCount={video.likeCount}
+                />
+                <FeedVideoButton
+                  name="comment"
+                  count={video.commentCount}
+                  onPress={() => {
+                    track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
+                    commentModalRef.current?.present();
+                  }}
+                />
+                <FeedVideoButton
+                  name="review"
+                  count={video.reviewCount}
+                  onPress={() => {
+                    track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
+                    reviewModalRef.current?.present();
+                  }}
+                />
+                <FeedVideoButton
+                  name="report"
+                  onPress={() => {
+                    reportVideoRef.current?.present();
+                  }}
+                />
+              </>
+            )}
           </View>
         </View>
       </VideoView>
@@ -142,10 +156,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
         bottomSheetRef={reviewModalRef}
       />
       <CommentModal videoId={video.id} bottomSheetRef={commentModalRef} />
-      <AddToCommunityCollectionModal
-        products={video.products}
-        bottomSheetRef={addToCommunityCollectionModalRef}
-      />
+      <VideoReportModal videoId={video.id} bottomSheetRef={reportVideoRef} />
     </>
   );
 };

@@ -1,27 +1,30 @@
 import { FC } from 'react';
 import PressableOpacity from './PressableOpacity';
-
-import { PressableProps, StyleSheet } from 'react-native';
+import { PressableProps, StyleSheet, View } from 'react-native';
 import Color from '@/constants/Color';
-import StandardText from '../Texts/StandardText';
+import BodyText from '../Texts/BodyText';
+import Radius from '@/constants/Radius';
 import Spacing from '@/constants/Spacing';
 
 interface PlazaButtonProps extends PressableProps {
   title: string;
+  icon?: React.ReactNode;
   fontColor?: Color;
 }
 
 const PlazaButton: FC<PlazaButtonProps> = ({
   title,
+  icon,
   style,
-  fontColor = Color.TEXT_PRIMARY_FLIP,
+  fontColor = Color.NEUTRALS_WHITE,
   ...rest
 }) => {
   return (
     <PressableOpacity style={[styles.container, style]} {...rest}>
-      <StandardText color={fontColor} fontWeight={600}>
+      {icon && <View style={{ marginRight: Spacing.SPACING_1 }}>{icon}</View>}
+      <BodyText variant="md-bold" color={fontColor}>
         {title}
-      </StandardText>
+      </BodyText>
     </PressableOpacity>
   );
 };
@@ -30,11 +33,11 @@ export default PlazaButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Color.SURFACE_SECONDARY,
+    backgroundColor: Color.PRIMARY_DEFAULT,
+    flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: Spacing.SPACING_4,
-    paddingVertical: Spacing.SPACING_3,
-    borderRadius: 100,
+    padding: 8,
+    borderRadius: Radius.MD,
   },
 });

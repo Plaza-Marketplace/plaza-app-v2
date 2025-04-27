@@ -1,18 +1,21 @@
 import React from 'react';
 import { Stack } from 'expo-router';
-
-type InboxParams = {
-  username?: string;
-};
+import { useAuth } from '@/contexts/AuthContext';
+import AnonymousPrompt from '@/screens/Anonymous';
 
 const InboxLayout = () => {
+  const { session } = useAuth();
+  const isAnonymous = session?.user.is_anonymous;
+
+  if (isAnonymous) {
+    return <AnonymousPrompt />;
+  }
+
   return (
-    <Stack>
-      <Stack.Screen name="activity" options={{ headerShown: false }} />
-      <Stack.Screen name="follow_request" options={{ headerShown: false }} />
-      <Stack.Screen name="message_list" options={{ headerShown: false }} />
-      <Stack.Screen name="message" options={{ headerShown: false }} />
-    </Stack>
+    <Stack
+      screenOptions={{ headerShown: false }}
+      initialRouteName="landing-page"
+    />
   );
 };
 
