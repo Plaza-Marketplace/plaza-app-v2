@@ -47,10 +47,11 @@ const Community = () => {
           <MaterialTabBar
             {...props}
             indicatorStyle={{ backgroundColor: 'black' }}
+            style={{ backgroundColor: 'white' }}
           />
         );
       }}
-      containerStyle={{ marginTop: insets.top }}
+      containerStyle={{ zIndex: -1 }}
     >
       <Tabs.Tab name="collection">
         <Collection communityId={communityId} />

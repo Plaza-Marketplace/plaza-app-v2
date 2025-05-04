@@ -76,7 +76,8 @@
     "react-native-vision-camera": "^4.6.4",
     "react-native-web": "~0.19.13",
     "uuid": "^11.0.5",
-    "yup": "^1.6.1"
+    "yup": "^1.6.1",
+    "expo-dev-client": "~5.0.20"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

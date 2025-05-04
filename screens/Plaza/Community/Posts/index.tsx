@@ -27,16 +27,11 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
   };
 
   return (
-    <View
-      style={{
-        flex: 1,
-        backgroundColor: Color.SURFACE_PRIMARY,
-      }}
-    >
+    <>
       <Tabs.FlatList
         data={communityPosts}
         contentContainerStyle={{
-          paddingTop: 16,
+          marginTop: 16,
           paddingBottom: 80,
           paddingHorizontal: 16,
           gap: 16,
@@ -61,7 +56,7 @@ const Posts: FC<PostsProps> = ({ communityId }) => {
         style={styles.buttonContainer}
         onPress={handlePress}
       />
-    </View>
+    </>
   );
 };
 

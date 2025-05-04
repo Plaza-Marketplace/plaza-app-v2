@@ -1,4 +1,4 @@
-import { Dimensions, View } from 'react-native';
+import { View } from 'react-native';
 import { Image } from 'expo-image';
 import React, { FC, useState } from 'react';
 import { StyleSheet } from 'react-native';
@@ -12,9 +12,9 @@ import MemberCount from './MemberCount';
 import ProfileIcon from '../ProfileIcon';
 import PlazaButton from '../Buttons/PlazaButton';
 import BackButton from '../Buttons/BackButton';
-import UploadButton from '../Buttons/UploadButton';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { useJoinCommunity, useLeaveCommunity } from '@/hooks/routes/community';
+import { BANNER_HEIGHT } from './constants';
 
 export interface CommunityHeaderProps {
   id: Id;
@@ -57,7 +57,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
   };
 
   return (
-    <View style={{ marginTop: -insets.top }}>
+    <View>
       <Image style={styles.banner} source={{ uri: bannerUrl }} />
       <View style={[styles.contentContainer, { paddingTop: insets.top }]}>
         <View style={styles.headerButtons}>
@@ -104,8 +104,6 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
     </View>
   );
 };
-
-const BANNER_HEIGHT = Dimensions.get('window').height * 0.25;
 
 const styles = StyleSheet.create({
   headerButtons: {
