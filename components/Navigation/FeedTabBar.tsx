@@ -82,16 +82,6 @@ const FeedTabBar: FC<Props> = ({
                   alignItems: 'center',
                 }}
               >
-                <View
-                  style={{
-                    position: 'absolute',
-                    right: -12,
-                    width: 8,
-                    height: 8,
-                    borderRadius: 4,
-                    backgroundColor: Color.LIVES_500,
-                  }}
-                />
                 <TouchableOpacity
                   onPress={() => navigation.navigate(route.name)}
                   style={[
