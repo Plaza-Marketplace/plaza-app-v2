@@ -48,7 +48,7 @@ const ProfileHeader: FC<ProfileHeaderProps> = ({ userId, name, blocked }) => {
             {isCurrentUser ? (
               <Ionicons name="cog-outline" size={32} />
             ) : (
-              <Ionicons name="ellipsis-horizontal-outline" size={32} />
+              <Ionicons name="ellipsis-horizontal" size={32} />
             )}
           </PressableOpacity>
         </View>
