@@ -125,7 +125,7 @@ const Settings = () => {
           mutate(updates);
         }}
       >
-        {({ handleChange, handleSubmit, values, setFieldValue, errors }) => {
+        {({ handleChange, handleSubmit, values, setFieldValue, errors, dirty, isValid }) => {
           const handleAddImage = async () => {
             const result = await ImagePicker.launchImageLibraryAsync({
               mediaTypes: ['images'],
@@ -218,6 +218,7 @@ const Settings = () => {
                   router.back();
                 }}
                 rightOnPress={handleSubmit}
+                disabled={!isValid || !dirty}
               />
             </KeyboardAvoidingView>
           );
