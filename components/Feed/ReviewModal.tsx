@@ -38,7 +38,5 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     paddingVertical: Spacing.SPACING_1,
-    borderBottomWidth: 1,
-    borderColor: Color.BORDER_SECONDARY,
   },
 });
