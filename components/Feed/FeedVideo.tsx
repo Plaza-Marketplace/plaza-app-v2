@@ -37,6 +37,8 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const reportVideoRef = useRef<BottomSheetModal>(null);
 
   const { session } = useAuth();
+  const { mutate: likeVideo } = useCreateVideoLike(video.id);
+
   const isAnonymous = session?.user.is_anonymous;
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
@@ -64,8 +66,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
   const handleDoubleTap = () => {
     const now = Date.now();
     if (lastTap.current && now - lastTap.current < 300) {
-      useCreateVideoLike(video.id);
-      video.isLiked = true;
+      likeVideo();
     } else {
       lastTap.current = now;
     }
