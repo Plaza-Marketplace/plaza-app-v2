@@ -1,7 +1,13 @@
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import React, { FC, Ref, useState } from 'react';
-import { StyleSheet, TextInput, TextInputProps, View } from 'react-native';
+import {
+  StyleSheet,
+  TextInput,
+  TextInputProps,
+  View,
+  Text,
+} from 'react-native';
 import HeadingText from './Texts/HeadingText';
 import BodyText from './Texts/BodyText';
 
@@ -10,6 +16,7 @@ interface PlazaTextInputProps extends TextInputProps {
   label?: string;
   limit?: number;
   rightButton?: React.ReactNode;
+  leftElement?: string;
   error?: string;
 }
 
@@ -18,6 +25,7 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
   label,
   limit,
   rightButton,
+  leftElement,
   style,
   onChangeText,
   error,
@@ -36,6 +44,11 @@ const PlazaTextInput: FC<PlazaTextInputProps> = ({
     <View style={{ gap: 4 }}>
       {label && <HeadingText variant="h6-bold">{label}</HeadingText>}
       <View style={styles.container}>
+        {leftElement && (
+          <View style={{ justifyContent: 'center' }}>
+            <Text style={{ color: Color.NEUTRALS_750 }}>{leftElement}</Text>
+          </View>
+        )}
         <TextInput
           ref={inputRef}
           style={[styles.textInputContainer, style]}

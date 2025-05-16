@@ -39,6 +39,7 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           style={{ flex: 1 }}
           error={formik.errors.price}
           value={formik.values.price.toString()} // Ensure price is a string for input
+          leftElement="$"
         />
         <PlazaTextInput
           label="Shipping Price"
@@ -48,6 +49,7 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           style={{ flex: 1 }}
           error={formik.errors.shippingPrice}
           value={formik.values.shippingPrice.toString()} // Ensure shippingPrice is a string for input
+          leftElement="$"
         />
         <PlazaTextInput
           label="Location"
