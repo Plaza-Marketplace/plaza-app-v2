@@ -9,6 +9,7 @@ interface FooterProps {
   rightTitle: string;
   leftOnPress: () => void;
   rightOnPress: () => void;
+  disabled?: boolean;
 }
 
 const Footer: FC<FooterProps> = ({
@@ -16,6 +17,7 @@ const Footer: FC<FooterProps> = ({
   rightTitle,
   leftOnPress,
   rightOnPress,
+  disabled = false,
 }) => {
   return (
     <View style={styles.buttonsContainer}>
@@ -29,6 +31,7 @@ const Footer: FC<FooterProps> = ({
         title={rightTitle}
         style={[styles.rightButton, styles.buttonPadding]}
         onPress={rightOnPress}
+        disabled={disabled} 
       />
     </View>
   );
