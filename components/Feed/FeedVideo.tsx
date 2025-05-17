@@ -1,7 +1,7 @@
 import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
-import { FC, useEffect, useRef } from 'react';
+import { FC, useRef, useContext, useState, useEffect } from 'react';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
@@ -19,33 +19,41 @@ import { useEvent } from 'expo';
 import { Event, track } from '@/analytics/utils';
 import VideoReportModal from '../Report/ReportModal/VideoReportModal';
 import { useAuth } from '@/contexts/AuthContext';
+import {
+  ItemKeyContext,
+  ViewabilityItemsContext,
+} from '@/components/List/ViewabilityTrackerFlashList';
+import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
 
 interface FeedVideoProps {
   video: Video;
-  visible: boolean;
 }
 
-const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
+const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
+  const id = useContext(ItemKeyContext)!;
+  const context = useContext(ViewabilityItemsContext);
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
   const reportVideoRef = useRef<BottomSheetModal>(null);
+  const [visible, setVisible] = useState(false);
 
   const { session } = useAuth();
   const isAnonymous = session?.user.is_anonymous;
+
+  console.log(video.videoUrl);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
     player.pause();
   });
 
-  const { status } = useEvent(player, 'statusChange', {
+  const { error, status } = useEvent(player, 'statusChange', {
     status: player.status,
   });
 
   useEffect(() => {
     if (visible) {
       if (status === 'readyToPlay') {
-        player.replay();
         player.play();
       }
     } else if (status === 'readyToPlay') {
@@ -53,14 +61,44 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
     }
   }, [visible, status]);
 
+  const visibleAction = () => {
+    requestAnimationFrame(() => {
+      setVisible(true);
+    });
+  };
+
+  const invisibleAction = () => {
+    requestAnimationFrame(() => {
+      setVisible(false);
+    });
+  };
+
+  useAnimatedReaction(
+    () => context.value,
+    (ctx) => {
+      if (ctx.includes(id)) {
+        // do stuff on item visible
+        console.log('visible', video.id);
+        runOnJS(visibleAction)();
+      } else if (!ctx.includes(id)) {
+        // do stuff on item invisible
+        console.log('invisible', video.id);
+        runOnJS(invisibleAction)();
+      }
+    },
+    []
+  );
+
   return (
     <>
-      <VideoView
-        style={styles.videoContainer}
-        player={player}
-        nativeControls={false}
-        contentFit="cover"
-      >
+      <View style={styles.videoContainer}>
+        <VideoView
+          style={styles.videoContainer}
+          player={player}
+          nativeControls={false}
+          contentFit="cover"
+        />
+
         <View style={styles.infoButtonsContainer}>
           <View style={styles.videoInfoContainer}>
             <Products
@@ -107,11 +145,13 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
                 </BoldSubheaderText>
               </PressableOpacity>
               {video.description && (
-                <ExpandableDescription
-                  description={video.description}
-                  textColor={Color.GREY_100}
-                  shadow
-                />
+                <View style={{ width: '85%' }}>
+                  <ExpandableDescription
+                    description={video.description}
+                    textColor={Color.GREY_100}
+                    shadow
+                  />
+                </View>
               )}
             </View>
           </View>
@@ -149,7 +189,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             )}
           </View>
         </View>
-      </VideoView>
+      </View>
       <ReviewModal
         seller={video.poster}
         product={video.products[0]}
@@ -167,18 +207,20 @@ const styles = StyleSheet.create({
   videoContainer: {
     width: Dimensions.get('window').width,
     height: MARKETPLACE_FEED_VIDEO_HEIGHT,
-    backgroundColor: Color.GREY_500,
-    justifyContent: 'flex-end',
+    backgroundColor: Color.BLUE_300,
   },
   infoButtonsContainer: {
-    flex: 1,
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    width: Dimensions.get('window').width,
     flexDirection: 'row',
     padding: Spacing.SPACING_3,
     gap: Spacing.SPACING_2,
     justifyContent: 'space-between',
   },
   videoInfoContainer: {
-    flex: 1,
     justifyContent: 'flex-end',
     gap: Spacing.SPACING_3,
   },

@@ -844,7 +844,7 @@ export type Database = {
           delivered_date: string | null
           final_price: number
           id: number
-          product_id: number
+          product_id: number | null
           quantity: number
           seller_id: number
           shipping_address_id: number
@@ -860,7 +860,7 @@ export type Database = {
           delivered_date?: string | null
           final_price: number
           id?: number
-          product_id: number
+          product_id?: number | null
           quantity?: number
           seller_id: number
           shipping_address_id: number
@@ -876,7 +876,7 @@ export type Database = {
           delivered_date?: string | null
           final_price?: number
           id?: number
-          product_id?: number
+          product_id?: number | null
           quantity?: number
           seller_id?: number
           shipping_address_id?: number
@@ -1712,6 +1712,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_seller_products_to_event: {
+        Args: { s_id: number; e_id: number }
+        Returns: undefined
+      }
       community_member_count: {
         Args: { "": Database["public"]["Tables"]["community"]["Row"] }
         Returns: number
