@@ -49,14 +49,6 @@ const ProductInfo: FC<UploadProductInfoProps> = () => {
           value={formik.values.shippingPrice.toString()} // Ensure shippingPrice is a string for input
           leftElement="$"
         />
-
-        <PlazaTextInput
-          label="Location"
-          onChangeText={formik.handleChange('location')}
-          placeholder="example: San Francisco, CA"
-          style={{ flex: 1 }}
-          error={formik.errors.location}
-        />
       </View>
     </>
   );
