@@ -2,12 +2,7 @@ import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { FC, useEffect, useRef } from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  View,
-  TouchableWithoutFeedback,
-} from 'react-native';
+import { Dimensions, StyleSheet, View, Pressable } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
 import Spacing from '@/constants/Spacing';
@@ -75,7 +70,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
 
   return (
     <>
-      <TouchableWithoutFeedback onPress={handleDoubleTap}>
+      <Pressable onPress={handleDoubleTap}>
         <VideoView
           style={styles.videoContainer}
           player={player}
@@ -171,7 +166,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video, visible }) => {
             </View>
           </View>
         </VideoView>
-      </TouchableWithoutFeedback>
+      </Pressable>
       <ReviewModal
         seller={video.poster}
         product={video.products[0]}
