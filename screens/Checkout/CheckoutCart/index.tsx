@@ -256,8 +256,9 @@ const ConfirmCartScreen = () => {
         defaultValues={{
           phone: '111-222-3333',
           address: {
-            country: 'United States',
+            country: 'US',
             city: 'San Francisco',
+            state: 'California',
           },
         }}
         allowedCountries={['US', 'CA', 'GB']}
