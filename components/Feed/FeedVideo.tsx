@@ -32,6 +32,7 @@ interface FeedVideoProps {
 const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
   const id = useContext(ItemKeyContext)!;
   const context = useContext(ViewabilityItemsContext);
+  console.log(`id: ${id}, context: ${context.value}`);
   const reviewModalRef = useRef<BottomSheetModal>(null);
   const commentModalRef = useRef<BottomSheetModal>(null);
   const reportVideoRef = useRef<BottomSheetModal>(null);
@@ -39,8 +40,6 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
 
   const { session } = useAuth();
   const isAnonymous = session?.user.is_anonymous;
-
-  console.log(video.videoUrl);
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
     player.loop = true;
@@ -78,15 +77,12 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
     (ctx) => {
       if (ctx.includes(id)) {
         // do stuff on item visible
-        console.log('visible', video.id);
         runOnJS(visibleAction)();
       } else if (!ctx.includes(id)) {
         // do stuff on item invisible
-        console.log('invisible', video.id);
         runOnJS(invisibleAction)();
       }
-    },
-    []
+    }
   );
 
   return (
