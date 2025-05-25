@@ -10,6 +10,7 @@ interface PlazaButtonProps extends PressableProps {
   title: string;
   icon?: React.ReactNode;
   fontColor?: Color;
+  disabled?: boolean;
 }
 
 const PlazaButton: FC<PlazaButtonProps> = ({
@@ -17,10 +18,11 @@ const PlazaButton: FC<PlazaButtonProps> = ({
   icon,
   style,
   fontColor = Color.NEUTRALS_WHITE,
+  disabled = false,
   ...rest
 }) => {
   return (
-    <PressableOpacity style={[styles.container, style]} {...rest}>
+    <PressableOpacity style={[styles.container, style]} disabled={disabled} {...rest}>
       {icon && <View style={{ marginRight: Spacing.SPACING_1 }}>{icon}</View>}
       <BodyText variant="md-bold" color={fontColor}>
         {title}
