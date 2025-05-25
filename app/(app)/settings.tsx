@@ -218,7 +218,7 @@ const Settings = () => {
                   router.back();
                 }}
                 rightOnPress={handleSubmit}
-                disabled={!isValid || !dirty}
+                rightDisabled={!isValid || !dirty}
               />
             </KeyboardAvoidingView>
           );

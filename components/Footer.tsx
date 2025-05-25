@@ -9,7 +9,8 @@ interface FooterProps {
   rightTitle: string;
   leftOnPress: () => void;
   rightOnPress: () => void;
-  disabled?: boolean;
+  rightDisabled?: boolean;
+  leftDisabled?: boolean;
 }
 
 const Footer: FC<FooterProps> = ({
@@ -17,7 +18,8 @@ const Footer: FC<FooterProps> = ({
   rightTitle,
   leftOnPress,
   rightOnPress,
-  disabled = false,
+  rightDisabled,
+  leftDisabled,
 }) => {
   return (
     <View style={styles.buttonsContainer}>
@@ -26,12 +28,13 @@ const Footer: FC<FooterProps> = ({
         style={[styles.leftButton, styles.buttonPadding]}
         fontColor={Color.PRIMARY_DEFAULT}
         onPress={leftOnPress}
+        disabled={leftDisabled}
       />
       <PlazaButton
         title={rightTitle}
         style={[styles.rightButton, styles.buttonPadding]}
         onPress={rightOnPress}
-        disabled={disabled} 
+        disabled={rightDisabled} 
       />
     </View>
   );
