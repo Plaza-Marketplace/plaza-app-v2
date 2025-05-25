@@ -25,6 +25,7 @@ import { Event, track } from '@/analytics/utils';
 import VideoReportModal from '../Report/ReportModal/VideoReportModal';
 import { useAuth } from '@/contexts/AuthContext';
 import useCreateVideoLike from '@/hooks/queries/useCreateVideoLike';
+import { HeartActive } from '../Icons';
 
 interface FeedVideoProps {
   video: Video;
