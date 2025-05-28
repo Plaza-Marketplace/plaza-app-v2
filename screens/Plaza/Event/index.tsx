@@ -1,14 +1,26 @@
 import HeadingText from '@/components/Texts/HeadingText';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { Camera, MapView, MarkerView, UserLocation } from '@rnmapbox/maps';
+import {
+  Camera,
+  FillLayer,
+  MapView,
+  MarkerView,
+  PointAnnotation,
+  ShapeSource,
+  UserLocation,
+} from '@rnmapbox/maps';
 import { useLocalSearchParams } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { Modal, StyleSheet } from 'react-native';
 import { View } from 'react-native';
 import {
+  useAddEventBorderPins,
   useAddEventPin,
   useGetEventPage,
   useGetNextEventSellers,
+  useUpdateCenter,
+  useUpdateInitialHeading,
+  useUpdateInitialZoom,
 } from './hooks';
 import {
   SafeAreaView,
@@ -23,9 +35,13 @@ import ExitButton from '@/components/Buttons/ExitButton';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import ExploreProducts from './ExploreProducts';
+import { Polygon } from 'geojson';
+import { difference, featureCollection } from '@turf/turf';
+import { debounce } from 'lodash';
 
 const Event = () => {
   const [zoom, setZoom] = useState(18);
+  const [heading, setHeading] = useState(0);
   const [showMap, setShowMap] = useState(false);
   const [showPinModal, setShowPinModal] = useState(false);
   const [pinName, setPinName] = useState('');
@@ -40,11 +56,17 @@ const Event = () => {
   const getNextEventSellers = useGetNextEventSellers(eventId, data?.sellers);
 
   const { mutate: addPin } = useAddEventPin(eventId);
+  const { mutate: addBorderPins } = useAddEventBorderPins(eventId);
+  const { mutate: updateInitialHeading } = useUpdateInitialHeading(eventId);
+  const { mutate: updateInitialZoom } = useUpdateInitialZoom(eventId);
+  const { mutate: updateCenter } = useUpdateCenter(eventId);
+
+  const [newBorderPins, setNewBorderPins] = useState<[number, number][]>([]);
 
   const insets = useSafeAreaInsets();
 
   const scale = useMemo(() => {
-    if (zoom < 17.5) return 0;
+    if (zoom < 17.5) return 0.5;
 
     return zoom - 17;
   }, [zoom]);
@@ -69,6 +91,81 @@ const Event = () => {
     }
   };
 
+  const handlePress = (feature: GeoJSON.Feature) => {
+    if (!__DEV__) return;
+
+    if (feature.geometry.type !== 'Point') return;
+
+    const coordinates = feature.geometry.coordinates;
+    setNewBorderPins((prev) => [...prev, coordinates as [number, number]]);
+  };
+
+  const handleSubmitBorderPins = () => {
+    if (newBorderPins.length < 3) {
+      return;
+    }
+
+    addBorderPins(newBorderPins);
+    setNewBorderPins([]);
+  };
+
+  const handleDrag = debounce((feature: GeoJSON.Feature, index: number) => {
+    if (feature.geometry.type !== 'Point') return;
+
+    const coordinates = feature.geometry.coordinates;
+
+    setNewBorderPins((prev) => {
+      const updatedPins = [...prev];
+      updatedPins[index] = coordinates as [number, number];
+      return updatedPins;
+    });
+  }, 100);
+
+  const borderPins = data?.borderPins.map((pin) => pin.coordinates) ?? [];
+
+  const worldPolygon: GeoJSON.Feature<Polygon> = {
+    type: 'Feature',
+    geometry: {
+      type: 'Polygon',
+      coordinates: [
+        [
+          [-180, -90], // Bottom-left corner
+          [-180, 90], // Top-left corner
+          [180, 90], // Top-right corner
+          [180, -90], // Bottom-right corner
+          [-180, -90], // Closing the polygon
+        ],
+      ],
+    },
+    properties: {},
+  };
+
+  const highlightedShape: GeoJSON.Feature<Polygon> | null =
+    borderPins.length >= 3
+      ? {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [borderPins],
+          },
+          properties: {},
+        }
+      : newBorderPins.length >= 3
+      ? {
+          type: 'Feature',
+          geometry: {
+            type: 'Polygon',
+            coordinates: [newBorderPins],
+          },
+          properties: {},
+        }
+      : null;
+
+  const greyedOutPolygon =
+    highlightedShape != null
+      ? difference(featureCollection<Polygon>([worldPolygon, highlightedShape]))
+      : worldPolygon;
+
   return (
     <>
       <View style={styles.container}>
@@ -79,11 +176,34 @@ const Event = () => {
           style={{ flex: 1 }}
           scaleBarEnabled={false}
           compassEnabled
+          onPress={handlePress}
           onLongPress={handleLongPress}
           onCameraChanged={(a) => {
             setZoom(a.properties.zoom);
+            setHeading(a.properties.heading);
           }}
         >
+          {newBorderPins.map((pin, index) => (
+            <PointAnnotation
+              key={index.toString()}
+              id={index.toString()}
+              coordinate={pin}
+              draggable
+              onDrag={(feature) => handleDrag(feature, index)}
+            >
+              <HeadingText variant="h6-bold">X</HeadingText>
+            </PointAnnotation>
+          ))}
+          {greyedOutPolygon && (
+            <ShapeSource id="greyOverlay" shape={greyedOutPolygon}>
+              <FillLayer
+                id="greyFillLayer"
+                style={{
+                  fillColor: 'rgba(0, 0, 0, 0.5)',
+                }}
+              />
+            </ShapeSource>
+          )}
           <PlazaButton
             title="More info"
             style={{
@@ -94,8 +214,77 @@ const Event = () => {
             }}
             onPress={() => setShowMap(true)}
           />
+          {__DEV__ && (
+            <>
+              <PlazaButton
+                title="Clear"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 128,
+                }}
+                onPress={() => setNewBorderPins([])}
+              />
+              <PlazaButton
+                title="Submit Pins"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 192,
+                }}
+                onPress={handleSubmitBorderPins}
+              />
+              <PlazaButton
+                title="Remove last"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 256,
+                }}
+                onPress={() => {
+                  setNewBorderPins((prev) => prev.slice(0, -1));
+                }}
+              />
+              <PlazaButton
+                title="Update Heading"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 320,
+                }}
+                onPress={() => updateInitialHeading(heading)}
+              />
+              <PlazaButton
+                title="Update Zoom"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 384,
+                }}
+                onPress={() => updateInitialZoom(zoom)}
+              />
+              <PlazaButton
+                title="Update Center"
+                style={{
+                  position: 'absolute',
+                  zIndex: 99,
+                  right: 16,
+                  top: insets.top + 448,
+                }}
+                onPress={() =>
+                  newBorderPins.length > 0 && updateCenter(newBorderPins[0])
+                }
+              />
+            </>
+          )}
           <Camera
-            zoomLevel={18}
+            zoomLevel={data?.initialZoom ?? 18}
+            heading={data?.initialHeading ?? undefined}
             centerCoordinate={data?.coordinates}
             animationMode="none"
             animationDuration={0}
@@ -135,7 +324,7 @@ const Event = () => {
             />
           )}
 
-          <UserLocation />
+          <UserLocation showsUserHeadingIndicator />
         </MapView>
         <ExploreProducts
           bottomSheetRef={bottomSheetRef}

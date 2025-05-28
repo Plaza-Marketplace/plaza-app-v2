@@ -2,19 +2,14 @@ import JoinCard from '@/components/Community/JoinCard';
 import SearchBar from '@/components/SearchBar';
 import HeadingText from '@/components/Texts/HeadingText';
 import useDebounce from '@/hooks/useDebounce';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native';
 import Carousel from 'react-native-reanimated-carousel';
 import useSearchGroups from './useSearchGroups';
 import ExploreBanner from '@/components/Community/ExploreBanner';
 import Dots from '@/components/Dots';
-import AllTags from '@/components/Tags/AllTags';
 import useGetExploreTab from './useGetExploreTab';
 import SearchResults from './SearchResults';
-import CommunityReportModal from '@/components/Report/ReportModal/CommunityReportModal';
-import { BottomSheetModal } from '@gorhom/bottom-sheet';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import { Ionicons } from '@expo/vector-icons';
 import Spacing from '@/constants/Spacing';
 import { ScrollView } from 'react-native';
 
@@ -28,9 +23,6 @@ const Explore = () => {
 
   const mostPopularGroups = exploreTab?.featuredGroups ?? [];
   const allGroups = exploreTab?.allGroups ?? [];
-  const reportRef = useRef<BottomSheetModal>(null);
-
-  console.log(exploreTab);
 
   return (
     <View style={styles.container}>
@@ -88,42 +80,21 @@ const Explore = () => {
                 data={exploreTab?.allGroups}
                 scrollEnabled={false}
                 renderItem={({ item }) => (
-                  <>
-                    <CommunityReportModal
-                      communityId={item.id}
-                      bottomSheetRef={reportRef}
+                  <View
+                    style={{
+                      paddingHorizontal: 4,
+                      flex: 1 / 2,
+                      paddingVertical: Spacing.SPACING_1,
+                    }}
+                  >
+                    <JoinCard
+                      id={item.id}
+                      name={item.name}
+                      description={item.description}
+                      iconUrl={item.iconUrl}
+                      isMember={item.isMember}
                     />
-                    <View
-                      style={{
-                        paddingHorizontal: 4,
-                        flex: 1 / 2,
-                        paddingVertical: Spacing.SPACING_1,
-                      }}
-                    >
-                      <PressableOpacity
-                        style={{
-                          position: 'absolute',
-                          top: Spacing.SPACING_3,
-                          right: Spacing.SPACING_3,
-                          zIndex: 1,
-                        }}
-                      >
-                        <Ionicons
-                          name="flag-outline"
-                          size={24}
-                          color="black"
-                          onPress={() => reportRef.current?.present()}
-                        />
-                      </PressableOpacity>
-                      <JoinCard
-                        id={item.id}
-                        name={item.name}
-                        description={item.description}
-                        iconUrl={item.iconUrl}
-                        isMember={item.isMember}
-                      />
-                    </View>
-                  </>
+                  </View>
                 )}
               />
             </View>

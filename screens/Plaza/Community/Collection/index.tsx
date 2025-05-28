@@ -10,9 +10,10 @@ import CollectionCard from '@/components/Community/CollectionCard';
 
 interface CollectionProps {
   communityId: number;
+  isMember: boolean;
 }
 
-const Collection: FC<CollectionProps> = ({ communityId }) => {
+const Collection: FC<CollectionProps> = ({ communityId, isMember }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { data: communityCollectionItems, error } =
     useGetCollectionProducts(communityId);
@@ -20,8 +21,6 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
     useAddProductsToCollection(communityId);
 
   if (error) return <Text>{error.message}</Text>;
-
-  console.log(communityCollectionItems);
 
   if (!communityCollectionItems) return <Text>Loading...</Text>;
 
@@ -37,12 +36,13 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
           contentContainerStyle={{ paddingTop: 16, paddingBottom: 72 }}
           keyExtractor={(item) => item.id.toString()}
         />
-
-        <PlazaButton
-          title="Add to Collection"
-          style={styles.buttonContainer}
-          onPress={() => bottomSheetRef.current?.present()}
-        />
+        {isMember && (
+          <PlazaButton
+            title="Add to Collection"
+            style={styles.buttonContainer}
+            onPress={() => bottomSheetRef.current?.present()}
+          />
+        )}
       </View>
       <SelectProductModal
         multiple

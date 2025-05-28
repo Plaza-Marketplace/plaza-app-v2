@@ -18,8 +18,8 @@ export const MaterialTopTabs = withLayoutContext<
   MaterialTopTabNavigationEventMap
 >(Navigator);
 import Color from '@/constants/Color';
-import FeedTabBar from '@/components/Navigation/FeedTabBar';
 import { useAuth } from '@/contexts/AuthContext';
+import FeedTabBar from '@/components/Navigation/FeedTabBar';
 
 const FeedTopTabs = () => {
   const inset = useSafeAreaInsets();

@@ -5,12 +5,22 @@ export type Event = {
 
   coordinates: [number, number];
 
+  initialHeading: number | null;
+
+  initialZoom: number | null;
+
   mapUrl: Url | null;
 
   pins: {
     id: Id;
 
     name: string;
+
+    coordinates: [number, number];
+  }[];
+
+  borderPins: {
+    id: Id;
 
     coordinates: [number, number];
   }[];

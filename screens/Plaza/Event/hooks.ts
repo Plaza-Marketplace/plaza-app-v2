@@ -1,5 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { createPin, getEventPage, getNextEventSellers } from './services';
+import {
+  createBorderPins,
+  createPin,
+  getEventPage,
+  getNextEventSellers,
+  updateCenter,
+  updateInitialHeading,
+  updateInitialZoom,
+} from './services';
 import { Event } from './models';
 import { useState } from 'react';
 
@@ -79,4 +87,85 @@ export const useGetNextEventSellers = (
   };
 
   return sellers ? () => paginate(sellers) : () => {};
+};
+
+export const useAddEventBorderPins = (id: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['addEventBorderPins', id],
+    mutationFn: (borderPins: [number, number][]) =>
+      createBorderPins(id, borderPins),
+    onSuccess: (_, borderPins) => {
+      queryClient.setQueryData<Event>(['event', id], (oldData) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            borderPins: borderPins.map((coordinates) => ({
+              id: Math.random() * 1000000,
+              coordinates: coordinates,
+            })),
+          };
+        }
+        return oldData;
+      });
+    },
+  });
+};
+
+export const useUpdateInitialHeading = (id: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['updateInitialHeading', id],
+    mutationFn: (heading: number) => updateInitialHeading(id, heading),
+    onMutate: (heading) => {
+      queryClient.setQueryData<Event>(['event', id], (oldData) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            initialHeading: heading,
+          };
+        }
+        return oldData;
+      });
+    },
+  });
+};
+
+export const useUpdateInitialZoom = (id: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['updateInitialZoom', id],
+    mutationFn: (zoom: number) => updateInitialZoom(id, zoom),
+    onMutate: (zoom) => {
+      queryClient.setQueryData<Event>(['event', id], (oldData) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            initialZoom: zoom,
+          };
+        }
+        return oldData;
+      });
+    },
+  });
+};
+
+export const useUpdateCenter = (id: Id) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ['updateCenter', id],
+    mutationFn: (coordinates: [number, number]) =>
+      updateCenter(id, coordinates),
+    onMutate: (coordinates) => {
+      queryClient.setQueryData<Event>(['event', id], (oldData) => {
+        if (oldData) {
+          return {
+            ...oldData,
+            coordinates: coordinates,
+          };
+        }
+        return oldData;
+      });
+    },
+  });
 };
