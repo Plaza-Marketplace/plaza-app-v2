@@ -5,7 +5,7 @@ import { Event } from './models';
 
 export const getEventPage = async (eventId: Id): Promise<Event> => {
   const { data, error } = await supabase
-    .rpc('get_event_page', { event_id: eventId })
+    .rpc('get_event_page_v2', { event_id: eventId })
     .single();
 
   if (error) {
@@ -13,6 +13,7 @@ export const getEventPage = async (eventId: Id): Promise<Event> => {
   }
 
   const pins = (data.pins as Json[]) ?? [];
+  const borderPins = (data.border_pins as Json[]) ?? [];
   const sellers = (data.sellers as Json[]) ?? [];
 
   return {
@@ -22,12 +23,22 @@ export const getEventPage = async (eventId: Id): Promise<Event> => {
 
     coordinates: [data.longitude, data.latitude],
 
+    initialHeading: data.initial_heading,
+
+    initialZoom: data.initial_zoom,
+
     mapUrl: data.map_key ? getImagePublicUrl(data.map_key) : null,
 
     pins: pins.map((pin: any) => ({
       id: pin.id,
 
       name: pin.name,
+
+      coordinates: [pin.longitude, pin.latitude],
+    })),
+
+    borderPins: borderPins.map((pin: any) => ({
+      id: pin.id,
 
       coordinates: [pin.longitude, pin.latitude],
     })),
@@ -123,6 +134,60 @@ export const createPin = async (
     name,
     coordinates: `SRID=4326;POINT(${coordinates[0]} ${coordinates[1]})`,
   });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const createBorderPins = async (
+  eventId: Id,
+  borderPins: [number, number][]
+) => {
+  const { error } = await supabase.from('event_border').insert(
+    borderPins.map((coordinates) => ({
+      event_id: eventId,
+      coordinates: `SRID=4326;POINT(${coordinates[0]} ${coordinates[1]})`,
+    }))
+  );
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateInitialHeading = async (eventId: Id, heading: number) => {
+  const { error } = await supabase
+    .from('event')
+    .update({ initial_heading: heading })
+    .eq('id', eventId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateInitialZoom = async (eventId: Id, zoom: number) => {
+  const { error } = await supabase
+    .from('event')
+    .update({ initial_zoom: zoom })
+    .eq('id', eventId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
+export const updateCenter = async (
+  eventId: Id,
+  coordinates: [number, number]
+) => {
+  const { error } = await supabase
+    .from('event')
+    .update({
+      coordinates: `SRID=4326;POINT(${coordinates[0]} ${coordinates[1]})`,
+    })
+    .eq('id', eventId);
 
   if (error) {
     throw new Error(error.message);
