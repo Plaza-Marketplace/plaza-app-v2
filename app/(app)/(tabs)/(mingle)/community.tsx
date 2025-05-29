@@ -3,7 +3,7 @@ import CommunityHeader from '@/components/Community/CommunityHeader';
 import PlazaText from '@/components/Texts/PlazaText';
 import useScreenTrack from '@/hooks/useScreenTrack';
 import { useLocalSearchParams } from 'expo-router';
-import { Tabs } from 'react-native-collapsible-tab-view';
+import { MaterialTabBar, Tabs } from 'react-native-collapsible-tab-view';
 import Collection from '@/screens/Plaza/Community/Collection';
 import Posts from '@/screens/Plaza/Community/Posts';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -44,9 +44,16 @@ const Community = () => {
         />
       )}
       renderTabBar={(props) => {
-        return <CollapsibleTabBar {...props} />;
+        return (
+          // <MaterialTabBar
+          //   {...props}
+          //   indicatorStyle={{ backgroundColor: 'black' }}
+          //   style={{ backgroundColor: 'white' }}
+          // />
+          <CollapsibleTabBar {...props} />
+        );
       }}
-      containerStyle={{ zIndex: -1 }}
+      containerStyle={{ marginTop: insets.top }}
     >
       <Tabs.Tab name="Collection">
         <Collection
