@@ -30,7 +30,7 @@ export const searchGroups = async (
   }));
 };
 
-export const getExploreTab = async (userId: Id): Promise<ExploreTab> => {
+export const getExploreTab = async (): Promise<ExploreTab> => {
   const { data: featuredGroups, error: featuredGroupsError } = await supabase
     .from('featured_community')
     .select(

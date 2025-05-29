@@ -2,7 +2,7 @@ import Color from '@/constants/Color';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
 import { useVideoPlayer, VideoView } from 'expo-video';
 import { FC, useRef, useContext, useState, useEffect } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View, Pressable } from 'react-native';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import ProfileIcon from '../ProfileIcon';
 import Spacing from '@/constants/Spacing';
@@ -24,6 +24,8 @@ import {
   ViewabilityItemsContext,
 } from '@/components/List/ViewabilityTrackerFlashList';
 import { runOnJS, useAnimatedReaction } from 'react-native-reanimated';
+import useCreateVideoLike from '@/hooks/queries/useCreateVideoLike';
+import { HeartActive } from '../Icons';
 
 interface FeedVideoProps {
   video: Video;
@@ -39,6 +41,8 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
   const [visible, setVisible] = useState(false);
 
   const { session } = useAuth();
+  const { mutate: likeVideo } = useCreateVideoLike(video.id);
+
   const isAnonymous = session?.user.is_anonymous;
 
   const player = useVideoPlayer(video.videoUrl, (player) => {
@@ -49,6 +53,8 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
   const { error, status } = useEvent(player, 'statusChange', {
     status: player.status,
   });
+
+  const lastTap = useRef<number | null>(null);
 
   useEffect(() => {
     if (visible) {
@@ -85,107 +91,118 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
     }
   );
 
+  const handleDoubleTap = () => {
+    const now = Date.now();
+    if (lastTap.current && now - lastTap.current < 300) {
+      likeVideo();
+    } else {
+      lastTap.current = now;
+    }
+  };
+
   return (
     <>
       <View style={styles.videoContainer}>
+        <Pressable onPress={handleDoubleTap}>
         <VideoView
-          style={styles.videoContainer}
-          player={player}
-          nativeControls={false}
-          contentFit="cover"
-        />
+            style={styles.videoContainer}
+            player={player}
+            nativeControls={false}
+            contentFit="cover"
+          />
 
-        <View style={styles.infoButtonsContainer}>
-          <View style={styles.videoInfoContainer}>
-            <Products
-              sellerId={video.poster.id}
-              products={video.products}
-              videoId={video.id}
-            />
-            <View style={styles.infoTextContainer}>
-              <PressableOpacity
-                onPress={() => {
-                  if (isAnonymous) {
-                    router.push('/onboarding/login');
-                    return;
-                  }
-                  router.push({
-                    pathname: '/profile-modal',
-                    params: { id: video.poster.id },
-                  });
-                }}
-                style={styles.userInfoContainer}
-              >
-                <View
-                  style={{
-                    shadowColor: 'black',
-                    shadowRadius: 1,
-                    shadowOffset: { width: 0.5, height: 0.5 },
+          <View style={styles.infoButtonsContainer}>
+            <View style={styles.videoInfoContainer}>
+              <Products
+                sellerId={video.poster.id}
+                products={video.products}
+                videoId={video.id}
+              />
+              <View style={styles.infoTextContainer}>
+                <PressableOpacity
+                  onPress={() => {
+                    if (isAnonymous) {
+                      router.push('/onboarding/login');
+                      return;
+                    }
+                    router.push({
+                      pathname: '/profile-modal',
+                      params: { id: video.poster.id },
+                    });
                   }}
+                  style={styles.userInfoContainer}
                 >
-                  <ProfileIcon
-                    variant="user"
-                    url={video.poster.profileImageUrl ?? undefined}
-                  />
-                </View>
-                <BoldSubheaderText
-                  color={'white'}
-                  style={{
-                    color: 'white',
-                    textShadowColor: 'black',
-                    textShadowOffset: { width: 0.5, height: 0.5 },
-                    textShadowRadius: 2,
-                  }}
-                >
-                  {video.poster.displayName ?? video.poster.username}
-                </BoldSubheaderText>
-              </PressableOpacity>
-              {video.description && (
+                  <View
+                    style={{
+                      shadowColor: 'black',
+                      shadowRadius: 1,
+                      shadowOffset: { width: 0.5, height: 0.5 },
+                    }}
+                  >
+                    <ProfileIcon
+                      variant="user"
+                      url={video.poster.profileImageUrl ?? undefined}
+                    />
+                  </View>
+                  <BoldSubheaderText
+                    color={'white'}
+                    style={{
+                      color: 'white',
+                      textShadowColor: 'black',
+                      textShadowOffset: { width: 0.5, height: 0.5 },
+                      textShadowRadius: 2,
+                    }}
+                  >
+                    {video.poster.displayName ?? video.poster.username}
+                  </BoldSubheaderText>
+                </PressableOpacity>
+                {video.description && (
                 <View style={{ width: '85%' }}>
-                  <ExpandableDescription
-                    description={video.description}
-                    textColor={Color.GREY_100}
-                    shadow
-                  />
+                    <ExpandableDescription
+                      description={video.description}
+                      textColor={Color.GREY_100}
+                      shadow
+                    />
                 </View>
+                )}
+              </View>
+            </View>
+            <View style={styles.buttonsContainer}>
+              {!isAnonymous && (
+                <>
+                  <LikeButton
+                    videoId={video.id}
+                    isLiked={video.isLiked}
+                    likeCount={video.likeCount}
+                  />
+                  <FeedVideoButton
+                    name="comment"
+                    count={video.commentCount}
+                    onPress={() => {
+                      track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
+                      commentModalRef.current?.present();
+                    }}
+                  />
+                  <FeedVideoButton
+                    name="review"
+                    count={video.reviewCount}
+                    onPress={() => {
+                      track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
+                      reviewModalRef.current?.present();
+                    }}
+                  />
+                  <FeedVideoButton
+                    name="report"
+                    onPress={() => {
+                      reportVideoRef.current?.present();
+                    }}
+                  />
+                </>
               )}
             </View>
           </View>
-          <View style={styles.buttonsContainer}>
-            {!isAnonymous && (
-              <>
-                <LikeButton
-                  videoId={video.id}
-                  isLiked={video.isLiked}
-                  likeCount={video.likeCount}
-                />
-                <FeedVideoButton
-                  name="comment"
-                  count={video.commentCount}
-                  onPress={() => {
-                    track(Event.CLICKED_COMMMENT_ICON, { videoId: video.id });
-                    commentModalRef.current?.present();
-                  }}
-                />
-                <FeedVideoButton
-                  name="review"
-                  count={video.reviewCount}
-                  onPress={() => {
-                    track(Event.CLICKED_REVIEW_ICON, { videoId: video.id });
-                    reviewModalRef.current?.present();
-                  }}
-                />
-                <FeedVideoButton
-                  name="report"
-                  onPress={() => {
-                    reportVideoRef.current?.present();
-                  }}
-                />
-              </>
-            )}
-          </View>
         </View>
-      </View>
+      </Pressable>
       <ReviewModal
         seller={video.poster}
         product={video.products[0]}

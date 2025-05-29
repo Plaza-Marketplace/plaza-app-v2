@@ -17,6 +17,8 @@ const Events = () => {
     ) ?? [];
   const upcomingEvents =
     data?.filter((event) => new Date(event.startDate) > new Date()) ?? [];
+  const pastEvents =
+    data?.filter((event) => new Date(event.endDate) < new Date()) ?? [];
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
@@ -49,6 +51,25 @@ const Events = () => {
         <View style={styles.section}>
           <HeadingText variant="h5-bold">Upcoming Events</HeadingText>
           {upcomingEvents.map((event) => (
+            <EventBanner
+              key={event.id}
+              id={event.id}
+              name={event.name}
+              address={event.address}
+              city={event.city}
+              state={event.state}
+              startDate={event.startDate}
+              endDate={event.endDate}
+              bannerUrl={event.bannerUrl}
+              isLive={false}
+            />
+          ))}
+        </View>
+      )}
+      {pastEvents.length > 0 && (
+        <View style={styles.section}>
+          <HeadingText variant="h5-bold">Past Events</HeadingText>
+          {pastEvents.map((event) => (
             <EventBanner
               key={event.id}
               id={event.id}

@@ -11,6 +11,8 @@ import Header from './Header';
 import Info from './Info';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import PlazaButton from '@/components/Buttons/PlazaButton';
+import Color from '@/constants/Color';
+import { useState } from 'react';
 
 // TODO: Move calling of hooks into Info
 
@@ -27,6 +29,8 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
   } = useGetBlocked(userId);
 
   const { mutate: unblockUser } = useUnblockUser();
+
+  const [activeTab, setActiveTab] = useState(0);
 
   if (isLoading && isBlockedLoading) {
     return <BodyText variant="md">Loading...</BodyText>;
@@ -65,11 +69,12 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
       <Tabs.Container
         renderHeader={() => <Info userId={userId} header={data} />}
         containerStyle={{ zIndex: -1 }}
+        onIndexChange={(index) => setActiveTab(index)}
         renderTabBar={(props) => {
           return (
             <MaterialTabBar
               {...props}
-              indicatorStyle={{ backgroundColor: 'black' }}
+              indicatorStyle={{ backgroundColor: Color.PRIMARY_DEFAULT }}
               style={{ backgroundColor: 'white' }}
             />
           );
@@ -78,7 +83,13 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
         <Tabs.Tab
           name="video"
           label={(props) => {
-            return <Ionicons name="videocam-outline" size={Radius.XL} />;
+            return (
+              <Ionicons
+                name="videocam-outline"
+                size={Radius.XL}
+                color={activeTab === 0 ? Color.PRIMARY_DEFAULT : 'black'}
+              />
+            );
           }}
         >
           <Videos userId={userId} />
@@ -86,7 +97,13 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
         <Tabs.Tab
           name="product"
           label={(props) => {
-            return <Ionicons name="storefront-outline" size={Radius.XL} />;
+            return (
+              <Ionicons
+                name="storefront-outline"
+                size={Radius.XL}
+                color={activeTab === 1 ? Color.PRIMARY_DEFAULT : 'black'}
+              />
+            );
           }}
         >
           <Products userId={userId} />
@@ -94,7 +111,13 @@ const Profile: FC<ProfileProps> = ({ userId }) => {
         <Tabs.Tab
           name="reviews"
           label={(props) => {
-            return <Ionicons name="star-outline" size={Radius.XL} />;
+            return (
+              <Ionicons
+                name="star-outline"
+                size={Radius.XL}
+                color={activeTab === 2 ? Color.PRIMARY_DEFAULT : 'black'}
+              />
+            );
           }}
         >
           <Reviews averageRating={data.averageRating} sellerId={userId} />

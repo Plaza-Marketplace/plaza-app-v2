@@ -445,6 +445,8 @@ export type Database = {
           end_date: string
           icon_key: string | null
           id: number
+          initial_heading: number | null
+          initial_zoom: number | null
           map_key: string | null
           name: string
           start_date: string
@@ -460,6 +462,8 @@ export type Database = {
           end_date: string
           icon_key?: string | null
           id?: number
+          initial_heading?: number | null
+          initial_zoom?: number | null
           map_key?: string | null
           name: string
           start_date: string
@@ -475,6 +479,8 @@ export type Database = {
           end_date?: string
           icon_key?: string | null
           id?: number
+          initial_heading?: number | null
+          initial_zoom?: number | null
           map_key?: string | null
           name?: string
           start_date?: string
@@ -486,6 +492,35 @@ export type Database = {
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_border: {
+        Row: {
+          coordinates: unknown
+          created_at: string
+          event_id: number
+          id: number
+        }
+        Insert: {
+          coordinates: unknown
+          created_at?: string
+          event_id: number
+          id?: number
+        }
+        Update: {
+          coordinates?: unknown
+          created_at?: string
+          event_id?: number
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_border_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
             referencedColumns: ["id"]
           },
         ]
@@ -1769,6 +1804,21 @@ export type Database = {
           longitude: number
           latitude: number
           pins: Json
+          sellers: Json
+        }[]
+      }
+      get_event_page_v2: {
+        Args: { event_id: number }
+        Returns: {
+          id: number
+          name: string
+          map_key: string
+          longitude: number
+          latitude: number
+          initial_heading: number
+          initial_zoom: number
+          pins: Json
+          border_pins: Json
           sellers: Json
         }[]
       }

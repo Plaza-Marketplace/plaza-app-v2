@@ -5,7 +5,6 @@ import useCreateGroup from './useCreateGroup';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import { StyleSheet } from 'react-native';
 import { Formik } from 'formik';
-import { router } from 'expo-router';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import IconButton from '@/components/Buttons/IconButton';
@@ -17,6 +16,7 @@ import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import * as FileSystem from 'expo-file-system';
 import * as Yup from 'yup';
 import BodyText from '@/components/Texts/BodyText';
+import { useAuth } from '@/contexts/AuthContext';
 
 const newGroupSchema = Yup.object().shape({
   name: Yup.string()
@@ -25,15 +25,17 @@ const newGroupSchema = Yup.object().shape({
   description: Yup.string()
     .required('Group description is required')
     .max(150, 'Description cannot exceed 150 characters'),
-  iconUrl: Yup.string().required('Group icon is required'),
-  bannerUrl: Yup.string().required('Group banner is required'),
+  iconUrl: Yup.string().optional(),
+  bannerUrl: Yup.string().optional(),
 });
 
 const NewGroup = () => {
-  const { mutateAsync: createGroup } = useCreateGroup();
+  const { user } = useAuth();
+  const { mutate: createGroup, isPending } = useCreateGroup();
 
   return (
-    <View style={styles.container}>
+    <View>
+      <PlazaHeader name="New Group" />
       <Formik
         initialValues={{
           name: '',
@@ -43,6 +45,8 @@ const NewGroup = () => {
         }}
         validationSchema={newGroupSchema}
         onSubmit={async (values) => {
+          if (!user) return;
+
           const base64Icon = values.iconUrl
             ? await FileSystem.readAsStringAsync(values.iconUrl, {
                 encoding: 'base64',
@@ -55,15 +59,12 @@ const NewGroup = () => {
               })
             : null;
 
-          const id = await createGroup({
+          createGroup({
+            userId: user?.id,
             name: values.name,
             description: values.description,
             iconBase64: base64Icon,
             bannerBase64: base64Banner,
-          });
-          router.push({
-            pathname: '/community',
-            params: { id },
           });
         }}
       >
@@ -95,9 +96,7 @@ const NewGroup = () => {
           };
 
           return (
-            <View>
-              <PlazaHeader name="New Group" />
-
+            <View style={styles.container}>
               <View
                 style={{
                   width: '100%',
@@ -180,13 +179,15 @@ const NewGroup = () => {
                 <PlazaTextInput
                   label="Group Description"
                   placeholder="Ex. Jewelry Jammers"
-                  limit={150}
                   onChangeText={handleChange('description')}
                   error={errors.description}
+                  style={{ height: 100 }}
+                  multiline
                 />
               </View>
               <PlazaButton
                 title="Create Group"
+                disabled={isPending}
                 onPress={() => handleSubmit()}
                 style={{ marginTop: Spacing.SPACING_2 }}
               />

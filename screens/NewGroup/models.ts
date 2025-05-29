@@ -1,4 +1,6 @@
 export type CreateGroup = {
+  userId: Id;
+
   name: string;
 
   description: string | null;

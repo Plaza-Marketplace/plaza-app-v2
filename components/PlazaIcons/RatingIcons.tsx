@@ -1,5 +1,6 @@
 import MaterialCommunityIcons from '@expo/vector-icons/build/MaterialCommunityIcons';
 import { View } from 'react-native';
+import Color from '@/constants/Color';
 
 interface RatingIconsProps {
   size: 'small' | 'large';
@@ -7,7 +8,11 @@ interface RatingIconsProps {
 
 const FullStarIcon = ({ size }: RatingIconsProps) => {
   return (
-    <MaterialCommunityIcons name={'star'} size={size === 'small' ? 20 : 40} />
+    <MaterialCommunityIcons
+      name={'star'}
+      size={size === 'small' ? 20 : 40}
+      color={Color.REVIEWS_500}
+    />
   );
 };
 
@@ -16,6 +21,7 @@ const HalfStarIcon = ({ size }: RatingIconsProps) => {
     <MaterialCommunityIcons
       name={'star-half-full'}
       size={size === 'small' ? 20 : 40}
+      color={Color.REVIEWS_500}
     />
   );
 };
@@ -25,6 +31,7 @@ const EmptyStarIcon = ({ size }: RatingIconsProps) => {
     <MaterialCommunityIcons
       name={'star-outline'}
       size={size === 'small' ? 20 : 40}
+      color={Color.REVIEWS_500}
     />
   );
 };

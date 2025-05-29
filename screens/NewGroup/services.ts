@@ -4,19 +4,6 @@ import { v4 as uuidv4 } from 'uuid';
 import { decode } from 'base64-arraybuffer';
 
 export const createGroup = async (group: CreateGroup) => {
-  // if (updates.profileImageBase64) {
-  //   const key = uuidv4();
-  //   const path = `private/${key}`;
-
-  //   await supabase.storage
-  //     .from('images')
-  //     .upload(path, decode(updates.profileImageBase64), {
-  //       contentType: 'image/jpeg',
-  //     });
-
-  //   supabaseUpdates.profile_image_key = key;
-  // }
-
   let iconKey = null;
   let bannerKey = null;
 
@@ -53,6 +40,18 @@ export const createGroup = async (group: CreateGroup) => {
 
   if (error) {
     throw new Error(error.message);
+  }
+
+  const { error: createCommunityMemberError } = await supabase
+    .from('community_member')
+    .insert({
+      community_id: data.id,
+      user_id: group.userId,
+      member_role: 'MEMBER',
+    });
+
+  if (createCommunityMemberError) {
+    throw new Error(createCommunityMemberError.message);
   }
 
   return data.id;

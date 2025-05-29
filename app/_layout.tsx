@@ -27,6 +27,7 @@ import {
   ReanimatedLogLevel,
 } from 'react-native-reanimated';
 import Mapbox from '@rnmapbox/maps';
+import { LogBox } from 'react-native';
 
 const queryClient = new QueryClient();
 
