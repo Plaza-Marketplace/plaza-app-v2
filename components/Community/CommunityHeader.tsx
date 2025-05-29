@@ -57,7 +57,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
   };
 
   return (
-    <View>
+    <View style={{ marginTop: -insets.top }}>
       <Image style={styles.banner} source={{ uri: bannerUrl }} />
       <View style={[styles.contentContainer, { paddingTop: insets.top }]}>
         <View style={styles.headerButtons}>

@@ -44,14 +44,7 @@ const Community = () => {
         />
       )}
       renderTabBar={(props) => {
-        return (
-          // <MaterialTabBar
-          //   {...props}
-          //   indicatorStyle={{ backgroundColor: 'black' }}
-          //   style={{ backgroundColor: 'white' }}
-          // />
-          <CollapsibleTabBar {...props} />
-        );
+        return <CollapsibleTabBar {...props} />;
       }}
       containerStyle={{ marginTop: insets.top }}
     >
