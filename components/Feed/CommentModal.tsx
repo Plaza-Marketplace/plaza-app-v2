@@ -55,7 +55,7 @@ const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
             <PressableOpacity
               onPress={handleSubmit}
               style={{
-                backgroundColor: Color.NEUTRALS_DEFAULT,
+                backgroundColor: Color.PRIMARY_DEFAULT,
                 padding: Spacing.SPACING_1,
                 borderRadius: Radius.LG,
               }}
