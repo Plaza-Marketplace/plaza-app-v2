@@ -51,8 +51,6 @@ const ProductCard: FC<ProductCardProps> = ({
     bottomSheetRef.current?.present();
   };
 
-  console.log('displayName', displayName);
-
   return (
     <>
       <PressableOpacity
