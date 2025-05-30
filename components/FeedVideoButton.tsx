@@ -38,7 +38,7 @@ const handleName = (name: string) => {
     case 'bookmark':
       return <Bookmark width={40} height={40} color={'white'} />;
     case 'report':
-      return <Ionicons name="flag-outline" size={40} color={'white'} />;
+      return <Ionicons name="ellipsis-horizontal" size={30} color={'white'} />;
   }
 };
 
