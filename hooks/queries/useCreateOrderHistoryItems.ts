@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import {
   CreateOrderHistoryItem,
   OrderHistoryItem,
@@ -20,6 +21,10 @@ const useCreateOrderHistoryItems = (items?: CreateOrderHistoryItem[]) => {
           return [data];
         }
       );
+
+      data.forEach((item) => {
+        track(Event.PURCHASED_PRODUCT, { productId: item.product.id });
+      });
     },
   });
 };

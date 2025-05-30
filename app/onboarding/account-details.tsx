@@ -30,6 +30,7 @@ import { PlazaLogo } from '@/components/Icons';
 import { useSharedValue } from 'react-native-reanimated';
 import { accountSchema } from './accountDetailsHelpers';
 import { stripe } from '@/supabase/functions/_utils/stripe';
+import { Event, track } from '@/analytics/utils';
 
 const width = Dimensions.get('window').width;
 
@@ -126,6 +127,10 @@ const AccountDetails = () => {
       });
 
       playFinaleAnimation();
+
+      track(Event.FINISHED_ONBOARDING, {
+        userType: selectedType === 0 ? 'Buyer' : 'Seller',
+      });
 
       setTimeout(() => {
         if (selectedType === 0) {

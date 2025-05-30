@@ -38,6 +38,8 @@ import ExploreProducts from './ExploreProducts';
 import { Polygon } from 'geojson';
 import { difference, featureCollection } from '@turf/turf';
 import { debounce } from 'lodash';
+import { Event as EventType } from '@/analytics/utils';
+import useScreenTrack from '@/hooks/useScreenTrack';
 
 const Event = () => {
   const [zoom, setZoom] = useState(18);
@@ -64,6 +66,8 @@ const Event = () => {
   const [newBorderPins, setNewBorderPins] = useState<[number, number][]>([]);
 
   const insets = useSafeAreaInsets();
+
+  useScreenTrack(EventType.VIEWED_EVENT, { eventId: eventId });
 
   const scale = useMemo(() => {
     if (zoom < 17.5) return 0.5;

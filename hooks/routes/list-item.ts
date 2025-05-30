@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   VariantsDisplay,
@@ -20,6 +21,7 @@ export const useUploadProduct = () => {
           return oldProducts ? [...oldProducts, data] : [data];
         }
       );
+      track(Event.LISTED_PRODUCT, { productId: data.id });
     },
   });
 };
@@ -38,8 +40,9 @@ export const useUploadProductsWithVariants = () => {
       options: VariantOption[];
       values: VariantsDisplay[];
     }) => uploadProductsAndVariants(spec, options, values),
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['products', user?.id] });
+      track(Event.LISTED_PRODUCT, { productId: data });
     },
   });
 };
