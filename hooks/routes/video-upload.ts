@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { createVideo } from '@/services/crud/video';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,6 +16,9 @@ export const useVideoUpload = () => {
           return oldVideos ? [...oldVideos, data] : [data];
         }
       );
+
+      track(Event.POSTED_VIDEO, { videoId: data.id });
+
       return data;
     },
   });

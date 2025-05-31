@@ -30,9 +30,11 @@ import AddToGroupModal from '@/components/Community/AddToGroupModal';
 import Chip from '@/components/Chip';
 import { areObjectsEqual } from '@/utils/misc';
 import Spacing from '@/constants/Spacing';
-import PlazaButton from '@/components/Buttons/PlazaButton';
 import ProductReportModal from '@/components/Report/ReportModal/ProductReportModal';
 import { Ionicons } from '@expo/vector-icons';
+import useModalTrack from '@/hooks/useModalTrack';
+import { Event } from '@/analytics/utils';
+import Loading from '@/components/Loading';
 
 interface ProductModalProps {
   id: Id;
@@ -58,6 +60,7 @@ const CustomHandle = () => (
 const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const { user, session } = useAuth();
   const isAnonymous = session?.user.is_anonymous;
+  const [isOpen, setIsOpen] = useState(false);
   const {
     data: product,
     isLoading,
@@ -69,7 +72,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
     Record<string, string>
   >({});
   const [selectedVariantId, setSelectedVariantId] = useState<Id | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
 
   const { mutate: deleteProduct } = useDeleteProduct(id);
   const { mutate: addToCart } = useAddToCart(id, selectedVariantId);
@@ -78,6 +80,8 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
   const snapPoints = useMemo(() => ['90%'], []);
   const addToGroupRef = useRef<BottomSheetModal>(null);
   const reportProductRef = useRef<BottomSheetModal>(null);
+
+  useModalTrack(Event.VIEWED_PRODUCT, isOpen, { productId: id });
 
   useEffect(() => {
     if (product?.variants) {
@@ -96,10 +100,6 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
       params: { productId: id },
     });
   };
-
-  if (!product || isLoading || error) {
-    return null;
-  }
 
   const handleVariantSelect = (type: string, value: string) => {
     setSelectedVariantValues((prev) => ({ ...prev, [type]: value }));
@@ -130,7 +130,7 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
         handleComponent={CustomHandle}
         backgroundStyle={{ borderRadius: Radius.LG }}
       >
-        {!isLoading && product !== undefined && (
+        {!isLoading && product !== undefined ? (
           <>
             <BottomSheetScrollView
               style={{
@@ -320,6 +320,8 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
               <HeadingText variant="h5-bold">Added to cart!</HeadingText>
             </View>
           </>
+        ) : (
+          <Loading />
         )}
       </BottomSheetModal>
     </>
