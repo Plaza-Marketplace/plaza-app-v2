@@ -40,6 +40,7 @@ import { difference, featureCollection } from '@turf/turf';
 import { debounce } from 'lodash';
 import { Event as EventType } from '@/analytics/utils';
 import useScreenTrack from '@/hooks/useScreenTrack';
+import Color from '@/constants/Color';
 
 const Event = () => {
   const [zoom, setZoom] = useState(18);
@@ -307,14 +308,16 @@ const Event = () => {
             <MarkerView
               key="pointAnnotation"
               id="pointAnnotation"
-              coordinate={data?.coordinates}
+              coordinate={[data?.coordinates[0], data?.coordinates[1] + 0.0009]}
             >
               <PressableOpacity
                 onPress={() => bottomSheetRef.current?.expand()}
                 style={{ alignItems: 'center' }}
               >
                 {/* <GroupIcon size={32} url={null} /> */}
-                <HeadingText variant="h6-bold">{data.name}</HeadingText>
+                <HeadingText variant="h6-bold" color={Color.WHITE}>
+                  {data.name}
+                </HeadingText>
               </PressableOpacity>
             </MarkerView>
           )}
