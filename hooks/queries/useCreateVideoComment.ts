@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import { createComment } from '@/services/crud/videoComment';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -57,6 +58,7 @@ const useCreateVideoComment = (videoId: Id) => {
         }
       );
     },
+    onSuccess: () => track(Event.COMMENTED_ON_VIDEO),
   });
 };
 

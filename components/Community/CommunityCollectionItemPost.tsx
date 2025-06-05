@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from 'react-native';
 import CaptionText from '../Texts/CaptionText';
 import Color from '@/constants/Color';
 import PressableOpacity from '../Buttons/PressableOpacity';
-import ProductModal from '../Feed/ProductModal';
+import ProductModal from '../Product/ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import { Event, track } from '@/analytics/utils';
 import Spacing from '@/constants/Spacing';
@@ -60,8 +60,7 @@ const CommunityCollectionItemPost: FC<CommunityCollectionItemPostProps> = ({
         </View>
       </PressableOpacity>
       <ProductModal
-        product={communityCollectionItem.product}
-        sellerId={communityCollectionItem.product.sellerId}
+        id={communityCollectionItem.product.id}
         bottomSheetRef={productModalRef}
       />
     </>
