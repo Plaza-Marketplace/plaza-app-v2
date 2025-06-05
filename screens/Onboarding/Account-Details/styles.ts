@@ -10,7 +10,7 @@ export const accountDetailStyles = StyleSheet.create({
   slide: {
     flex: 1,
     paddingHorizontal: Spacing.SPACING_4,
-    paddingTop: Spacing.SPACING_4,
+    paddingTop: Spacing.SPACING_2,
   },
   footer: {
     backgroundColor: Color.WHITE,

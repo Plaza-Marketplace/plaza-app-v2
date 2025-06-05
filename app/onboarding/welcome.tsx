@@ -95,6 +95,10 @@ const Welcome = () => {
         <Pagination.Basic
           progress={progress}
           data={slideshow}
+          activeDotStyle={{
+            backgroundColor: Color.PRIMARY_DEFAULT,
+            borderRadius: 50,
+          }}
           dotStyle={{ backgroundColor: 'rgba(0,0,0,0.2)', borderRadius: 50 }}
           containerStyle={{ gap: 5, marginTop: 10 }}
           onPress={onPressPagination}
