@@ -1,4 +1,5 @@
-import { Dimensions, StyleSheet, Text, View, Image, Alert } from 'react-native';
+import { Dimensions, StyleSheet, View, Alert } from 'react-native';
+import { Image } from 'expo-image';
 import React, { useEffect } from 'react';
 import Carousel, {
   Pagination,
@@ -7,11 +8,8 @@ import Carousel, {
 import { useSharedValue } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HeadingText from '@/components/Texts/HeadingText';
-import PlazaText from '@/components/Texts/PlazaText';
 import PlazaButton from '@/components/Buttons/PlazaButton';
 import Spacing from '@/constants/Spacing';
-import PressableOpacity from '@/components/Buttons/PressableOpacity';
-import BodyText from '@/components/Texts/BodyText';
 import Color from '@/constants/Color';
 import { router } from 'expo-router';
 import { supabase } from '@/utils/supabase';
@@ -21,6 +19,7 @@ const width = Dimensions.get('window').width;
 const Welcome = () => {
   const ref = React.useRef<ICarouselInstance>(null);
   const progress = useSharedValue<number>(0);
+  const screenwidth = Dimensions.get('window').width;
 
   const slideshow = [
     {
@@ -74,7 +73,14 @@ const Welcome = () => {
                   alignItems: 'center',
                 }}
               >
-                <Image source={slideshow[index].image} />
+                <Image
+                  source={slideshow[index].image}
+                  contentFit="contain"
+                  style={{
+                    width: screenwidth,
+                    flex: 1,
+                  }}
+                />
               </View>
 
               <View style={{ minHeight: 100 }}>
