@@ -18,8 +18,6 @@ interface ProductUploadVariantsProps {
   openOptionForm: () => void;
   openVariantValueForm: () => void;
   openEditOptionForm: (index: number) => void;
-  isVariantsEnabled: boolean;
-  setIsVariantsEnabled: React.Dispatch<React.SetStateAction<boolean>>;
   variantOptions: VariantOption[];
   // For now, we're only going to allow a variant depth of 2
   setVariantOptions: React.Dispatch<React.SetStateAction<VariantOption[]>>;
@@ -29,14 +27,10 @@ const Variants: FC<ProductUploadVariantsProps> = ({
   openOptionForm,
   openVariantValueForm,
   openEditOptionForm,
-  isVariantsEnabled,
-  setIsVariantsEnabled,
   variantOptions,
   setVariantOptions,
 }) => {
   const formik = useFormikContext<CreateListingForm>();
-  const toggleSwitch = () =>
-    setIsVariantsEnabled((previousState) => !previousState);
   return (
     <View>
       <View
@@ -53,14 +47,21 @@ const Variants: FC<ProductUploadVariantsProps> = ({
             true: Color.PRIMARY_100,
           }}
           thumbColor={
-            isVariantsEnabled ? Color.PRIMARY_DEFAULT : Color.GREY_500
+            formik.values.isVariantsEnabled
+              ? Color.PRIMARY_DEFAULT
+              : Color.GREY_500
           }
-          onValueChange={toggleSwitch}
-          value={isVariantsEnabled}
+          onValueChange={() => {
+            formik.setFieldValue(
+              'isVariantsEnabled',
+              !formik.values.isVariantsEnabled
+            );
+          }}
+          value={formik.values.isVariantsEnabled}
         />
       </View>
 
-      {isVariantsEnabled ? (
+      {formik.values.isVariantsEnabled ? (
         <>
           <DraggableFlatList
             data={variantOptions}
@@ -166,6 +167,8 @@ const Variants: FC<ProductUploadVariantsProps> = ({
           <PlazaTextInput
             label="Quantity"
             onChangeText={formik.handleChange('quantity')}
+            error={formik.errors.quantity}
+            value={formik.values.quantity.toString()} // Ensure quantity is a string for input
             placeholder="example: 1"
             keyboardType="numeric"
           />
