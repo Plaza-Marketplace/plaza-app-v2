@@ -33,16 +33,20 @@ import Loading from '@/components/Loading';
 const CreateListingSchema = Yup.object().shape({
   title: Yup.string().required('Title is required'),
   description: Yup.string().required('Description is required'),
-  quantity: Yup.number()
-    .min(1, 'Quantity must be at least 1')
-    .required('Quantity is required'),
+  isVariantsEnabled: Yup.boolean(),
+  quantity: Yup.number().when('isVariantsEnabled', {
+    is: false,
+    then: (schema) =>
+      schema
+        .min(1, 'Quantity must be at least 1')
+        .required('Quantity is required'),
+  }),
   price: Yup.number()
     .min(0, 'Price must be at least 0')
     .required('Price is required'),
   shippingPrice: Yup.number()
     .min(0, 'Shipping price must be at least 0')
     .required('Shipping price is required'),
-  location: Yup.string().required('Location is required'),
   imageUris: Yup.array()
     .of(Yup.string())
     .min(1, 'At least one image is required')
@@ -78,10 +82,16 @@ const CreateListingScreen = () => {
     optionEditForm.current?.present();
   };
 
-  const [isVariantsEnabled, setIsVariantsEnabled] = useState(false);
-
   const [variantOptions, setVariantOptions] = useState<VariantOption[]>([]);
   const [variantValues, setVariantValues] = useState<VariantsDisplay[]>([]);
+
+  const initialVariantsRef = useRef({
+    variantOptions,
+  });
+
+  const variantDirty =
+    JSON.stringify(variantOptions) !==
+    JSON.stringify(initialVariantsRef.current.variantOptions);
 
   const { mutate: createProduct, isPending: isUploadProductPending } =
     useUploadProduct();
@@ -112,8 +122,8 @@ const CreateListingScreen = () => {
     quantity: 1,
     price: 0,
     shippingPrice: 0,
-    location: '',
     imageUris: [],
+    isVariantsEnabled: false,
   };
 
   return (
@@ -143,10 +153,10 @@ const CreateListingScreen = () => {
               price: values.price,
               shippingPrice: values.price,
               base64Images: base64Images,
-              hasVariants: isVariantsEnabled,
+              hasVariants: values.isVariantsEnabled,
             };
 
-            if (isVariantsEnabled) {
+            if (values.isVariantsEnabled) {
               await createProductWithVariants({
                 spec: productSpec,
                 options: variantOptions,
@@ -163,7 +173,7 @@ const CreateListingScreen = () => {
           }
         }}
       >
-        {({ handleSubmit }) => {
+        {({ handleSubmit, dirty, isValid, values }) => {
           if (isUploadProductPending || isUploadProductVariantsPending) {
             return <Loading />;
           }
@@ -179,12 +189,10 @@ const CreateListingScreen = () => {
                   <ProductInfo />
 
                   <Variants
-                    isVariantsEnabled={isVariantsEnabled}
                     variantOptions={variantOptions}
                     openOptionForm={openOptionForm}
                     openVariantValueForm={openVariantValueForm}
                     openEditOptionForm={openEditOptionForm}
-                    setIsVariantsEnabled={setIsVariantsEnabled}
                     setVariantOptions={setVariantOptions}
                   />
                 </View>
@@ -195,6 +203,12 @@ const CreateListingScreen = () => {
                 rightTitle="Post Listing"
                 leftOnPress={() => {}}
                 rightOnPress={handleSubmit}
+                leftDisabled={!(dirty || variantDirty)}
+                rightDisabled={
+                  !(dirty || variantDirty) ||
+                  !isValid ||
+                  (variantOptions.length === 0 && values.isVariantsEnabled)
+                }
               />
             </View>
           );

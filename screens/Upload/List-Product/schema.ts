@@ -6,8 +6,8 @@ export type CreateListingForm = {
   quantity: number;
   price: number;
   shippingPrice: number;
-  location: string | null;
   imageUris: string[];
+  isVariantsEnabled: boolean;
 };
 
 export type VariantOption = {
