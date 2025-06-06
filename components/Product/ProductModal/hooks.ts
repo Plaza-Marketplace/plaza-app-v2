@@ -5,6 +5,7 @@ import {
   getProductModalProduct,
 } from './services';
 import { useAuth } from '@/contexts/AuthContext';
+import { Event, track } from '@/analytics/utils';
 
 export const useGetProductModalProduct = (productId: Id, isOpen: boolean) =>
   useQuery({
@@ -22,6 +23,11 @@ export const useAddToCart = (productId: Id, variantId: Id | null) => {
     mutationFn: user
       ? () => createCartItem(productId, user.id, 1, variantId)
       : undefined,
+    onSuccess: () => {
+      track(Event.CLICKED_ADD_TO_CART, {
+        productId,
+      });
+    },
   });
 };
 

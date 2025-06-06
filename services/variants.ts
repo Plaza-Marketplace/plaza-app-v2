@@ -94,4 +94,6 @@ export const uploadProductsAndVariants = async (
   console.log('create variant options: ', createVariantOptions);
 
   await bulkCreateVariantOptions(createVariantOptions);
+
+  return product.id;
 };

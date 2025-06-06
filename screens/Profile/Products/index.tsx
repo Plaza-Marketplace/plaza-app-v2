@@ -18,7 +18,6 @@ const Products: FC<ProductsProps> = ({ userId }) => {
 
   return (
     <Tabs.FlatList
-      style={{ flex: 1 }}
       numColumns={2}
       data={products}
       contentContainerStyle={{

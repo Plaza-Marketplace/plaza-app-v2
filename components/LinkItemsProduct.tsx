@@ -1,10 +1,10 @@
 import { FC, useState } from 'react';
 import PressableOpacity from './Buttons/PressableOpacity';
 import { StyleSheet } from 'react-native';
-import ProductShowcase from './PostCards/ProductCards/ProductShowcase';
 import Spacing from '@/constants/Spacing';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
+import ProductShowcase from './PostCards/ProductCards/ProductShowcase';
 
 interface LinkItemsProductProps {
   product: Product;

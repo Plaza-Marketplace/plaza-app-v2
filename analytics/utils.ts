@@ -6,6 +6,15 @@ mixpanel.init();
 
 export enum Event {
   LIKED_VIDEO = 'Liked Video',
+  COMMENTED_ON_VIDEO = 'Commented On Video',
+  VIEWED_PRODUCT = 'Viewed Product',
+  VIEWED_EVENT = 'Viewed Event',
+  JOINED_GROUP = 'Joined Group',
+  CREATED_GROUP = 'Created Group',
+  LISTED_PRODUCT = 'Listed Product',
+  PURCHASED_PRODUCT = 'Purchased Product',
+  POSTED_VIDEO = 'Posted Video',
+  FINISHED_ONBOARDING = 'Finished Onboarding',
   CLICKED_REVIEW_ICON = 'Clicked Review Icon',
   CLICKED_COMMMENT_ICON = 'Clicked Comment Icon',
   CLICKED_PRODUCT_ICON = 'Clicked Product Icon',
@@ -18,6 +27,8 @@ export enum Event {
 }
 
 export const track = (event: Event, properties?: Record<string, any>) => {
+  if (__DEV__) return;
+
   mixpanel.track(event, properties);
 };
 

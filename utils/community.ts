@@ -8,3 +8,12 @@ export const pushCommunityScreen = (id: Id) => {
     },
   });
 };
+
+export const replaceCommunityScreen = (id: Id) => {
+  router.replace({
+    pathname: '/community',
+    params: {
+      id,
+    },
+  });
+};

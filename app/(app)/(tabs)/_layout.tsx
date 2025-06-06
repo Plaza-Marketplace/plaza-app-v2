@@ -17,6 +17,17 @@ export default function TabLayout() {
         screenOptions={{
           headerShown: false,
           tabBarActiveTintColor: Color.PRIMARY_DEFAULT,
+          tabBarStyle: {
+            height: 83,
+          },
+          tabBarIconStyle: {
+            alignItems: 'center',
+            justifyContent: 'center',
+          },
+          tabBarLabelStyle: {
+            marginTop: 0,
+            paddingBottom: 5,
+          },
         }}
       >
         <Tabs.Screen

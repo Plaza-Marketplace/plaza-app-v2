@@ -8,6 +8,7 @@ import Collection from '@/screens/Plaza/Community/Collection';
 import Posts from '@/screens/Plaza/Community/Posts';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useGetCommunityPage } from '@/hooks/routes/community';
+import CollapsibleTabBar from '@/components/Navigation/CollapsibleTabBar';
 
 const Community = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -43,19 +44,17 @@ const Community = () => {
         />
       )}
       renderTabBar={(props) => {
-        return (
-          <MaterialTabBar
-            {...props}
-            indicatorStyle={{ backgroundColor: 'black' }}
-          />
-        );
+        return <CollapsibleTabBar {...props} />;
       }}
       containerStyle={{ marginTop: insets.top }}
     >
-      <Tabs.Tab name="collection">
-        <Collection communityId={communityId} />
+      <Tabs.Tab name="Collection">
+        <Collection
+          communityId={communityId}
+          isMember={communityPage.isMember}
+        />
       </Tabs.Tab>
-      <Tabs.Tab name="posts">
+      <Tabs.Tab name="Posts">
         <Posts communityId={communityId} />
       </Tabs.Tab>
     </Tabs.Container>

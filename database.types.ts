@@ -445,6 +445,8 @@ export type Database = {
           end_date: string
           icon_key: string | null
           id: number
+          initial_heading: number | null
+          initial_zoom: number | null
           map_key: string | null
           name: string
           start_date: string
@@ -460,6 +462,8 @@ export type Database = {
           end_date: string
           icon_key?: string | null
           id?: number
+          initial_heading?: number | null
+          initial_zoom?: number | null
           map_key?: string | null
           name: string
           start_date: string
@@ -475,6 +479,8 @@ export type Database = {
           end_date?: string
           icon_key?: string | null
           id?: number
+          initial_heading?: number | null
+          initial_zoom?: number | null
           map_key?: string | null
           name?: string
           start_date?: string
@@ -486,6 +492,35 @@ export type Database = {
             columns: ["community_id"]
             isOneToOne: false
             referencedRelation: "community"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      event_border: {
+        Row: {
+          coordinates: unknown
+          created_at: string
+          event_id: number
+          id: number
+        }
+        Insert: {
+          coordinates: unknown
+          created_at?: string
+          event_id: number
+          id?: number
+        }
+        Update: {
+          coordinates?: unknown
+          created_at?: string
+          event_id?: number
+          id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "event_border_event_id_fkey"
+            columns: ["event_id"]
+            isOneToOne: false
+            referencedRelation: "event"
             referencedColumns: ["id"]
           },
         ]
@@ -844,7 +879,7 @@ export type Database = {
           delivered_date: string | null
           final_price: number
           id: number
-          product_id: number
+          product_id: number | null
           quantity: number
           seller_id: number
           shipping_address_id: number
@@ -860,7 +895,7 @@ export type Database = {
           delivered_date?: string | null
           final_price: number
           id?: number
-          product_id: number
+          product_id?: number | null
           quantity?: number
           seller_id: number
           shipping_address_id: number
@@ -876,7 +911,7 @@ export type Database = {
           delivered_date?: string | null
           final_price?: number
           id?: number
-          product_id?: number
+          product_id?: number | null
           quantity?: number
           seller_id?: number
           shipping_address_id?: number
@@ -1712,6 +1747,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      add_seller_products_to_event: {
+        Args: { s_id: number; e_id: number }
+        Returns: undefined
+      }
       community_member_count: {
         Args: { "": Database["public"]["Tables"]["community"]["Row"] }
         Returns: number
@@ -1765,6 +1804,21 @@ export type Database = {
           longitude: number
           latitude: number
           pins: Json
+          sellers: Json
+        }[]
+      }
+      get_event_page_v2: {
+        Args: { event_id: number }
+        Returns: {
+          id: number
+          name: string
+          map_key: string
+          longitude: number
+          latitude: number
+          initial_heading: number
+          initial_zoom: number
+          pins: Json
+          border_pins: Json
           sellers: Json
         }[]
       }

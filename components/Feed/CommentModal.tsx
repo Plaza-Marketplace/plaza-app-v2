@@ -1,6 +1,5 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import FeedBottomSheet from './FeedBottomSheet';
-import StandardText from '../Texts/StandardText';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PlazaTextInput from '../PlazaTextInput';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
@@ -9,7 +8,6 @@ import Color from '@/constants/Color';
 import Spacing from '@/constants/Spacing';
 import Comment from './Comment';
 import useGetCommentsByVideoId from '@/hooks/queries/useGetCommentsByVideoId';
-import PlazaButton from '../Buttons/PlazaButton';
 import useCreateVideoComment from '@/hooks/queries/useCreateVideoComment';
 import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import PressableOpacity from '../Buttons/PressableOpacity';

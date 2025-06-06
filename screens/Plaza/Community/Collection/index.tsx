@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { FC, useRef } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import PlazaButton from '@/components/Buttons/PlazaButton';
@@ -10,9 +10,10 @@ import CollectionCard from '@/components/Community/CollectionCard';
 
 interface CollectionProps {
   communityId: number;
+  isMember: boolean;
 }
 
-const Collection: FC<CollectionProps> = ({ communityId }) => {
+const Collection: FC<CollectionProps> = ({ communityId, isMember }) => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const { data: communityCollectionItems, error } =
     useGetCollectionProducts(communityId);
@@ -21,29 +22,26 @@ const Collection: FC<CollectionProps> = ({ communityId }) => {
 
   if (error) return <Text>{error.message}</Text>;
 
-  console.log(communityCollectionItems);
-
   if (!communityCollectionItems) return <Text>Loading...</Text>;
 
   return (
     <>
-      <View style={{ flex: 1 }}>
-        <Tabs.FlatList
-          data={communityCollectionItems}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <CollectionCard communityId={communityId} item={item} />
-          )}
-          contentContainerStyle={{ paddingTop: 16, paddingBottom: 72 }}
-          keyExtractor={(item) => item.id.toString()}
-        />
-
+      <Tabs.FlatList
+        data={communityCollectionItems}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <CollectionCard communityId={communityId} item={item} />
+        )}
+        contentContainerStyle={{ marginTop: 16, paddingBottom: 80 }}
+        keyExtractor={(item) => item.id.toString()}
+      />
+      {isMember && (
         <PlazaButton
           title="Add to Collection"
           style={styles.buttonContainer}
           onPress={() => bottomSheetRef.current?.present()}
         />
-      </View>
+      )}
       <SelectProductModal
         multiple
         onSubmit={addProductsToCollection}

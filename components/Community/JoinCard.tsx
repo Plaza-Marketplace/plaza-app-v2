@@ -1,10 +1,8 @@
 import Radius from '@/constants/Radius';
-import { StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import BodyText from '../Texts/BodyText';
 import { FC } from 'react';
-import PlazaButton from '../Buttons/PlazaButton';
 import Color from '@/constants/Color';
-import ProfileIcon from '../ProfileIcon';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { pushCommunityScreen } from '@/utils/community';
 import GroupIcon from './GroupIcon';
@@ -21,13 +19,7 @@ interface JoinCardProps {
   isMember: boolean;
 }
 
-const JoinCard: FC<JoinCardProps> = ({
-  id,
-  name,
-  description,
-  iconUrl,
-  isMember,
-}) => {
+const JoinCard: FC<JoinCardProps> = ({ id, name, description, iconUrl }) => {
   return (
     <PressableOpacity
       style={styles.container}
@@ -38,11 +30,10 @@ const JoinCard: FC<JoinCardProps> = ({
         <BodyText variant="lg-semibold" numberOfLines={1}>
           {name}
         </BodyText>
-        <BodyText variant="md" numberOfLines={2}>
+        <BodyText variant="md" numberOfLines={4}>
           {description}
         </BodyText>
       </View>
-      <PlazaButton title={isMember ? 'Joined' : 'Join'} />
     </PressableOpacity>
   );
 };
@@ -53,6 +44,7 @@ const styles = StyleSheet.create({
   container: {
     padding: 16,
     gap: 12,
+    minHeight: 200,
     borderRadius: Radius.LG,
     backgroundColor: Color.NEUTRALS_WHITE,
   },
