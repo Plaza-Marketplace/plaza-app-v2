@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { FC, useRef } from 'react';
 import { Tabs } from 'react-native-collapsible-tab-view';
 import PlazaButton from '@/components/Buttons/PlazaButton';
@@ -26,24 +26,22 @@ const Collection: FC<CollectionProps> = ({ communityId, isMember }) => {
 
   return (
     <>
-      <View style={{ flex: 1 }}>
-        <Tabs.FlatList
-          data={communityCollectionItems}
-          numColumns={2}
-          renderItem={({ item }) => (
-            <CollectionCard communityId={communityId} item={item} />
-          )}
-          contentContainerStyle={{ paddingTop: 16, paddingBottom: 72 }}
-          keyExtractor={(item) => item.id.toString()}
-        />
-        {isMember && (
-          <PlazaButton
-            title="Add to Collection"
-            style={styles.buttonContainer}
-            onPress={() => bottomSheetRef.current?.present()}
-          />
+      <Tabs.FlatList
+        data={communityCollectionItems}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <CollectionCard communityId={communityId} item={item} />
         )}
-      </View>
+        contentContainerStyle={{ marginTop: 16, paddingBottom: 80 }}
+        keyExtractor={(item) => item.id.toString()}
+      />
+      {isMember && (
+        <PlazaButton
+          title="Add to Collection"
+          style={styles.buttonContainer}
+          onPress={() => bottomSheetRef.current?.present()}
+        />
+      )}
       <SelectProductModal
         multiple
         onSubmit={addProductsToCollection}

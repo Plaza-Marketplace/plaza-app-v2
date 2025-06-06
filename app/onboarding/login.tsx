@@ -1,4 +1,4 @@
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import HeadingText from '@/components/Texts/HeadingText';
@@ -16,9 +16,20 @@ import { useAuth } from '@/contexts/AuthContext';
 import { Redirect } from 'expo-router';
 import GoogleOAuth from '@/components/Auth/GoogleOAuth';
 import AppleOAuth from '@/components/Auth/AppleSignIn';
+import * as Yup from 'yup';
+import PressableOpacity from '@/components/Buttons/PressableOpacity';
+
+const LoginScheme = Yup.object().shape({
+  email: Yup.string()
+    .email('Invalid email address')
+    .required('Email is required'),
+  password: Yup.string().required('Password is required'),
+});
 
 const Login = () => {
   const { isLoading, session } = useAuth();
+
+  const [passwordVisible, setPasswordVisible] = React.useState(false);
 
   if (!isLoading && session) {
     return <Redirect href="/" />;
@@ -52,6 +63,7 @@ const Login = () => {
             email: '',
             password: '',
           }}
+          validationSchema={LoginScheme}
           onSubmit={async (values) => {
             const { error } = await supabase.auth.signInWithPassword({
               email: values.email,
@@ -61,7 +73,7 @@ const Login = () => {
             if (error) Alert.alert(error.message);
           }}
         >
-          {({ handleChange, handleSubmit, values }) => (
+          {({ handleChange, handleSubmit, values, errors, dirty }) => (
             <>
               <View style={{ marginTop: Spacing.SPACING_3 }}>
                 <PlazaTextInput
@@ -71,6 +83,7 @@ const Login = () => {
                   keyboardType="email-address"
                   style={styles.inputStyle}
                   autoCapitalize="none"
+                  error={errors.email}
                 />
               </View>
 
@@ -79,9 +92,29 @@ const Login = () => {
                   onChangeText={handleChange('password')}
                   label="Password"
                   placeholder="Enter your password"
-                  secureTextEntry
+                  secureTextEntry={!passwordVisible}
                   style={styles.inputStyle}
                   autoCapitalize="none"
+                  error={errors.password}
+                  rightButton={
+                    <PressableOpacity>
+                      {passwordVisible ? (
+                        <Ionicons
+                          name="eye-off"
+                          size={24}
+                          color={Color.GREY_500}
+                          onPress={() => setPasswordVisible(false)}
+                        />
+                      ) : (
+                        <Ionicons
+                          name="eye"
+                          size={24}
+                          color={Color.GREY_500}
+                          onPress={() => setPasswordVisible(true)}
+                        />
+                      )}
+                    </PressableOpacity>
+                  }
                 />
               </View>
 
@@ -89,6 +122,11 @@ const Login = () => {
                 title="Log In"
                 style={styles.buttonStyle}
                 onPress={handleSubmit}
+                disabled={
+                  !dirty ||
+                  errors.email !== undefined ||
+                  errors.password !== undefined
+                }
               />
             </>
           )}

@@ -30,6 +30,8 @@ import { PlazaLogo } from '@/components/Icons';
 import { useSharedValue } from 'react-native-reanimated';
 import { accountSchema } from './accountDetailsHelpers';
 import { stripe } from '@/supabase/functions/_utils/stripe';
+import BackButton from '@/components/Buttons/BackButton';
+import { Event, track } from '@/analytics/utils';
 
 const width = Dimensions.get('window').width;
 
@@ -127,6 +129,10 @@ const AccountDetails = () => {
 
       playFinaleAnimation();
 
+      track(Event.FINISHED_ONBOARDING, {
+        userType: selectedType === 0 ? 'Buyer' : 'Seller',
+      });
+
       setTimeout(() => {
         if (selectedType === 0) {
           router.replace('/feed');
@@ -206,6 +212,11 @@ const AccountDetails = () => {
         }}
       >
         <View style={{ flex: 1 }}>
+          <View
+            style={{ alignSelf: 'flex-end', marginRight: Spacing.SPACING_4 }}
+          >
+            <BackButton />
+          </View>
           <Carousel
             ref={ref}
             width={width}
@@ -226,6 +237,10 @@ const AccountDetails = () => {
             <Pagination.Basic
               progress={progress}
               data={slides}
+              activeDotStyle={{
+                backgroundColor: Color.PRIMARY_DEFAULT,
+                borderRadius: 50,
+              }}
               dotStyle={{
                 backgroundColor: 'rgba(0,0,0,0.2)',
                 borderRadius: 50,

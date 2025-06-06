@@ -1,3 +1,4 @@
+import { Event, track } from '@/analytics/utils';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   createCommunityMember,
@@ -34,8 +35,10 @@ export const useJoinCommunity = (id: Id) => {
         }
       );
     },
-    onSuccess: () =>
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['activityTab', user?.id] }),
+        track(Event.JOINED_GROUP, { groupId: id });
+    },
   });
 };
 

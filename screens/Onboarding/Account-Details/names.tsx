@@ -27,26 +27,6 @@ const Names: FC<NamesProps> = ({ formik }) => {
 
       <View style={{ marginTop: Spacing.SPACING_3 }}>
         <PlazaTextInput
-          label="Username"
-          placeholder="Your username"
-          style={styles.inputStyle}
-          autoCapitalize="none"
-          value={formik.values.username}
-          onChangeText={formik.handleChange('username')}
-          onBlur={formik.handleBlur('username')}
-        />
-        {formik.errors.username && (
-          <BodyText
-            variant="sm"
-            color="red"
-            style={{ marginTop: Spacing.SPACING_1 }}
-          >
-            {formik.errors.username}
-          </BodyText>
-        )}
-      </View>
-      <View style={{ marginTop: Spacing.SPACING_3 }}>
-        <PlazaTextInput
           label="Display Name"
           placeholder="Your display name"
           style={styles.inputStyle}
@@ -62,6 +42,27 @@ const Names: FC<NamesProps> = ({ formik }) => {
             style={{ marginTop: Spacing.SPACING_1 }}
           >
             {formik.errors.displayName}
+          </BodyText>
+        )}
+      </View>
+
+      <View style={{ marginTop: Spacing.SPACING_3 }}>
+        <PlazaTextInput
+          label="Username"
+          placeholder="Your username"
+          style={styles.inputStyle}
+          autoCapitalize="none"
+          value={formik.values.username}
+          onChangeText={formik.handleChange('username')}
+          onBlur={formik.handleBlur('username')}
+        />
+        {formik.errors.username && (
+          <BodyText
+            variant="sm"
+            color="red"
+            style={{ marginTop: Spacing.SPACING_1 }}
+          >
+            {formik.errors.username}
           </BodyText>
         )}
       </View>

@@ -14,6 +14,6 @@ export const getVideoPublicUrls = (keys: UUID[]): Url[] => {
 };
 
 export const getVideoPublicUrl = (key: UUID): Url => {
-  return supabase.storage.from('videos').getPublicUrl(`private/${key}`, {}).data
-    .publicUrl;
+  return supabase.storage.from('videos-mp4').getPublicUrl(`private/${key}`, {})
+    .data.publicUrl;
 };

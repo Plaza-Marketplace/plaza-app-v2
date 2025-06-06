@@ -1,8 +1,10 @@
-import { FlatList } from 'react-native';
+import { FlatList, View } from 'react-native';
 import FeedVideo from './Feed/FeedVideo';
 import { MARKETPLACE_FEED_VIDEO_HEIGHT } from '@/constants/marketplace';
-import React, { FC, useCallback, useState } from 'react';
+import React, { FC, useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from 'expo-router';
+import { FlashList } from '@shopify/flash-list';
+import { ViewabilityTrackerFlashList } from './List/ViewabilityTrackerFlashList';
 
 interface FeedProps {
   videos: Video[];
@@ -27,11 +29,11 @@ const Feed: FC<FeedProps> = ({
   }, []);
 
   const renderItem = useCallback(
-    ({ item, index }) => {
+    ({ item }) => {
       return (
         <FeedVideo
           video={item}
-          visible={currViewableIndex === index && visible}
+          // visible={currViewableIndex === index && visible}
         />
       );
     },
@@ -49,25 +51,20 @@ const Feed: FC<FeedProps> = ({
   );
 
   return (
-    <FlatList
+    <ViewabilityTrackerFlashList
+      extraData={{ currViewableIndex }}
       refreshing={refreshing}
       onRefresh={onRefresh}
       data={videos}
       renderItem={renderItem}
+      onViewableItemsChanged={handleViewableItemsChanged}
+      drawDistance={MARKETPLACE_FEED_VIDEO_HEIGHT}
       pagingEnabled
       snapToInterval={MARKETPLACE_FEED_VIDEO_HEIGHT}
       decelerationRate="fast"
       disableIntervalMomentum
       showsVerticalScrollIndicator={false}
-      viewabilityConfig={{ itemVisiblePercentThreshold: 100 }}
-      onViewableItemsChanged={handleViewableItemsChanged}
-      getItemLayout={(data, index) => ({
-        length: MARKETPLACE_FEED_VIDEO_HEIGHT,
-        offset: MARKETPLACE_FEED_VIDEO_HEIGHT * index,
-        index,
-      })}
-      initialNumToRender={5}
-      maxToRenderPerBatch={5}
+      estimatedItemSize={MARKETPLACE_FEED_VIDEO_HEIGHT}
       keyExtractor={(item) => item.id.toString()}
       removeClippedSubviews
       onEndReachedThreshold={2}

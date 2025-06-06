@@ -1,9 +1,9 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import PressableOpacity from './Buttons/PressableOpacity';
 import { StyleSheet } from 'react-native';
 import ProductShowcase from './PostCards/ProductCards/ProductShowcase';
 import Spacing from '@/constants/Spacing';
-import ProductModal from './Feed/ProductModal';
+import ProductModal from './Product/ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 
 interface ProfileProductProps {
@@ -22,11 +22,7 @@ const ProfileProduct: FC<ProfileProductProps> = ({ product }) => {
       <PressableOpacity style={[styles.container]} onPress={handlePress}>
         <ProductShowcase product={product} />
       </PressableOpacity>
-      <ProductModal
-        bottomSheetRef={productModalRef}
-        product={{ ...product }}
-        sellerId={product.sellerId}
-      />
+      <ProductModal bottomSheetRef={productModalRef} id={product.id} />
     </>
   );
 };

@@ -16,7 +16,6 @@ const Videos: FC<VideosProps> = ({ userId }) => {
 
   return (
     <Tabs.FlatList
-      style={{ flex: 1 }}
       numColumns={3}
       data={videos}
       renderItem={({ item }) => (
