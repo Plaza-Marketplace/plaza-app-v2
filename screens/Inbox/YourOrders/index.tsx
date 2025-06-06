@@ -3,6 +3,8 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useGetYourOrdersScreen } from './hooks';
 import OrderCard from '@/components/Inbox/OrderCard';
+import BackButton from '@/components/Buttons/BackButton';
+import HeaderText from '@/components/Texts/HeaderText';
 
 const YourOrders = () => {
   const { data, error } = useGetYourOrdersScreen();
@@ -13,6 +15,10 @@ const YourOrders = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ gap: 24 }}>
+        <View style={styles.header}>
+          <BackButton />
+          <HeaderText>Your Orders</HeaderText>
+        </View>
         <View style={styles.section}>
           <HeadingText variant="h5-bold">Pending Orders</HeadingText>
           {pendingOrders.map((order) => (
@@ -53,5 +59,10 @@ const styles = StyleSheet.create({
   },
   section: {
     gap: 16,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
