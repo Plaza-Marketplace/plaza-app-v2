@@ -6,6 +6,8 @@ import {
 } from 'react-native-safe-area-context';
 import OrderCard from '@/components/Inbox/OrderCard';
 import { useGetYourSalesScreen } from './hooks';
+import BackButton from '@/components/Buttons/BackButton';
+import HeaderText from '@/components/Texts/HeaderText';
 
 const YourSales = () => {
   const { data, error } = useGetYourSalesScreen();
@@ -16,6 +18,10 @@ const YourSales = () => {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={{ gap: 24 }}>
+        <View style={styles.header}>
+          <BackButton />
+          <HeaderText>Your Sales</HeaderText>
+        </View>
         <View style={styles.section}>
           <HeadingText variant="h5-bold">Pending Sales</HeadingText>
           {pendingSales.map((order) => (
@@ -56,5 +62,10 @@ const styles = StyleSheet.create({
   },
   section: {
     gap: 16,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
