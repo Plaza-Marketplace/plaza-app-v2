@@ -3,10 +3,10 @@ import { FlashList } from '@shopify/flash-list';
 import React, { useState } from 'react';
 import {
   View,
-  TouchableOpacity,
   StyleSheet,
   Text,
 } from 'react-native';
+import PressableOpacity from './PressableOpacity';
 
 interface RadioGroupProps<T> {
   items: T[];
@@ -32,7 +32,7 @@ const RadioGroup = <T,>({
   const renderListItem = ({ item }: { item: T }) => {
     const isSelected = keyExtractor(item) === selectedId;
     return (
-      <TouchableOpacity
+      <PressableOpacity
         style={[styles.radioContainer, isSelected && styles.selectedRadio]}
         onPress={() => handleSelect(item)}
       >
@@ -40,7 +40,7 @@ const RadioGroup = <T,>({
           style={[styles.radioButton, isSelected && styles.radioSelected]}
         />
         {renderItem(item, isSelected)}
-      </TouchableOpacity>
+      </PressableOpacity>
     );
   };
 

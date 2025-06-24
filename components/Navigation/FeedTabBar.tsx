@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { MaterialTopTabBarProps } from '@react-navigation/material-top-tabs';
 import Color from '@/constants/Color';
@@ -8,6 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import { Basket } from '../Icons';
 import { anonymousLogout } from '@/screens/Anonymous/services';
+import PressableOpacity from '../Buttons/PressableOpacity';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -45,12 +46,12 @@ const FeedTabBar: FC<Props> = ({
           //       visible={menuVisible}
           //       onDismiss={() => setMenuVisible(false)}
           //       anchor={
-          //         <TouchableOpacity
+          //         <PressableOpacity
           //           onPress={() => setMenuVisible(true)}
           //           style={styles.tabButton}
           //         >
           //           <Text style={styles.tabText}>More ▼</Text>
-          //         </TouchableOpacity>
+          //         </PressableOpacity>
           //       }
           //     >
           //       <Menu.Item
@@ -82,7 +83,7 @@ const FeedTabBar: FC<Props> = ({
                   alignItems: 'center',
                 }}
               >
-                <TouchableOpacity
+                <PressableOpacity
                   onPress={() => navigation.navigate(route.name)}
                   style={[
                     styles.tabButton,
@@ -96,14 +97,14 @@ const FeedTabBar: FC<Props> = ({
                   >
                     {descriptors[route.key].options.title || route.name}
                   </Text>
-                </TouchableOpacity>
+                </PressableOpacity>
               </View>
             );
           }
 
           if (route.name === 'feed') {
             return (
-              <TouchableOpacity
+              <PressableOpacity
                 key={route.key}
                 onPress={() => navigation.navigate(route.name)}
                 style={[
@@ -118,12 +119,12 @@ const FeedTabBar: FC<Props> = ({
                 >
                   {descriptors[route.key].options.title || route.name}
                 </Text>
-              </TouchableOpacity>
+              </PressableOpacity>
             );
           }
 
           return (
-            <TouchableOpacity
+            <PressableOpacity
               key={route.key}
               onPress={() => navigation.navigate(route.name)}
               style={[
@@ -136,11 +137,11 @@ const FeedTabBar: FC<Props> = ({
               <Text style={[styles.tabText, isFocused && styles.activeText]}>
                 {descriptors[route.key].options.title || route.name}
               </Text>
-            </TouchableOpacity>
+            </PressableOpacity>
           );
         })}
         {showCart && (
-          <TouchableOpacity
+          <PressableOpacity
             key={'cart'}
             onPress={() => router.push('/(app)/(tabs)/(marketplace)/cart')}
             style={[styles.cartButton, styles.shadow]}
@@ -152,10 +153,10 @@ const FeedTabBar: FC<Props> = ({
                 currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
               }
             />
-          </TouchableOpacity>
+          </PressableOpacity>
         )}
         {showLoginPrompt && (
-          <TouchableOpacity
+          <PressableOpacity
             onPress={async () => await anonymousLogout()}
             style={[styles.cartButton, styles.shadow]}
           >
@@ -166,7 +167,7 @@ const FeedTabBar: FC<Props> = ({
                 currentRoute === 'feed' ? Color.WHITE : Color.PRIMARY_DEFAULT
               }
             />
-          </TouchableOpacity>
+          </PressableOpacity>
         )}
       </View>
     </>

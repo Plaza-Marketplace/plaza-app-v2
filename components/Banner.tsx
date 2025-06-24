@@ -3,7 +3,7 @@ import { ImageBackground } from 'expo-image';
 import { FC, PropsWithChildren } from 'react';
 import Radius from '@/constants/Radius';
 import Color from '@/constants/Color';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import PressableOpacity from './Buttons/PressableOpacity';
 
 interface BannerProps extends PropsWithChildren {
   backgroundUrl: string | null;
@@ -12,11 +12,11 @@ interface BannerProps extends PropsWithChildren {
 
 const Banner: FC<BannerProps> = ({ backgroundUrl, onPress, children }) => {
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
+    <PressableOpacity style={styles.container} onPress={onPress}>
       <ImageBackground style={{ flex: 1 }} source={{ uri: backgroundUrl }}>
         <View style={styles.overlay}>{children}</View>
       </ImageBackground>
-    </TouchableOpacity>
+    </PressableOpacity>
   );
 };
 
