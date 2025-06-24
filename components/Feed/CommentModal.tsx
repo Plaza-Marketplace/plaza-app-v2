@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import FeedBottomSheet from './FeedBottomSheet';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import PlazaTextInput from '../PlazaTextInput';
@@ -13,6 +13,7 @@ import BoldSubheaderText from '../Texts/BoldSubheaderText';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { ChevronUp } from '../Icons';
 import Radius from '@/constants/Radius';
+import { FlashList } from '@shopify/flash-list';
 
 interface CommentModalProps {
   videoId: Id;
@@ -36,13 +37,13 @@ const CommentModal: FC<CommentModalProps> = ({ videoId, bottomSheetRef }) => {
       <View style={styles.titleContainer}>
         <BoldSubheaderText>Comments</BoldSubheaderText>
       </View>
-      <FlatList
+      <FlashList
         data={data}
         renderItem={({ item }) => <Comment comment={item} />}
         contentContainerStyle={{
-          gap: Spacing.SPACING_3,
           padding: Spacing.SPACING_3,
         }}
+        ItemSeparatorComponent={() => <View style={{ height: Spacing.SPACING_3 }} />}
       />
       <View style={[styles.inputContainer, { paddingBottom: insets.bottom }]}>
         <PlazaTextInput

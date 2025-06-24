@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import {
-  FlatList,
   KeyboardAvoidingView,
   Platform,
   TextInput,
@@ -30,6 +29,7 @@ import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChatScreen } from './models';
 import { router } from 'expo-router';
+import { FlashList } from '@shopify/flash-list';
 
 interface ChatProps {
   conversationId?: Id;
@@ -237,10 +237,13 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
           </View>
         ) : (
           <>
-            <FlatList
+            <FlashList
               data={messages}
-              contentContainerStyle={{ gap: 16, padding: 16 }}
+              contentContainerStyle={{ padding: 16 }}
               renderItem={({ item }) => (
+                <View
+                    style={{ marginTop: 16 }}
+                  >
                 <Message
                   senderId={item.senderId}
                   profileImageUrl={item.profileImageUrl}
@@ -248,6 +251,7 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
                   createdAt={item.createdAt}
                   isCurrentUser={item.senderId === user?.id}
                 />
+                </View>
               )}
               inverted
             />

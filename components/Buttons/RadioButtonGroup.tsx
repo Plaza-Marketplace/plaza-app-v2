@@ -1,9 +1,9 @@
 import Color from '@/constants/Color';
+import { FlashList } from '@shopify/flash-list';
 import React, { useState } from 'react';
 import {
   View,
   TouchableOpacity,
-  FlatList,
   StyleSheet,
   Text,
 } from 'react-native';
@@ -45,7 +45,7 @@ const RadioGroup = <T,>({
   };
 
   return (
-    <FlatList
+    <FlashList
       data={items}
       scrollEnabled={false}
       keyExtractor={(item) => keyExtractor(item)}

@@ -4,7 +4,7 @@ import {
   SellerReview,
 } from '@/models/review';
 import { FC } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Review from './Review';
 import ProfileIcon from '../ProfileIcon';
 import SubheaderText from '../Texts/SubheaderText';
@@ -14,6 +14,7 @@ import BoldStandardText from '../Texts/BoldStandardText';
 import Color from '@/constants/Color';
 import ProductIcon from '../Product/ProductIcon';
 import ReviewCard from '../ReviewCard';
+import { FlashList } from '@shopify/flash-list';
 
 interface ReviewModalTabProps {
   reviews: SellerReview[];
@@ -22,7 +23,7 @@ interface ReviewModalTabProps {
 const ReviewModalTab: FC<ReviewModalTabProps> = ({ reviews }) => {
   return (
     <View style={styles.container}>
-      <FlatList
+      <FlashList
         data={reviews}
         renderItem={({ item }) => (
           <ReviewCard
@@ -34,9 +35,9 @@ const ReviewModalTab: FC<ReviewModalTabProps> = ({ reviews }) => {
           />
         )}
         contentContainerStyle={{
-          gap: Spacing.SPACING_4,
           padding: Spacing.SPACING_2,
         }}
+        ItemSeparatorComponent={() => <View style={{ height: Spacing.SPACING_4 }} />}
       />
     </View>
   );
