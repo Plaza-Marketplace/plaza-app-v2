@@ -4,12 +4,12 @@ import { StyleSheet, View } from 'react-native';
 import HeadingText from '../Texts/HeadingText';
 import BodyText from '../Texts/BodyText';
 import { formatPrice } from '@/utils/currency';
-import ProfileIcon from '../ProfileIcon';
 import Color from '@/constants/Color';
 import Rating from '../Rating';
 import ProductModal from './ProductModal';
 import { BottomSheetModal } from '@gorhom/bottom-sheet';
 import PressableOpacity from '../Buttons/PressableOpacity';
+import UserInfo from '../User/UserInfo';
 
 interface ProductCardProps {
   id: Id;
@@ -68,20 +68,12 @@ const ProductCard: FC<ProductCardProps> = ({
           <BodyText variant="lg">{formatPrice(price)}</BodyText>
           {username !== undefined && rating !== undefined && (
             <View style={styles.sellerContainer}>
-              <View style={styles.seller}>
-                <ProfileIcon
-                  variant="user"
-                  size={24}
-                  url={profileImageUrl ?? undefined}
-                />
-                <BodyText
-                  variant="md-medium"
-                  numberOfLines={1}
-                  style={{ flexShrink: 1 }}
-                >
-                  {displayName ? displayName : username}
-                </BodyText>
-              </View>
+              <UserInfo
+                username={username ?? ''}
+                profilePictureUrl={profileImageUrl ?? null}
+                displayName={displayName  ?? ''}
+                size={24}
+              />
               <Rating rating={rating} />
             </View>
           )}
@@ -117,11 +109,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 12,
     gap: 4,
-  },
-  seller: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 4,
-  },
+  }
 });

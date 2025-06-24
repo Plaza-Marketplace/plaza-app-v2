@@ -33,6 +33,8 @@ export type ProductModalProduct = {
 
     averageRating: number;
 
+    profilePictureUrl: Url | null;
+
     reviews: {
       id: Id;
 

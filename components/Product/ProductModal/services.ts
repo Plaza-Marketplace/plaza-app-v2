@@ -94,6 +94,9 @@ export const getProductModalProduct = async (
       username: data.seller.username,
       displayName: data.seller.display_name,
       averageRating: data.seller.average_rating,
+      profilePictureUrl: data.seller.profile_image_key
+        ? getImagePublicUrl(data.seller.profile_image_key)
+        : null,
       reviews: data.seller.seller_review.map((review) => ({
         id: review.id,
         rating: review.rating,

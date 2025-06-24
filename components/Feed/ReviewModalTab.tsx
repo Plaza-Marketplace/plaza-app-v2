@@ -6,7 +6,6 @@ import {
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Review from './Review';
-import ProfileIcon from '../ProfileIcon';
 import SubheaderText from '../Texts/SubheaderText';
 import StandardText from '../Texts/StandardText';
 import Spacing from '@/constants/Spacing';

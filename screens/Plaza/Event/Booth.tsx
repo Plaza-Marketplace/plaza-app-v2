@@ -2,13 +2,13 @@ import Radius from '@/constants/Radius';
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Event } from './models';
-import UserIcon from '@/components/User/UserIcon';
 import BodyText from '@/components/Texts/BodyText';
 import Color from '@/constants/Color';
 import ProductPreview from '@/components/Product/ProductPreview';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import { router } from 'expo-router';
 import { ScrollView } from 'react-native-gesture-handler';
+import ProfileIcon from '@/components/ProfileIcon';
 
 interface BoothProps {
   seller: Event['sellers'][number];
@@ -26,7 +26,7 @@ const Booth: FC<BoothProps> = ({ seller }) => {
             })
           }
         >
-          <UserIcon profileImageUrl={seller.profileImageUrl} />
+          <ProfileIcon variant='user' url={seller.profileImageUrl || undefined} />
         </PressableOpacity>
         <View>
           <BodyText variant="md-bold" numberOfLines={1}>

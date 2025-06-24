@@ -14,7 +14,7 @@ const Comment: FC<CommentProps> = ({ comment }) => {
     <View style={styles.container}>
       <ProfileIcon
         variant="user"
-        url={comment.poster.profileImageUrl ?? undefined}
+        url={comment.poster.profileImageUrl || undefined}
       />
       <View style={styles.contentContainer}>
         <View style={styles.infoContainer}>
