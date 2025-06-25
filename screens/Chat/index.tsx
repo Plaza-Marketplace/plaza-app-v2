@@ -261,7 +261,9 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
                   <PressableOpacity
                     onPress={handleSubmit}
                     style={{
-                      backgroundColor: Color.NEUTRALS_DEFAULT,
+                      backgroundColor: content
+                        ? Color.PRIMARY_DEFAULT
+                        : Color.NEUTRALS_DEFAULT,
                       padding: Spacing.SPACING_1,
                       borderRadius: Radius.LG,
                     }}
@@ -269,6 +271,7 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
                     <ChevronUp color={Color.WHITE} />
                   </PressableOpacity>
                 }
+                multiline
               />
             </View>
           </>
