@@ -30,10 +30,7 @@ const PlazaDescriptionButton: FC<DescriptionButtonProps> = ({
   ...rest
 }) => {
   return (
-    <PressableOpacity
-      style={[styles.container, styles.shadow, style]}
-      {...rest}
-    >
+    <PressableOpacity style={[styles.container, style]} {...rest}>
       <View style={styles.iconContainer}>{leftIcon}</View>
       <View style={styles.textContainer}>
         <HeaderText style={styles.text}>{title}</HeaderText>
@@ -68,16 +65,5 @@ const styles = StyleSheet.create({
   },
   text: {
     color: Color.PRIMARY_DEFAULT,
-  },
-  shadow: {
-    shadowColor: Color.BLACK,
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-
-    elevation: 5, // For Android
   },
 });

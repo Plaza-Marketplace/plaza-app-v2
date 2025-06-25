@@ -22,7 +22,7 @@ export const styles = StyleSheet.create({
     paddingTop: Spacing.SPACING_3,
   },
   inputContainer: {
-    gap: Spacing.SPACING_2,
+    gap: Spacing.SPACING_5,
   },
   headerContainer: {
     flexDirection: 'column',
