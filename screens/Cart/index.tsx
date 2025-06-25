@@ -23,6 +23,7 @@ import BottomSheet, {
   BottomSheetFooter,
   BottomSheetView,
 } from '@gorhom/bottom-sheet';
+import { FlashList } from '@shopify/flash-list';
 import { router } from 'expo-router';
 import { useMemo, useRef, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -86,8 +87,12 @@ const CartScreen = () => {
       }}
     >
       <PlazaHeader name="Your Cart" />
-      <FlatList
+      <FlashList
         style={styles.content}
+        contentContainerStyle={{
+          paddingHorizontal: Spacing.SPACING_3,
+          paddingTop: Spacing.SPACING_3
+        }}
         data={cartItems}
         keyExtractor={(item) => item.id.toString()}
         renderItem={({ item: cartItem }) => (

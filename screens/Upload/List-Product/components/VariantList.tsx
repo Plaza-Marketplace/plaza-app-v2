@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Spacing from '@/constants/Spacing';
 import HeadingText from '@/components/Texts/HeadingText';
 import { VariantsDisplay } from '../schema';
-import { FlatList } from 'react-native-gesture-handler';
+import { FlashList } from '@shopify/flash-list';
 
 interface VariantListProps {
   variantValues: VariantsDisplay[];
@@ -17,7 +17,7 @@ interface VariantListProps {
 
 const VariantList: FC<VariantListProps> = ({ variantValues, onPressItem }) => {
   return (
-    <FlatList
+    <FlashList
       data={variantValues}
       style={{ flex: 1, width: '100%' }}
       contentContainerStyle={{

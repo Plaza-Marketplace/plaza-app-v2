@@ -69,7 +69,7 @@ const CommunityHeader: FC<CommunityHeaderProps> = ({
             <ProfileIcon
               variant="community"
               size={64}
-              url={iconUrl ?? undefined}
+              url={iconUrl || undefined}
             />
             <View style={styles.memberContainer}>
               <HeadingText variant="h5">{name}</HeadingText>

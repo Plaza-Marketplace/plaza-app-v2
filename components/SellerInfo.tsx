@@ -12,6 +12,10 @@ interface SellerInfoProps {
   profilePictureUrl: Url | null;
 
   averageRating: number;
+
+  textVariant?:  'sm-medium' | 'md';
+
+  displayName?: string;
 }
 
 const SellerInfo: FC<SellerInfoProps> = ({
@@ -19,16 +23,17 @@ const SellerInfo: FC<SellerInfoProps> = ({
   username,
   profilePictureUrl,
   averageRating,
+  textVariant='sm-medium',
+  displayName,
 }) => {
   return (
     <View style={styles.container}>
       <ProfileIcon
         variant="user"
-        size={32}
-        url={profilePictureUrl ?? undefined}
+        url={profilePictureUrl || undefined}
       />
       <View style={styles.info}>
-        <BodyText variant="sm-medium">{username}</BodyText>
+        <BodyText variant={textVariant}>{displayName || username}</BodyText>
         <Rating rating={averageRating} />
       </View>
     </View>

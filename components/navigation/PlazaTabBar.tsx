@@ -5,13 +5,13 @@ import {
   Animated,
   Dimensions,
   View,
-  TouchableOpacity,
   StyleSheet,
   ScrollView,
   I18nManager,
   LayoutChangeEvent,
   LayoutRectangle,
 } from 'react-native';
+import PressableOpacity from '../Buttons/PressableOpacity';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -138,7 +138,7 @@ const PlazaTabBar = ({
     });
 
     return (
-      <TouchableOpacity
+      <PressableOpacity
         key={route.key}
         accessibilityRole="button"
         accessibilityState={isFocused ? { selected: true } : {}}
@@ -154,7 +154,7 @@ const PlazaTabBar = ({
             {label}
           </Animated.Text>
         </View>
-      </TouchableOpacity>
+      </PressableOpacity>
     );
   });
 

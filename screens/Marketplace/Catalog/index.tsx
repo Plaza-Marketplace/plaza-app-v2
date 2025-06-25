@@ -6,6 +6,7 @@ import useGetCommunityCollectionItems from '@/hooks/queries/useGetCommunityColle
 import ProductCard from '@/components/Product/ProductCard';
 import SearchBar from '@/components/SearchBar';
 import AllTags from '@/components/Tags/AllTags';
+import { FlashList } from '@shopify/flash-list';
 
 const Catalog = () => {
   const inset = useSafeAreaInsets();
@@ -27,7 +28,7 @@ const Catalog = () => {
       </View>
       <ScrollView style={{ marginTop: Spacing.SPACING_2 }}>
         {/* <AllTags /> */}
-        <FlatList
+        <FlashList
           style={{
             marginTop: Spacing.SPACING_2,
             flex: 1,

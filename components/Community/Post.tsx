@@ -1,7 +1,7 @@
 import Radius from '@/constants/Radius';
 import { FC, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
-import UserInfo from '../UserInfo';
+import UserInfo from '../User/UserInfo';
 import { PostType } from '@/models/communityPost';
 import GroupIcon from './GroupIcon';
 import BodyText from '../Texts/BodyText';

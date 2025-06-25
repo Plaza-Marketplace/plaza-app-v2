@@ -5,11 +5,11 @@ import HeadingText from '@/components/Texts/HeadingText';
 import BodyText from '@/components/Texts/BodyText';
 import Spacing from '@/constants/Spacing';
 import PlazaTextInput from '@/components/PlazaTextInput';
-import { FlatList } from 'react-native-gesture-handler';
 import PressableOpacity from '@/components/Buttons/PressableOpacity';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
 import { Glass } from '@/components/Icons';
+import { FlashList } from '@shopify/flash-list';
 
 interface CategoriesProps {
   categories: string[];
@@ -59,7 +59,7 @@ const Categories: FC<CategoriesProps> = ({
         />
       </View>
 
-      <FlatList
+      <FlashList
         data={mockData}
         renderItem={({ item }) => {
           const selected = selectedCategories.includes(item);

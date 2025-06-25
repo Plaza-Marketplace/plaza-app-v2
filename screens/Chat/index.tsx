@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
 import {
-  FlatList,
   KeyboardAvoidingView,
   Platform,
   TextInput,
@@ -13,7 +12,6 @@ import {
   useSendFirstMessage,
   useSendMessage,
 } from './hooks';
-import { Image } from 'expo-image';
 import HeadingText from '@/components/Texts/HeadingText';
 import Message from '@/components/Inbox/Message';
 import { useAuth } from '@/contexts/AuthContext';
@@ -30,6 +28,8 @@ import { supabase } from '@/utils/supabase';
 import { useQueryClient } from '@tanstack/react-query';
 import { ChatScreen } from './models';
 import { router } from 'expo-router';
+import { FlashList } from '@shopify/flash-list';
+import ProfileIcon from '@/components/ProfileIcon';
 
 interface ChatProps {
   conversationId?: Id;
@@ -194,28 +194,18 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
               onPress={handlePress}
               style={{ flexDirection: 'row', alignItems: 'center', gap: 8 }}
             >
-              <Image
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: Color.GREY_200,
-                }}
-                source={{ uri: screenData?.imageUrl }}
+              <ProfileIcon
+                variant="user"
+                url={screenData?.imageUrl || undefined}
               />
 
               <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
             </PressableOpacity>
           ) : (
             <>
-              <Image
-                style={{
-                  width: 32,
-                  height: 32,
-                  borderRadius: 16,
-                  backgroundColor: Color.GREY_200,
-                }}
-                source={{ uri: screenData?.imageUrl }}
+              <ProfileIcon
+                variant="user"
+                url={screenData?.imageUrl || undefined}
               />
 
               <HeadingText variant="h6-bold">{screenData?.name}</HeadingText>
@@ -237,10 +227,13 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
           </View>
         ) : (
           <>
-            <FlatList
+            <FlashList
               data={messages}
-              contentContainerStyle={{ gap: 16, padding: 16 }}
+              contentContainerStyle={{ padding: 16 }}
               renderItem={({ item }) => (
+                <View
+                    style={{ marginTop: 16 }}
+                  >
                 <Message
                   senderId={item.senderId}
                   profileImageUrl={item.profileImageUrl}
@@ -248,6 +241,7 @@ const Chat: FC<ChatProps> = ({ conversationId, userId }) => {
                   createdAt={item.createdAt}
                   isCurrentUser={item.senderId === user?.id}
                 />
+                </View>
               )}
               inverted
             />

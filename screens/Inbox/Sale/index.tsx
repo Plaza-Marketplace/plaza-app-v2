@@ -22,6 +22,7 @@ import { ChevronDown } from '@/components/Icons';
 import { calculateDaysLeftUntil7Days } from '@/utils/datetime';
 import PlazaTextInput from '@/components/PlazaTextInput';
 import useDebounce from '@/hooks/useDebounce';
+import ProfileIcon from '@/components/ProfileIcon';
 
 interface SaleProps {
   id: Id;
@@ -65,14 +66,10 @@ const Sale: FC<SaleProps> = ({ id }) => {
                 })
               }
             >
-              <Image
-                source={{ uri: data?.buyer.profileImageUrl }}
-                style={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: 20,
-                  backgroundColor: Color.GREY_200,
-                }}
+              <ProfileIcon
+                variant="user"
+                url={data?.buyer.profileImageUrl || undefined}
+                size={40}
               />
             </PressableOpacity>
             <BodyText variant="md-medium">

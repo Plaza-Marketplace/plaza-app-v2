@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import UserIcon from '../User/UserIcon';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { StyleSheet, View } from 'react-native';
 import BodyText from '../Texts/BodyText';
@@ -7,6 +6,7 @@ import { formatDatetime } from '@/utils/datetime';
 import { router } from 'expo-router';
 import Color from '@/constants/Color';
 import Radius from '@/constants/Radius';
+import ProfileIcon from '../ProfileIcon';
 
 interface MessageProps {
   senderId: Id;
@@ -42,7 +42,7 @@ const Message: FC<MessageProps> = ({
       ]}
     >
       <PressableOpacity onPress={handlePress}>
-        <UserIcon profileImageUrl={profileImageUrl} />
+        <ProfileIcon variant="user" url={profileImageUrl || undefined} />
       </PressableOpacity>
       <View
         style={[

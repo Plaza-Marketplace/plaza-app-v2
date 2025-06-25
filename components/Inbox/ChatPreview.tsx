@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import { StyleSheet, View } from 'react-native';
-import { Image } from 'expo-image';
 import HeadingText from '../Texts/HeadingText';
 import BodyText from '../Texts/BodyText';
 import Color from '@/constants/Color';
 import PressableOpacity from '../Buttons/PressableOpacity';
 import { router } from 'expo-router';
+import ProfileIcon from '../ProfileIcon';
 
 interface ChatPreviewProps {
   id: Id;
@@ -35,7 +35,7 @@ const ChatPreview: FC<ChatPreviewProps> = ({
 
   return (
     <PressableOpacity style={styles.container} onPress={handlePress}>
-      <Image style={styles.image} source={{ uri: imageUrl }} />
+      <ProfileIcon variant="user" url={imageUrl || undefined} size={52} />
       <View style={styles.content}>
         <HeadingText variant="h6">{name}</HeadingText>
         <BodyText variant="md" numberOfLines={1} color={Color.NEUTRALS_DEFAULT}>
@@ -56,11 +56,5 @@ const styles = StyleSheet.create({
   },
   content: {
     gap: 4,
-  },
-  image: {
-    width: 52,
-    height: 52,
-    borderRadius: 26,
-    backgroundColor: Color.GREY_200,
   },
 });

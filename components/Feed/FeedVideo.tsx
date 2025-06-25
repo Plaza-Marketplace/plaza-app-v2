@@ -143,7 +143,7 @@ const FeedVideo: FC<FeedVideoProps> = ({ video }) => {
                 >
                   <ProfileIcon
                     variant="user"
-                    url={video.poster.profileImageUrl ?? undefined}
+                    url={video.poster.profileImageUrl || undefined}
                   />
                 </View>
                 <BoldSubheaderText

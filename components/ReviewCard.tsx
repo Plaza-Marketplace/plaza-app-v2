@@ -5,9 +5,8 @@ import Radius from '@/constants/Radius';
 import CaptionText from './Texts/CaptionText';
 import { returnRatings } from './PlazaIcons/RatingIcons';
 import StandardText from './Texts/StandardText';
-import ProfileIcon from './ProfileIcon';
 import Color from '@/constants/Color';
-import UserInfo from './UserInfo';
+import UserInfo from './User/UserInfo';
 
 interface ReviewProps {
   username: string;
@@ -30,7 +29,7 @@ const ReviewCard: FC<ReviewProps> = ({
 }) => {
   return (
     <View style={styles.review}>
-      <UserInfo username={username} profilePictureUrl={profileImageUrl} />
+      <UserInfo username={username} profilePictureUrl={profileImageUrl} displayName={displayName}/>
 
       <View style={styles.spacing}>{returnRatings(rating, 'small')}</View>
 

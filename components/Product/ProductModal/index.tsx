@@ -5,7 +5,6 @@ import {
 } from '@gorhom/bottom-sheet';
 import { FC, RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import HeadingText from '@/components/Texts/HeadingText';
-import ProfileIcon from '@/components/ProfileIcon';
 import BodyText from '@/components/Texts/BodyText';
 import { Dimensions, StyleSheet, View } from 'react-native';
 import Rating from '@/components/Rating';
@@ -35,6 +34,7 @@ import { Ionicons } from '@expo/vector-icons';
 import useModalTrack from '@/hooks/useModalTrack';
 import { Event } from '@/analytics/utils';
 import Loading from '@/components/Loading';
+import SellerInfo from '@/components/SellerInfo';
 
 interface ProductModalProps {
   id: Id;
@@ -210,26 +210,14 @@ const ProductModal: FC<ProductModalProps> = ({ id, bottomSheetRef }) => {
                     </View>
                   )}
                 </View>
-                <View style={styles.infoContainer}>
-                  <ProfileIcon variant="user" size={32} url={undefined} />
-                  <View style={styles.sellerInfo}>
-                    <PressableOpacity
-                      onPress={() => {
-                        if (!isAnonymous) {
-                          router.push({
-                            pathname: '/profile-modal',
-                            params: { id: product?.seller.id },
-                          });
-                        }
-                      }}
-                    >
-                      <BodyText variant="md">
-                        {product?.seller.displayName}
-                      </BodyText>
-                    </PressableOpacity>
-                    <Rating rating={product?.seller.averageRating ?? 0} />
-                  </View>
-                </View>
+                <SellerInfo
+                  id={product?.seller.id}
+                  username={product?.seller.username || ''}
+                  displayName={product?.seller.displayName || ''}
+                  profilePictureUrl={product?.seller.profilePictureUrl}
+                  averageRating={product?.seller.averageRating}
+                  textVariant="md"
+                />
                 <BodyText variant="md">{product?.description}</BodyText>
                 <View>
                   {product.hasVariants &&
